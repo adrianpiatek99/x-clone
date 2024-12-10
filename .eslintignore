@@ -1,2 +1,4 @@
 **/node_modules/*
 **/.next/*
+**/svgr-icons.config.js
+**/src/icons/*
