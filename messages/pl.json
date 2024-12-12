@@ -1,0 +1,175 @@
+{
+  "loading": "Ładowanie",
+  "emailOrUsername": "E-mail / Nazwa użytkownika",
+  "email": "E-mail",
+  "username": "Nazwa użytkownika",
+  "name": "Imię",
+  "password": "Hasło",
+  "confirmPassword": "Potwierdź hasło",
+  "description": "O mnie",
+  "website": "Strona internetowa",
+
+  "actions": {
+    "cancel": "Anuluj",
+    "close": "Zamknij",
+    "save": "Zapisz",
+    "discard": "Odrzuć",
+    "remove": "Usuń",
+    "next": "Dalej",
+    "showMore": "Pokaż więcej",
+    "back": "Wróć",
+    "follow": "Obserwuj",
+    "addPhoto": "Dodaj zdjęcie",
+    "removePhoto": "Usuń zdjęcie"
+  },
+
+  "auth": {
+    "signIn": "Zaloguj się",
+    "signUp": "Zarejestruj się",
+    "createAccount": "Utwórz konto",
+    "signInTo": "Zaloguj się do serwisu X",
+    "dontHaveAccount": "Nie masz jeszcze konta?",
+    "haveAccount": "Masz już konto?",
+    "requiredModal": {
+      "title": "Wymagana jest autoryzacja.",
+      "description": "Musisz zalogować się na swoje konto."
+    },
+    "logout": {
+      "text": "Wyloguj się",
+      "confirmModal": {
+        "title": "Wylogować się z serwisu?",
+        "description": "W każdej chwili możesz się ponownie zalogować."
+      }
+    }
+  },
+
+  "language": {
+    "displayLanguage": {
+      "title": "Wyświetlany język",
+      "description": "Wybierz preferowany język nagłówków, przycisków i innych elementów interfejsu. Nie wpłynie to na język treści na osi czasu."
+    },
+    "polish": "Polski",
+    "english": "Angielski"
+  },
+
+  "navigation": {
+    "home": "Główna",
+    "explore": "Przeglądaj",
+    "notifications": "Powiadomienia",
+    "messages": "Wiadomości",
+    "bookmarks": "Zakładki",
+    "profile": "Profil",
+    "settings": "Ustawienia"
+  },
+
+  "homePage": {
+    "welcome": {
+      "title": "Witamy na X!",
+      "description": "Tutaj najszybciej dowiesz się, co słychać na świecie. Znajdź osoby i tematy warte obserwowania."
+    }
+  },
+
+  "profilePage": {
+    "actions": {
+      "edit": "Edytuj profil"
+    },
+    "notFound": {
+      "title": "To konto nie istnieje",
+      "description": "Spróbuj wyszukać coś innego."
+    },
+    "empty": {
+      "title": "Nie masz jeszcze żadnych wpisów",
+      "description": "Twoje wpisy będą widoczne tutaj."
+    },
+    "image": "Zdjęcie profilowe",
+    "joined": "Dołączył(a)",
+    "tabs": {
+      "posts": "Wpisy",
+      "replies": "Odpowiedzi",
+      "media": "Multimedia",
+      "likes": "Polubienia"
+    },
+    "photosAndVideos": "Zdjęcia i filmy",
+    "following": "Obserwujesz",
+    "followers": "Obserwujących",
+    "posts": "Wpisy",
+    "edit": {
+      "discardChangesModal": {
+        "title": "Czy chcesz odrzucić zmiany?",
+        "description": "Tej czynności nie można cofnąć, a zmiany nie zostaną zapisane."
+      }
+    },
+    "media": {
+      "empty": {
+        "title": "Światła, kamera... załączniki!",
+        "description": "Twoje wpisy zawierające zdjęcia lub filmy będą widoczne tutaj."
+      }
+    },
+    "likes": {
+      "empty": {
+        "title": "Nie masz jeszcze żadnych polubień",
+        "description": "Naciśnij serce w dowolnym wpisie, aby wyrazić uznanie. Twoje polubienia pojawią się tutaj."
+      }
+    }
+  },
+
+  "notFoundPage": {
+    "title": "Wygląda na to, że taka strona nie istnieje. Spróbuj wyszukać coś innego.",
+    "returnButton": "Wróć do strony głównej"
+  },
+
+  "post": {
+    "actions": {
+      "default": "Wpis",
+      "send": "Opublikuj wpis",
+      "delete": "Usuń",
+      "reply": "Odpowiedz",
+      "like": "Polub",
+      "unlike": "Przestań lubić",
+      "repost": "Podaj dalej",
+      "more": "Więcej"
+    },
+    "counts": {
+      "likes": "Polubienia",
+      "replies": "Odpowiedzi"
+    },
+    "create": {
+      "placeholder": "Co się dzieje?!"
+    },
+    "deleteConfirmModal": {
+      "title": "Usunąć wpis?",
+      "description": "Tej czynności nie można cofnąć. Wpis zostanie usunięty z Twojego profilu, z osi czasu osób obserwujących oraz z wyników wyszukiwania."
+    }
+  },
+
+  "errors": {
+    "validation": {
+      "email": {
+        "incorrect": "Wpisz poprawny adres e-mail."
+      },
+      "password": {
+        "incorrect": "Wpisz poprawne hasło.",
+        "min": "Hasło musi zawierać co najmniej {min} znaków.",
+        "max": "Hasło nie może mieć więcej niż {max} znaków.",
+        "notMatch": "Hasła się nie zgadzają."
+      },
+      "username": {
+        "incorrect": "Nieprawidłowe znaki lub za dużo spacji.",
+        "min": "Nazwa użytkownika musi mieć co najmniej {min} znaków.",
+        "max": "Nazwa użytkownika nie może mieć więcej niż {max} znaków."
+      },
+      "name": {
+        "min": "Imię musi mieć co najmniej {min} znaków.",
+        "max": "Imię nie może mieć więcej niż {max} znaków."
+      }
+    },
+    "file": {
+      "image": {
+        "onePhoto": "Proszę wybrać tylko jedno zdjęcie.",
+        "limit": "Możesz wybrać maksymalnie {limit} zdjęcia.",
+        "sizeLimit": "Przekroczono maksymalny rozmiar obrazu. Wybierz obraz mniejszy niż {sizeLimit} MB."
+      },
+      "invalidType": "Nieprawidłowy typ pliku."
+    }
+  }
+}

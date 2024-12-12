@@ -1,0 +1,175 @@
+{
+  "loading": "Loading",
+  "emailOrUsername": "E-mail / Username",
+  "email": "E-mail",
+  "username": "Username",
+  "name": "Name",
+  "password": "Password",
+  "confirmPassword": "Confirm password",
+  "description": "Bio",
+  "website": "Website",
+
+  "actions": {
+    "cancel": "Cancel",
+    "close": "Close",
+    "save": "Save",
+    "discard": "Discard",
+    "remove": "Remove",
+    "next": "Next",
+    "showMore": "Show more",
+    "back": "Back",
+    "follow": "Follow",
+    "addPhoto": "Add photo",
+    "removePhoto": "Remove photo"
+  },
+
+  "auth": {
+    "signIn": "Sign in",
+    "signUp": "Sign up",
+    "createAccount": "Create account",
+    "signInTo": "Sign in to X",
+    "dontHaveAccount": "Don't have an account?",
+    "haveAccount": "Have an account already?",
+    "requiredModal": {
+      "title": "Authentication is required.",
+      "description": "You need to sign in to your account."
+    },
+    "logout": {
+      "text": "Log out",
+      "confirmModal": {
+        "title": "Log out of Twitter?",
+        "description": "You can always log back in at any time."
+      }
+    }
+  },
+
+  "language": {
+    "displayLanguage": {
+      "title": "Display language",
+      "description": "Select your preferred language for headlines, buttons, and other text from X on this account. This does not change the language of the content you see in your timeline."
+    },
+    "polish": "Polish",
+    "english": "English"
+  },
+
+  "navigation": {
+    "home": "Home",
+    "explore": "Explore",
+    "notifications": "Notifications",
+    "messages": "Messages",
+    "bookmarks": "Bookmarks",
+    "profile": "Profile",
+    "settings": "Settings"
+  },
+
+  "homePage": {
+    "welcome": {
+      "title": "Welcome to X!",
+      "description": "This is the best place to see what’s happening in your world. Find some people and topics to follow now."
+    }
+  },
+
+  "profilePage": {
+    "actions": {
+      "edit": "Edit profile"
+    },
+    "notFound": {
+      "title": "This account doesn’t exist",
+      "description": "Try searching for another."
+    },
+    "empty": {
+      "title": "You don’t have any posts yet",
+      "description": "Your posts will show up here."
+    },
+    "image": "Profile image",
+    "joined": "Joined",
+    "tabs": {
+      "posts": "Posts",
+      "replies": "Replies",
+      "media": "Media",
+      "likes": "Likes"
+    },
+    "photosAndVideos": "Photos & Videos",
+    "following": "Following",
+    "followers": "Followers",
+    "posts": "Posts",
+    "edit": {
+      "discardChangesModal": {
+        "title": "Discard changes?",
+        "description": "This can’t be undone and you’ll lose your changes."
+      }
+    },
+    "media": {
+      "empty": {
+        "title": "Lights, camera … attachments!",
+        "description": "When you post photos or videos, they will show up here."
+      }
+    },
+    "likes": {
+      "empty": {
+        "title": "You don’t have any likes yet",
+        "description": "Tap the heart on any post to show it some love. When you do, it’ll show up here."
+      }
+    }
+  },
+
+  "notFoundPage": {
+    "title": "Hmm...this page doesn’t exist. Try searching for something else.",
+    "returnButton": "Go to homepage"
+  },
+
+  "post": {
+    "actions": {
+      "default": "Post",
+      "send": "Post",
+      "delete": "Delete",
+      "reply": "Reply",
+      "like": "Like",
+      "unlike": "Unlike",
+      "repost": "Repost",
+      "more": "More"
+    },
+    "counts": {
+      "likes": "Likes",
+      "replies": "Replies"
+    },
+    "create": {
+      "placeholder": "What's happening?!"
+    },
+    "deleteConfirmModal": {
+      "title": "Delete post?",
+      "description": "This can’t be undone and it will be removed from your profile, the timeline of any accounts that follow you, and from search results."
+    }
+  },
+
+  "errors": {
+    "validation": {
+      "email": {
+        "incorrect": "Must be a valid email"
+      },
+      "password": {
+        "incorrect": "Must be a valid password",
+        "min": "Password must be at least {min} characters.",
+        "max": "Password can't have more than {max} characters.",
+        "notMatch": "Password does not match."
+      },
+      "username": {
+        "incorrect": "Invalid characters or too many blank spaces.",
+        "min": "Your username cannot be shorter than {min} characters.",
+        "max": "Your username cannot be longer than {max} characters."
+      },
+      "name": {
+        "min": "Your name cannot be shorter than {min} characters.",
+        "max": "Your name cannot be longer than {max} characters."
+      }
+    },
+    "file": {
+      "image": {
+        "onePhoto": "Please choose only one photo.",
+        "limit": "Please choose up to {limit} photos.",
+        "sizeLimit": "Maximum image size exceeded. Please choose an image under {sizeLimit} MB."
+      },
+      "invalidType": "Invalid file type."
+    }
+  }
+}
