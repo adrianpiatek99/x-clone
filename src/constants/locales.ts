@@ -14,7 +14,7 @@ type LocaleOption = {
 export const locales = Object.values(Locale);
 export const defaultLocale = Locale.EN;
 
-export const languageOptions: LocaleOption[] = [
+export const languageOptions = [
   {
     label: 'locale.polish',
     value: Locale.PL,
@@ -23,4 +23,4 @@ export const languageOptions: LocaleOption[] = [
     label: 'locale.english',
     value: Locale.EN,
   },
-];
+] satisfies LocaleOption[];

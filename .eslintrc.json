@@ -10,7 +10,8 @@
     "plugin:react/recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier",
-    "plugin:tailwindcss/recommended"
+    "plugin:tailwindcss/recommended",
+    "plugin:storybook/recommended"
   ],
   "plugins": ["@typescript-eslint", "simple-import-sort", "import", "prettier", "@tanstack/query"],
   "env": {
@@ -46,7 +47,7 @@
   },
   "overrides": [
     {
-      "files": ["**/src/**"],
+      "files": ["**/src/**", "**/.storybook/**"],
       "rules": {
         "@typescript-eslint/typedef": "error",
         "no-console": ["error", { "allow": ["warn", "error"] }],

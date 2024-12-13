@@ -27,7 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "./svgr-icons.config.js"
+    "./svgr-icons.config.js",
+    ".storybook/**/*.tsx"
   ],
   "exclude": ["node_modules"]
 }
