@@ -2,3 +2,4 @@
 **/.next/*
 **/svgr-icons.config.js
 **/src/icons/*
+**/.storybook/*

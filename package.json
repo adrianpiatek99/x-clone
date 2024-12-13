@@ -10,16 +10,22 @@
     "format": "prettier --write .",
     "lint": "eslint *.ts **/*.ts **/*.tsx && yarn type-check",
     "lint:fix": "eslint --fix *.ts **/*.ts **/*.tsx",
-    "icons:generate": "rimraf \"./icons\" && svgr --config-file svgr-icons.config.js -d src/icons assets/icons --ignore-existing"
+    "icons:generate": "rimraf \"./icons\" && svgr --config-file svgr-icons.config.js -d src/icons assets/icons --ignore-existing",
+    "storybook": "yarn icons:generate && storybook dev -p 6006"
   },
   "dependencies": {
     "next": "15.0.4",
     "next-intl": "^3.26.1",
     "next-themes": "^0.4.4",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "storybook": "^8.4.7",
+    "tailwind-merge": "^2.5.5"
   },
   "devDependencies": {
+    "@storybook/addon-essentials": "^8.4.7",
+    "@storybook/nextjs": "^8.4.7",
+    "@storybook/react": "^8.4.7",
     "@svgr/cli": "^6.5.1",
     "@tanstack/eslint-plugin-query": "^5.62.1",
     "@types/node": "^20",
