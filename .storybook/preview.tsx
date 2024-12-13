@@ -1,11 +1,13 @@
 import '../src/app/globals.css';
+
 import React from 'react';
 
 import type { Preview } from '@storybook/react';
+import { Inter } from 'next/font/google';
+
+import enMessages from '../messages/en.json';
 import Providers from '../src/app/providers';
 import { Locale } from '../src/constants/locales';
-import enMessages from '../messages/en.json';
-import { Inter } from 'next/font/google';
 
 const inter = Inter({
   subsets: ['latin'],
