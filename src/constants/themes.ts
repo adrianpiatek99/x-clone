@@ -12,7 +12,7 @@ type ThemeOption = {
 
 export const themes = Object.values(Theme);
 
-export const themeOptions: ThemeOption[] = [
+export const themeOptions = [
   {
     theme: Theme.DARK,
     label: 'theme.dark',
@@ -29,4 +29,4 @@ export const themeOptions: ThemeOption[] = [
     theme: Theme.TOKYO_NIGHT,
     label: 'theme.tokyoNight',
   },
-];
+] satisfies ThemeOption[];
