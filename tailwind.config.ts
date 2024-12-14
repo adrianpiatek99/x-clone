@@ -15,9 +15,6 @@ export default {
       xl: '1280px',
       xxl: '1536px',
     },
-    colors: {
-      current: 'currentColor',
-    },
     fontSize: {
       xs: ['13px', '15px'],
       s: ['14px', '16px'],
@@ -62,9 +59,10 @@ export default {
         pink: 'rgba(var(--pink))',
         'error-1': 'rgba(var(--error-1))',
         'error-2': 'rgba(var(--error-2))',
-        'button-text': 'rgba(var(--button-text))',
         tooltip: 'var(--tooltip)',
         backdrop: 'var(--backdrop)',
+        focus: 'var(--focus)',
+        'button-gray-background': 'rgba(var(--button-gray-background))',
         background: 'rgba(var(--background))',
         foreground: 'rgba(var(--foreground))',
         'text-1': 'rgba(var(--text-1))',

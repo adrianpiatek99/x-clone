@@ -11,11 +11,13 @@
   --error-1: 211, 47, 47;
   --error-2: 255, 0, 0;
 
-  --button-text: 255, 255, 255;
-
   --tooltip: rgba(101, 119, 134, 0.9);
 
   --backdrop: rgba(91, 112, 131, 0.3);
+
+  --focus: rgb(142, 205, 248);
+
+  --button-gray-background: 239, 243, 244;
 
   --theme-dark-primary: 10, 132, 255;
   --theme-dark-background: 0, 0, 0;
@@ -52,6 +54,8 @@
   --text-1: 0, 0, 0;
   --text-2: var(--theme-light-text);
   --border-1: 214, 214, 215;
+
+  --button-gray-background: 160, 160, 170;
 }
 
 .midnightBlue {
@@ -69,6 +73,8 @@
   --text-1: 255, 255, 255;
   --text-2: var(--theme-tokyoNight-text);
   --border-1: 51, 55, 79;
+
+  --focus: rgb(235, 177, 189);
 }
 
 html {
