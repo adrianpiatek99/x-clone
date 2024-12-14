@@ -6,6 +6,7 @@ export { default as CalendarIcon } from './CalendarIcon';
 export { default as CameraPlusIcon } from './CameraPlusIcon';
 export { default as CheckIcon } from './CheckIcon';
 export { default as ChevronIcon } from './ChevronIcon';
+export { default as CloseCircleIcon } from './CloseCircleIcon';
 export { default as CloseIcon } from './CloseIcon';
 export { default as EditProfileIcon } from './EditProfileIcon';
 export { default as EmojiSmileIcon } from './EmojiSmileIcon';
@@ -32,9 +33,9 @@ export { default as NotificationOutlinedIcon } from './NotificationOutlinedIcon'
 export { default as PeopleIcon } from './PeopleIcon';
 export { default as PersonIcon } from './PersonIcon';
 export { default as PersonOutlinedIcon } from './PersonOutlinedIcon';
+export { default as PlayIcon } from './PlayIcon';
 export { default as PlusIcon } from './PlusIcon';
 export { default as RepostIcon } from './RepostIcon';
-export { default as SearchIcon } from './SearchIcon';
 export { default as SearchOutlinedIcon } from './SearchOutlinedIcon';
 export { default as SettingsIcon } from './SettingsIcon';
 export { default as SettingsOutlinedIcon } from './SettingsOutlinedIcon';
