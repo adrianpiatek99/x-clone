@@ -1,6 +1,7 @@
 import { EditProfileIcon, PlayIcon, SettingsIcon, TrashIcon } from '@/icons';
 import type { Meta, StoryFn } from '@storybook/react';
 
+import type { ButtonProps } from './Button';
 import { Button } from './Button';
 
 const icons = {
@@ -21,11 +22,11 @@ const meta = {
       control: 'select',
     },
   },
-} satisfies Meta;
+} satisfies Meta<ButtonProps>;
 
 export default meta;
 
-const Template: StoryFn<typeof Button> = (args) => (
+const Template: StoryFn<ButtonProps> = (args) => (
   <div className='flex max-w-[250px]'>
     <Button {...args} />
   </div>

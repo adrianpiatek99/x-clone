@@ -5,6 +5,8 @@ import { Link } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
+import type { LoaderColor } from '../Loader';
+import { Loader } from '../Loader';
 import type {
   ButtonAlign,
   ButtonClassesReturn,
@@ -101,6 +103,9 @@ export const Button: FC<ButtonProps> = forwardRef(
     ref: ForwardedRef<HTMLButtonElement>
   ) => {
     const t = useTranslations();
+    const loaderColor = (
+      variant === 'filled' ? 'white' : color === 'danger' ? 'danger' : 'primary'
+    ) satisfies LoaderColor;
 
     const ButtonElement = () => (
       <button
@@ -120,7 +125,7 @@ export const Button: FC<ButtonProps> = forwardRef(
         ref={ref}
       >
         {!isLoading && startIcon && cloneElement(startIcon, { className: classes.iconSize[size] })}
-        {isLoading && <div>spin</div>}
+        {isLoading && <Loader className={classes.loaderSize[size]} color={loaderColor} />}
         <span>{children}</span>
       </button>
     );

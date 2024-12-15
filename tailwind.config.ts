@@ -134,7 +134,7 @@ export default {
       },
       animation: {
         appear: 'appear .3s ease-out',
-        spin: 'spin .7s linear infinite',
+        spin: 'appear .3s ease-out, spin .7s linear infinite',
         swipe: 'swipe 1.1s cubic-bezier(0.4, 0, 0.2, 1) infinite',
         logoAppear: 'logoAppear .4s',
       },
