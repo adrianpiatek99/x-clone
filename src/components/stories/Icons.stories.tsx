@@ -3,7 +3,7 @@ import { createElement } from 'react';
 import * as icons from '@/icons';
 import type { Meta } from '@storybook/react';
 
-import Tooltip from '../atoms/Tooltip/Tooltip';
+import { Tooltip } from '../atoms/Tooltip';
 
 const meta = {
   title: 'Design System / Icons',

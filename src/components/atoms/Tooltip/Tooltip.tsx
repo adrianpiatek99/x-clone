@@ -9,7 +9,7 @@ type Props = {
   offset?: number;
 };
 
-const Tooltip = ({ tooltipId, ...props }: Props) => {
+export const Tooltip = ({ tooltipId, ...props }: Props) => {
   return (
     <ReactTooltip
       id={tooltipId}
@@ -21,13 +21,13 @@ const Tooltip = ({ tooltipId, ...props }: Props) => {
         borderRadius: '4px',
         fontSize: '12px',
         lineHeight: '12px',
+        zIndex: '999',
       }}
       place='bottom'
       noArrow
       offset={3}
+      delayShow={200}
       {...props}
     />
   );
 };
-
-export default Tooltip;
