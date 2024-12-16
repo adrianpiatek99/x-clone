@@ -68,6 +68,8 @@ export default {
         'text-1': 'rgba(var(--text-1))',
         'text-2': 'rgba(var(--text-2))',
         'border-1': 'rgba(var(--border-1))',
+        skeleton: 'var(--skeleton)',
+        'skeleton-swipe': 'var(--skeleton-swipe)',
       },
       opacity: {
         '07': '0.07',
