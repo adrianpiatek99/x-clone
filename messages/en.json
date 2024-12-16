@@ -8,6 +8,7 @@
   "confirmPassword": "Confirm password",
   "description": "Bio",
   "website": "Website",
+  "profileImage": "Profile image",
 
   "actions": {
     "cancel": "Cancel",
@@ -81,7 +82,6 @@
       "title": "You don’t have any posts yet",
       "description": "Your posts will show up here."
     },
-    "image": "Profile image",
     "joined": "Joined",
     "tabs": {
       "posts": "Posts",

@@ -8,6 +8,7 @@
   "confirmPassword": "Potwierdź hasło",
   "description": "O mnie",
   "website": "Strona internetowa",
+  "profileImage": "Zdjęcie profilowe",
 
   "actions": {
     "cancel": "Anuluj",
@@ -81,7 +82,6 @@
       "title": "Nie masz jeszcze żadnych wpisów",
       "description": "Twoje wpisy będą widoczne tutaj."
     },
-    "image": "Zdjęcie profilowe",
     "joined": "Dołączył(a)",
     "tabs": {
       "posts": "Wpisy",
