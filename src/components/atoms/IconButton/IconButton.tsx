@@ -27,7 +27,7 @@ const classes: IconButtonClassesReturn = {
     danger:
       'text-error-1 bg-error-1/0 enabled:hover:bg-error-1/10 enabled:active:bg-error-1/20 focus-visible:bg-error-1/10',
     white:
-      'text-text-1 bg-button-gray-background/0 enabled:hover:bg-button-gray-background/22 enabled:active:bg-button-gray-background/30 focus-visible:bg-button-gray-background/10',
+      'text-text-1 bg-button-background-gray/0 enabled:hover:bg-button-background-gray/22 enabled:active:bg-button-background-gray/30 focus-visible:bg-button-background-gray/10',
     darker:
       'text-white bg-[rgb(51,59,45)] enabled:hover:bg-[rgb(51,59,45)]/80 enabled:active:bg-[rgb(51,59,45)]/60',
   },

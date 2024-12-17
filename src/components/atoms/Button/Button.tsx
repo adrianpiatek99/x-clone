@@ -35,7 +35,7 @@ const classes: ButtonClassesReturn = {
       primary:
         'bg-primary [color:#fff] enabled:hover:bg-primary/75 enabled:active:bg-primary/60 focus-visible:ring-focus focus-visible:ring-2',
       danger:
-        'bg-error-1 [color:#fff] focus-visible:ring-error-2 focus-visible:ring-2 enabled:hover:bg-error-1/75 enabled:active:bg-error-1/60',
+        'bg-error-1 [color:#fff] focus-visible:ring-error-1 focus-visible:ring-2 enabled:hover:bg-error-1/75 enabled:active:bg-error-1/60',
     },
     tinted: {
       primary:
@@ -45,9 +45,9 @@ const classes: ButtonClassesReturn = {
     },
     gray: {
       primary:
-        'bg-button-gray-background/15 enabled:hover:bg-button-gray-background/22 enabled:active:bg-button-gray-background/30 [color:theme("colors.primary")] focus-visible:ring-focus focus-visible:ring-2',
+        'bg-button-background-gray/15 enabled:hover:bg-button-background-gray/22 enabled:active:bg-button-background-gray/30 [color:theme("colors.primary")] focus-visible:ring-focus focus-visible:ring-2',
       danger:
-        'bg-button-gray-background/15 [color:theme("colors.error-1")] focus-visible:ring-current focus-visible:ring-2 enabled:hover:bg-button-gray-background/22 enabled:active:bg-button-gray-background/30',
+        'bg-button-background-gray/15 [color:theme("colors.error-1")] focus-visible:ring-current focus-visible:ring-2 enabled:hover:bg-button-background-gray/22 enabled:active:bg-button-background-gray/30',
     },
     plain: {
       primary:
