@@ -64,7 +64,7 @@
   --text-1: 0, 0, 0;
   --text-2: var(--theme-light-text);
   --border-1: 214, 214, 215;
-  --border-2: 110, 110, 115;
+  --border-2: 134, 134, 139;
 
   /* State Colors */
 
@@ -82,7 +82,7 @@
   --text-1: 255, 255, 255;
   --text-2: var(--theme-midnightBlue-text);
   --border-1: 44, 55, 70;
-  --border-2: 110, 110, 115;
+  --border-2: 80, 90, 120;
 
   /* State Colors */
   --focus: rgb(102, 178, 255);
@@ -99,7 +99,7 @@
   --text-1: 255, 255, 255;
   --text-2: var(--theme-tokyoNight-text);
   --border-1: 51, 55, 79;
-  --border-2: 134, 134, 139;
+  --border-2: 105, 115, 145;
 
   /* State Colors */
   --focus: rgb(235, 177, 189);
