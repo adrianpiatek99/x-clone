@@ -127,7 +127,7 @@ button {
 }
 
 input {
-  @apply placeholder:text-text-2 placeholder:font-medium;
+  @apply placeholder:text-text-2;
 }
 
 /* ------------------------------- CUSTOM CLASSES ------------------------------- */

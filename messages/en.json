@@ -9,6 +9,7 @@
   "description": "Bio",
   "website": "Website",
   "profileImage": "Profile image",
+  "search": "Search",
 
   "actions": {
     "cancel": "Cancel",

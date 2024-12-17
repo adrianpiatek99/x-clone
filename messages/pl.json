@@ -9,6 +9,7 @@
   "description": "O mnie",
   "website": "Strona internetowa",
   "profileImage": "Zdjęcie profilowe",
+  "search": "Szukaj",
 
   "actions": {
     "cancel": "Anuluj",
