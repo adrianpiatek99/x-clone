@@ -51,7 +51,7 @@ export const SearchBar = ({
       )}
     >
       <input
-        className='size-full break-words rounded-full border border-border-2 bg-foreground pl-[36px] pr-[42px] text-text-1 outline-none duration-200 focus-within:border-primary focus-within:ring-1 focus-within:ring-inset focus-within:ring-primary focus-within:[background-color:transparent] disabled:cursor-not-allowed'
+        className='size-full break-words rounded-full border border-border-2 bg-foreground pl-[36px] pr-[42px] text-text-1 outline-none duration-200 focus-visible:border-primary focus-visible:ring-1 focus-visible:ring-inset focus-visible:ring-primary focus-visible:[background-color:transparent] disabled:cursor-not-allowed'
         type='text'
         placeholder={placeholder ?? t('search')}
         role='searchbox'
