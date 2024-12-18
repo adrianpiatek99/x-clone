@@ -8,6 +8,7 @@ import { Inter } from 'next/font/google';
 import enMessages from '../messages/en.json';
 import Providers from '../src/app/providers';
 import { Locale } from '../src/constants/locales';
+import ThemeSwitcherDecorator from './decorators/ThemeSwitcherDecorator';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -34,6 +35,7 @@ const preview: Preview = {
           }
         `}</style>
         <Providers locale={Locale.EN} messages={enMessages}>
+          <ThemeSwitcherDecorator />
           {Story()}
           <div id='modal' />
         </Providers>

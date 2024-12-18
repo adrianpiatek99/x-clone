@@ -8,13 +8,18 @@
   "confirmPassword": "Confirm password",
   "description": "Bio",
   "website": "Website",
+  "profileImage": "Profile image",
+  "search": "Search",
 
   "actions": {
     "cancel": "Cancel",
     "close": "Close",
     "save": "Save",
+    "clear": "Clear",
     "discard": "Discard",
     "remove": "Remove",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
     "next": "Next",
     "showMore": "Show more",
     "back": "Back",
@@ -81,7 +86,6 @@
       "title": "You don’t have any posts yet",
       "description": "Your posts will show up here."
     },
-    "image": "Profile image",
     "joined": "Joined",
     "tabs": {
       "posts": "Posts",
