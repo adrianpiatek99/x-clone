@@ -1,5 +1,3 @@
-import type { FC } from 'react';
-
 import type { Meta, StoryFn } from '@storybook/react';
 
 import type { CheckboxProps } from './Checkbox';
@@ -7,9 +5,9 @@ import { Checkbox } from './Checkbox';
 
 const meta = {
   title: 'Components / Atoms / Checkbox',
-  component: Checkbox as unknown as FC,
+  component: Checkbox,
   decorators: [
-    (Story) => <div className='flex w-full max-w-[550px] flex-col gap-3'>{Story()}</div>,
+    (Story) => <div className='flex w-full max-w-[500px] flex-col gap-3'>{Story()}</div>,
   ],
 } satisfies Meta<CheckboxProps>;
 

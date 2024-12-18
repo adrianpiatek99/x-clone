@@ -1,4 +1,3 @@
-import type { FC } from 'react';
 import { useState } from 'react';
 
 import type { Meta, StoryFn } from '@storybook/react';
@@ -8,7 +7,7 @@ import { SearchBar } from './SearchBar';
 
 const meta = {
   title: 'Components / Atoms / SearchBar',
-  component: SearchBar as unknown as FC,
+  component: SearchBar,
   decorators: [(Story) => <div className='flex w-full max-w-[450px]'>{Story()}</div>],
 } satisfies Meta<SearchBarProps>;
 

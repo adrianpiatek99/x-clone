@@ -9,7 +9,7 @@ export type CheckboxProps = Omit<ComponentPropsWithRef<'input'>, 'type' | 'size'
   name: string;
   checked: boolean;
   onChange?: (checked: boolean) => void;
-  label?: string;
+  label: string;
   description?: string;
   disabled?: boolean;
 };
@@ -20,21 +20,21 @@ export const Checkbox = forwardRef(
     ref: ForwardedRef<HTMLInputElement>
   ) => {
     return (
-      <div className='flex w-full flex-col gap-3'>
-        <div className='group flex w-full flex-row items-center'>
+      <div className='flex flex-col gap-3'>
+        <div className='group flex w-full flex-row'>
           {label && (
             <label
               className={twMerge(
-                'cursor-pointer w-full min-w-0 truncate pr-3',
+                'cursor-pointer w-full min-w-0 pr-3',
                 disabled && 'opacity-50 cursor-not-allowed'
               )}
               htmlFor={name}
             >
-              <Typography weight='medium'>{label}</Typography>
+              <Typography>{label}</Typography>
             </label>
           )}
           <input
-            className='size-[20px] shrink-0 cursor-pointer appearance-none rounded border-2 border-text-2 outline-none duration-200 checked:border-primary checked:bg-primary checked:after:absolute checked:after:ml-[4px] checked:after:h-[12px] checked:after:w-[7px] checked:after:rotate-45 checked:after:border-2 checked:after:border-l-0 checked:after:border-t-0 checked:after:border-foreground focus-visible:ring-2 focus-visible:ring-focus disabled:cursor-not-allowed disabled:opacity-50 enabled:group-hover:border-primary enabled:checked:group-hover:border-primary/20 enabled:checked:group-hover:bg-primary/75 enabled:group-active:border-primary/60 enabled:checked:group-active:bg-primary/60'
+            className='size-[20px] shrink-0 cursor-pointer appearance-none rounded border-2 border-text-2 outline-none duration-200 checked:border-primary checked:bg-primary checked:after:absolute checked:after:ml-[4px] checked:after:h-[12px] checked:after:w-[7px] checked:after:rotate-45 checked:after:border-2 checked:after:border-l-0 checked:after:border-t-0 checked:after:border-white focus-visible:ring-2 focus-visible:ring-focus disabled:cursor-not-allowed disabled:opacity-50 enabled:group-hover:border-primary enabled:checked:group-hover:border-primary/20 enabled:checked:group-hover:bg-primary/75 enabled:group-active:border-primary/60 enabled:checked:group-active:bg-primary/60'
             id={name}
             name={name}
             type='checkbox'
@@ -46,7 +46,7 @@ export const Checkbox = forwardRef(
           />
         </div>
         {description && (
-          <Typography size='s' color='secondary' className='break-words'>
+          <Typography size='s' color='secondary'>
             {description}
           </Typography>
         )}

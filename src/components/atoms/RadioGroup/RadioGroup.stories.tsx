@@ -55,6 +55,7 @@ Playground.args = {
   label: 'Label',
   description: 'Description',
   checked: false,
+  disabled: false,
   name: 'radioItem',
 };
 

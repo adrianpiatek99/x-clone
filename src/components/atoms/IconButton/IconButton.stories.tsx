@@ -1,5 +1,3 @@
-import type { FC } from 'react';
-
 import { CloseIcon, EditProfileIcon, HeartIcon, PlayIcon } from '@/icons';
 import type { Meta, StoryFn } from '@storybook/react';
 
@@ -15,7 +13,7 @@ const icons = {
 
 const meta = {
   title: 'Components / Atoms / IconButton',
-  component: IconButton as FC,
+  component: IconButton,
   argTypes: {
     children: {
       options: Object.keys(icons),
