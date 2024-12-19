@@ -73,6 +73,8 @@ export default {
         'input-background': 'var(--input-background)',
         'switch-dot': 'rgba(var(--switch-dot))',
         'switch-background-inactive': 'rgba(var(--switch-background-inactive))',
+        'dropdown-background': 'rgba(var(--dropdown-background))',
+        'dropdown-border': 'rgba(var(--dropdown-border))',
       },
       opacity: {
         '07': '0.07',

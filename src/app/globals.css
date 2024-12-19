@@ -21,6 +21,8 @@
   --skeleton-swipe: rgba(255, 255, 255, 0.15);
   --switch-dot: 239, 243, 244;
   --switch-background-inactive: 113, 118, 123;
+  --dropdown-background: 46, 46, 46;
+  --dropdown-border: 66, 66, 66;
 
   /* Theme */
   --theme-dark-primary: 10, 132, 255;
@@ -77,6 +79,8 @@
   --skeleton-swipe: rgba(0, 0, 0, 0.15);
   --switch-dot: 255, 255, 255;
   --switch-background-inactive: 182, 185, 187;
+  --dropdown-background: 255, 255, 255;
+  --dropdown-border: 200, 200, 200;
 }
 
 .midnightBlue {
@@ -93,6 +97,8 @@
 
   /* Components */
   --input-background: rgba(234, 213, 201, 0.04);
+  --dropdown-background: 21, 31, 46;
+  --dropdown-border: 33, 47, 65;
 }
 
 .tokyoNight {
@@ -112,6 +118,8 @@
   --input-background: rgba(209, 208, 197, 0.04);
   --skeleton: rgba(255, 255, 255, 0.1);
   --skeleton-swipe: rgba(255, 255, 255, 0.2);
+  --dropdown-background: 36, 40, 59;
+  --dropdown-border: 80, 85, 120;
 }
 
 html {
