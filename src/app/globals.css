@@ -3,20 +3,28 @@
 @tailwind utilities;
 
 :root {
+  /* Base Colors */
   --primary: 10, 132, 255;
-
   --black: 0, 0, 0;
   --emerald: 0, 186, 124;
   --pink: 249, 24, 128;
   --error-1: 211, 47, 47;
-  --error-2: 255, 0, 0;
 
-  --button-text: 255, 255, 255;
-
-  --tooltip: rgba(101, 119, 134, 0.9);
-
+  /* State Colors */
+  --tooltip: rgba(101, 119, 134, 1);
   --backdrop: rgba(91, 112, 131, 0.3);
+  --focus: rgb(142, 205, 248);
 
+  /* Components */
+  --button-background-gray: 239, 243, 244;
+  --skeleton: rgba(255, 255, 255, 0.07);
+  --skeleton-swipe: rgba(255, 255, 255, 0.15);
+  --switch-dot: 239, 243, 244;
+  --switch-background-inactive: 113, 118, 123;
+  --dropdown-background: 46, 46, 46;
+  --dropdown-border: 66, 66, 66;
+
+  /* Theme */
   --theme-dark-primary: 10, 132, 255;
   --theme-dark-background: 0, 0, 0;
   --theme-dark-foreground: 28, 28, 30;
@@ -39,36 +47,79 @@
 }
 
 .dark {
+  /* Base Colors */
   --background: var(--theme-dark-background);
   --foreground: var(--theme-dark-foreground);
   --text-1: 255, 255, 255;
   --text-2: var(--theme-dark-text);
   --border-1: 58, 58, 61;
+  --border-2: 110, 110, 115;
+
+  /* State Colors */
+
+  /* Components */
+  --input-background: rgba(255, 255, 255, 0.04);
 }
 
 .light {
+  /* Base Colors */
   --background: var(--theme-light-background);
   --foreground: var(--theme-light-foreground);
   --text-1: 0, 0, 0;
   --text-2: var(--theme-light-text);
   --border-1: 214, 214, 215;
+  --border-2: 134, 134, 139;
+
+  /* State Colors */
+
+  /* Components */
+  --button-background-gray: 160, 160, 170;
+  --input-background: rgba(13, 13, 8, 0.04);
+  --skeleton: rgba(0, 0, 0, 0.07);
+  --skeleton-swipe: rgba(0, 0, 0, 0.15);
+  --switch-dot: 255, 255, 255;
+  --switch-background-inactive: 182, 185, 187;
+  --dropdown-background: 255, 255, 255;
+  --dropdown-border: 200, 200, 200;
 }
 
 .midnightBlue {
+  /* Base Colors */
   --background: var(--theme-midnightBlue-background);
   --foreground: var(--theme-midnightBlue-foreground);
   --text-1: 255, 255, 255;
   --text-2: var(--theme-midnightBlue-text);
   --border-1: 44, 55, 70;
+  --border-2: 80, 90, 120;
+
+  /* State Colors */
+  --focus: rgb(102, 178, 255);
+
+  /* Components */
+  --input-background: rgba(234, 213, 201, 0.04);
+  --dropdown-background: 21, 31, 46;
+  --dropdown-border: 33, 47, 65;
 }
 
 .tokyoNight {
+  /* Base Colors */
   --primary: var(--theme-tokyoNight-primary);
   --background: var(--theme-tokyoNight-background);
   --foreground: var(--theme-tokyoNight-foreground);
   --text-1: 255, 255, 255;
   --text-2: var(--theme-tokyoNight-text);
   --border-1: 51, 55, 79;
+  --border-2: 105, 115, 145;
+
+  /* State Colors */
+  --focus: rgb(235, 177, 189);
+
+  /* Components */
+  --input-background: rgba(209, 208, 197, 0.04);
+  --skeleton: rgba(255, 255, 255, 0.1);
+  --skeleton-swipe: rgba(255, 255, 255, 0.2);
+  --dropdown-background: 36, 40, 59;
+  --dropdown-border: 80, 85, 120;
 }
 
 html {
@@ -88,7 +139,7 @@ button {
 }
 
 input {
-  @apply placeholder:text-text-2 placeholder:font-medium;
+  @apply placeholder:text-text-2;
 }
 
 /* ------------------------------- CUSTOM CLASSES ------------------------------- */
