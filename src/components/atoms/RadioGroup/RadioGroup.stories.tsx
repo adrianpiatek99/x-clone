@@ -1,0 +1,81 @@
+import { useState } from 'react';
+
+import type { Meta, StoryFn } from '@storybook/react';
+
+import { Box } from '../Box';
+import type { RadioProps } from './Radio';
+import { Radio } from './Radio';
+import type { RadioGroupProps } from './RadioGroup';
+import { RadioGroup } from './RadioGroup';
+
+const meta = {
+  title: 'Components / Atoms / RadioGroup',
+  decorators: [(Story) => <Box className='w-full max-w-[500px]'>{Story()}</Box>],
+} satisfies Meta<RadioGroupProps>;
+
+export default meta;
+
+const radioOptions: Omit<RadioProps, 'name'>[] = [
+  {
+    value: 'value1',
+    label: 'Label 1',
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed hendrerit mauris vel aliquam porta.',
+  },
+  {
+    value: 'value2',
+    label: 'Label 2',
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed hendrerit mauris vel aliquam porta.',
+  },
+  {
+    value: 'value3',
+    label: 'Label 3',
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed hendrerit mauris vel aliquam porta.',
+  },
+  {
+    value: 'value4',
+    label: 'Label 4',
+    description:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed hendrerit mauris vel aliquam porta.',
+  },
+];
+
+const Template: StoryFn<RadioProps> = (args) => (
+  <RadioGroup {...args}>
+    <Radio {...args} />
+  </RadioGroup>
+);
+
+export const Playground = Template.bind({});
+
+Playground.args = {
+  label: 'Label',
+  description: 'Description',
+  checked: false,
+  disabled: false,
+  name: 'radioItem',
+};
+
+export const RadioItems = () => {
+  const [value, setValue] = useState(radioOptions[0].value);
+
+  return (
+    <RadioGroup title='Title'>
+      {radioOptions.map((option) => (
+        <Radio
+          key={option.value}
+          {...option}
+          name='radioGroup'
+          checked={value === option.value}
+          onChange={({ target }) => setValue(target.value)}
+        >
+          <div className='flex items-center'>
+            <div className='flex size-[50px] rounded-full bg-text-2' />
+          </div>
+        </Radio>
+      ))}
+    </RadioGroup>
+  );
+};

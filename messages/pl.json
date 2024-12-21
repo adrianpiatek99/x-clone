@@ -8,13 +8,18 @@
   "confirmPassword": "Potwierdź hasło",
   "description": "O mnie",
   "website": "Strona internetowa",
+  "profileImage": "Zdjęcie profilowe",
+  "search": "Szukaj",
 
   "actions": {
     "cancel": "Anuluj",
     "close": "Zamknij",
     "save": "Zapisz",
+    "clear": "Wyczyść",
     "discard": "Odrzuć",
     "remove": "Usuń",
+    "showPassword": "Pokaż hasło",
+    "hidePassword": "Ukryj hasło",
     "next": "Dalej",
     "showMore": "Pokaż więcej",
     "back": "Wróć",
@@ -81,7 +86,6 @@
       "title": "Nie masz jeszcze żadnych wpisów",
       "description": "Twoje wpisy będą widoczne tutaj."
     },
-    "image": "Zdjęcie profilowe",
     "joined": "Dołączył(a)",
     "tabs": {
       "posts": "Wpisy",
