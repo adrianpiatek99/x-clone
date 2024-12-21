@@ -1,5 +1,5 @@
-import type { ComponentPropsWithRef, ForwardedRef } from 'react';
-import React, { forwardRef } from 'react';
+import type { ComponentPropsWithRef, RefCallback } from 'react';
+import React from 'react';
 
 import { Link } from '@/i18n/routing';
 import { twMerge } from 'tailwind-merge';
@@ -16,6 +16,7 @@ export type IconButtonProps = ComponentPropsWithRef<'button'> & {
   href?: string;
   linkClassName?: string;
   isActive?: boolean;
+  ref?: RefCallback<HTMLButtonElement>;
 };
 
 const classes: IconButtonClassesReturn = {
@@ -38,58 +39,52 @@ const classes: IconButtonClassesReturn = {
   },
 };
 
-export const IconButton = forwardRef(
-  (
-    {
-      children,
-      href,
-      title = '',
-      label,
-      size = 'medium',
-      color = 'primary',
-      disableFocus = false,
-      className = '',
-      linkClassName = '',
-      isActive = false,
-      ...props
-    }: IconButtonProps,
-    ref: ForwardedRef<HTMLButtonElement>
-  ) => {
-    const isCustomColor = className.includes('bg-') && className.includes('text-');
-    const tabIndex = disableFocus ? -1 : 0;
-    const tooltipId = title.replaceAll(' ', '-');
+export const IconButton = ({
+  children,
+  href,
+  title = '',
+  label,
+  size = 'medium',
+  color = 'primary',
+  disableFocus = false,
+  className = '',
+  linkClassName = '',
+  isActive = false,
+  ...props
+}: IconButtonProps) => {
+  const isCustomColor = className.includes('bg-') && className.includes('text-');
+  const tabIndex = disableFocus ? -1 : 0;
+  const tooltipId = title.replaceAll(' ', '-');
 
-    const IconButtonElement = () => (
-      <button
-        data-label={label}
-        data-tooltip-id={title ? tooltipId : undefined}
-        className={twMerge(
-          'relative flex w-max shrink-0 items-center justify-center rounded-full p-0 duration-200 focus-visible:ring-2 focus-visible:ring-current disabled:cursor-not-allowed disabled:opacity-50 [&>svg]:shrink-0',
-          label && 'after:content-[attr(data-label)] after:px-3 pl-3',
-          isCustomColor
-            ? 'bg-opacity-0 focus-visible:bg-opacity-10 enabled:hover:bg-opacity-10 enabled:active:bg-opacity-20'
-            : classes.color[color],
-          classes.size[size],
-          isActive && 'opacity-50',
-          className
-        )}
-        aria-label={title}
-        type='button'
-        tabIndex={tabIndex}
-        {...props}
-        ref={ref}
-      >
-        {children}
-        {title && <Tooltip tooltipId={tooltipId} content={title} />}
-      </button>
-    );
+  const IconButtonElement = () => (
+    <button
+      data-label={label}
+      data-tooltip-id={title ? tooltipId : undefined}
+      className={twMerge(
+        'relative flex w-max shrink-0 items-center justify-center rounded-full p-0 duration-200 focus-visible:ring-2 focus-visible:ring-current disabled:cursor-not-allowed disabled:opacity-50 [&>svg]:shrink-0',
+        label && 'after:content-[attr(data-label)] after:px-3 pl-3',
+        isCustomColor
+          ? 'bg-opacity-0 focus-visible:bg-opacity-10 enabled:hover:bg-opacity-10 enabled:active:bg-opacity-20'
+          : classes.color[color],
+        classes.size[size],
+        isActive && 'opacity-50',
+        className
+      )}
+      aria-label={title}
+      type='button'
+      tabIndex={tabIndex}
+      {...props}
+    >
+      {children}
+      {title && <Tooltip tooltipId={tooltipId} content={title} />}
+    </button>
+  );
 
-    return href ? (
-      <Link href={href} tabIndex={-1} className={twMerge('rounded-full', linkClassName)}>
-        <IconButtonElement />
-      </Link>
-    ) : (
+  return href ? (
+    <Link href={href} tabIndex={-1} className={twMerge('rounded-full', linkClassName)}>
       <IconButtonElement />
-    );
-  }
-);
+    </Link>
+  ) : (
+    <IconButtonElement />
+  );
+};

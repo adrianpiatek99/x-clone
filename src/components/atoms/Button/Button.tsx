@@ -1,5 +1,5 @@
-import type { ComponentPropsWithRef, FC, ForwardedRef, HTMLProps, ReactElement } from 'react';
-import React, { cloneElement, forwardRef } from 'react';
+import type { ComponentPropsWithRef, FC, HTMLProps, ReactElement, RefCallback } from 'react';
+import React, { cloneElement } from 'react';
 
 import { Link } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
@@ -27,6 +27,7 @@ export type ButtonProps = ComponentPropsWithRef<'button'> & {
   align?: ButtonAlign;
   linkClassName?: string;
   rounded?: ButtonRounded;
+  ref?: RefCallback<HTMLButtonElement>;
 };
 
 const classes: ButtonClassesReturn = {
@@ -81,61 +82,55 @@ const classes: ButtonClassesReturn = {
   },
 };
 
-export const Button: FC<ButtonProps> = forwardRef(
-  (
-    {
-      children,
-      href,
-      type = 'button',
-      variant = 'filled',
-      size = 'medium',
-      color = 'primary',
-      align = 'center',
-      rounded = 'full',
-      fullWidth = false,
-      isLoading = false,
-      disabled = false,
-      startIcon,
-      className = '',
-      linkClassName = '',
-      ...props
-    },
-    ref: ForwardedRef<HTMLButtonElement>
-  ) => {
-    const t = useTranslations();
-    const loaderColor = (
-      variant === 'filled' ? 'white' : color === 'danger' ? 'danger' : 'primary'
-    ) satisfies LoaderColor;
+export const Button: FC<ButtonProps> = ({
+  children,
+  href,
+  type = 'button',
+  variant = 'filled',
+  size = 'medium',
+  color = 'primary',
+  align = 'center',
+  rounded = 'full',
+  fullWidth = false,
+  isLoading = false,
+  disabled = false,
+  startIcon,
+  className = '',
+  linkClassName = '',
+  ...props
+}) => {
+  const t = useTranslations();
+  const loaderColor = (
+    variant === 'filled' ? 'white' : color === 'danger' ? 'danger' : 'primary'
+  ) satisfies LoaderColor;
 
-    const ButtonElement = () => (
-      <button
-        className={twMerge(
-          'relative flex w-auto min-w-[36px] items-center gap-[5px] break-words px-4 font-medium normal-case duration-200 disabled:cursor-not-allowed disabled:opacity-50',
-          classes.variant[variant][color],
-          classes.rounded[rounded],
-          classes.size[size],
-          classes.align[align],
-          fullWidth && 'w-full',
-          className
-        )}
-        type={type}
-        aria-label={isLoading ? t('loading') : undefined}
-        disabled={isLoading || disabled}
-        {...props}
-        ref={ref}
-      >
-        {!isLoading && startIcon && cloneElement(startIcon, { className: classes.iconSize[size] })}
-        {isLoading && <Loader className={classes.loaderSize[size]} color={loaderColor} />}
-        <span>{children}</span>
-      </button>
-    );
+  const ButtonElement = () => (
+    <button
+      className={twMerge(
+        'relative flex w-auto min-w-[36px] items-center gap-[5px] break-words px-4 font-medium normal-case duration-200 disabled:cursor-not-allowed disabled:opacity-50',
+        classes.variant[variant][color],
+        classes.rounded[rounded],
+        classes.size[size],
+        classes.align[align],
+        fullWidth && 'w-full',
+        className
+      )}
+      type={type}
+      aria-label={isLoading ? t('loading') : undefined}
+      disabled={isLoading || disabled}
+      {...props}
+    >
+      {!isLoading && startIcon && cloneElement(startIcon, { className: classes.iconSize[size] })}
+      {isLoading && <Loader className={classes.loaderSize[size]} color={loaderColor} />}
+      <span>{children}</span>
+    </button>
+  );
 
-    return href ? (
-      <Link href={href} tabIndex={-1} className={twMerge('rounded-full', linkClassName)}>
-        <ButtonElement />
-      </Link>
-    ) : (
+  return href ? (
+    <Link href={href} tabIndex={-1} className={twMerge('rounded-full', linkClassName)}>
       <ButtonElement />
-    );
-  }
-);
+    </Link>
+  ) : (
+    <ButtonElement />
+  );
+};
