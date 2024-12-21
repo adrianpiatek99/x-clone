@@ -1,2 +1,3 @@
 export * from './SwitchGroup';
-export * from './SwitchGroupItem';
+export * from './ControlledSwitch';
+export * from './Switch';

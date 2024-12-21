@@ -4,10 +4,10 @@ import { useState } from 'react';
 import { NotificationIcon, SettingsIcon, VerifiedIcon } from '@/icons';
 import type { Meta, StoryFn } from '@storybook/react';
 
+import type { SwitchProps } from './Switch';
+import { Switch } from './Switch';
 import type { SwitchGroupProps } from './SwitchGroup';
 import { SwitchGroup } from './SwitchGroup';
-import type { SwitchGroupItemProps } from './SwitchGroupItem';
-import { SwitchGroupItem } from './SwitchGroupItem';
 
 const meta: Meta<SwitchGroupProps> = {
   title: 'Components / Atoms / SwitchGroup',
@@ -18,12 +18,12 @@ const meta: Meta<SwitchGroupProps> = {
 
 export default meta;
 
-const Template: StoryFn<SwitchGroupItemProps> = (args) => {
+const Template: StoryFn<SwitchProps> = (args) => {
   const [checked, setChecked] = useState(true);
 
   return (
     <SwitchGroup>
-      <SwitchGroupItem {...args} checked={checked} onChange={(value) => setChecked(value)} />
+      <Switch {...args} checked={checked} onChange={(value) => setChecked(value)} />
     </SwitchGroup>
   );
 };
@@ -47,7 +47,7 @@ export const SwitchItems = () => {
   return (
     <>
       <SwitchGroup title='Title 1'>
-        <SwitchGroupItem
+        <Switch
           label='Label 1'
           name='name1'
           checked={isCheckedOne}
@@ -55,8 +55,8 @@ export const SwitchItems = () => {
           description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed hendrerit mauris vel aliquam porta.'
         >
           <NotificationIcon className='size-[24px] fill-primary' />
-        </SwitchGroupItem>
-        <SwitchGroupItem
+        </Switch>
+        <Switch
           label='Label 2'
           name='name2'
           checked={isCheckedTwo}
@@ -64,8 +64,8 @@ export const SwitchItems = () => {
           description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed hendrerit mauris vel aliquam porta.'
         >
           <VerifiedIcon className='size-[24px] fill-primary text-primary' />
-        </SwitchGroupItem>
-        <SwitchGroupItem
+        </Switch>
+        <Switch
           label='Label 3'
           name='name3'
           checked={isCheckedThree}
@@ -73,22 +73,22 @@ export const SwitchItems = () => {
           description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed hendrerit mauris vel aliquam porta.'
         >
           <SettingsIcon className='size-[24px] fill-primary text-primary' />
-        </SwitchGroupItem>
+        </Switch>
       </SwitchGroup>
       <SwitchGroup title='Title 2'>
-        <SwitchGroupItem
+        <Switch
           label='Label 1'
           name='name1'
           checked={isCheckedOne}
           onChange={(checked) => setIsCheckedOne(checked)}
         />
-        <SwitchGroupItem
+        <Switch
           label='Label 2'
           name='name2'
           checked={isCheckedTwo}
           onChange={(checked) => setIsCheckedTwo(checked)}
         />
-        <SwitchGroupItem
+        <Switch
           label='Label 3'
           name='name3'
           checked={isCheckedThree}

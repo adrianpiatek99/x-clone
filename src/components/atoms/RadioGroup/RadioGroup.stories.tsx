@@ -2,10 +2,10 @@ import { useState } from 'react';
 
 import type { Meta, StoryFn } from '@storybook/react';
 
+import type { RadioProps } from './Radio';
+import { Radio } from './Radio';
 import type { RadioGroupProps } from './RadioGroup';
 import { RadioGroup } from './RadioGroup';
-import type { RadioGroupItemProps } from './RadioGroupItem';
-import { RadioGroupItem } from './RadioGroupItem';
 
 const meta = {
   title: 'Components / Atoms / RadioGroup',
@@ -16,7 +16,7 @@ const meta = {
 
 export default meta;
 
-const radioOptions: Omit<RadioGroupItemProps, 'name'>[] = [
+const radioOptions: Omit<RadioProps, 'name'>[] = [
   {
     value: 'value1',
     label: 'Label 1',
@@ -43,9 +43,9 @@ const radioOptions: Omit<RadioGroupItemProps, 'name'>[] = [
   },
 ];
 
-const Template: StoryFn<RadioGroupItemProps> = (args) => (
+const Template: StoryFn<RadioProps> = (args) => (
   <RadioGroup {...args}>
-    <RadioGroupItem {...args} />
+    <Radio {...args} />
   </RadioGroup>
 );
 
@@ -65,7 +65,7 @@ export const RadioItems = () => {
   return (
     <RadioGroup title='Title'>
       {radioOptions.map((option) => (
-        <RadioGroupItem
+        <Radio
           key={option.value}
           {...option}
           name='radioGroup'
@@ -75,7 +75,7 @@ export const RadioItems = () => {
           <div className='flex items-center'>
             <div className='flex size-[50px] rounded-full bg-text-2' />
           </div>
-        </RadioGroupItem>
+        </Radio>
       ))}
     </RadioGroup>
   );

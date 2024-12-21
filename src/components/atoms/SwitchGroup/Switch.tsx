@@ -1,12 +1,12 @@
 import type { ComponentPropsWithRef, ForwardedRef, ReactElement } from 'react';
 import React, { forwardRef } from 'react';
 
-import { Switch } from '@headlessui/react';
+import { Switch as UiSwitch } from '@headlessui/react';
 import { twMerge } from 'tailwind-merge';
 
 import { Typography } from '../Typography';
 
-export type SwitchGroupItemProps = ComponentPropsWithRef<typeof Switch> & {
+export type SwitchProps = ComponentPropsWithRef<typeof UiSwitch> & {
   children?: ReactElement;
   name: string;
   checked: boolean;
@@ -16,9 +16,9 @@ export type SwitchGroupItemProps = ComponentPropsWithRef<typeof Switch> & {
   description?: string;
 };
 
-export const SwitchGroupItem = forwardRef(
+export const Switch = forwardRef(
   (
-    { children, checked, label, name, disabled, description, ...props }: SwitchGroupItemProps,
+    { children, checked, label, name, disabled, description, ...props }: SwitchProps,
     ref: ForwardedRef<HTMLButtonElement>
   ) => {
     return (
@@ -38,7 +38,7 @@ export const SwitchGroupItem = forwardRef(
               </Typography>
             )}
           </div>
-          <Switch
+          <UiSwitch
             className='group relative flex h-[26px] w-[44px] shrink-0 rounded-full bg-switch-background-inactive transition-colors duration-200 ease-in-out focus-visible:ring-2 focus-visible:ring-focus enabled:hover:bg-switch-background-inactive/90 disabled:cursor-not-allowed disabled:opacity-50 data-[checked]:border-primary data-[checked]:bg-primary data-[checked]:enabled:hover:bg-primary/90'
             name={name}
             checked={checked}
@@ -52,7 +52,7 @@ export const SwitchGroupItem = forwardRef(
                 checked ? 'translate-x-[calc(100%-4px)] origin-right' : 'origin-left'
               )}
             />
-          </Switch>
+          </UiSwitch>
         </div>
       </div>
     );
