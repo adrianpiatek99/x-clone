@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import type { Meta, StoryFn } from '@storybook/react';
 
+import { Box } from '../Box';
 import type { RadioProps } from './Radio';
 import { Radio } from './Radio';
 import type { RadioGroupProps } from './RadioGroup';
@@ -9,9 +10,7 @@ import { RadioGroup } from './RadioGroup';
 
 const meta = {
   title: 'Components / Atoms / RadioGroup',
-  decorators: [
-    (Story) => <div className='flex w-full max-w-[500px] flex-col gap-3'>{Story()}</div>,
-  ],
+  decorators: [(Story) => <Box className='w-full max-w-[500px]'>{Story()}</Box>],
 } satisfies Meta<RadioGroupProps>;
 
 export default meta;

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { NotificationIcon, SettingsIcon, VerifiedIcon } from '@/icons';
 import type { Meta, StoryFn } from '@storybook/react';
 
+import { Box } from '../Box';
 import type { SwitchProps } from './Switch';
 import { Switch } from './Switch';
 import type { SwitchGroupProps } from './SwitchGroup';
@@ -11,9 +12,7 @@ import { SwitchGroup } from './SwitchGroup';
 
 const meta: Meta<SwitchGroupProps> = {
   title: 'Components / Atoms / SwitchGroup',
-  decorators: [
-    (Story) => <div className='flex w-full max-w-[500px] flex-col gap-6'>{Story()}</div>,
-  ],
+  decorators: [(Story) => <Box className='w-full max-w-[500px] gap-6'>{Story()}</Box>],
 };
 
 export default meta;

@@ -9,6 +9,7 @@ import {
 } from '@/icons';
 import type { Meta, StoryFn } from '@storybook/react';
 
+import { Box } from '../Box';
 import { Button } from '../Button';
 import type { DropdownProps } from './Dropdown';
 import { Dropdown } from './Dropdown';
@@ -17,13 +18,12 @@ import { DropdownItem } from './DropdownItem';
 const meta = {
   title: 'Components / Atoms / Dropdown',
   component: Dropdown,
-  decorators: [(Story) => <div className='flex items-center gap-3'>{Story()}</div>],
 } satisfies Meta<DropdownProps>;
 
 export default meta;
 
 const Template: StoryFn<DropdownProps> = (args) => (
-  <div className='ml-[20%] flex flex-col gap-6'>
+  <Box className='ml-[25%]'>
     <Dropdown {...args}>
       <Button>Open</Button>
       <DropdownItem onClick={() => null} icon={<EditProfileIcon />}>
@@ -48,7 +48,7 @@ const Template: StoryFn<DropdownProps> = (args) => (
         Delete
       </DropdownItem>
     </Dropdown>
-  </div>
+  </Box>
 );
 
 export const Playground = Template.bind({});

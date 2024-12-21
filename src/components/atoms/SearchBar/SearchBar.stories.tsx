@@ -2,13 +2,14 @@ import { useState } from 'react';
 
 import type { Meta, StoryFn } from '@storybook/react';
 
+import { Box } from '../Box';
 import type { SearchBarProps } from './SearchBar';
 import { SearchBar } from './SearchBar';
 
 const meta = {
   title: 'Components / Atoms / SearchBar',
   component: SearchBar,
-  decorators: [(Story) => <div className='flex w-full max-w-[450px]'>{Story()}</div>],
+  decorators: [(Story) => <Box className='w-full max-w-[450px]'>{Story()}</Box>],
 } satisfies Meta<SearchBarProps>;
 
 export default meta;

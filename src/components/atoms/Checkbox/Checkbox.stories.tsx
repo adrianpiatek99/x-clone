@@ -1,14 +1,13 @@
 import type { Meta, StoryFn } from '@storybook/react';
 
+import { Box } from '../Box';
 import type { CheckboxProps } from './Checkbox';
 import { Checkbox } from './Checkbox';
 
 const meta = {
   title: 'Components / Atoms / Checkbox',
   component: Checkbox,
-  decorators: [
-    (Story) => <div className='flex w-full max-w-[500px] flex-col gap-3'>{Story()}</div>,
-  ],
+  decorators: [(Story) => <Box className='w-full max-w-[500px]'>{Story()}</Box>],
 } satisfies Meta<CheckboxProps>;
 
 export default meta;

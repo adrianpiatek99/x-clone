@@ -2,15 +2,14 @@ import React from 'react';
 
 import type { Meta, StoryFn } from '@storybook/react';
 
+import { Box } from '../Box';
 import type { TypographyProps } from '.';
 import { Typography } from '.';
 
 const meta = {
   title: 'Components / Atoms / Typography',
   component: Typography,
-  decorators: [
-    (Story) => <div className='flex w-full max-w-[400px] flex-col gap-3'>{Story()}</div>,
-  ],
+  decorators: [(Story) => <Box className='w-full max-w-[400px]'>{Story()}</Box>],
   argTypes: {
     truncate: {
       control: 'select',

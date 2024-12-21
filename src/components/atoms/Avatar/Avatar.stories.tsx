@@ -1,13 +1,14 @@
 import { DEFAULT_AVATAR_URL } from '@/constants/urls';
 import type { Meta, StoryFn } from '@storybook/react';
 
+import { Box } from '../Box';
 import type { AvatarProps } from '.';
 import { Avatar } from '.';
 
 const meta = {
   title: 'Components / Atoms / Avatar',
   component: Avatar,
-  decorators: [(Story) => <div className='flex items-center gap-3'>{Story()}</div>],
+  decorators: [(Story) => <Box className='flex-row items-center'>{Story()}</Box>],
 } satisfies Meta<AvatarProps>;
 
 export default meta;
