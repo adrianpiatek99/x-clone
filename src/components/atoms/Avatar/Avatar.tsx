@@ -8,7 +8,7 @@ import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
 import { Skeleton } from '../Skeleton';
-import type { AvatarClasses, AvatarSize } from './Avatar.types';
+import type { AvatarClasses, AvatarSize } from './types';
 
 export type AvatarProps = {
   src: string;

@@ -5,7 +5,7 @@ import { Link } from '@/i18n/routing';
 import { twMerge } from 'tailwind-merge';
 
 import { Tooltip } from '../Tooltip';
-import type { IconButtonClassesReturn, IconButtonColor, IconButtonSize } from './IconButton.types';
+import type { IconButtonClassesReturn, IconButtonColor, IconButtonSize } from './types';
 
 export type IconButtonProps = ComponentPropsWithRef<'button'> & {
   title?: string;

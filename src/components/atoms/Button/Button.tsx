@@ -14,7 +14,7 @@ import type {
   ButtonRounded,
   ButtonSize,
   ButtonVariant,
-} from './Button.types';
+} from './types';
 
 export type ButtonProps = ComponentPropsWithRef<'button'> & {
   href?: string;

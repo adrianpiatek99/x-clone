@@ -2,7 +2,7 @@ import type { FC } from 'react';
 
 import { twMerge } from 'tailwind-merge';
 
-import type { LoaderClassesReturn, LoaderColor } from './Loader.types';
+import type { LoaderClassesReturn, LoaderColor } from './types';
 
 export type LoaderProps = {
   center?: boolean;

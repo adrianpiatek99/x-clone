@@ -3,7 +3,7 @@ import React from 'react';
 
 import { twMerge } from 'tailwind-merge';
 
-import type { SkeletonClasses, SkeletonVariant } from './Skeleton.types';
+import type { SkeletonClasses, SkeletonVariant } from './types';
 
 export type SkeletonProps = {
   height?: number;

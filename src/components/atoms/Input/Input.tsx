@@ -5,8 +5,8 @@ import { InfoOutlinedIcon } from '@/icons';
 import { twMerge } from 'tailwind-merge';
 
 import { Typography } from '../Typography';
-import type { InputType } from './Input.types';
 import { InputIcons } from './InputIcons';
+import type { InputType } from './types';
 
 const DEFAULT_MAX_LENGTH = 255;
 

@@ -10,7 +10,7 @@ import type {
   TypographyColor,
   TypographySize,
   TypographyWeight,
-} from './Typography.types';
+} from './types';
 import { TypographyText } from './TypographyText';
 
 export type TypographyProps = ComponentPropsWithoutRef<'span'> & {

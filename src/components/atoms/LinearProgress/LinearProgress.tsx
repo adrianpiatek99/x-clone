@@ -5,7 +5,7 @@ import React from 'react';
 
 import { twMerge } from 'tailwind-merge';
 
-import type { LinearProgressPosition } from './LinearProgress.types';
+import type { LinearProgressPosition } from './types';
 
 export type LinearProgressProps = {
   position?: LinearProgressPosition;
