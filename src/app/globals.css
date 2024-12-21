@@ -144,10 +144,6 @@ input {
 
 /* ------------------------------- CUSTOM CLASSES ------------------------------- */
 
-.scrollbar-tract-margins::-webkit-scrollbar-track {
-  @apply my-2.5;
-}
-
 .hide-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;

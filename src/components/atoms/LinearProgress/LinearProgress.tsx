@@ -15,7 +15,7 @@ export const LinearProgress: FC<LinearProgressProps> = ({ position = 'top' }) =>
   return (
     <progress
       className={twMerge(
-        'progress absolute inset-x-[0.5px] top-0 h-[3px] w-full appearance-none border-0 bg-primary/40 text-primary',
+        'animate-appear progress absolute inset-x-[0.5px] top-0 h-[3px] w-full appearance-none border-0 bg-primary/40 text-primary',
         position === 'bottom' && 'top-auto bottom-0'
       )}
     />

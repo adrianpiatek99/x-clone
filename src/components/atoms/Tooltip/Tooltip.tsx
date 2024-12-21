@@ -25,7 +25,7 @@ export const Tooltip = ({ tooltipId, ...props }: Props) => {
       }}
       place='bottom'
       noArrow
-      offset={3}
+      offset={4}
       delayShow={200}
       {...props}
     />
