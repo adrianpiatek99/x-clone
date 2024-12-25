@@ -8,7 +8,7 @@ import type { TabsProps } from './Tabs';
 import Tabs from './Tabs';
 
 const meta = {
-  title: 'Components / Atoms / Tabs',
+  title: 'Components / Molecules / Tabs',
   component: Tabs,
   decorators: [(Story) => <Box className='w-fit'>{Story()}</Box>],
 } satisfies Meta<TabsProps>;
