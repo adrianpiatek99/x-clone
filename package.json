@@ -22,9 +22,13 @@
     "react-animate-height": "^3.2.3",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.1",
+    "react-hot-toast": "^2.4.1",
     "react-tooltip": "^5.28.0",
     "storybook": "^8.4.7",
-    "tailwind-merge": "^2.5.5"
+    "tailwind-merge": "^2.5.5",
+    "use-sync-external-store": "^1.4.0",
+    "uuid": "^11.0.3",
+    "zustand": "^5.0.2"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^8.4.7",

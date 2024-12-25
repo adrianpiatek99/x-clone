@@ -57,6 +57,8 @@ export default {
         black: 'rgba(var(--black))',
         emerald: 'rgba(var(--emerald))',
         pink: 'rgba(var(--pink))',
+        info: 'rgba(var(--info))',
+        warning: 'rgba(var(--warning))',
         'error-1': 'rgba(var(--error-1))',
         tooltip: 'var(--tooltip)',
         backdrop: 'var(--backdrop)',
@@ -73,8 +75,8 @@ export default {
         'input-background': 'var(--input-background)',
         'switch-dot': 'rgba(var(--switch-dot))',
         'switch-background-inactive': 'rgba(var(--switch-background-inactive))',
-        'dropdown-background': 'rgba(var(--dropdown-background))',
-        'dropdown-border': 'rgba(var(--dropdown-border))',
+        'accent-1': 'rgba(var(--accent-1))',
+        'border-3': 'rgba(var(--border-3))',
       },
       opacity: {
         '07': '0.07',
@@ -139,9 +141,31 @@ export default {
             scale: '1',
           },
         },
+        enter: {
+          '0%': {
+            opacity: '0',
+            scale: '0.90',
+          },
+          '100%': {
+            opacity: '1',
+            scale: '1',
+          },
+        },
+        leave: {
+          '0%': {
+            opacity: '1',
+            scale: '1',
+          },
+          '100%': {
+            opacity: '0',
+            scale: '0.90',
+          },
+        },
       },
       animation: {
         appear: 'appear .3s ease-out',
+        enter: 'enter .2s ease',
+        leave: 'leave .2s both ease',
         spin: 'appear .3s ease-out, spin .7s linear infinite',
         swipe: 'swipe 1.1s cubic-bezier(0.4, 0, 0.2, 1) infinite',
         logoAppear: 'logoAppear .4s',
