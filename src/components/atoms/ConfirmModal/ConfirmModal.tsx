@@ -48,7 +48,7 @@ export const ConfirmModal: FC<ConfirmModalProps> = ({
       <div className='fixed inset-0 z-10 w-screen'>
         <div className='flex min-h-full items-center justify-center p-4'>
           <DialogPanel
-            className='flex w-[90%] max-w-[320px] flex-col rounded-2xl bg-dropdown-background text-center outline-none duration-200 data-[closed]:scale-90 data-[closed]:opacity-0'
+            className='flex w-[90%] max-w-[320px] flex-col rounded-2xl bg-accent-1/80 text-center outline-none backdrop-blur-md duration-200 data-[closed]:scale-90 data-[closed]:opacity-0'
             transition
           >
             <Box className='items-center gap-2 p-6'>
