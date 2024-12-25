@@ -1,5 +1,8 @@
+'use client';
+
 import type { FC, ReactNode } from 'react';
 import React from 'react';
+import { Toaster } from 'react-hot-toast';
 
 import type { Locale } from '@/constants/locales';
 import { themes } from '@/constants/themes';
@@ -18,6 +21,7 @@ const Providers: FC<Props> = ({ children, locale, messages }) => {
     <ThemeProvider attribute='class' defaultTheme='system' enableSystem themes={themes}>
       <NextIntlClientProvider locale={locale} messages={messages}>
         {children}
+        <Toaster position='bottom-center' />
       </NextIntlClientProvider>
     </ThemeProvider>
   );
