@@ -6,9 +6,12 @@ import { Toaster } from 'react-hot-toast';
 
 import type { Locale } from '@/constants/locales';
 import { themes } from '@/constants/themes';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { AbstractIntlMessages } from 'next-intl';
 import { NextIntlClientProvider } from 'next-intl';
 import { ThemeProvider } from 'next-themes';
+
+const queryClient = new QueryClient();
 
 type Props = {
   children: ReactNode;
@@ -20,7 +23,7 @@ const Providers: FC<Props> = ({ children, locale, messages }) => {
   return (
     <ThemeProvider attribute='class' defaultTheme='system' enableSystem themes={themes}>
       <NextIntlClientProvider locale={locale} messages={messages}>
-        {children}
+        <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
         <Toaster position='bottom-center' />
       </NextIntlClientProvider>
     </ThemeProvider>
