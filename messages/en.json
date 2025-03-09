@@ -148,23 +148,31 @@
 
   "errors": {
     "validation": {
+      "emailOrScreenName": {
+        "required": "Email or username is required."
+      },
       "email": {
-        "incorrect": "Must be a valid email"
+        "incorrect": "Must be a valid email",
+        "required": "E-mail is required."
       },
       "password": {
         "incorrect": "Must be a valid password",
         "min": "Password must be at least {min} characters.",
         "max": "Password can't have more than {max} characters.",
-        "notMatch": "Password does not match."
+        "notMatch": "Password does not match.",
+        "required": "Password is required."
       },
-      "username": {
-        "incorrect": "Invalid characters or too many blank spaces.",
+      "screenName": {
         "min": "Your username cannot be shorter than {min} characters.",
-        "max": "Your username cannot be longer than {max} characters."
+        "max": "Your username cannot be longer than {max} characters.",
+        "required": "Username is required.",
+        "invalid": "Invalid characters or too many blank spaces."
       },
       "name": {
         "min": "Your name cannot be shorter than {min} characters.",
-        "max": "Your name cannot be longer than {max} characters."
+        "max": "Your name cannot be longer than {max} characters.",
+        "required": "Name is required.",
+        "invalid": "Invalid characters or too many blank spaces."
       }
     },
     "file": {
@@ -174,6 +182,9 @@
         "sizeLimit": "Maximum image size exceeded. Please choose an image under {sizeLimit} MB."
       },
       "invalidType": "Invalid file type."
+    },
+    "auth": {
+      "signIn": "Sign-in failed. Please check your credentials and try again."
     }
   }
 }

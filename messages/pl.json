@@ -148,23 +148,31 @@
 
   "errors": {
     "validation": {
+      "emailOrScreenName": {
+        "required": "Pola e-mail lub nazwa użytkownika jest wymagane."
+      },
       "email": {
-        "incorrect": "Wpisz poprawny adres e-mail."
+        "incorrect": "Wpisz poprawny adres e-mail.",
+        "required": "E-mail jest wymagany."
       },
       "password": {
         "incorrect": "Wpisz poprawne hasło.",
         "min": "Hasło musi zawierać co najmniej {min} znaków.",
         "max": "Hasło nie może mieć więcej niż {max} znaków.",
-        "notMatch": "Hasła się nie zgadzają."
+        "notMatch": "Hasła się nie zgadzają.",
+        "required": "Hasło jest wymagane."
       },
-      "username": {
-        "incorrect": "Nieprawidłowe znaki lub za dużo spacji.",
+      "screenName": {
         "min": "Nazwa użytkownika musi mieć co najmniej {min} znaków.",
-        "max": "Nazwa użytkownika nie może mieć więcej niż {max} znaków."
+        "max": "Nazwa użytkownika nie może mieć więcej niż {max} znaków.",
+        "required": "Nazwa użytkownika jest wymagana.",
+        "invalid": "Nieprawidłowe znaki lub za dużo spacji."
       },
       "name": {
         "min": "Imię musi mieć co najmniej {min} znaków.",
-        "max": "Imię nie może mieć więcej niż {max} znaków."
+        "max": "Imię nie może mieć więcej niż {max} znaków.",
+        "required": "Imię jest wymagane.",
+        "invalid": "Nieprawidłowe znaki lub zbyt wiele spacji."
       }
     },
     "file": {
@@ -174,6 +182,9 @@
         "sizeLimit": "Przekroczono maksymalny rozmiar obrazu. Wybierz obraz mniejszy niż {sizeLimit} MB."
       },
       "invalidType": "Nieprawidłowy typ pliku."
+    },
+    "auth": {
+      "signIn": "Nie udało się zalogować. Sprawdź swoje dane i spróbuj ponownie."
     }
   }
 }
