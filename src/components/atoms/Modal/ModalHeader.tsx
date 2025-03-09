@@ -44,7 +44,7 @@ export const ModalHeader: FC<ModalHeaderProps> = ({
       <div className='flex flex-1 grow justify-end'>
         {!!onAccept && (
           <Button variant='plain' onClick={onAccept} isLoading={isLoading} {...acceptButtonProps}>
-            {acceptButtonText ?? t('save')}
+            {acceptButtonText ?? t('actions.save')}
           </Button>
         )}
       </div>
