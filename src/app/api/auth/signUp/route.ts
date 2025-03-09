@@ -13,9 +13,7 @@ export const POST = async (request: NextRequest): Promise<NextResponse<object>> 
   try {
     const body: SignUpRequest = await request.json();
 
-    signUpSchema().parse(body);
-
-    const { screenName, email, name, password } = body;
+    const { screenName, name, email, password } = signUpSchema().parse(body);
 
     const emailWithLowerCase = email.toLowerCase();
 
