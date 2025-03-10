@@ -1,4 +1,4 @@
-import type { ComponentPropsWithRef, RefCallback } from 'react';
+import type { ComponentPropsWithRef, FC, RefCallback } from 'react';
 import React from 'react';
 
 import { Link } from '@/i18n/routing';
@@ -39,24 +39,22 @@ const classes: IconButtonClassesReturn = {
   },
 };
 
-export const IconButton = ({
+const IconButtonElement: FC<IconButtonProps> = ({
   children,
-  href,
   title = '',
-  label,
   size = 'medium',
   color = 'primary',
   disableFocus = false,
-  className = '',
-  linkClassName = '',
+  label,
   isActive = false,
+  className = '',
   ...props
-}: IconButtonProps) => {
+}) => {
   const isCustomColor = className.includes('bg-') && className.includes('text-');
-  const tabIndex = disableFocus ? -1 : 0;
   const tooltipId = title.replaceAll(' ', '-');
+  const tabIndex = disableFocus ? -1 : 0;
 
-  const IconButtonElement = () => (
+  return (
     <button
       data-label={label}
       data-tooltip-id={title ? tooltipId : undefined}
@@ -79,12 +77,14 @@ export const IconButton = ({
       {title && <Tooltip tooltipId={tooltipId} content={title} />}
     </button>
   );
+};
 
+export const IconButton: FC<IconButtonProps> = ({ href, linkClassName = '', ...props }) => {
   return href ? (
     <Link href={href} tabIndex={-1} className={twMerge('rounded-full', linkClassName)}>
-      <IconButtonElement />
+      <IconButtonElement {...props} />
     </Link>
   ) : (
-    <IconButtonElement />
+    <IconButtonElement {...props} />
   );
 };
