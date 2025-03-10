@@ -82,9 +82,8 @@ const classes: ButtonClassesReturn = {
   },
 };
 
-export const Button: FC<ButtonProps> = ({
+const ButtonElement: FC<Omit<ButtonProps, 'href' | 'linkClassName'>> = ({
   children,
-  href,
   type = 'button',
   variant = 'filled',
   size = 'medium',
@@ -96,7 +95,6 @@ export const Button: FC<ButtonProps> = ({
   disabled = false,
   startIcon,
   className = '',
-  linkClassName = '',
   ...props
 }) => {
   const t = useTranslations();
@@ -104,7 +102,7 @@ export const Button: FC<ButtonProps> = ({
     variant === 'filled' ? 'white' : color === 'danger' ? 'danger' : 'primary'
   ) satisfies LoaderColor;
 
-  const ButtonElement = () => (
+  return (
     <button
       className={twMerge(
         'relative flex w-auto min-w-[36px] items-center gap-[5px] break-words px-4 font-medium normal-case duration-200 disabled:cursor-not-allowed disabled:opacity-50',
@@ -120,17 +118,22 @@ export const Button: FC<ButtonProps> = ({
       disabled={isLoading || disabled}
       {...props}
     >
-      {!isLoading && startIcon && cloneElement(startIcon, { className: classes.iconSize[size] })}
-      {isLoading && <Loader className={classes.loaderSize[size]} color={loaderColor} />}
+      {isLoading ? (
+        <Loader className={classes.loaderSize[size]} color={loaderColor} />
+      ) : (
+        startIcon && cloneElement(startIcon, { className: classes.iconSize[size] })
+      )}
       <span>{children}</span>
     </button>
   );
+};
 
+export const Button: FC<ButtonProps> = ({ href, linkClassName = '', ...props }) => {
   return href ? (
     <Link href={href} tabIndex={-1} className={twMerge('rounded-full', linkClassName)}>
-      <ButtonElement />
+      <ButtonElement {...props} />
     </Link>
   ) : (
-    <ButtonElement />
+    <ButtonElement {...props} />
   );
 };

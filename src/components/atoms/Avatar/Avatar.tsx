@@ -30,48 +30,41 @@ const classes: AvatarClasses = {
   },
 };
 
-export const Avatar: FC<AvatarProps> = memo(
-  ({ src, size = 'medium', screenName, href, onClick, isLoading = false, className = '' }) => {
-    const t = useTranslations();
-    const alt = screenName || t('profileImage');
+const AvatarElement: FC<
+  Pick<AvatarProps, 'size' | 'className' | 'src' | 'isLoading'> & { alt: string }
+> = ({ src = DEFAULT_AVATAR_URL, alt, size = 'medium', isLoading = false, className = '' }) => (
+  <div
+    className={twMerge(
+      "relative flex shrink-0 items-center justify-center rounded-full bg-foreground duration-200 after:pointer-events-none after:absolute after:inset-0 after:bg-black/25 after:opacity-0 after:duration-200 after:content-[''] after:[border-radius:inherit] after:group-hover:opacity-100 after:group-focus-visible:opacity-100 after:group-focus-visible:ring-focus after:group-focus-visible:ring-2 after:group-active:bg-black/35",
+      classes.size[size],
+      className
+    )}
+  >
+    {isLoading ? (
+      <Skeleton absolute variant='circular' />
+    ) : (
+      <Image className='object-cover [border-radius:inherit]' src={src} alt={alt} fill />
+    )}
+  </div>
+);
 
-    const AvatarElement = () => (
-      <div
-        className={twMerge(
-          "relative flex shrink-0 items-center justify-center rounded-full bg-foreground duration-200 after:pointer-events-none after:absolute after:inset-0 after:bg-black/25 after:opacity-0 after:duration-200 after:content-[''] after:[border-radius:inherit] after:group-hover:opacity-100 after:group-focus-visible:opacity-100 after:group-focus-visible:ring-focus after:group-focus-visible:ring-2 after:group-active:bg-black/35",
-          classes.size[size],
-          className
-        )}
-      >
-        {isLoading ? (
-          <Skeleton absolute variant='circular' />
-        ) : (
-          <Image
-            className='object-cover [border-radius:inherit]'
-            src={src || DEFAULT_AVATAR_URL}
-            alt={alt}
-            fill
-          />
-        )}
-      </div>
+export const Avatar: FC<AvatarProps> = memo(({ screenName, href, onClick, ...props }) => {
+  const t = useTranslations();
+  const alt = screenName || t('profileImage');
+
+  if (href)
+    return (
+      <Link className='group w-fit rounded-full outline-none' href={href}>
+        <AvatarElement alt={alt} {...props} />
+      </Link>
     );
 
-    if (href) {
-      return (
-        <Link className='group w-fit rounded-full outline-none' href={href}>
-          <AvatarElement />
-        </Link>
-      );
-    }
+  if (onClick)
+    return (
+      <button className='group w-fit rounded-full' type='button' onClick={onClick} title={alt}>
+        <AvatarElement alt={alt} {...props} />
+      </button>
+    );
 
-    if (onClick) {
-      return (
-        <button className='group w-fit rounded-full' type='button' onClick={onClick} title={alt}>
-          <AvatarElement />
-        </button>
-      );
-    }
-
-    return <AvatarElement />;
-  }
-);
+  return <AvatarElement alt={alt} {...props} />;
+});
