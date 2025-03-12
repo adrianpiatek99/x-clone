@@ -13,7 +13,7 @@ type ToastOptions = {
 };
 
 export const useToasts = () => {
-  const handleAddToast = (
+  const addToast = (
     type: ToastType,
     message: string,
     { duration = DEFAULT_TOAST_DURATION }: ToastOptions = {}
@@ -26,7 +26,7 @@ export const useToasts = () => {
     );
   };
 
-  const handleRemoveToast = (id: string) => toast.dismiss(id);
+  const removeToast = (id: string) => toast.dismiss(id);
 
-  return { handleAddToast, handleRemoveToast };
+  return { addToast, removeToast };
 };

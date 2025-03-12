@@ -5,6 +5,7 @@ export const PASSWORD_MAX_LENGTH = 32;
 
 export const PROFILE_SCREEN_NAME_MIN_LENGTH = 3;
 export const PROFILE_SCREEN_NAME_MAX_LENGTH = 15;
+export const EMAIL_MAX_LENGTH = 100;
 export const PROFILE_NAME_MIN_LENGTH = 4;
 export const PROFILE_NAME_MAX_LENGTH = 50;
 

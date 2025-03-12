@@ -46,6 +46,7 @@ export const typographyClasses: TypographyClasses = {
     primary: "[color:theme('colors.text-1')]",
     secondary: "[color:theme('colors.text-2')]",
     danger: "[color:theme('colors.error-1')]",
+    link: "[color:theme('colors.primary')]",
   },
 };
 
