@@ -184,7 +184,8 @@
       "invalidType": "Invalid file type."
     },
     "auth": {
-      "signIn": "Sign-in failed. Please check your credentials and try again."
+      "signIn": "Sign-in failed. Please check your credentials and try again.",
+      "signUp": "Sign-up failed."
     }
   }
 }

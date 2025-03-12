@@ -11,13 +11,13 @@ type Props = {
 
 export const useSignInMutation = ({ onSuccess, onError }: Props = {}) => {
   const t = useTranslations();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const errorMessage = t('errors.auth.signIn');
 
   const signIn = async ({ emailOrScreenName, password }: SignInValues) => {
     try {
-      setIsLoading(true);
+      setIsPending(true);
       setError(null);
 
       const response = await nextSignIn('credentials', {
@@ -36,9 +36,9 @@ export const useSignInMutation = ({ onSuccess, onError }: Props = {}) => {
       onError?.(errorMessage);
       setError(errorMessage);
     } finally {
-      setIsLoading(false);
+      setIsPending(false);
     }
   };
 
-  return { signIn, isLoading, error };
+  return { signIn, isPending, error };
 };

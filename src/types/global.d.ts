@@ -1,3 +1,6 @@
+import type { ApiError } from '@/utils/api';
+import type { AxiosError } from 'axios';
+
 import type en from '../../messages/en.json';
 import type pl from '../../messages/pl.json';
 
@@ -19,6 +22,7 @@ declare global {
     nestedKey?: Record<string, string | number>
   ) => string;
   type IntlMessages = Messages;
+  type ApiAxiosError = AxiosError<ApiError>;
 }
 
 export {};

@@ -184,7 +184,8 @@
       "invalidType": "Nieprawidłowy typ pliku."
     },
     "auth": {
-      "signIn": "Nie udało się zalogować. Sprawdź swoje dane i spróbuj ponownie."
+      "signIn": "Nie udało się zalogować. Sprawdź swoje dane i spróbuj ponownie.",
+      "signUp": "Nie udało się zarejestrować."
     }
   }
 }
