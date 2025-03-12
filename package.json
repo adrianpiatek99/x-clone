@@ -41,7 +41,7 @@
     "use-sync-external-store": "^1.4.0",
     "uuid": "^11.0.3",
     "zod": "^3.24.2",
-    "zustand": "^5.0.2"
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^8.4.7",

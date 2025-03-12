@@ -9,7 +9,7 @@ import { Inter } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { getMessages } from 'next-intl/server';
 
-import Providers from '../providers';
+import Providers from './providers';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -38,6 +38,7 @@ export default async function RootLayout({ children, params }: Props) {
 
   return (
     <html lang={locale} className={inter.variable} suppressHydrationWarning>
+      <head />
       <body>
         <Providers locale={locale} messages={messages}>
           {children}

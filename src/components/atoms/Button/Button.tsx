@@ -1,3 +1,5 @@
+'use client';
+
 import type { ComponentPropsWithRef, FC, HTMLProps, ReactElement, RefCallback } from 'react';
 import React, { cloneElement } from 'react';
 

@@ -1,3 +1,5 @@
+'use client';
+
 import 'react-tooltip/dist/react-tooltip.css';
 
 import React from 'react';
