@@ -1,3 +1,5 @@
+import type { AxiosRequestConfig, AxiosResponse, Method } from 'axios';
+import axios from 'axios';
 import { NextResponse } from 'next/server';
 import { ZodError } from 'zod';
 
@@ -20,4 +22,24 @@ export const handleApiError = (error: unknown) => {
   }
 
   return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
+};
+
+export const apiRequest = async <T, D = unknown>(
+  method: Method,
+  url: string,
+  data?: D,
+  config?: AxiosRequestConfig
+): Promise<T> => {
+  try {
+    const response: AxiosResponse<T> = await axios({
+      method,
+      url,
+      data,
+      ...config,
+    });
+
+    return response.data;
+  } catch (error) {
+    throw error as Error;
+  }
 };

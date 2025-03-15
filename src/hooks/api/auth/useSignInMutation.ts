@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { useToasts } from '@/hooks/useToasts';
 import type { SignInValues } from '@/schemas';
 import { signIn as nextSignIn } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
@@ -11,6 +12,7 @@ type Props = {
 
 export const useSignInMutation = ({ onSuccess, onError }: Props = {}) => {
   const t = useTranslations();
+  const { addToast } = useToasts();
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const errorMessage = t('errors.auth.signIn');
@@ -34,6 +36,7 @@ export const useSignInMutation = ({ onSuccess, onError }: Props = {}) => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       onError?.(errorMessage);
+      addToast('error', errorMessage);
       setError(errorMessage);
     } finally {
       setIsPending(false);
