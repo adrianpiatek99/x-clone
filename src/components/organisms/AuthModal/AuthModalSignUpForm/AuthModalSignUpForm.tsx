@@ -1,14 +1,12 @@
 import React from 'react';
-import type { SubmitHandler } from 'react-hook-form';
-import { useForm } from 'react-hook-form';
 
-import { Box, Button, ControlledInput, Typography } from '@/components/atoms';
+import { Box, Typography } from '@/components/atoms';
 import { useSignInMutation } from '@/hooks/api/auth/useSignInMutation';
 import { useSignUpMutation } from '@/hooks/api/auth/useSignUpMutation';
+import { useAppForm } from '@/hooks/useFormHook';
 import type { SignUpValues } from '@/schemas';
 import { signUpSchema } from '@/schemas';
 import { useAuthStore } from '@/stores/auth';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useShallow } from 'zustand/shallow';
 
@@ -22,16 +20,7 @@ const AuthModalSignUpForm = () => {
       resetStore: state.resetStore,
     }))
   );
-  const {
-    control,
-    handleSubmit,
-    reset,
-    getValues,
-    formState: { errors, isValid },
-  } = useForm<SignUpValues>({
-    resolver: zodResolver(signUpSchema(t as Translation)),
-    mode: 'onChange',
-  });
+
   const { signIn, isPending: isSignInPending } = useSignInMutation({
     onSuccess: () => {
       reset();
@@ -40,14 +29,28 @@ const AuthModalSignUpForm = () => {
   });
   const { signUpMutate, isPending: isSignUpPending } = useSignUpMutation({
     onSuccess: () => {
-      const { email, password } = getValues();
+      const email = getFieldValue('email');
+      const password = getFieldValue('password');
 
       signIn({ emailOrScreenName: email, password });
     },
   });
-  const isPending = isSignInPending || isSignUpPending;
+  const { AppField, AppForm, SubscribeButton, handleSubmit, getFieldValue, reset } = useAppForm({
+    defaultValues: {
+      screenName: '',
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    } satisfies SignUpValues,
+    validators: { onChange: signUpSchema(t as Translation) },
+    onSubmit: ({ value }) => {
+      if (isPending) return;
 
-  const onSubmit: SubmitHandler<SignUpValues> = (data) => signUpMutate(data);
+      signUpMutate(value);
+    },
+  });
+  const isPending = isSignInPending || isSignUpPending;
 
   const handleChangeTab = () => update({ currentTab: 'signIn' });
 
@@ -58,27 +61,24 @@ const AuthModalSignUpForm = () => {
           {t('auth.createAccount')}
         </Typography>
       </Box>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          handleSubmit();
+        }}
+      >
         <Box className='gap-4'>
           {signUpInputs(t as Translation).map(({ name, ...props }) => (
-            <ControlledInput
-              key={name}
-              control={control}
-              name={name}
-              error={errors[name]?.message}
-              isLoading={isPending}
-              {...props}
-            />
+            <AppField key={name} name={name}>
+              {(field) => <field.InputField isLoading={isPending} {...props} />}
+            </AppField>
           ))}
-          <Button
-            className='rounded-full'
-            type='submit'
-            isLoading={isPending}
-            size='large'
-            disabled={!isValid}
-          >
-            {t('auth.signUp')}
-          </Button>
+          <AppForm>
+            <SubscribeButton className='rounded-full' isLoading={isPending} size='large'>
+              {t('auth.signUp')}
+            </SubscribeButton>
+          </AppForm>
         </Box>
       </form>
       <Box className='mt-[30px]'>

@@ -1,13 +1,11 @@
 import React from 'react';
-import type { SubmitHandler } from 'react-hook-form';
-import { useForm } from 'react-hook-form';
 
-import { Box, Button, ControlledInput, Typography } from '@/components/atoms';
+import { Box, Typography } from '@/components/atoms';
 import { useSignInMutation } from '@/hooks/api/auth/useSignInMutation';
+import { useAppForm } from '@/hooks/useFormHook';
 import type { SignInValues } from '@/schemas';
 import { signInSchema } from '@/schemas';
 import { useAuthStore } from '@/stores/auth';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useTranslations } from 'next-intl';
 import { useShallow } from 'zustand/shallow';
 
@@ -21,23 +19,24 @@ const AuthModalSignInForm = () => {
       resetStore: state.resetStore,
     }))
   );
-  const {
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors, isValid },
-  } = useForm<SignInValues>({
-    resolver: zodResolver(signInSchema(t as Translation)),
-    mode: 'onChange',
-  });
   const { signIn, isPending } = useSignInMutation({
     onSuccess: () => {
       reset();
       resetStore();
     },
   });
+  const { AppField, AppForm, SubscribeButton, handleSubmit, reset } = useAppForm({
+    defaultValues: {
+      emailOrScreenName: '',
+      password: '',
+    } satisfies SignInValues,
+    validators: { onChange: signInSchema(t as Translation) },
+    onSubmit: ({ value }) => {
+      if (isPending) return;
 
-  const onSubmit: SubmitHandler<SignInValues> = (data) => signIn(data);
+      signIn(value);
+    },
+  });
 
   const handleChangeTab = () => update({ currentTab: 'signUp' });
 
@@ -48,27 +47,24 @@ const AuthModalSignInForm = () => {
           {t('auth.signInTo')}
         </Typography>
       </Box>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          handleSubmit();
+        }}
+      >
         <Box className='gap-4'>
           {signInInputs(t as Translation).map(({ name, ...props }) => (
-            <ControlledInput
-              key={name}
-              control={control}
-              name={name}
-              error={errors[name]?.message}
-              isLoading={isPending}
-              {...props}
-            />
+            <AppField key={name} name={name}>
+              {(field) => <field.InputField isLoading={isPending} {...props} />}
+            </AppField>
           ))}
-          <Button
-            className='rounded-full'
-            type='submit'
-            isLoading={isPending}
-            size='large'
-            disabled={!isValid}
-          >
-            {t('auth.signIn')}
-          </Button>
+          <AppForm>
+            <SubscribeButton className='rounded-full' isLoading={isPending} size='large'>
+              {t('auth.signIn')}
+            </SubscribeButton>
+          </AppForm>
         </Box>
       </form>
       <Box className='mt-[30px]'>
