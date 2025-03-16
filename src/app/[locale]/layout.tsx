@@ -38,7 +38,6 @@ export default async function RootLayout({ children, params }: Props) {
 
   return (
     <html lang={locale} className={inter.variable} suppressHydrationWarning>
-      <head />
       <body>
         <Providers locale={locale} messages={messages}>
           {children}
