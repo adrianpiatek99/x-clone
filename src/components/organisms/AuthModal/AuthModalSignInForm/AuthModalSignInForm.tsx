@@ -30,7 +30,7 @@ const AuthModalSignInForm = () => {
       emailOrScreenName: '',
       password: '',
     } satisfies SignInValues,
-    validators: { onChange: signInSchema(t as Translation) },
+    validators: { onChange: signInSchema(t) },
     onSubmit: ({ value }) => {
       if (isPending) return;
 
@@ -55,7 +55,7 @@ const AuthModalSignInForm = () => {
         }}
       >
         <Box className='gap-4'>
-          {signInInputs(t as Translation).map(({ name, ...props }) => (
+          {signInInputs(t).map(({ name, ...props }) => (
             <AppField key={name} name={name}>
               {(field) => <field.InputField isLoading={isPending} {...props} />}
             </AppField>

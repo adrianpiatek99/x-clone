@@ -25,7 +25,7 @@ export type ButtonProps = ComponentPropsWithRef<'button'> & {
   color?: ButtonColor;
   fullWidth?: boolean;
   isLoading?: boolean;
-  startIcon?: ReactElement<HTMLProps<HTMLElement>>;
+  startIcon?: ReactElement;
   align?: ButtonAlign;
   linkClassName?: string;
   rounded?: ButtonRounded;
@@ -123,7 +123,10 @@ const ButtonElement: FC<Omit<ButtonProps, 'href' | 'linkClassName'>> = ({
       {isLoading ? (
         <Loader className={classes.loaderSize[size]} color={loaderColor} />
       ) : (
-        startIcon && cloneElement(startIcon, { className: classes.iconSize[size] })
+        startIcon &&
+        cloneElement(startIcon as ReactElement<HTMLProps<HTMLElement>>, {
+          className: classes.iconSize[size],
+        })
       )}
       <span>{children}</span>
     </button>

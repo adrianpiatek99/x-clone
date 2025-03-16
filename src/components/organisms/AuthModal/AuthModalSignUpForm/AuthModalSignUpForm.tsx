@@ -20,7 +20,6 @@ const AuthModalSignUpForm = () => {
       resetStore: state.resetStore,
     }))
   );
-
   const { signIn, isPending: isSignInPending } = useSignInMutation({
     onSuccess: () => {
       reset();
@@ -43,7 +42,7 @@ const AuthModalSignUpForm = () => {
       password: '',
       confirmPassword: '',
     } satisfies SignUpValues,
-    validators: { onChange: signUpSchema(t as Translation) },
+    validators: { onChange: signUpSchema(t) },
     onSubmit: ({ value }) => {
       if (isPending) return;
 
@@ -69,7 +68,7 @@ const AuthModalSignUpForm = () => {
         }}
       >
         <Box className='gap-4'>
-          {signUpInputs(t as Translation).map(({ name, ...props }) => (
+          {signUpInputs(t).map(({ name, ...props }) => (
             <AppField key={name} name={name}>
               {(field) => <field.InputField isLoading={isPending} {...props} />}
             </AppField>
