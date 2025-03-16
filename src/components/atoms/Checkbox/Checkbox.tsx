@@ -1,3 +1,5 @@
+'use client';
+
 import type { ComponentPropsWithRef, RefCallback } from 'react';
 import React from 'react';
 
@@ -5,7 +7,7 @@ import { twMerge } from 'tailwind-merge';
 
 import { Typography } from '../Typography';
 
-export type CheckboxProps = Omit<ComponentPropsWithRef<'input'>, 'type' | 'size'> & {
+export type CheckboxProps = Omit<ComponentPropsWithRef<'input'>, 'type' | 'size' | 'onChange'> & {
   name: string;
   checked: boolean;
   onChange?: (checked: boolean) => void;

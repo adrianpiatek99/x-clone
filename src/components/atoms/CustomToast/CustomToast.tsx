@@ -27,7 +27,7 @@ const classes: CustomToastClasses = {
 };
 
 export const CustomToast = ({ id, type, visible, message }: CustomToastProps) => {
-  const { handleRemoveToast } = useToasts();
+  const { removeToast } = useToasts();
   const icon = icons[type] || null;
 
   return (
@@ -36,7 +36,7 @@ export const CustomToast = ({ id, type, visible, message }: CustomToastProps) =>
         'flex items-center gap-3 rounded-xl bg-accent-1/80 backdrop-blur-md p-3 shadow [pointer-events:all] cursor-pointer w-full max-w-md duration-200',
         visible ? 'animate-enter' : 'animate-leave'
       )}
-      onClick={() => handleRemoveToast(id)}
+      onClick={() => removeToast(id)}
     >
       {icon &&
         cloneElement(icon, {

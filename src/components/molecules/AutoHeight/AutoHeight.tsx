@@ -1,3 +1,5 @@
+'use client';
+
 import type { ComponentPropsWithoutRef, FC } from 'react';
 import React, { useEffect, useRef, useState } from 'react';
 import type { Height } from 'react-animate-height';

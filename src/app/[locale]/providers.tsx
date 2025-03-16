@@ -2,7 +2,6 @@
 
 import type { FC, ReactNode } from 'react';
 import React from 'react';
-import { Toaster } from 'react-hot-toast';
 
 import type { Locale } from '@/constants/locales';
 import { themes } from '@/constants/themes';
@@ -11,6 +10,9 @@ import { SessionProvider } from 'next-auth/react';
 import type { AbstractIntlMessages } from 'next-intl';
 import { NextIntlClientProvider } from 'next-intl';
 import { ThemeProvider } from 'next-themes';
+
+import LoadingScreen from './loadingScreen';
+import Modals from './modals';
 
 const queryClient = new QueryClient();
 
@@ -25,9 +27,13 @@ const Providers: FC<Props> = ({ children, locale, messages }) => {
     <ThemeProvider attribute='class' defaultTheme='system' enableSystem themes={themes}>
       <NextIntlClientProvider locale={locale} messages={messages}>
         <QueryClientProvider client={queryClient}>
-          <SessionProvider>{children}</SessionProvider>
+          <SessionProvider>
+            <LoadingScreen>
+              <div className='animate-appear'>{children}</div>
+              <Modals />
+            </LoadingScreen>
+          </SessionProvider>
         </QueryClientProvider>
-        <Toaster position='bottom-center' />
       </NextIntlClientProvider>
     </ThemeProvider>
   );

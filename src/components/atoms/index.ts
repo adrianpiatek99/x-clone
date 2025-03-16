@@ -8,6 +8,7 @@ export * from './Dropdown';
 export * from './IconButton';
 export * from './Input';
 export * from './Loader';
+export * from './Logo';
 export * from './Modal';
 export * from './RadioGroup';
 export * from './SearchBar';

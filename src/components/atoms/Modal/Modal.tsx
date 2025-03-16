@@ -1,3 +1,5 @@
+'use client';
+
 import type { ComponentPropsWithoutRef, FC, ReactElement, ReactNode } from 'react';
 import React from 'react';
 

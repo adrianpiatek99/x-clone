@@ -1,3 +1,5 @@
+'use client';
+
 import type { ComponentPropsWithRef, RefCallback } from 'react';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 

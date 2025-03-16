@@ -15,21 +15,21 @@ const Template: StoryFn<Omit<CustomToastProps, 'id' | 'type'> & { duration: numb
   message,
   duration,
 }) => {
-  const { handleAddToast } = useToasts();
+  const { addToast } = useToasts();
 
   return (
     <Box className='flex-row flex-wrap'>
-      <Button onClick={() => handleAddToast('success', message, { duration })}>Success</Button>
-      <Button variant='tinted' onClick={() => handleAddToast('information', message, { duration })}>
+      <Button onClick={() => addToast('success', message, { duration })}>Success</Button>
+      <Button variant='tinted' onClick={() => addToast('information', message, { duration })}>
         Information
       </Button>
-      <Button variant='gray' onClick={() => handleAddToast('warning', message, { duration })}>
+      <Button variant='gray' onClick={() => addToast('warning', message, { duration })}>
         Warning
       </Button>
       <Button
         variant='gray'
         color='danger'
-        onClick={() => handleAddToast('error', message, { duration })}
+        onClick={() => addToast('error', message, { duration })}
       >
         Error
       </Button>
