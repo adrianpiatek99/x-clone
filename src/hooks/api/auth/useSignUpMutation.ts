@@ -1,5 +1,5 @@
 import type { SignUpRequest } from '@/app/api/auth/signUp/route';
-import { API_ENDPOINTS } from '@/hooks/apiEndpoints';
+import { API_ENDPOINTS } from '@/db/apiEndpoints';
 import { useToasts } from '@/hooks/useToasts';
 import type { SignUpValues } from '@/schemas';
 import { apiRequest } from '@/utils/api';
