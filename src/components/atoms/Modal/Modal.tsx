@@ -4,6 +4,7 @@ import type { ComponentPropsWithoutRef, FC, ReactElement, ReactNode } from 'reac
 import React from 'react';
 
 import AutoHeight from '@/components/molecules/AutoHeight';
+import useEscape from '@/hooks/useEscape';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 
 import { ModalHeader } from './ModalHeader';
@@ -32,6 +33,18 @@ export const Modal: FC<ModalProps> = ({
   preventClosingOnOutside,
 }) => {
   const handleClose = () => !preventClosingOnOutside && onClose();
+
+  useEscape(isOpen && preventClosingOnOutside, () => {
+    if (
+      document.activeElement &&
+      'blur' in document.activeElement &&
+      typeof document.activeElement.blur === 'function'
+    ) {
+      document.activeElement.blur();
+    }
+
+    onClose();
+  });
 
   return (
     <Dialog
