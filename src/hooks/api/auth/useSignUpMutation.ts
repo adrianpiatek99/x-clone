@@ -1,7 +1,7 @@
 import type { SignUpRequest } from '@/app/api/auth/signUp/route';
 import { API_ENDPOINTS } from '@/db/apiEndpoints';
 import { useToasts } from '@/hooks/useToasts';
-import type { SignUpValues } from '@/schemas';
+import type { SignUpValues } from '@/schema';
 import { apiRequest } from '@/utils/api';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
