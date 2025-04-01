@@ -1,5 +1,6 @@
 import type { InputRecord } from '@/components/atoms';
-import { PASSWORD_MAX_LENGTH, type SignInValues } from '@/schemas';
+import type { SignInValues } from '@/schema';
+import { PASSWORD_MAX_LENGTH } from '@/schema';
 
 export const signInInputs = (t: Translation): InputRecord<SignInValues>[] => [
   {

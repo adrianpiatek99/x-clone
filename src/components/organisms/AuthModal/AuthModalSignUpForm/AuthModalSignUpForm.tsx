@@ -4,8 +4,8 @@ import { Box, Typography } from '@/components/atoms';
 import { useSignInMutation } from '@/hooks/api/auth/useSignInMutation';
 import { useSignUpMutation } from '@/hooks/api/auth/useSignUpMutation';
 import { useAppForm } from '@/hooks/useFormHook';
-import type { SignUpValues } from '@/schemas';
-import { signUpSchema } from '@/schemas';
+import type { SignUpValues } from '@/schema';
+import { signUpSchema } from '@/schema';
 import { useAuthStore } from '@/stores/auth';
 import { useTranslations } from 'next-intl';
 import { useShallow } from 'zustand/shallow';
@@ -20,7 +20,6 @@ const AuthModalSignUpForm = () => {
       resetStore: state.resetStore,
     }))
   );
-
   const { signIn, isPending: isSignInPending } = useSignInMutation({
     onSuccess: () => {
       reset();
@@ -43,7 +42,7 @@ const AuthModalSignUpForm = () => {
       password: '',
       confirmPassword: '',
     } satisfies SignUpValues,
-    validators: { onChange: signUpSchema(t as Translation) },
+    validators: { onChange: signUpSchema(t) },
     onSubmit: ({ value }) => {
       if (isPending) return;
 
@@ -69,7 +68,7 @@ const AuthModalSignUpForm = () => {
         }}
       >
         <Box className='gap-4'>
-          {signUpInputs(t as Translation).map(({ name, ...props }) => (
+          {signUpInputs(t).map(({ name, ...props }) => (
             <AppField key={name} name={name}>
               {(field) => <field.InputField isLoading={isPending} {...props} />}
             </AppField>

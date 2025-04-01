@@ -32,7 +32,7 @@ const classes: AvatarClasses = {
 
 const AvatarElement: FC<
   Pick<AvatarProps, 'size' | 'className' | 'src' | 'isLoading'> & { alt: string }
-> = ({ src = DEFAULT_AVATAR_URL, alt, size = 'medium', isLoading = false, className = '' }) => (
+> = ({ src, alt, size = 'medium', isLoading = false, className = '' }) => (
   <div
     className={twMerge(
       "relative flex shrink-0 items-center justify-center rounded-full bg-foreground duration-200 after:pointer-events-none after:absolute after:inset-0 after:bg-black/25 after:opacity-0 after:duration-200 after:content-[''] after:[border-radius:inherit] after:group-hover:opacity-100 after:group-focus-visible:opacity-100 after:group-focus-visible:ring-focus after:group-focus-visible:ring-2 after:group-active:bg-black/35",
@@ -43,7 +43,12 @@ const AvatarElement: FC<
     {isLoading ? (
       <Skeleton absolute variant='circular' />
     ) : (
-      <Image className='object-cover [border-radius:inherit]' src={src} alt={alt} fill />
+      <Image
+        className='object-cover [border-radius:inherit]'
+        src={src || DEFAULT_AVATAR_URL}
+        alt={alt}
+        fill
+      />
     )}
   </div>
 );

@@ -3,8 +3,8 @@ import React from 'react';
 import { Box, Typography } from '@/components/atoms';
 import { useSignInMutation } from '@/hooks/api/auth/useSignInMutation';
 import { useAppForm } from '@/hooks/useFormHook';
-import type { SignInValues } from '@/schemas';
-import { signInSchema } from '@/schemas';
+import type { SignInValues } from '@/schema';
+import { signInSchema } from '@/schema';
 import { useAuthStore } from '@/stores/auth';
 import { useTranslations } from 'next-intl';
 import { useShallow } from 'zustand/shallow';
@@ -30,7 +30,7 @@ const AuthModalSignInForm = () => {
       emailOrScreenName: '',
       password: '',
     } satisfies SignInValues,
-    validators: { onChange: signInSchema(t as Translation) },
+    validators: { onChange: signInSchema(t) },
     onSubmit: ({ value }) => {
       if (isPending) return;
 
@@ -55,7 +55,7 @@ const AuthModalSignInForm = () => {
         }}
       >
         <Box className='gap-4'>
-          {signInInputs(t as Translation).map(({ name, ...props }) => (
+          {signInInputs(t).map(({ name, ...props }) => (
             <AppField key={name} name={name}>
               {(field) => <field.InputField isLoading={isPending} {...props} />}
             </AppField>

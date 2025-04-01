@@ -25,4 +25,8 @@ declare global {
   type ApiAxiosError = AxiosError<ApiError>;
 }
 
+declare module 'next-intl' {
+  function useTranslations(): Translation;
+}
+
 export {};

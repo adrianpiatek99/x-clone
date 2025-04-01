@@ -70,7 +70,7 @@
   "homePage": {
     "welcome": {
       "title": "Welcome to X!",
-      "description": "This is the best place to see what’s happening in your world. Find some people and topics to follow now."
+      "description": "This is the best place to see what's happening in your world. Find some people and topics to follow now."
     }
   },
 
@@ -79,11 +79,11 @@
       "edit": "Edit profile"
     },
     "notFound": {
-      "title": "This account doesn’t exist",
+      "title": "This account doesn't exist",
       "description": "Try searching for another."
     },
     "empty": {
-      "title": "You don’t have any posts yet",
+      "title": "You don't have any posts yet",
       "description": "Your posts will show up here."
     },
     "joined": "Joined",
@@ -100,7 +100,7 @@
     "edit": {
       "discardChangesModal": {
         "title": "Discard changes?",
-        "description": "This can’t be undone and you’ll lose your changes."
+        "description": "This can't be undone and you'll lose your changes."
       }
     },
     "media": {
@@ -111,14 +111,14 @@
     },
     "likes": {
       "empty": {
-        "title": "You don’t have any likes yet",
-        "description": "Tap the heart on any post to show it some love. When you do, it’ll show up here."
+        "title": "You don't have any likes yet",
+        "description": "Tap the heart on any post to show it some love. When you do, it'll show up here."
       }
     }
   },
 
   "notFoundPage": {
-    "title": "Hmm...this page doesn’t exist. Try searching for something else.",
+    "title": "Hmm...this page doesn't exist. Try searching for something else.",
     "returnButton": "Go to homepage"
   },
 
@@ -142,7 +142,7 @@
     },
     "deleteConfirmModal": {
       "title": "Delete post?",
-      "description": "This can’t be undone and it will be removed from your profile, the timeline of any accounts that follow you, and from search results."
+      "description": "This can't be undone and it will be removed from your profile, the timeline of any accounts that follow you, and from search results."
     }
   },
 
@@ -153,7 +153,8 @@
       },
       "email": {
         "incorrect": "Must be a valid email",
-        "required": "E-mail is required."
+        "required": "E-mail is required.",
+        "max": "Email can't have more than {max} characters."
       },
       "password": {
         "incorrect": "Must be a valid password",

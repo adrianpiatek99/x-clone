@@ -1,7 +1,7 @@
 import { db } from '@/db/db';
 import { usersTable } from '@/db/schema';
-import type { SignUpValues } from '@/schemas';
-import { signUpSchema } from '@/schemas';
+import type { SignUpValues } from '@/schema';
+import { signUpSchema } from '@/schema';
 import { ApiError, handleApiError } from '@/utils/api';
 import { hashSync } from 'bcryptjs';
 import { eq, ilike, or } from 'drizzle-orm';
@@ -15,12 +15,10 @@ export const POST = async (request: NextRequest): Promise<NextResponse<object>> 
 
     const { screenName, name, email, password } = signUpSchema().parse(body);
 
-    const emailWithLowerCase = email.toLowerCase();
-
     const existingUser = await db
       .select()
       .from(usersTable)
-      .where(or(ilike(usersTable.screenName, screenName), eq(usersTable.email, emailWithLowerCase)))
+      .where(or(ilike(usersTable.screenName, screenName), eq(usersTable.email, email)))
       .then((res) => res[0]);
 
     if (existingUser) {
@@ -33,15 +31,12 @@ export const POST = async (request: NextRequest): Promise<NextResponse<object>> 
 
     const hashedPassword = hashSync(password, 12);
 
-    await db
-      .insert(usersTable)
-      .values({
-        screenName,
-        name,
-        email: emailWithLowerCase,
-        password: hashedPassword,
-      })
-      .returning();
+    await db.insert(usersTable).values({
+      screenName,
+      name,
+      email,
+      password: hashedPassword,
+    });
 
     return NextResponse.json({});
   } catch (error) {

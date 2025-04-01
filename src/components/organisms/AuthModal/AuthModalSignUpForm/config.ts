@@ -5,7 +5,7 @@ import {
   PROFILE_NAME_MAX_LENGTH,
   PROFILE_SCREEN_NAME_MAX_LENGTH,
   type SignUpValues,
-} from '@/schemas';
+} from '@/schema';
 
 export const signUpInputs = (t: Translation): InputRecord<SignUpValues>[] => [
   {

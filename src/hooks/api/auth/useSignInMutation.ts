@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { useToasts } from '@/hooks/useToasts';
-import type { SignInValues } from '@/schemas';
+import type { SignInValues } from '@/schema';
 import { signIn as nextSignIn } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 
