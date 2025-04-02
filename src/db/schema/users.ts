@@ -1,4 +1,4 @@
-import { pgEnum, pgTable, text } from 'drizzle-orm/pg-core';
+import { boolean, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 import { createdAt, id, updatedAt } from '../schemaHelpers';
 
@@ -19,6 +19,8 @@ export const usersTable = pgTable('users', {
   description: text().notNull().default(''),
   url: text(),
   role: UserRole().notNull().default('USER'),
+  isVerified: boolean('is_verified').notNull().default(false),
+  verifiedAt: timestamp('verified_at', { withTimezone: true }),
   createdAt,
   updatedAt,
 });
@@ -33,6 +35,8 @@ export const usersSelect = {
   description: usersTable.description,
   url: usersTable.url,
   role: usersTable.role,
+  isVerified: usersTable.isVerified,
+  verifiedAt: usersTable.verifiedAt,
   createdAt: usersTable.createdAt,
   updatedAt: usersTable.updatedAt,
 } satisfies Record<keyof User, (typeof usersTable)[keyof typeof usersTable]>;

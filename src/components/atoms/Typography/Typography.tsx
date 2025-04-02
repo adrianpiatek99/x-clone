@@ -60,6 +60,7 @@ export const Typography: FC<TypographyProps> = ({
   truncate,
   linkProps,
   className = '',
+  onClick,
   ...props
 }) => {
   const baseClassName = twMerge(
@@ -77,6 +78,7 @@ export const Typography: FC<TypographyProps> = ({
         typeof truncate === 'boolean' && !!truncate && 'truncate',
         baseClassName
       ),
+      onClick: !href ? onClick : undefined,
       ...props,
     },
     <TypographyText truncate={truncate} {...props} />
@@ -91,6 +93,7 @@ export const Typography: FC<TypographyProps> = ({
         truncate && 'truncate',
         baseClassName
       )}
+      onClick={onClick}
       {...linkProps}
     >
       {content}
