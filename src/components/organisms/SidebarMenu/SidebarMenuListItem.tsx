@@ -5,9 +5,7 @@ import { twMerge } from 'tailwind-merge';
 
 import type { SidebarMenuItem } from './config';
 
-type Props = Omit<SidebarMenuItem, 'route'> & {
-  active: boolean;
-};
+type Props = SidebarMenuItem;
 
 const SidebarMenuListItem = memo(({ text, href, active, icon, activeIcon }: Props) => {
   const correctIcon = active ? cloneElement(activeIcon) : cloneElement(icon);
@@ -26,7 +24,7 @@ const SidebarMenuListItem = memo(({ text, href, active, icon, activeIcon }: Prop
       <Button
         linkClassName='hidden xl:flex'
         className={twMerge(
-          'min-h-[50px] gap-5 px-3 text-xl [&>svg]:h-[26px] [&>svg]:w-[26px] [color:bg-foreground] rounded-full bg-transparent',
+          'min-h-[50px] gap-5 px-3 text-xl [&>svg]:size-[26px] [color:bg-foreground] rounded-full bg-transparent',
           !active && 'font-light'
         )}
         href={href}

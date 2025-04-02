@@ -30,8 +30,8 @@ const SidebarMenuList = () => {
       <Box as='ul' className='w-full gap-2'>
         <SidebarMenuListItem {...sidebarMenuHomeItem({ t, pathname })} />
         {user &&
-          authSidebarMenuItems({ t, user, pathname }).map(({ text, href, ...props }) => (
-            <SidebarMenuListItem key={text} href={href} text={text} {...props} />
+          authSidebarMenuItems({ t, user, pathname }).map(({ text, ...props }) => (
+            <SidebarMenuListItem key={text} text={text} {...props} />
           ))}
         <SidebarMenuListItem {...sidebarMenuSettingsItem({ t, pathname })} />
         {!user && (
