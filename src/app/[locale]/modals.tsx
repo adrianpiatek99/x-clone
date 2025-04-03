@@ -7,6 +7,8 @@ import dynamic from 'next/dynamic';
 const LazyAuthModal = dynamic(() => import('@/components/organisms/AuthModal'));
 const LazyNavigationDrawer = dynamic(() => import('@/components/organisms/NavigationDrawer'));
 const LazyLogoutConfirmModal = dynamic(() => import('@/components/molecules/LogoutConfirmModal'));
+const LazyNavigationTabs = dynamic(() => import('@/components/organisms/NavigationTabs'));
+
 const Modals = () => {
   const { user } = useAppSession();
 
@@ -15,6 +17,7 @@ const Modals = () => {
       {!user && <LazyAuthModal />}
       {user && <LazyLogoutConfirmModal />}
       <LazyNavigationDrawer />
+      <LazyNavigationTabs />
       <Toaster position='bottom-center' />
     </>
   );

@@ -4,7 +4,7 @@ import type { GlobalState, GlobalStore } from './types';
 
 export const initialState: GlobalState = {
   mobileDrawer: {
-    isOpen: true,
+    isOpen: false,
   },
   logoutModal: {
     isOpen: false,
