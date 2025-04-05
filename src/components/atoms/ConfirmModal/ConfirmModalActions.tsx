@@ -23,9 +23,18 @@ export const ConfirmModalActions: FC<Props> = ({
   const t = useTranslations();
 
   return (
-    <Box className='gap-0'>
+    <Box className='flex-row gap-0'>
       <Button
-        className='min-h-[38px] rounded-none border-t border-border-3 bg-transparent focus-visible:ring-inset  enabled:hover:bg-text-1/10 enabled:active:bg-text-1/15'
+        className='min-h-[38px] rounded-none rounded-bl-2xl border-r border-t border-border-3 bg-transparent focus-visible:ring-inset  enabled:hover:bg-text-1/10 enabled:active:bg-text-1/15'
+        onClick={onClose}
+        variant='gray'
+        disabled={isLoading}
+        fullWidth
+      >
+        {cancelButtonText || t('actions.cancel')}
+      </Button>
+      <Button
+        className='min-h-[38px] rounded-none rounded-br-2xl border-t border-border-3 bg-transparent focus-visible:ring-inset enabled:hover:bg-text-1/10 enabled:active:bg-text-1/15'
         onClick={onAccept}
         variant='gray'
         color={danger ? 'danger' : 'primary'}
@@ -33,15 +42,6 @@ export const ConfirmModalActions: FC<Props> = ({
         fullWidth
       >
         {acceptButtonText || t('actions.save')}
-      </Button>
-      <Button
-        className='min-h-[38px] rounded-none rounded-b-2xl border-t border-border-3 bg-transparent focus-visible:ring-inset  enabled:hover:bg-text-1/10 enabled:active:bg-text-1/15'
-        onClick={onClose}
-        variant='gray'
-        disabled={isLoading}
-        fullWidth
-      >
-        {cancelButtonText || t('actions.cancel')}
       </Button>
     </Box>
   );

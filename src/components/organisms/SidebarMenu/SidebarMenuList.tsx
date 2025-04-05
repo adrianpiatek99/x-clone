@@ -8,7 +8,7 @@ import { LoginIcon } from '@/icons';
 import { useAuthStore } from '@/stores/auth';
 import { useTranslations } from 'next-intl';
 
-import { authSidebarMenuItems, sidebarMenuHomeItem, sidebarMenuSettingsItem } from './config';
+import { sidebarMenuItems } from './config';
 import SidebarMenuListItem from './SidebarMenuListItem';
 
 const SidebarMenuList = () => {
@@ -28,12 +28,9 @@ const SidebarMenuList = () => {
     >
       <Logo href={ROUTES.HOME} className='size-[50px]' size='xl' />
       <Box as='ul' className='w-full gap-2'>
-        <SidebarMenuListItem {...sidebarMenuHomeItem({ t, pathname })} />
-        {user &&
-          authSidebarMenuItems({ t, user, pathname }).map(({ text, ...props }) => (
-            <SidebarMenuListItem key={text} text={text} {...props} />
-          ))}
-        <SidebarMenuListItem {...sidebarMenuSettingsItem({ t, pathname })} />
+        {sidebarMenuItems({ t, user, pathname }).map(({ text, ...props }) => (
+          <SidebarMenuListItem key={text} text={text} {...props} />
+        ))}
         {!user && (
           <>
             <Button

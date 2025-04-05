@@ -3,14 +3,14 @@ import React from 'react';
 import { Box } from '@/components/atoms';
 import { Button } from '@/components/atoms';
 import { useAppSession } from '@/hooks/useAppSession';
+import { usePathname } from '@/i18n/routing';
 import { LogoutIcon } from '@/icons';
 import { useAuthStore } from '@/stores/auth';
 import { useGlobalStore } from '@/stores/global';
-import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useShallow } from 'zustand/shallow';
 
-import { navigationDrawerItems, navigationDrawerSettingsItem } from './config';
+import { navigationDrawerItems } from './config';
 import NavigationDrawerListItem from './NavigationDrawerListItem';
 
 const NavigationDrawerList = () => {
@@ -40,11 +40,9 @@ const NavigationDrawerList = () => {
   return (
     <Box as='nav' className='gap-0 pt-4'>
       <Box as='ul' className='gap-0'>
-        {user &&
-          navigationDrawerItems({ t, pathname, user }).map(({ ...props }) => (
-            <NavigationDrawerListItem key={props.href} {...props} onClick={handleClose} />
-          ))}
-        <NavigationDrawerListItem {...navigationDrawerSettingsItem({ t, pathname })} />
+        {navigationDrawerItems({ t, pathname, user }).map(({ ...props }) => (
+          <NavigationDrawerListItem key={props.href} {...props} onClick={handleClose} />
+        ))}
         {user && (
           <li>
             <Button
@@ -60,14 +58,9 @@ const NavigationDrawerList = () => {
         )}
       </Box>
       {!user && (
-        <>
-          <div className='px-4'>
-            <div className='my-4 h-px w-full bg-border-1' />
-          </div>
-          <Button className='mx-6 rounded-full' onClick={handleOpenAuthModal} size='large'>
-            {t('auth.signIn')}
-          </Button>
-        </>
+        <Button className='mx-6 mt-6 rounded-full' onClick={handleOpenAuthModal} size='large'>
+          {t('auth.signIn')}
+        </Button>
       )}
     </Box>
   );
