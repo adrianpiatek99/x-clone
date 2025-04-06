@@ -187,13 +187,16 @@
       "image": {
         "onePhoto": "Please choose only one photo.",
         "limit": "Please choose up to {limit} photos.",
-        "sizeLimit": "Maximum image size exceeded. Please choose an image under {sizeLimit} MB."
+        "maxSize": "Maximum image size exceeded. Please choose an image under {maxSize} MB."
       },
       "invalidType": "Invalid file type."
     },
     "auth": {
       "signIn": "Sign-in failed. Please check your credentials and try again.",
       "signUp": "Sign-up failed."
+    },
+    "api": {
+      "somethingWentWrong": "Something went wrong. Please try again later."
     }
   }
 }

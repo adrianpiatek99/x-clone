@@ -7,7 +7,6 @@ export type EditProfileState = {
     file: File | null;
     url: string;
   };
-  isUploadFileLoading: boolean;
 };
 
 export type EditProfileActions = {

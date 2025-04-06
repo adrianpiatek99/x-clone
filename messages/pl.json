@@ -187,13 +187,16 @@
       "image": {
         "onePhoto": "Proszę wybrać tylko jedno zdjęcie.",
         "limit": "Możesz wybrać maksymalnie {limit} zdjęcia.",
-        "sizeLimit": "Przekroczono maksymalny rozmiar obrazu. Wybierz obraz mniejszy niż {sizeLimit} MB."
+        "maxSize": "Przekroczono maksymalny rozmiar obrazu. Wybierz obraz mniejszy niż {maxSize} MB."
       },
       "invalidType": "Nieprawidłowy typ pliku."
     },
     "auth": {
       "signIn": "Nie udało się zalogować. Sprawdź swoje dane i spróbuj ponownie.",
       "signUp": "Nie udało się zarejestrować."
+    },
+    "api": {
+      "somethingWentWrong": "Coś poszło nie tak. Spróbuj ponownie później."
     }
   }
 }

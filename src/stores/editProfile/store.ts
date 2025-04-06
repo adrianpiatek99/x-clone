@@ -11,7 +11,6 @@ export const initialState: EditProfileState = {
     file: null,
     url: '',
   },
-  isUploadFileLoading: false,
 };
 
 export const useEditProfileStore = create<EditProfileStore>((set) => ({
