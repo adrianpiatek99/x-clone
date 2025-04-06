@@ -53,7 +53,7 @@ const IconButtonElement: FC<IconButtonProps> = ({
   ...props
 }) => {
   const isCustomColor = className.includes('bg-') && className.includes('text-');
-  const tooltipId = title.replaceAll(' ', '-');
+  const tooltipId = `${title.replaceAll(' ', '-')}-${Math.random().toString(36).slice(2, 7)}`;
   const tabIndex = disableFocus ? -1 : 0;
 
   return (

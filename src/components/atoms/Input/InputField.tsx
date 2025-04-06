@@ -6,7 +6,7 @@ import { useStore } from '@tanstack/react-form';
 import type { InputProps } from './Input';
 import { Input } from './Input';
 
-type Props = Pick<InputProps, 'label' | 'type' | 'isLoading' | 'disabled'>;
+type Props = Pick<InputProps, 'label' | 'type' | 'isLoading' | 'disabled' | 'maxLength'>;
 
 const InputField = ({ ...props }: Props) => {
   const { name, state, store, handleChange, handleBlur } = useFieldContext<string>();

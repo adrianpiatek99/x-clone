@@ -6,7 +6,7 @@ import { useStore } from '@tanstack/react-form';
 import type { TextareaProps } from './Textarea';
 import { Textarea } from './Textarea';
 
-type Props = Pick<TextareaProps, 'label' | 'isLoading' | 'disabled' | 'rows'>;
+type Props = Pick<TextareaProps, 'label' | 'isLoading' | 'disabled' | 'rows' | 'maxLength'>;
 
 const TextareaField = ({ ...props }: Props) => {
   const { name, state, store, handleChange, handleBlur } = useFieldContext<string>();
