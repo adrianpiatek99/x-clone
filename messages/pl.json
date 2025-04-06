@@ -97,12 +97,6 @@
     "following": "Obserwujesz",
     "followers": "Obserwujących",
     "posts": "Wpisy",
-    "edit": {
-      "discardChangesModal": {
-        "title": "Czy chcesz odrzucić zmiany?",
-        "description": "Tej czynności nie można cofnąć, a zmiany nie zostaną zapisane."
-      }
-    },
     "media": {
       "empty": {
         "title": "Światła, kamera... załączniki!",
@@ -114,6 +108,13 @@
         "title": "Nie masz jeszcze żadnych polubień",
         "description": "Naciśnij serce w dowolnym wpisie, aby wyrazić uznanie. Twoje polubienia pojawią się tutaj."
       }
+    }
+  },
+
+  "modal": {
+    "discardChanges": {
+      "title": "Odrzucić zmiany?",
+      "description": "Tej czynności nie można cofnąć, a zmiany nie zostaną zapisane."
     }
   },
 

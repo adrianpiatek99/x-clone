@@ -97,12 +97,6 @@
     "following": "Following",
     "followers": "Followers",
     "posts": "Posts",
-    "edit": {
-      "discardChangesModal": {
-        "title": "Discard changes?",
-        "description": "This can't be undone and you'll lose your changes."
-      }
-    },
     "media": {
       "empty": {
         "title": "Lights, camera … attachments!",
@@ -114,6 +108,13 @@
         "title": "You don't have any likes yet",
         "description": "Tap the heart on any post to show it some love. When you do, it'll show up here."
       }
+    }
+  },
+
+  "modal": {
+    "discardChanges": {
+      "title": "Discard changes?",
+      "description": "This can't be undone and you'll lose your changes."
     }
   },
 
