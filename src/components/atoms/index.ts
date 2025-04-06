@@ -12,6 +12,7 @@ export * from './Logo';
 export * from './Modal';
 export * from './RadioGroup';
 export * from './SearchBar';
+export * from './ShimmerImage';
 export * from './Skeleton';
 export * from './SwitchGroup';
 export * from './Tooltip';
