@@ -15,5 +15,6 @@ export * from './SearchBar';
 export * from './ShimmerImage';
 export * from './Skeleton';
 export * from './SwitchGroup';
+export * from './Textarea';
 export * from './Tooltip';
 export * from './Typography';
