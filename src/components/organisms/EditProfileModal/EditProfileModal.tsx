@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
-import { ConfirmModal } from '@/components/atoms';
 import { Box } from '@/components/atoms/Box';
 import { Modal } from '@/components/atoms/Modal';
+import DiscardChangesModal from '@/components/molecules/DiscardChangesModal';
 import type { User } from '@/db/schema';
 import {
   PROFILE_DESCRIPTION_MAX_LENGTH,
@@ -34,14 +34,6 @@ const EditProfileModal = ({ isOpen, onClose, user }: Props) => {
   const [isDiscardChangesModalOpen, setIsDiscardChangesModalOpen] = useState(false);
 
   const handleClose = () => (isChanged ? setIsDiscardChangesModalOpen(true) : onClose());
-
-  const handleCloseDiscard = (accept: boolean) => {
-    setIsDiscardChangesModalOpen(false);
-
-    if (accept) {
-      onClose();
-    }
-  };
 
   return (
     <>
@@ -103,13 +95,11 @@ const EditProfileModal = ({ isOpen, onClose, user }: Props) => {
           </Box>
         </Box>
       </Modal>
-      <ConfirmModal
+      <DiscardChangesModal
         isOpen={isDiscardChangesModalOpen}
-        onClose={() => handleCloseDiscard(false)}
-        onAccept={() => handleCloseDiscard(true)}
-        title={t('profilePage.edit.discardChangesModal.title')}
-        description={t('profilePage.edit.discardChangesModal.description')}
-        acceptButtonText={t('actions.discard')}
+        isChanged={isChanged}
+        onDiscardClose={() => setIsDiscardChangesModalOpen(false)}
+        onClose={onClose}
       />
     </>
   );
