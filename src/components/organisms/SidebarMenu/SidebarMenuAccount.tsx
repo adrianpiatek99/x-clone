@@ -1,16 +1,20 @@
-import React, { memo } from 'react';
+import React, { memo, useState } from 'react';
 
 import { Avatar, Box, Button, Dropdown, DropdownItem, Typography } from '@/components/atoms';
 import UserDisplayName from '@/components/molecules/UserDisplayName';
 import { useAppSession } from '@/hooks/useAppSession';
-import { LogoutIcon, MoreHorizontalIcon } from '@/icons';
+import { EditProfileIcon, LogoutIcon, MoreHorizontalIcon } from '@/icons';
 import { useGlobalStore } from '@/stores/global';
+import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
+
+const LazyEditProfileModal = dynamic(() => import('../EditProfileModal'));
 
 export const SidebarMenuAccount = memo(() => {
   const t = useTranslations();
   const { user } = useAppSession();
   const updateLogoutModal = useGlobalStore((state) => state.updateLogoutModal);
+  const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
 
   const handleOpenLogoutModal = () => updateLogoutModal({ isOpen: true });
 
@@ -37,10 +41,18 @@ export const SidebarMenuAccount = memo(() => {
             </div>
           </Box>
         </Button>
+        <DropdownItem onClick={() => setIsEditProfileModalOpen(true)} icon={<EditProfileIcon />}>
+          {t('profilePage.actions.edit')}
+        </DropdownItem>
         <DropdownItem onClick={handleOpenLogoutModal} icon={<LogoutIcon />} danger>
           {t('auth.logout.text')}
         </DropdownItem>
       </Dropdown>
+      <LazyEditProfileModal
+        isOpen={isEditProfileModalOpen}
+        onClose={() => setIsEditProfileModalOpen(false)}
+        user={user}
+      />
     </Box>
   );
 });

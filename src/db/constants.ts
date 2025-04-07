@@ -8,4 +8,7 @@ export const API_ENDPOINTS = {
     DETAILS: (id: string) => `/api/posts/${id}`,
     DELETE: (id: string) => `/api/posts/${id}`,
   },
+  PROFILE: {
+    UPDATE: '/api/profile/update',
+  },
 } as const;

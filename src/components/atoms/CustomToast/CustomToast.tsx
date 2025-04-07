@@ -18,6 +18,12 @@ const icons = {
 export type CustomToastProps = { id: string; type: ToastType; visible: boolean; message: string };
 
 const classes: CustomToastClasses = {
+  variant: {
+    success: 'bg-primary/40 border border-primary',
+    information: 'bg-info/40 border border-info',
+    warning: 'bg-warning/40 border border-warning',
+    error: 'bg-error-1/40 border border-error-1',
+  },
   icon: {
     success: 'text-primary fill-primary',
     information: 'text-info fill-info',
@@ -33,8 +39,9 @@ export const CustomToast = ({ id, type, visible, message }: CustomToastProps) =>
   return (
     <div
       className={twMerge(
-        'flex items-center gap-3 rounded-xl bg-accent-1/80 backdrop-blur-md p-3 shadow [pointer-events:all] cursor-pointer w-full max-w-md duration-200',
-        visible ? 'animate-enter' : 'animate-leave'
+        'flex items-center gap-3 rounded-xl backdrop-blur-md p-3 shadow [pointer-events:all] cursor-pointer w-full max-w-md duration-200',
+        visible ? 'animate-enter' : 'animate-leave',
+        classes.variant[type]
       )}
       onClick={() => removeToast(id)}
     >

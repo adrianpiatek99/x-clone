@@ -1,55 +1,16 @@
 import React from 'react';
 
 import { Box, Typography } from '@/components/atoms';
-import { useSignInMutation } from '@/hooks/api/auth/useSignInMutation';
-import { useSignUpMutation } from '@/hooks/api/auth/useSignUpMutation';
-import { useAppForm } from '@/hooks/useFormHook';
-import type { SignUpValues } from '@/schema';
-import { signUpSchema } from '@/schema';
 import { useAuthStore } from '@/stores/auth';
 import { useTranslations } from 'next-intl';
-import { useShallow } from 'zustand/shallow';
 
 import { signUpInputs } from './config';
+import { useAuthModalSignUpForm } from './useAuthModalSignUpForm';
 
 const AuthModalSignUpForm = () => {
   const t = useTranslations();
-  const { update, resetStore } = useAuthStore(
-    useShallow((state) => ({
-      update: state.update,
-      resetStore: state.resetStore,
-    }))
-  );
-  const { signIn, isPending: isSignInPending } = useSignInMutation({
-    onSuccess: () => {
-      reset();
-      resetStore();
-    },
-  });
-  const { signUpMutate, isPending: isSignUpPending } = useSignUpMutation({
-    onSuccess: () => {
-      const email = getFieldValue('email');
-      const password = getFieldValue('password');
-
-      signIn({ emailOrScreenName: email, password });
-    },
-  });
-  const { AppField, AppForm, SubscribeButton, handleSubmit, getFieldValue, reset } = useAppForm({
-    defaultValues: {
-      screenName: '',
-      name: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-    } satisfies SignUpValues,
-    validators: { onChange: signUpSchema(t) },
-    onSubmit: ({ value }) => {
-      if (isPending) return;
-
-      signUpMutate(value);
-    },
-  });
-  const isPending = isSignInPending || isSignUpPending;
+  const update = useAuthStore((state) => state.update);
+  const { AppField, AppForm, SubscribeButton, handleSubmit, isPending } = useAuthModalSignUpForm();
 
   const handleChangeTab = () => update({ currentTab: 'signIn' });
 

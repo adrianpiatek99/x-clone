@@ -12,7 +12,11 @@ import type { InputType } from './types';
 
 const DEFAULT_MAX_LENGTH = 255;
 
-export type InputProps = Omit<ComponentPropsWithRef<'input'>, 'type' | 'size' | 'onChange'> & {
+export type InputProps = Omit<
+  ComponentPropsWithRef<'input'>,
+  'value' | 'type' | 'size' | 'onChange'
+> & {
+  value: string | undefined;
   label: string;
   name: string;
   onChange?: (value: string) => void;
@@ -84,16 +88,25 @@ export const Input = ({
         >
           <Typography
             className={twMerge(
-              'absolute left-4 top-1/2 origin-left duration-150 group-focus-within:-translate-x-px group-focus-within:translate-y-[-110%] group-focus-within:scale-80',
-              isFilled
-                ? 'translate-x-[-1px] translate-y-[-110%] scale-80'
-                : '-translate-y-1/2 scale-100'
+              'absolute left-4 top-1/2 origin-left duration-150 group-focus-within:-translate-x-px group-focus-within:top-[9px] group-focus-within:scale-80',
+              isFilled ? 'translate-x-[-1px] top-[9px] scale-80' : 'top-[18px] scale-100'
             )}
             color={isError ? 'danger' : 'secondary'}
           >
             {label}
           </Typography>
         </label>
+        <Typography
+          style={{
+            paddingRight: iconsCount
+              ? `calc(${iconsCount > 1 ? '42' : '36'}px * ${iconsCount})`
+              : '',
+          }}
+          className='pointer-events-none absolute right-4 top-[9px] origin-right scale-80 opacity-0 duration-150 group-focus-within:opacity-100'
+          color='secondary'
+        >
+          {value.trim().length} / {maxLength}
+        </Typography>
         <input
           style={{ paddingRight: iconsCount ? `calc(46px * ${iconsCount})` : '' }}
           className={twMerge(

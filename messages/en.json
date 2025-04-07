@@ -97,12 +97,6 @@
     "following": "Following",
     "followers": "Followers",
     "posts": "Posts",
-    "edit": {
-      "discardChangesModal": {
-        "title": "Discard changes?",
-        "description": "This can't be undone and you'll lose your changes."
-      }
-    },
     "media": {
       "empty": {
         "title": "Lights, camera … attachments!",
@@ -114,6 +108,13 @@
         "title": "You don't have any likes yet",
         "description": "Tap the heart on any post to show it some love. When you do, it'll show up here."
       }
+    }
+  },
+
+  "modal": {
+    "discardChanges": {
+      "title": "Discard changes?",
+      "description": "This can't be undone and you'll lose your changes."
     }
   },
 
@@ -174,19 +175,29 @@
         "max": "Your name cannot be longer than {max} characters.",
         "required": "Name is required.",
         "invalid": "Invalid characters or too many blank spaces."
+      },
+      "description": {
+        "max": "Description can't have more than {max} characters."
+      },
+      "website": {
+        "max": "Website can't have more than {max} characters.",
+        "invalid": "Invalid URL."
       }
     },
     "file": {
       "image": {
         "onePhoto": "Please choose only one photo.",
         "limit": "Please choose up to {limit} photos.",
-        "sizeLimit": "Maximum image size exceeded. Please choose an image under {sizeLimit} MB."
+        "maxSize": "Maximum image size exceeded. Please choose an image under {maxSize} MB."
       },
       "invalidType": "Invalid file type."
     },
     "auth": {
       "signIn": "Sign-in failed. Please check your credentials and try again.",
       "signUp": "Sign-up failed."
+    },
+    "api": {
+      "somethingWentWrong": "Something went wrong. Please try again later."
     }
   }
 }

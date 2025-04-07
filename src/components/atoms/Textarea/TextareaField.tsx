@@ -3,26 +3,26 @@ import React from 'react';
 import { useFieldContext } from '@/hooks/useFormHook';
 import { useStore } from '@tanstack/react-form';
 
-import type { InputProps } from './Input';
-import { Input } from './Input';
+import type { TextareaProps } from './Textarea';
+import { Textarea } from './Textarea';
 
-type Props = Pick<InputProps, 'label' | 'type' | 'isLoading' | 'disabled' | 'maxLength'>;
+type Props = Pick<TextareaProps, 'label' | 'isLoading' | 'disabled' | 'rows' | 'maxLength'>;
 
-const InputField = ({ ...props }: Props) => {
+const TextareaField = ({ ...props }: Props) => {
   const { name, state, store, handleChange, handleBlur } = useFieldContext<string>();
   const errors = useStore(store, (state) => state.meta.errors);
   const error = state.meta.isTouched && errors[0]?.message;
 
   return (
-    <Input
+    <Textarea
       {...props}
       name={name}
       value={state.value}
-      onChange={handleChange}
+      onValueChange={handleChange}
       onBlur={handleBlur}
       error={error}
     />
   );
 };
 
-export default InputField;
+export default TextareaField;
