@@ -1,4 +1,4 @@
-export const appendToFormData = (formData: FormData, key: string, value: unknown) => {
+const appendToFormData = (formData: FormData, key: string, value: unknown) => {
   if (value === undefined || value === null) {
     formData.append(key, '');
 
