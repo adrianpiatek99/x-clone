@@ -5,8 +5,8 @@ import Credentials from 'next-auth/providers/credentials';
 
 import { db } from './db/db';
 import { usersSelect, usersTable } from './db/schema';
+import { ApiError } from './db/utils/api';
 import { signInSchema } from './schema';
-import { ApiError } from './utils/api';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [

@@ -1,7 +1,7 @@
 import type { UpdateProfileRequest } from '@/app/api/profile/update/route';
-import { API_ENDPOINTS } from '@/db/apiEndpoints';
+import { API_ENDPOINTS } from '@/db/constants';
+import { apiRequest } from '@/db/utils/api';
 import { useToasts } from '@/hooks/useToasts';
-import { apiRequest } from '@/utils/api';
 import { createFormData } from '@/utils/formData';
 import { reloadSession } from '@/utils/session';
 import { useMutation } from '@tanstack/react-query';

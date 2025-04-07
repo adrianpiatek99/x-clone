@@ -3,12 +3,12 @@ import React, { memo, useCallback, useEffect } from 'react';
 import { IconButton, ShimmerImage } from '@/components/atoms';
 import { Box } from '@/components/atoms/Box';
 import { imageFileTypes } from '@/constants/fileTypes';
+import { fileValidationConfigs } from '@/db/utils/validateFile';
 import { useFileImagePicker } from '@/hooks/useFileImagePicker';
 import { useToasts } from '@/hooks/useToasts';
 import { CameraPlusIcon } from '@/icons';
 import { CloseIcon } from '@/icons';
 import { useEditProfileStore } from '@/stores/editProfile';
-import { fileValidationConfigs } from '@/utils/validateFile';
 import { useTranslations } from 'next-intl';
 import { useShallow } from 'zustand/shallow';
 

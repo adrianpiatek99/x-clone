@@ -1,7 +1,5 @@
-import { auth } from '@/auth';
 import type { AxiosRequestConfig, AxiosResponse, Method } from 'axios';
 import axios from 'axios';
-import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { ZodError } from 'zod';
 
@@ -44,16 +42,4 @@ export const apiRequest = async <T, D = unknown>(
   } catch (error) {
     throw error as Error;
   }
-};
-
-type AuthenticatedHandler = (req: NextRequest, userId: string) => Promise<Response>;
-
-export const withAuth = (handler: AuthenticatedHandler) => async (req: NextRequest) => {
-  const session = await auth();
-
-  if (!session?.user?.id) {
-    throw new ApiError('Unauthorized', 401);
-  }
-
-  return handler(req, session.user.id);
 };

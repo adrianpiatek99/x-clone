@@ -1,10 +1,11 @@
 import { imageFileTypes } from '@/constants/fileTypes';
 import { db } from '@/db/db';
 import { type User, usersTable } from '@/db/schema';
+import { handleApiError } from '@/db/utils/api';
+import { withAuth } from '@/db/utils/auth';
+import { uploadFile } from '@/db/utils/uploadFile';
+import { fileValidationConfigs, validateFile } from '@/db/utils/validateFile';
 import { profileSchema } from '@/schema';
-import { handleApiError, withAuth } from '@/utils/api';
-import { uploadFile } from '@/utils/uploadFile';
-import { fileValidationConfigs, validateFile } from '@/utils/validateFile';
 import { eq } from 'drizzle-orm';
 import { type NextRequest, NextResponse } from 'next/server';
 

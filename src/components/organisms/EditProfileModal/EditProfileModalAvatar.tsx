@@ -2,11 +2,11 @@ import React, { memo, useCallback, useEffect } from 'react';
 
 import { Avatar, Box, IconButton } from '@/components/atoms';
 import { imageFileTypes } from '@/constants/fileTypes';
+import { fileValidationConfigs } from '@/db/utils/validateFile';
 import { useFileImagePicker } from '@/hooks/useFileImagePicker';
 import { useToasts } from '@/hooks/useToasts';
 import { CameraPlusIcon } from '@/icons';
 import { useEditProfileStore } from '@/stores/editProfile';
-import { fileValidationConfigs } from '@/utils/validateFile';
 import { useTranslations } from 'next-intl';
 import { useShallow } from 'zustand/shallow';
 

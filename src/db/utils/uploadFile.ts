@@ -1,12 +1,12 @@
+const API_CLOUDINARY_KEY = 'dyvjyekzy';
+const API_CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${API_CLOUDINARY_KEY}/image/upload`;
+const UPLOAD_PRESET = 'maf4fhgi';
+
 type UploadFileOutput = {
   url: string;
   width: number;
   height: number;
 };
-
-const API_CLOUDINARY_KEY = 'dyvjyekzy';
-const API_CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${API_CLOUDINARY_KEY}/image/upload`;
-const UPLOAD_PRESET = 'maf4fhgi';
 
 export const uploadFile = async (file: File): Promise<UploadFileOutput> => {
   const formData = new FormData();

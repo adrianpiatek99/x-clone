@@ -1,8 +1,8 @@
 import { db } from '@/db/db';
 import { usersTable } from '@/db/schema';
+import { ApiError, handleApiError } from '@/db/utils/api';
 import type { SignUpValues } from '@/schema';
 import { signUpSchema } from '@/schema';
-import { ApiError, handleApiError } from '@/utils/api';
 import { hashSync } from 'bcryptjs';
 import { eq, ilike, or } from 'drizzle-orm';
 import { type NextRequest, NextResponse } from 'next/server';
