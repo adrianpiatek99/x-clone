@@ -1,42 +1,16 @@
 import React from 'react';
 
 import { Box, Typography } from '@/components/atoms';
-import { useSignInMutation } from '@/hooks/api/auth/useSignInMutation';
-import { useAppForm } from '@/hooks/useFormHook';
-import type { SignInValues } from '@/schema';
-import { signInSchema } from '@/schema';
 import { useAuthStore } from '@/stores/auth';
 import { useTranslations } from 'next-intl';
-import { useShallow } from 'zustand/shallow';
 
 import { signInInputs } from './config';
+import { useAuthModalSignInForm } from './useAuthModalSignInForm';
 
 const AuthModalSignInForm = () => {
   const t = useTranslations();
-  const { update, resetStore } = useAuthStore(
-    useShallow((state) => ({
-      update: state.update,
-      resetStore: state.resetStore,
-    }))
-  );
-  const { signIn, isPending } = useSignInMutation({
-    onSuccess: () => {
-      reset();
-      resetStore();
-    },
-  });
-  const { AppField, AppForm, SubscribeButton, handleSubmit, reset } = useAppForm({
-    defaultValues: {
-      emailOrScreenName: '',
-      password: '',
-    } satisfies SignInValues,
-    validators: { onChange: signInSchema(t) },
-    onSubmit: ({ value }) => {
-      if (isPending) return;
-
-      signIn(value);
-    },
-  });
+  const update = useAuthStore((state) => state.update);
+  const { AppField, AppForm, SubscribeButton, handleSubmit, isPending } = useAuthModalSignInForm();
 
   const handleChangeTab = () => update({ currentTab: 'signUp' });
 

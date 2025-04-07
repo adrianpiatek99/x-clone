@@ -29,7 +29,6 @@ const AuthModal = () => {
           <Logo size='l' />
         </Box>
       }
-      preventClosingOnOutside
     >
       <Box className='mx-auto max-w-[364px] gap-4 px-[30px] pt-[30px]'>
         <AuthModalCurrentTab />

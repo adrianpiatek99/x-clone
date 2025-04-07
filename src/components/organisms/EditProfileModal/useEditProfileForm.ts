@@ -28,12 +28,6 @@ export const useEditProfileForm = ({ user, isOpen, onClose }: Props) => {
   );
   const { profileImageUrl, profileBannerUrl } = user;
 
-  const { updateProfileMutate, isPending } = useUpdateProfileMutation({
-    onSuccess: () => {
-      onClose();
-    },
-  });
-
   const { AppField, handleSubmit, store, reset } = useAppForm({
     defaultValues: {
       name: user.name,
@@ -59,15 +53,21 @@ export const useEditProfileForm = ({ user, isOpen, onClose }: Props) => {
   });
   const formValues = useStore(store, (state) => state.values);
 
-  const isChanged = useMemo(() => {
-    const isEntriesChanged = !Object.entries(formValues).every(
-      ([key, value]) => value === user[key as keyof typeof user]
-    );
-    const isAvatarChanged = user.profileImageUrl !== avatar.url;
-    const isBannerChanged = user.profileBannerUrl !== banner.url;
+  const { updateProfileMutate, isPending } = useUpdateProfileMutation({
+    onSuccess: () => {
+      onClose();
+    },
+  });
 
-    return isEntriesChanged || isAvatarChanged || isBannerChanged;
-  }, [user, formValues, avatar.url, banner.url]);
+  const isChanged = useMemo(
+    () =>
+      !Object.entries({
+        ...formValues,
+        profileImageUrl: avatar.url,
+        profileBannerUrl: banner.url,
+      }).every(([key, value]) => value === user[key as keyof typeof user]),
+    [user, formValues, avatar.url, banner.url]
+  );
 
   useEffect(() => {
     if (isOpen) {
