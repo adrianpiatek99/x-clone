@@ -163,6 +163,7 @@ export default {
         },
       },
       animation: {
+        initAppear: 'appear .15s ease-out',
         appear: 'appear .3s ease-out',
         enter: 'enter .2s ease',
         leave: 'leave .2s both ease',

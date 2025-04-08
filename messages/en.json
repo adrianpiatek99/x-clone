@@ -190,7 +190,8 @@
         "limit": "Please choose up to {limit} photos.",
         "maxSize": "Maximum image size exceeded. Please choose an image under {maxSize} MB."
       },
-      "invalidType": "Invalid file type."
+      "invalidType": "Invalid file type.",
+      "somethingWentWrong": "Failed to upload file"
     },
     "auth": {
       "signIn": "Sign-in failed. Please check your credentials and try again.",

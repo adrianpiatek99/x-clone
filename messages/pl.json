@@ -190,7 +190,8 @@
         "limit": "Możesz wybrać maksymalnie {limit} zdjęcia.",
         "maxSize": "Przekroczono maksymalny rozmiar obrazu. Wybierz obraz mniejszy niż {maxSize} MB."
       },
-      "invalidType": "Nieprawidłowy typ pliku."
+      "invalidType": "Nieprawidłowy typ pliku.",
+      "somethingWentWrong": "Nie udało się wrzucić pliku"
     },
     "auth": {
       "signIn": "Nie udało się zalogować. Sprawdź swoje dane i spróbuj ponownie.",
