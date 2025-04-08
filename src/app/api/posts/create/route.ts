@@ -8,6 +8,7 @@ import {
   postLikesTable,
   postMediaTable,
   PostMediaType,
+  postRepliesTable,
   postsTable,
 } from '@/db/schema/posts';
 import { ApiError, handleApiError } from '@/db/utils/api';
@@ -88,21 +89,25 @@ export const POST = withAuth(async (request: NextRequest, userId: string) => {
     }
 
     // Fetch created post
-    const createdPost = await db.query.postsTable.findFirst({
-      where: eq(postsTable.id, post.id),
-      with: {
-        author: {
-          columns: postAuthorColumns,
-        },
-        likes: {
-          where: eq(postLikesTable.userId, userId),
-          columns: {
-            userId: true,
+    const [createdPost, likesCount, repliesCount] = await Promise.all([
+      db.query.postsTable.findFirst({
+        where: eq(postsTable.id, post.id),
+        with: {
+          author: {
+            columns: postAuthorColumns,
           },
+          likes: {
+            where: eq(postLikesTable.userId, userId),
+            columns: {
+              userId: true,
+            },
+          },
+          media: true,
         },
-        media: true,
-      },
-    });
+      }),
+      db.$count(postLikesTable, eq(postLikesTable.postId, post.id)),
+      db.$count(postRepliesTable, eq(postRepliesTable.postId, post.id)),
+    ]);
 
     if (!createdPost) {
       throw new ApiError('Failed to fetch created post', 500);
@@ -110,7 +115,10 @@ export const POST = withAuth(async (request: NextRequest, userId: string) => {
 
     const isLiked = createdPost.likes.length > 0;
 
-    return NextResponse.json<CreatePostResponse>({ ...createdPost, isLiked }, { status: 201 });
+    return NextResponse.json<CreatePostResponse>(
+      { ...createdPost, isLiked, likesCount, repliesCount },
+      { status: 201 }
+    );
   } catch (error) {
     return handleApiError(error);
   }

@@ -12,7 +12,7 @@ export const postsTable = pgTable('posts', {
   authorId: uuid('author_id')
     .notNull()
     .references(() => usersTable.id, { onDelete: 'cascade' }),
-  hashtags: text().array(),
+  hashtags: text().notNull().array().default([]),
   conversationControl: ConversationControlEnum().notNull().default(ConversationControl.ALL),
   createdAt,
   updatedAt,

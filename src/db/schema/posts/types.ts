@@ -28,6 +28,8 @@ export type Post = typeof postsTable.$inferSelect & {
   author: PostAuthor;
   media: PostMedia[];
   isLiked: boolean;
+  likesCount: number;
+  repliesCount: number;
 };
 export type PostMedia = typeof postMediaTable.$inferSelect;
 export type PostLike = typeof postLikesTable.$inferSelect;
