@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Box } from '@/components/atoms';
-import { Button } from '@/components/atoms';
+import { Box } from '@/components/atoms/Box';
+import { Button } from '@/components/atoms/Button';
 import { useAppSession } from '@/hooks/useAppSession';
 import { usePathname } from '@/i18n/routing';
 import { LogoutIcon } from '@/icons';

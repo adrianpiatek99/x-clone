@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ConfirmModal } from '@/components/atoms';
+import { ConfirmModal } from '@/components/atoms/ConfirmModal';
 import { useGlobalStore } from '@/stores/global';
 import { signOut } from 'next-auth/react';
 import { useTranslations } from 'next-intl';

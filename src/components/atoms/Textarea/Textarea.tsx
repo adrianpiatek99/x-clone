@@ -79,7 +79,7 @@ export const Textarea: FC<TextareaProps> = ({
         >
           <textarea
             className={twMerge(
-              'max-h-[650px] w-full select-text resize-none whitespace-pre-wrap break-words bg-transparent text-left text-neutral outline-none [direction:ltr] placeholder:text-neutral-300',
+              'max-h-[550px] w-full select-text resize-none whitespace-pre-wrap break-words bg-transparent text-left text-neutral outline-none [direction:ltr] placeholder:text-neutral-300',
               className
             )}
             rows={1}

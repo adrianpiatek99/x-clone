@@ -1,4 +1,4 @@
-import type { InputRecord } from '@/components/atoms';
+import type { InputRecord } from '@/components/atoms/Input';
 import type { SignInValues } from '@/schema';
 import { PASSWORD_MAX_LENGTH } from '@/schema';
 

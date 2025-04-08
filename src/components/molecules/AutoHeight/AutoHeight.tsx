@@ -27,8 +27,8 @@ const AutoHeight: FC<AutoHeightProps> = ({ children, ...props }) => {
 
   return (
     <AnimateHeight
-      {...props}
       duration={DEFAULT_DURATION}
+      {...props}
       height={height}
       contentClassName='auto-content'
       contentRef={contentRef}

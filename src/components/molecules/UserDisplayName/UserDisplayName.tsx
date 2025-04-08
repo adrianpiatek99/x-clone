@@ -1,7 +1,7 @@
 import React from 'react';
 
-import type { TypographyProps } from '@/components/atoms';
-import { Typography } from '@/components/atoms';
+import type { TypographyProps } from '@/components/atoms/Typography';
+import { Typography } from '@/components/atoms/Typography';
 import { VerifiedIcon } from '@/icons';
 
 type Props = Pick<TypographyProps, 'href' | 'onClick' | 'className' | 'size'> & {

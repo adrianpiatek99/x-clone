@@ -1,13 +1,13 @@
-import React, { memo, useCallback, useEffect } from 'react';
+import React, { memo } from 'react';
 
-import { IconButton, ShimmerImage } from '@/components/atoms';
 import { Box } from '@/components/atoms/Box';
+import { IconButton } from '@/components/atoms/IconButton';
+import { ShimmerImage } from '@/components/atoms/ShimmerImage';
 import { imageFileTypes } from '@/constants/fileTypes';
 import { fileValidationConfigs } from '@/db/utils/validateFile';
 import { useFileImagePicker } from '@/hooks/useFileImagePicker';
 import { useToasts } from '@/hooks/useToasts';
-import { CameraPlusIcon } from '@/icons';
-import { CloseIcon } from '@/icons';
+import { CameraPlusIcon, CloseIcon } from '@/icons';
 import { useEditProfileStore } from '@/stores/editProfile';
 import { useTranslations } from 'next-intl';
 import { useShallow } from 'zustand/shallow';
@@ -21,26 +21,17 @@ export const EditProfileModalBanner = memo(() => {
       updateBannerFile: state.updateBannerFile,
     }))
   );
-  const { files, error, handleFileChange, openFilePicker, filePickerRef, reset } =
-    useFileImagePicker({ maxSize: fileValidationConfigs.banner.maxSize });
+  const { handleFileChange, openFilePicker, filePickerRef } = useFileImagePicker({
+    onSuccess: (files) => {
+      updateBannerFile(files[0]);
+    },
+    onError: (error) => {
+      addToast('error', error, { duration: 6000 });
+    },
+    options: { maxSize: fileValidationConfigs.banner.maxSize },
+  });
 
   const handleRemoveBanner = () => updateBannerFile(null);
-
-  const handleBannerUpdate = useCallback(() => {
-    if (files.length) {
-      updateBannerFile(files[0]);
-    } else if (error) {
-      addToast('error', error, { duration: 6000 });
-    }
-
-    reset();
-  }, [files, error, addToast, updateBannerFile, reset]);
-
-  useEffect(() => {
-    if (!!files.length || error) {
-      handleBannerUpdate();
-    }
-  }, [files, error, handleBannerUpdate]);
 
   return (
     <div className='relative mx-0.5 grid place-items-center overflow-hidden bg-foreground'>

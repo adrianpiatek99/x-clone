@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Avatar } from '@/components/atoms';
+import { Avatar } from '@/components/atoms/Avatar';
 import { IconButton } from '@/components/atoms/IconButton';
 import { useAppSession } from '@/hooks/useAppSession';
 import { MenuIcon } from '@/icons';

@@ -1,3 +1,4 @@
+import { POST_MEDIA_SIZE_MB_LIMIT } from '../constants';
 import { ApiError } from './api';
 
 interface FileValidationOptions {
@@ -29,5 +30,9 @@ export const fileValidationConfigs = {
   banner: {
     maxSize: 2 * 1024 * 1024,
     fieldName: 'banner',
+  },
+  media: {
+    maxSize: POST_MEDIA_SIZE_MB_LIMIT * 1024 * 1024,
+    fieldName: 'media',
   },
 } as const;

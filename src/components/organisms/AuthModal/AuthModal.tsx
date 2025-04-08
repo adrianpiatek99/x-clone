@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { Box, Logo, Modal } from '@/components/atoms';
+import { Box } from '@/components/atoms/Box';
+import { Logo } from '@/components/atoms/Logo';
+import { Modal } from '@/components/atoms/Modal';
 import { useAuthStore } from '@/stores/auth';
 import { useShallow } from 'zustand/shallow';
 
