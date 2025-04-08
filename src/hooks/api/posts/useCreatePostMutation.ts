@@ -1,4 +1,4 @@
-import { CreatePostRequest } from '@/app/api/posts/create/route';
+import type { CreatePostRequest, CreatePostResponse } from '@/app/api/posts/create/route';
 import { API_ENDPOINTS } from '@/db/constants';
 import { apiRequest } from '@/db/utils/api';
 import { useToasts } from '@/hooks/useToasts';
@@ -15,7 +15,7 @@ export const useCreatePostMutation = ({ onSuccess, onSettled }: Props = {}) => {
   const t = useTranslations();
   const { addToast } = useToasts();
 
-  const { mutate, isPending } = useMutation<void, ApiAxiosError, CreatePostRequest>({
+  const { mutate, isPending } = useMutation<CreatePostResponse, ApiAxiosError, CreatePostRequest>({
     mutationFn: (data) => {
       const formData = createFormData(data);
 

@@ -2,8 +2,9 @@ import { relations } from 'drizzle-orm';
 import { integer, pgTable, text, uuid } from 'drizzle-orm/pg-core';
 
 import { createdAt, id, updatedAt } from '../helpers';
+import type { User } from '../users';
 import { usersTable } from '../users/table';
-import { ConversationControl, PostMediaType } from './types';
+import { ConversationControl, ConversationControlEnum, PostMediaTypeEnum } from './types';
 
 export const postsTable = pgTable('posts', {
   id,
@@ -12,7 +13,7 @@ export const postsTable = pgTable('posts', {
     .notNull()
     .references(() => usersTable.id, { onDelete: 'cascade' }),
   hashtags: text().array(),
-  conversationControl: ConversationControl('conversation_control').notNull().default('ALL'),
+  conversationControl: ConversationControlEnum().notNull().default(ConversationControl.ALL),
   createdAt,
   updatedAt,
 });
@@ -22,7 +23,7 @@ export const postMediaTable = pgTable('post_media', {
   url: text().notNull(),
   width: integer('width').notNull(),
   height: integer('height').notNull(),
-  type: PostMediaType().notNull(),
+  type: PostMediaTypeEnum().notNull(),
   postId: uuid('post_id')
     .notNull()
     .references(() => postsTable.id, { onDelete: 'cascade' }),
@@ -91,3 +92,12 @@ export const postRepliesRelations = relations(postRepliesTable, ({ one }) => ({
     references: [usersTable.id],
   }),
 }));
+
+// Columns
+export const postAuthorColumns = {
+  id: true,
+  name: true,
+  screenName: true,
+  profileImageUrl: true,
+  isVerified: true,
+} satisfies Partial<Record<keyof User, boolean>>;

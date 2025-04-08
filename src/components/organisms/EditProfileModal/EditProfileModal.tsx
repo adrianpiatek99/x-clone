@@ -3,12 +3,12 @@ import { useState } from 'react';
 import Box from '@/components/atoms/Box';
 import Modal from '@/components/atoms/Modal';
 import DiscardChangesModal from '@/components/molecules/DiscardChangesModal';
-import type { User } from '@/db/schema';
 import {
   PROFILE_DESCRIPTION_MAX_LENGTH,
   PROFILE_NAME_MAX_LENGTH,
   PROFILE_WEBSITE_MAX_LENGTH,
-} from '@/schema';
+} from '@/db/constants';
+import type { User } from '@/db/schema';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 

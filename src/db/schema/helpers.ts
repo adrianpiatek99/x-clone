@@ -1,5 +1,9 @@
 import { timestamp, uuid } from 'drizzle-orm/pg-core';
 
+export const enumToPgEnum = <T extends Record<string, any>>(
+  myEnum: T
+): [T[keyof T], ...T[keyof T][]] => Object.values(myEnum).map((value: any) => `${value}`) as any;
+
 export const id = uuid().primaryKey().defaultRandom();
 export const createdAt = timestamp('created_at', { withTimezone: true }).notNull().defaultNow();
 export const updatedAt = timestamp('updated_at', { withTimezone: true })

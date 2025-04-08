@@ -1,4 +1,0 @@
-export const PROFILE_DESCRIPTION_MAX_LENGTH = 160;
-export const PROFILE_WEBSITE_MAX_LENGTH = 100;
-
-export const POST_TEXT_MAX_LENGTH = 500;

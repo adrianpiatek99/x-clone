@@ -4,8 +4,8 @@ import {
   PASSWORD_MAX_LENGTH,
   PROFILE_NAME_MAX_LENGTH,
   PROFILE_SCREEN_NAME_MAX_LENGTH,
-  type SignUpValues,
-} from '@/schema';
+} from '@/db/constants';
+import { SignUpValues } from '@/schema';
 
 export const signUpInputs = (t: Translation): InputRecord<SignUpValues>[] => [
   {

@@ -1,13 +1,13 @@
+import {
+  EMAIL_MAX_LENGTH,
+  PASSWORD_MAX_LENGTH,
+  PASSWORD_MIN_LENGTH,
+  PROFILE_NAME_MAX_LENGTH,
+  PROFILE_NAME_MIN_LENGTH,
+  PROFILE_SCREEN_NAME_MAX_LENGTH,
+  PROFILE_SCREEN_NAME_MIN_LENGTH,
+} from '@/db/constants';
 import { z } from 'zod';
-
-export const PASSWORD_MIN_LENGTH = 6;
-export const PASSWORD_MAX_LENGTH = 32;
-
-export const PROFILE_SCREEN_NAME_MIN_LENGTH = 4;
-export const PROFILE_SCREEN_NAME_MAX_LENGTH = 15;
-export const EMAIL_MAX_LENGTH = 100;
-export const PROFILE_NAME_MIN_LENGTH = 4;
-export const PROFILE_NAME_MAX_LENGTH = 50;
 
 export type SignInValues = z.infer<ReturnType<typeof signInSchema>>;
 export type SignUpValues = z.infer<ReturnType<typeof signUpSchema>>;
