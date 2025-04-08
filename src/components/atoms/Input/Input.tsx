@@ -27,7 +27,7 @@ export type InputProps = Omit<
   ref?: RefCallback<HTMLInputElement>;
 };
 
-export const Input = ({
+const Input = ({
   label,
   name,
   value = '',
@@ -146,3 +146,5 @@ export const Input = ({
     </div>
   );
 };
+
+export default Input;

@@ -16,7 +16,7 @@ export type TextareaProps = Omit<ComponentPropsWithRef<'textarea'>, 'placeholder
   error?: string;
 };
 
-export const Textarea: FC<TextareaProps> = ({
+const Textarea: FC<TextareaProps> = ({
   name,
   label,
   value,
@@ -104,3 +104,5 @@ export const Textarea: FC<TextareaProps> = ({
     </div>
   );
 };
+
+export default Textarea;

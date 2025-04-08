@@ -1,8 +1,8 @@
 import { EditProfileIcon, PlayIcon, SettingsIcon, TrashIcon } from '@/icons';
 import type { Meta, StoryFn } from '@storybook/react';
 
+import Button from '.';
 import type { ButtonProps } from './Button';
-import { Button } from './Button';
 
 const icons = {
   None: undefined,

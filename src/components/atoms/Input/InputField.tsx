@@ -4,7 +4,7 @@ import { useFieldContext } from '@/hooks/useFormHook';
 import { useStore } from '@tanstack/react-form';
 
 import type { InputProps } from './Input';
-import { Input } from './Input';
+import Input from './Input';
 
 type Props = Pick<InputProps, 'label' | 'type' | 'isLoading' | 'disabled' | 'maxLength'>;
 

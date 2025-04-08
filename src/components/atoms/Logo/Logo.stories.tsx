@@ -1,8 +1,8 @@
 import type { Meta, StoryFn } from '@storybook/react';
 
-import { Box } from '../Box';
+import Box from '../Box';
 import type { LogoProps } from '.';
-import { Logo } from '.';
+import Logo from '.';
 
 const meta = {
   title: 'Components / Atoms / Logo',

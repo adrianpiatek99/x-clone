@@ -2,7 +2,7 @@ import { CloseIcon, EditProfileIcon, HeartIcon, PlayIcon } from '@/icons';
 import type { Meta, StoryFn } from '@storybook/react';
 
 import type { IconButtonProps } from '.';
-import { IconButton } from '.';
+import IconButton from '.';
 
 const icons = {
   Play: <PlayIcon />,

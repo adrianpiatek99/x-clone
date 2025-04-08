@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Box } from '@/components/atoms/Box';
-import { Typography } from '@/components/atoms/Typography';
+import Box from '@/components/atoms/Box';
+import Typography from '@/components/atoms/Typography';
 import { useAuthStore } from '@/stores/auth';
 import { useTranslations } from 'next-intl';
 

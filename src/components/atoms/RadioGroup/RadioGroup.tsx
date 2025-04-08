@@ -8,7 +8,7 @@ export type RadioGroupProps = {
   title?: string;
 };
 
-export const RadioGroup: FC<RadioGroupProps> = ({ children, title }) => {
+const RadioGroup: FC<RadioGroupProps> = ({ children, title }) => {
   return (
     <div className='flex w-full flex-col gap-2'>
       {title && (
@@ -20,3 +20,5 @@ export const RadioGroup: FC<RadioGroupProps> = ({ children, title }) => {
     </div>
   );
 };
+
+export default RadioGroup;

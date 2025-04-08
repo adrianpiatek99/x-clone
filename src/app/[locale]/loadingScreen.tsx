@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import React from 'react';
 
-import { Logo } from '@/components/atoms/Logo';
+import Logo from '@/components/atoms/Logo';
 import { useAppSession } from '@/hooks/useAppSession';
 
 const LoadingScreen = ({ children }: { children: ReactNode }) => {

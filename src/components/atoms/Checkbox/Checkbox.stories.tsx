@@ -1,8 +1,8 @@
 import type { Meta, StoryFn } from '@storybook/react';
 
-import { Box } from '../Box';
+import Box from '../Box';
+import Checkbox from '.';
 import type { CheckboxProps } from './Checkbox';
-import { Checkbox } from './Checkbox';
 
 const meta = {
   title: 'Components / Atoms / Checkbox',

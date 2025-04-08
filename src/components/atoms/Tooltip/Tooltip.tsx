@@ -11,7 +11,7 @@ type Props = {
   offset?: number;
 };
 
-export const Tooltip = ({ tooltipId, ...props }: Props) => {
+const Tooltip = ({ tooltipId, ...props }: Props) => {
   return (
     <ReactTooltip
       id={tooltipId}
@@ -33,3 +33,5 @@ export const Tooltip = ({ tooltipId, ...props }: Props) => {
     />
   );
 };
+
+export default Tooltip;

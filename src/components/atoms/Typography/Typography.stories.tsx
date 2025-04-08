@@ -2,9 +2,9 @@ import React from 'react';
 
 import type { Meta, StoryFn } from '@storybook/react';
 
-import { Box } from '../Box';
+import Box from '../Box';
 import type { TypographyProps } from '.';
-import { Typography } from '.';
+import Typography from '.';
 
 const meta = {
   title: 'Components / Atoms / Typography',

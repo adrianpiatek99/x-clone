@@ -1,8 +1,8 @@
 import React from 'react';
 
-import { Avatar } from '@/components/atoms/Avatar';
-import { Box } from '@/components/atoms/Box';
-import { Typography } from '@/components/atoms/Typography';
+import Avatar from '@/components/atoms/Avatar';
+import Box from '@/components/atoms/Box';
+import Typography from '@/components/atoms/Typography';
 import UserDisplayName from '@/components/molecules/UserDisplayName';
 import { ROUTES } from '@/constants/routes';
 import { useAppSession } from '@/hooks/useAppSession';

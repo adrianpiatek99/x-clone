@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
-import { Box } from '@/components/atoms/Box';
-import { Modal } from '@/components/atoms/Modal';
+import Box from '@/components/atoms/Box';
+import Modal from '@/components/atoms/Modal';
 import DiscardChangesModal from '@/components/molecules/DiscardChangesModal';
 import type { User } from '@/db/schema';
 import {

@@ -1,6 +1,6 @@
 import React, { memo } from 'react';
 
-import { Button } from '@/components/atoms/Button';
+import Button from '@/components/atoms/Button';
 import { twMerge } from 'tailwind-merge';
 
 import type { NavigationDrawerItem } from './config';

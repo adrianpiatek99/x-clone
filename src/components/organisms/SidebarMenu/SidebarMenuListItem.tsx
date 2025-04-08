@@ -1,7 +1,7 @@
 import React, { cloneElement, memo } from 'react';
 
-import { Button } from '@/components/atoms/Button';
-import { IconButton } from '@/components/atoms/IconButton';
+import Button from '@/components/atoms/Button';
+import IconButton from '@/components/atoms/IconButton';
 import { twMerge } from 'tailwind-merge';
 
 import type { SidebarMenuItem } from './config';

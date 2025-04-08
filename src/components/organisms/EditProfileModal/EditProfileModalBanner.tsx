@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 
-import { Box } from '@/components/atoms/Box';
-import { IconButton } from '@/components/atoms/IconButton';
-import { ShimmerImage } from '@/components/atoms/ShimmerImage';
+import Box from '@/components/atoms/Box';
+import IconButton from '@/components/atoms/IconButton';
+import ShimmerImage from '@/components/atoms/ShimmerImage';
 import { imageFileTypes } from '@/constants/fileTypes';
 import { fileValidationConfigs } from '@/db/utils/validateFile';
 import { useFileImagePicker } from '@/hooks/useFileImagePicker';

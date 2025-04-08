@@ -1,9 +1,9 @@
 import { DEFAULT_AVATAR_URL } from '@/constants/urls';
 import type { Meta, StoryFn } from '@storybook/react';
 
-import { Box } from '../Box';
+import Box from '../Box';
 import type { AvatarProps } from '.';
-import { Avatar } from '.';
+import Avatar from '.';
 
 const meta = {
   title: 'Components / Atoms / Avatar',

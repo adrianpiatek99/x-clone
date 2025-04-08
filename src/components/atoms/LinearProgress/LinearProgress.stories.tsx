@@ -1,8 +1,8 @@
 import type { Meta, StoryFn } from '@storybook/react';
 
-import { Box } from '../Box';
+import Box from '../Box';
 import type { LinearProgressProps } from '.';
-import { LinearProgress } from '.';
+import LinearProgress from '.';
 
 const meta = {
   title: 'Components / Atoms / LinearProgress',

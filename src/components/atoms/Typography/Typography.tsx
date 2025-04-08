@@ -24,7 +24,7 @@ export type TypographyProps = ComponentPropsWithoutRef<'span'> & {
   linkProps?: ComponentPropsWithoutRef<'a'>;
 };
 
-export const typographyClasses: TypographyClasses = {
+const typographyClasses: TypographyClasses = {
   size: {
     xs: 'text-xs',
     s: 'text-s',
@@ -102,3 +102,5 @@ export const Typography: FC<TypographyProps> = ({
     content
   );
 };
+
+export default Typography;

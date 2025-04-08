@@ -1,10 +1,10 @@
 import React, { memo, useState } from 'react';
 
-import { Avatar } from '@/components/atoms/Avatar';
-import { Box } from '@/components/atoms/Box';
-import { Button } from '@/components/atoms/Button';
-import { Dropdown, DropdownItem } from '@/components/atoms/Dropdown';
-import { Typography } from '@/components/atoms/Typography';
+import Avatar from '@/components/atoms/Avatar';
+import Box from '@/components/atoms/Box';
+import Button from '@/components/atoms/Button';
+import Dropdown, { DropdownItem } from '@/components/atoms/Dropdown';
+import Typography from '@/components/atoms/Typography';
 import UserDisplayName from '@/components/molecules/UserDisplayName';
 import { useAppSession } from '@/hooks/useAppSession';
 import { EditProfileIcon, LogoutIcon, MoreHorizontalIcon } from '@/icons';

@@ -21,7 +21,7 @@ export type ModalProps = {
   preventClosingOnOutside?: boolean;
 };
 
-export const Modal: FC<ModalProps> = ({
+const Modal: FC<ModalProps> = ({
   children,
   isOpen,
   isLoading = false,
@@ -78,3 +78,5 @@ export const Modal: FC<ModalProps> = ({
     </Dialog>
   );
 };
+
+export default Modal;

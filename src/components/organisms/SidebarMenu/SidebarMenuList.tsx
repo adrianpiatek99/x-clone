@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { Box } from '@/components/atoms/Box';
-import { Button } from '@/components/atoms/Button';
-import { IconButton } from '@/components/atoms/IconButton';
-import { Logo } from '@/components/atoms/Logo';
+import Box from '@/components/atoms/Box';
+import Button from '@/components/atoms/Button';
+import IconButton from '@/components/atoms/IconButton';
+import Logo from '@/components/atoms/Logo';
 import { ROUTES } from '@/constants/routes';
 import { useAppSession } from '@/hooks/useAppSession';
 import { usePathname } from '@/i18n/routing';

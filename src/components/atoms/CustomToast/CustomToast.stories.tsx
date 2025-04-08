@@ -1,8 +1,8 @@
-import { Box } from '@/components/atoms/Box';
-import { Button } from '@/components/atoms/Button';
 import { DEFAULT_TOAST_DURATION, useToasts } from '@/hooks/useToasts';
 import type { StoryFn } from '@storybook/react';
 
+import Box from '../Box';
+import Button from '../Button';
 import type { CustomToastProps } from './CustomToast';
 
 const meta = {

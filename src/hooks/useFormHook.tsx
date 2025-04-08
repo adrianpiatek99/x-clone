@@ -1,5 +1,5 @@
 import type { ButtonProps } from '@/components/atoms/Button';
-import { Button } from '@/components/atoms/Button';
+import Button from '@/components/atoms/Button';
 import CheckboxField from '@/components/atoms/Checkbox/CheckboxField';
 import InputField from '@/components/atoms/Input/InputField';
 import RadioField from '@/components/atoms/RadioGroup/RadioField';

@@ -6,8 +6,8 @@ import React, { cloneElement } from 'react';
 import { MenuItem } from '@headlessui/react';
 import { twMerge } from 'tailwind-merge';
 
-import { Loader } from '../Loader';
-import { Typography } from '../Typography';
+import Loader from '../Loader';
+import Typography from '../Typography';
 
 export type DropdownItemProps = {
   children: string;

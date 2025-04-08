@@ -10,8 +10,10 @@ export type BoxProps = ComponentPropsWithRef<'div'> & {
   ref?: RefCallback<HTMLDivElement>;
 };
 
-export const Box: FC<BoxProps> = ({ as = 'div', className, ...props }) =>
+const Box: FC<BoxProps> = ({ as = 'div', className, ...props }) =>
   createElement(as, {
     className: twMerge('flex flex-col gap-3 min-w-0', className),
     ...props,
   });
+
+export default Box;

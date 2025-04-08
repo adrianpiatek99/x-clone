@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IconButton } from '@/components/atoms/IconButton';
+import IconButton from '@/components/atoms/IconButton';
 import { useAppSession } from '@/hooks/useAppSession';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { useScrollDirection } from '@/hooks/useScrollDirection';

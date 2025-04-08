@@ -4,7 +4,7 @@ import { useFieldContext } from '@/hooks/useFormHook';
 import { useStore } from '@tanstack/react-form';
 
 import type { TextareaProps } from './Textarea';
-import { Textarea } from './Textarea';
+import Textarea from './Textarea';
 
 type Props = Pick<TextareaProps, 'label' | 'isLoading' | 'disabled' | 'rows' | 'maxLength'>;
 

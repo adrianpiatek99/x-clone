@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Avatar } from '@/components/atoms/Avatar';
+import Avatar from '@/components/atoms/Avatar';
 import { ROUTES } from '@/constants/routes';
 import { useAppSession } from '@/hooks/useAppSession';
 

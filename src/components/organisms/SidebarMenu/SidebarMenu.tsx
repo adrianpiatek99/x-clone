@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { Box } from '@/components/atoms/Box';
+import Box from '@/components/atoms/Box';
 import { useAppSession } from '@/hooks/useAppSession';
 
 import { SidebarMenuAccount } from './SidebarMenuAccount';

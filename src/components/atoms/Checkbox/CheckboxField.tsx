@@ -4,7 +4,8 @@ import React from 'react';
 
 import { useFieldContext } from '@/hooks/useFormHook';
 
-import { Checkbox, type CheckboxProps } from './Checkbox';
+import type { CheckboxProps } from './Checkbox';
+import Checkbox from './Checkbox';
 
 type Props = Omit<CheckboxProps, 'checked' | 'onChange' | 'name'>;
 
