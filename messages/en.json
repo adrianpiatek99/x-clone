@@ -124,26 +124,32 @@
   },
 
   "post": {
+    "textarea": {
+      "label": "What's happening?!"
+    },
     "actions": {
-      "default": "Post",
       "send": "Post",
       "delete": "Delete",
       "reply": "Reply",
       "like": "Like",
       "unlike": "Unlike",
       "repost": "Repost",
+      "media": "Media",
       "more": "More"
     },
-    "counts": {
+    "stats": {
       "likes": "Likes",
       "replies": "Replies"
     },
-    "create": {
-      "placeholder": "What's happening?!"
-    },
-    "deleteConfirmModal": {
+    "confirmDeleteModal": {
       "title": "Delete post?",
       "description": "This can't be undone and it will be removed from your profile, the timeline of any accounts that follow you, and from search results."
+    },
+    "api": {
+      "createPost": {
+        "success": "Post created successfully.",
+        "error": "Failed to create post."
+      }
     }
   },
 

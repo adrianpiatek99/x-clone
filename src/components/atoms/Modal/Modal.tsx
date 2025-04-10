@@ -3,9 +3,9 @@
 import type { ComponentPropsWithoutRef, FC, ReactElement, ReactNode } from 'react';
 import React from 'react';
 
-import AutoHeight from '@/components/molecules/AutoHeight';
 import useEscape from '@/hooks/useEscape';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
+import { twMerge } from 'tailwind-merge';
 
 import { ModalHeader } from './ModalHeader';
 
@@ -19,6 +19,9 @@ export type ModalProps = {
   acceptButtonText?: string;
   acceptButtonProps?: Omit<ComponentPropsWithoutRef<'button'>, 'color'>;
   preventClosingOnOutside?: boolean;
+  panel?: {
+    className?: string;
+  };
 };
 
 const Modal: FC<ModalProps> = ({
@@ -31,6 +34,7 @@ const Modal: FC<ModalProps> = ({
   acceptButtonProps,
   acceptButtonText,
   preventClosingOnOutside,
+  panel,
 }) => {
   const handleClose = () => !preventClosingOnOutside && onClose();
 
@@ -60,7 +64,10 @@ const Modal: FC<ModalProps> = ({
       <div className='fixed inset-0 z-10 w-screen'>
         <div className='flex min-h-full items-center justify-center p-4'>
           <DialogPanel
-            className='absolute bottom-[calc(env(safe-area-inset-bottom))] flex max-h-[94vh] min-h-[250px] w-[98%] max-w-[500px] flex-col overflow-x-hidden rounded-t-2xl bg-background pb-[73px] shadow outline-0 duration-200 data-[closed]:translate-y-full sm:static sm:h-auto sm:max-h-[90vh] sm:w-[95%] sm:max-w-[600px] sm:rounded-2xl sm:pb-[53px] sm:data-[closed]:translate-y-0 sm:data-[closed]:scale-90 sm:data-[closed]:opacity-0'
+            className={twMerge(
+              'absolute bottom-[calc(env(safe-area-inset-bottom))] flex max-h-[94vh] min-h-[250px] w-[98%] max-w-[500px] flex-col overflow-x-hidden rounded-t-2xl bg-background pb-[73px] shadow outline-0 duration-200 data-[closed]:translate-y-full sm:static sm:h-auto sm:max-h-[90vh] sm:w-[95%] sm:max-w-[600px] sm:rounded-2xl sm:pb-[53px] sm:data-[closed]:translate-y-0 sm:data-[closed]:scale-90 sm:data-[closed]:opacity-0',
+              panel?.className
+            )}
             transition
           >
             <ModalHeader
@@ -71,7 +78,7 @@ const Modal: FC<ModalProps> = ({
               acceptButtonProps={acceptButtonProps}
               isLoading={isLoading}
             />
-            <AutoHeight className='![overflow-y:overlay]'>{children}</AutoHeight>
+            {children}
           </DialogPanel>
         </div>
       </div>

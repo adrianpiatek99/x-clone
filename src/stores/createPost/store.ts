@@ -8,21 +8,27 @@ export const initialState: CreatePostState = {
   text: '',
   files: [],
   aspectRatio: 0,
+  modal: {
+    isOpen: false,
+    text: '',
+    files: [],
+    aspectRatio: 0,
+  },
 };
 
 export const useCreatePostStore = create<CreatePostStore>((set, get) => ({
   ...initialState,
   update: (payload) => set((state) => ({ ...state, ...payload })),
-  addFiles: (files) =>
+  addFiles: (files) => {
+    const newFiles = files.map((file) => ({
+      file,
+      preview: URL.createObjectURL(file),
+    }));
+
     set((state) => ({
-      files: [
-        ...state.files,
-        ...files.map((file) => ({
-          file,
-          preview: URL.createObjectURL(file),
-        })),
-      ].slice(0, POST_MEDIA_LIMIT),
-    })),
+      files: [...state.files, ...newFiles].slice(0, POST_MEDIA_LIMIT),
+    }));
+  },
   removeFile: (filePreview) => {
     const files = get().files;
 
@@ -34,5 +40,38 @@ export const useCreatePostStore = create<CreatePostStore>((set, get) => ({
       files: state.files.filter((file) => file.preview !== filePreview),
     }));
   },
-  resetStore: () => set(initialState),
+  updateModal: (payload) => set((state) => ({ ...state, modal: { ...state.modal, ...payload } })),
+  addModalFiles: (files) =>
+    set((state) => ({
+      modal: {
+        ...state.modal,
+        files: [
+          ...state.modal.files,
+          ...files.map((file) => ({
+            file,
+            preview: URL.createObjectURL(file),
+          })),
+        ].slice(0, POST_MEDIA_LIMIT),
+      },
+    })),
+  removeModalFile: (filePreview) => {
+    const files = get().modal.files;
+
+    if (files.length === 1) {
+      set({ modal: { ...get().modal, aspectRatio: 0 } });
+    }
+
+    set((state) => ({
+      modal: {
+        ...state.modal,
+        files: state.modal.files.filter((file) => file.preview !== filePreview),
+      },
+    }));
+  },
+  resetModalStore: () => set((state) => ({ ...state, modal: initialState.modal })),
+  resetStore: () =>
+    set((state) => ({
+      ...initialState,
+      modal: state.modal,
+    })),
 }));

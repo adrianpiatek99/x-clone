@@ -3,6 +3,7 @@ import React from 'react';
 import Box from '@/components/atoms/Box';
 import Logo from '@/components/atoms/Logo';
 import Modal from '@/components/atoms/Modal';
+import AutoHeight from '@/components/molecules/AutoHeight';
 import { useAuthStore } from '@/stores/auth';
 import { useShallow } from 'zustand/shallow';
 
@@ -32,8 +33,10 @@ const AuthModal = () => {
         </Box>
       }
     >
-      <Box className='mx-auto max-w-[364px] gap-4 px-[30px] pt-[30px]'>
-        <AuthModalCurrentTab />
+      <Box className='mx-auto w-full max-w-[364px] gap-4 px-[30px] pt-[30px]'>
+        <AutoHeight>
+          <AuthModalCurrentTab />
+        </AutoHeight>
       </Box>
     </Modal>
   );

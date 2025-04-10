@@ -3,7 +3,6 @@ import React, { memo } from 'react';
 import Avatar from '@/components/atoms/Avatar';
 import Box from '@/components/atoms/Box';
 import IconButton from '@/components/atoms/IconButton';
-import { imageFileTypes } from '@/constants/fileTypes';
 import { fileValidationConfigs } from '@/db/utils/validateFile';
 import { useFileImagePicker } from '@/hooks/useFileImagePicker';
 import { useToasts } from '@/hooks/useToasts';
@@ -52,7 +51,7 @@ export const EditProfileModalAvatar = memo(() => {
       <input
         ref={filePickerRef}
         onChange={handleFileChange}
-        accept={imageFileTypes.toString()}
+        accept={fileValidationConfigs.avatar.allowedTypes.toString()}
         aria-label={t('actions.addPhoto')}
         type='file'
         hidden

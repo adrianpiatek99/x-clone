@@ -26,10 +26,11 @@ export const useCreatePostMutation = ({ onSuccess, onSettled }: Props = {}) => {
       });
     },
     onSuccess: () => {
+      addToast('success', t('post.api.createPost.success'));
       onSuccess?.();
     },
     onError: () => {
-      addToast('error', t('errors.api.somethingWentWrong'), { duration: 6000 });
+      addToast('error', t('post.api.createPost.error'), { duration: 6000 });
     },
     onSettled: () => {
       onSettled?.();

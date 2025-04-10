@@ -10,6 +10,7 @@ import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
 import { navigationTabsItems } from './config';
+import { NavigationTabsCreatePost } from './NavigationTabsCreatePost';
 import { NavigationTabsDrawerButton } from './NavigationTabsDrawerButton';
 
 const NavigationTabs = () => {
@@ -29,7 +30,7 @@ const NavigationTabs = () => {
         isScrollDirectionDown && 'opacity-30'
       )}
     >
-      <div className='mx-auto flex h-[52px] w-full max-w-[580px] shrink-0 items-center px-4'>
+      <div className='relative mx-auto flex h-[52px] w-full max-w-[580px] shrink-0 items-center px-4'>
         <nav className='flex size-full items-center' role='navigation'>
           {navigationTabsItems({ t, pathname, isAuth: !!user }).map(
             ({ href, text, active, activeIcon, icon }) => (
@@ -48,6 +49,7 @@ const NavigationTabs = () => {
           <NavigationTabsDrawerButton />
         </nav>
       </div>
+      {user && <NavigationTabsCreatePost />}
     </div>
   );
 };

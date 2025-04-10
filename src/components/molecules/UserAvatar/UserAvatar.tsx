@@ -4,7 +4,11 @@ import Avatar from '@/components/atoms/Avatar';
 import { ROUTES } from '@/constants/routes';
 import { useAppSession } from '@/hooks/useAppSession';
 
-const UserAvatar = () => {
+type Props = {
+  withLink?: boolean;
+};
+
+const UserAvatar = ({ withLink = true }: Props) => {
   const { user } = useAppSession();
 
   if (!user) return null;
@@ -13,7 +17,7 @@ const UserAvatar = () => {
     <Avatar
       src={user.profileImageUrl}
       screenName={user.screenName}
-      href={ROUTES.PROFILE.DETAILS(user.screenName)}
+      href={withLink ? ROUTES.PROFILE.DETAILS(user.screenName) : undefined}
     />
   );
 };
