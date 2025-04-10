@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Box } from '@/components/atoms/Box';
+import Box from '@/components/atoms/Box';
 import type { Meta, StoryFn } from '@storybook/react';
 
 import { Tab } from './Tab';

@@ -1,11 +1,14 @@
 import React from 'react';
 
-import { Box, Button, IconButton, Logo } from '@/components/atoms';
+import Box from '@/components/atoms/Box';
+import Button from '@/components/atoms/Button';
+import Logo from '@/components/atoms/Logo';
 import { ROUTES } from '@/constants/routes';
 import { useAppSession } from '@/hooks/useAppSession';
 import { usePathname } from '@/i18n/routing';
-import { LoginIcon } from '@/icons';
+import { LoginIcon, PlusIcon } from '@/icons';
 import { useAuthStore } from '@/stores/auth';
+import { useCreatePostStore } from '@/stores/createPost';
 import { useTranslations } from 'next-intl';
 
 import { sidebarMenuItems } from './config';
@@ -15,9 +18,12 @@ const SidebarMenuList = () => {
   const t = useTranslations();
   const { user } = useAppSession();
   const updateAuth = useAuthStore((state) => state.update);
+  const updateCreatePostModal = useCreatePostStore((state) => state.updateModal);
   const pathname = usePathname();
 
   const handleOpenAuthModal = () => updateAuth({ isModalOpen: true });
+
+  const handleOpenCreatePostModal = () => updateCreatePostModal({ isOpen: true });
 
   return (
     <Box
@@ -31,22 +37,39 @@ const SidebarMenuList = () => {
         {sidebarMenuItems({ t, user, pathname }).map(({ text, ...props }) => (
           <SidebarMenuListItem key={text} text={text} {...props} />
         ))}
-        {!user && (
+        {user ? (
           <>
             <Button
-              className='hidden rounded-full xl:flex'
+              className='mt-2 hidden rounded-full xl:flex'
+              onClick={handleOpenCreatePostModal}
+              size='large'
+            >
+              {t('post.actions.send')}
+            </Button>
+            <Button
+              className='mx-auto mt-2 flex p-3 xl:hidden'
+              onClick={handleOpenCreatePostModal}
+              aria-label={t('post.actions.send')}
+            >
+              <PlusIcon className='size-[34px]' />
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button
+              className='mt-2 hidden rounded-full xl:flex'
               onClick={handleOpenAuthModal}
               size='large'
             >
               {t('auth.signIn')}
             </Button>
-            <IconButton
-              className='mx-auto flex p-3 xl:hidden [&>svg]:size-[26px]'
-              title={t('auth.signIn')}
+            <Button
+              className='mx-auto mt-2 flex p-3 xl:hidden'
               onClick={handleOpenAuthModal}
+              aria-label={t('auth.signIn')}
             >
-              <LoginIcon />
-            </IconButton>
+              <LoginIcon className='size-[26px]' />
+            </Button>
           </>
         )}
       </Box>

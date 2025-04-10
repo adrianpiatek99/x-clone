@@ -1,8 +1,10 @@
+import {
+  PROFILE_DESCRIPTION_MAX_LENGTH,
+  PROFILE_NAME_MAX_LENGTH,
+  PROFILE_NAME_MIN_LENGTH,
+  PROFILE_WEBSITE_MAX_LENGTH,
+} from '@/db/constants';
 import { z } from 'zod';
-
-import { PROFILE_NAME_MAX_LENGTH } from './auth';
-import { PROFILE_NAME_MIN_LENGTH } from './auth';
-import { PROFILE_DESCRIPTION_MAX_LENGTH, PROFILE_WEBSITE_MAX_LENGTH } from './constants';
 
 export type ProfileValues = z.infer<ReturnType<typeof profileSchema>>;
 

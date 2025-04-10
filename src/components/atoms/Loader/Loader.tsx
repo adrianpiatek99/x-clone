@@ -18,7 +18,7 @@ const classes: LoaderClassesReturn = {
   },
 };
 
-export const Loader: FC<LoaderProps> = ({ center = false, color = 'primary', className = '' }) => {
+const Loader: FC<LoaderProps> = ({ center = false, color = 'primary', className = '' }) => {
   return (
     <div
       className={twMerge(
@@ -30,3 +30,5 @@ export const Loader: FC<LoaderProps> = ({ center = false, color = 'primary', cla
     />
   );
 };
+
+export default Loader;

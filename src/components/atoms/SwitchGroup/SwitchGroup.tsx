@@ -8,7 +8,7 @@ export type SwitchGroupProps = {
   title?: string;
 };
 
-export const SwitchGroup: FC<SwitchGroupProps> = ({ children, title }) => {
+const SwitchGroup: FC<SwitchGroupProps> = ({ children, title }) => {
   return (
     <div className='flex w-full flex-col gap-2'>
       {title && (
@@ -20,3 +20,5 @@ export const SwitchGroup: FC<SwitchGroupProps> = ({ children, title }) => {
     </div>
   );
 };
+
+export default SwitchGroup;

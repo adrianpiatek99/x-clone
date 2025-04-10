@@ -32,7 +32,7 @@ const classes: CustomToastClasses = {
   },
 };
 
-export const CustomToast = ({ id, type, visible, message }: CustomToastProps) => {
+const CustomToast = ({ id, type, visible, message }: CustomToastProps) => {
   const { removeToast } = useToasts();
   const icon = icons[type] || null;
 
@@ -55,3 +55,5 @@ export const CustomToast = ({ id, type, visible, message }: CustomToastProps) =>
     </div>
   );
 };
+
+export default CustomToast;

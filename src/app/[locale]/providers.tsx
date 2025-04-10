@@ -29,7 +29,7 @@ const Providers: FC<Props> = ({ children, locale, messages }) => {
         <QueryClientProvider client={queryClient}>
           <SessionProvider>
             <LoadingScreen>
-              <div className='animate-appear'>{children}</div>
+              <div className='animate-initAppear'>{children}</div>
               <Modals />
             </LoadingScreen>
           </SessionProvider>

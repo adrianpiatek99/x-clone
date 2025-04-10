@@ -1,7 +1,7 @@
 import type { Meta, StoryFn } from '@storybook/react';
 
 import type { SkeletonProps } from '.';
-import { Skeleton } from '.';
+import Skeleton from '.';
 
 const meta = {
   title: 'Components / Atoms / Skeleton',

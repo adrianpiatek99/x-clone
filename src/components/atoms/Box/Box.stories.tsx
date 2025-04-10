@@ -1,7 +1,7 @@
 import type { Meta, StoryFn } from '@storybook/react';
 
 import type { BoxProps } from './Box';
-import { Box } from './Box';
+import Box from './Box';
 
 const items = [
   'Item 1',

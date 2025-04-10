@@ -4,7 +4,14 @@ import { type ChangeEvent, useCallback, useRef, useState } from 'react';
 import { imageFileTypes } from '@/constants/fileTypes';
 import { useTranslations } from 'next-intl';
 
-type FileImagePickerOptions = { maxSize?: number; limit?: number };
+type Options = { maxSize?: number; limit?: number };
+
+type Props = {
+  onSuccess?: (validFiles: File[]) => void;
+  onError?: (error: string) => void;
+  resetOnSuccess?: boolean;
+  options?: Options;
+};
 
 type FileImagePickerResult = {
   files: File[];
@@ -15,9 +22,14 @@ type FileImagePickerResult = {
   reset: () => void;
 };
 
-export const useFileImagePicker = (options: FileImagePickerOptions = {}): FileImagePickerResult => {
-  const t = useTranslations();
+export const useFileImagePicker = ({
+  onSuccess,
+  onError,
+  resetOnSuccess = true,
+  options = {},
+}: Props): FileImagePickerResult => {
   const { maxSize = 1, limit = 1 } = options;
+  const t = useTranslations();
   const [files, setFiles] = useState<File[]>([]);
   const [error, setError] = useState<string | undefined>(undefined);
   const filePickerRef = useRef<HTMLInputElement>(null);
@@ -73,14 +85,24 @@ export const useFileImagePicker = (options: FileImagePickerOptions = {}): FileIm
         }
 
         resetInput();
-
         setFiles(validFiles);
         setError(currentError);
+
+        if (!!validFiles.length && onSuccess) {
+          onSuccess?.(validFiles);
+
+          if (resetOnSuccess) reset();
+        }
+
+        if (currentError) onError?.(currentError);
       } else {
-        setError('errors.file.somethingWrong');
+        const errorMessage = t('errors.file.somethingWentWrong');
+
+        setError(errorMessage);
+        onError?.(errorMessage);
       }
     },
-    [t, limit, maxSize, resetInput, reset]
+    [t, limit, maxSize, resetInput, reset, onSuccess, onError, resetOnSuccess]
   );
 
   return {

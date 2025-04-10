@@ -9,11 +9,10 @@ import {
 } from '@/icons';
 import type { Meta, StoryFn } from '@storybook/react';
 
-import { Box } from '../Box';
-import { Button } from '../Button';
+import Box from '../Box';
+import Button from '../Button';
+import Dropdown, { DropdownItem } from '.';
 import type { DropdownProps } from './Dropdown';
-import { Dropdown } from './Dropdown';
-import { DropdownItem } from './DropdownItem';
 
 const meta = {
   title: 'Components / Atoms / Dropdown',

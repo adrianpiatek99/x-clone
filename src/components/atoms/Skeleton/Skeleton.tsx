@@ -20,7 +20,7 @@ const classes: SkeletonClasses = {
   },
 };
 
-export const Skeleton: FC<SkeletonProps> = ({
+const Skeleton: FC<SkeletonProps> = ({
   height,
   width,
   variant = 'rect',
@@ -41,3 +41,5 @@ export const Skeleton: FC<SkeletonProps> = ({
     </div>
   );
 };
+
+export default Skeleton;

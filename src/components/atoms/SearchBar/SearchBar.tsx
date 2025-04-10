@@ -7,7 +7,7 @@ import { CloseCircleIcon, SearchOutlinedIcon } from '@/icons';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
-import { IconButton } from '../IconButton';
+import IconButton from '../IconButton';
 
 const DEFAULT_MAX_LENGTH = 255;
 
@@ -22,7 +22,7 @@ export type SearchBarProps = Omit<
   fullWidth?: boolean;
 };
 
-export const SearchBar = ({
+const SearchBar = ({
   value,
   onChange,
   placeholder,
@@ -87,3 +87,5 @@ export const SearchBar = ({
     </div>
   );
 };
+
+export default SearchBar;

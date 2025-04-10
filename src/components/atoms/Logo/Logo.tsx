@@ -4,7 +4,7 @@ import React from 'react';
 import { TwitterXIcon } from '@/icons';
 import { twMerge } from 'tailwind-merge';
 
-import { IconButton } from '../IconButton';
+import IconButton from '../IconButton';
 import type { LogoClassesReturn, LogoColor, LogoSize } from './types';
 
 export interface LogoProps {
@@ -27,7 +27,7 @@ const classes: LogoClassesReturn = {
   },
 };
 
-export const Logo: FC<LogoProps> = ({ href, size = 'm', color = 'primary', className = '' }) => {
+const Logo: FC<LogoProps> = ({ href, size = 'm', color = 'primary', className = '' }) => {
   return href ? (
     <IconButton
       href={href}
@@ -49,3 +49,5 @@ export const Logo: FC<LogoProps> = ({ href, size = 'm', color = 'primary', class
     </div>
   );
 };
+
+export default Logo;

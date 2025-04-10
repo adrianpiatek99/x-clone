@@ -1,7 +1,8 @@
-import React, { memo, useCallback, useEffect } from 'react';
+import React, { memo } from 'react';
 
-import { Avatar, Box, IconButton } from '@/components/atoms';
-import { imageFileTypes } from '@/constants/fileTypes';
+import Avatar from '@/components/atoms/Avatar';
+import Box from '@/components/atoms/Box';
+import IconButton from '@/components/atoms/IconButton';
 import { fileValidationConfigs } from '@/db/utils/validateFile';
 import { useFileImagePicker } from '@/hooks/useFileImagePicker';
 import { useToasts } from '@/hooks/useToasts';
@@ -19,24 +20,15 @@ export const EditProfileModalAvatar = memo(() => {
       updateAvatarFile: state.updateAvatarFile,
     }))
   );
-  const { files, error, handleFileChange, openFilePicker, filePickerRef, reset } =
-    useFileImagePicker({ maxSize: fileValidationConfigs.avatar.maxSize });
-
-  const handleAvatarUpdate = useCallback(() => {
-    if (files.length) {
+  const { handleFileChange, openFilePicker, filePickerRef } = useFileImagePicker({
+    onSuccess: (files) => {
       updateAvatarFile(files[0]);
-    } else if (error) {
+    },
+    onError: (error) => {
       addToast('error', error, { duration: 6000 });
-    }
-
-    reset();
-  }, [files, error, addToast, updateAvatarFile, reset]);
-
-  useEffect(() => {
-    if (!!files.length || error) {
-      handleAvatarUpdate();
-    }
-  }, [files, error, handleAvatarUpdate]);
+    },
+    options: { maxSize: fileValidationConfigs.avatar.maxSize },
+  });
 
   return (
     <div className='relative mt-[-8%] grid w-full min-w-[48px] max-w-[116px] place-items-center'>
@@ -59,7 +51,7 @@ export const EditProfileModalAvatar = memo(() => {
       <input
         ref={filePickerRef}
         onChange={handleFileChange}
-        accept={imageFileTypes.toString()}
+        accept={fileValidationConfigs.avatar.allowedTypes.toString()}
         aria-label={t('actions.addPhoto')}
         type='file'
         hidden

@@ -3,8 +3,8 @@ import React from 'react';
 
 import { useTranslations } from 'next-intl';
 
-import { Box } from '../Box';
-import { Button } from '../Button';
+import Box from '../Box';
+import Button from '../Button';
 import type { ConfirmModalProps } from './ConfirmModal';
 
 type Props = Pick<

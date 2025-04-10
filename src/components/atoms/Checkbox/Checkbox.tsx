@@ -17,7 +17,7 @@ export type CheckboxProps = Omit<ComponentPropsWithRef<'input'>, 'type' | 'size'
   ref?: RefCallback<HTMLInputElement>;
 };
 
-export const Checkbox = ({
+const Checkbox = ({
   checked,
   name,
   label,
@@ -59,3 +59,5 @@ export const Checkbox = ({
     </div>
   );
 };
+
+export default Checkbox;

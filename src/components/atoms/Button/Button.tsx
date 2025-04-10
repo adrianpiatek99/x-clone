@@ -8,7 +8,7 @@ import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
 import type { LoaderColor } from '../Loader';
-import { Loader } from '../Loader';
+import Loader from '../Loader';
 import type {
   ButtonAlign,
   ButtonClassesReturn,
@@ -133,7 +133,7 @@ const ButtonElement: FC<Omit<ButtonProps, 'href' | 'linkClassName'>> = ({
   );
 };
 
-export const Button: FC<ButtonProps> = ({ href, linkClassName = '', ...props }) => {
+const Button: FC<ButtonProps> = ({ href, linkClassName = '', ...props }) => {
   return href ? (
     <Link href={href} tabIndex={-1} className={twMerge('rounded-full', linkClassName)}>
       <ButtonElement {...props} />
@@ -142,3 +142,5 @@ export const Button: FC<ButtonProps> = ({ href, linkClassName = '', ...props }) 
     <ButtonElement {...props} />
   );
 };
+
+export default Button;

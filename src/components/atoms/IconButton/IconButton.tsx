@@ -6,7 +6,7 @@ import React from 'react';
 import { Link } from '@/i18n/routing';
 import { twMerge } from 'tailwind-merge';
 
-import { Tooltip } from '../Tooltip';
+import Tooltip from '../Tooltip';
 import type { IconButtonClassesReturn, IconButtonColor, IconButtonSize } from './types';
 
 export type IconButtonProps = ComponentPropsWithRef<'button'> & {
@@ -81,7 +81,7 @@ const IconButtonElement: FC<IconButtonProps> = ({
   );
 };
 
-export const IconButton: FC<IconButtonProps> = ({ href, linkClassName = '', ...props }) => {
+const IconButton: FC<IconButtonProps> = ({ href, linkClassName = '', ...props }) => {
   return href ? (
     <Link href={href} tabIndex={-1} className={twMerge('rounded-full', linkClassName)}>
       <IconButtonElement {...props} />
@@ -90,3 +90,5 @@ export const IconButton: FC<IconButtonProps> = ({ href, linkClassName = '', ...p
     <IconButtonElement {...props} />
   );
 };
+
+export default IconButton;

@@ -1,6 +1,6 @@
 import toast from 'react-hot-toast';
 
-import { CustomToast } from '@/components/atoms/CustomToast';
+import CustomToast from '@/components/atoms/CustomToast';
 
 export const DEFAULT_TOAST_DURATION = 4000;
 

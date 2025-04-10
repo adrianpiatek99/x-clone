@@ -1,4 +1,3 @@
-import { imageFileTypes } from '@/constants/fileTypes';
 import { db } from '@/db/db';
 import { type User, usersTable } from '@/db/schema';
 import { handleApiError } from '@/db/utils/api';
@@ -28,15 +27,9 @@ export const PATCH = withAuth(async (request: NextRequest, userId: string) => {
     const profileBanner = formData.get('profileBanner') as File | null;
     const removeBanner = formData.get('removeBanner') === 'true';
 
-    validateFile(profileImage, {
-      ...fileValidationConfigs.avatar,
-      allowedTypes: imageFileTypes,
-    });
+    validateFile(profileImage, fileValidationConfigs.avatar);
 
-    validateFile(profileBanner, {
-      ...fileValidationConfigs.banner,
-      allowedTypes: imageFileTypes,
-    });
+    validateFile(profileBanner, fileValidationConfigs.banner);
 
     const [profileImageResult, profileBannerResult] = await Promise.all([
       profileImage ? uploadFile(profileImage) : null,

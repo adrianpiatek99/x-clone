@@ -4,9 +4,9 @@ import React from 'react';
 import { CloseIcon } from '@/icons';
 import { useTranslations } from 'next-intl';
 
-import { Button } from '../Button';
-import { IconButton } from '../IconButton';
-import { LinearProgress } from '../LinearProgress';
+import Button from '../Button';
+import IconButton from '../IconButton';
+import LinearProgress from '../LinearProgress';
 import { Typography } from '../Typography';
 import type { ModalProps } from './Modal';
 

@@ -11,7 +11,7 @@ export type LinearProgressProps = {
   position?: LinearProgressPosition;
 };
 
-export const LinearProgress: FC<LinearProgressProps> = ({ position = 'top' }) => {
+const LinearProgress: FC<LinearProgressProps> = ({ position = 'top' }) => {
   return (
     <progress
       className={twMerge(
@@ -21,3 +21,5 @@ export const LinearProgress: FC<LinearProgressProps> = ({ position = 'top' }) =>
     />
   );
 };
+
+export default LinearProgress;

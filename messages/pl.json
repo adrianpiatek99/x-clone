@@ -124,26 +124,32 @@
   },
 
   "post": {
+    "textarea": {
+      "label": "Co się dzieje?!"
+    },
     "actions": {
-      "default": "Wpis",
       "send": "Opublikuj wpis",
       "delete": "Usuń",
       "reply": "Odpowiedz",
       "like": "Polub",
       "unlike": "Przestań lubić",
       "repost": "Podaj dalej",
+      "media": "Media",
       "more": "Więcej"
     },
-    "counts": {
+    "stats": {
       "likes": "Polubienia",
       "replies": "Odpowiedzi"
     },
-    "create": {
-      "placeholder": "Co się dzieje?!"
-    },
-    "deleteConfirmModal": {
+    "confirmDeleteModal": {
       "title": "Usunąć wpis?",
       "description": "Tej czynności nie można cofnąć. Wpis zostanie usunięty z Twojego profilu, z osi czasu osób obserwujących oraz z wyników wyszukiwania."
+    },
+    "api": {
+      "createPost": {
+        "success": "Wpis został opublikowany.",
+        "error": "Nie udało się opublikować wpisu."
+      }
     }
   },
 
@@ -190,7 +196,8 @@
         "limit": "Możesz wybrać maksymalnie {limit} zdjęcia.",
         "maxSize": "Przekroczono maksymalny rozmiar obrazu. Wybierz obraz mniejszy niż {maxSize} MB."
       },
-      "invalidType": "Nieprawidłowy typ pliku."
+      "invalidType": "Nieprawidłowy typ pliku.",
+      "somethingWentWrong": "Nie udało się wrzucić pliku"
     },
     "auth": {
       "signIn": "Nie udało się zalogować. Sprawdź swoje dane i spróbuj ponownie.",

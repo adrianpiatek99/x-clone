@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
-import { Skeleton } from '../Skeleton';
+import Skeleton from '../Skeleton';
 import type { AvatarClasses, AvatarSize } from './types';
 
 export type AvatarProps = {
@@ -53,7 +53,7 @@ const AvatarElement: FC<
   </div>
 );
 
-export const Avatar: FC<AvatarProps> = memo(({ screenName, href, onClick, ...props }) => {
+const Avatar: FC<AvatarProps> = memo(({ screenName, href, onClick, ...props }) => {
   const t = useTranslations();
   const alt = screenName || t('profileImage');
 
@@ -73,3 +73,5 @@ export const Avatar: FC<AvatarProps> = memo(({ screenName, href, onClick, ...pro
 
   return <AvatarElement alt={alt} {...props} />;
 });
+
+export default Avatar;

@@ -5,7 +5,7 @@ import { CloseCircleIcon, EyeClosedIcon, EyeOpenIcon } from '@/icons';
 import { useTranslations } from 'next-intl';
 
 import type { IconButtonColor } from '../IconButton';
-import { IconButton } from '../IconButton';
+import IconButton from '../IconButton';
 
 type InputIconsProps = {
   isPasswordVisible: boolean;

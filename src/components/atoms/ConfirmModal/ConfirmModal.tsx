@@ -4,7 +4,7 @@ import React from 'react';
 import useEscape from '@/hooks/useEscape';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 
-import { Box } from '../Box';
+import Box from '../Box';
 import { Typography } from '../Typography';
 import { ConfirmModalActions } from './ConfirmModalActions';
 
@@ -86,3 +86,5 @@ export const ConfirmModal: FC<ConfirmModalProps> = ({
     </Dialog>
   );
 };
+
+export default ConfirmModal;

@@ -2,11 +2,11 @@ import { useState } from 'react';
 
 import type { Meta, StoryFn } from '@storybook/react';
 
-import { Box } from '../Box';
+import Box from '../Box';
 import type { RadioProps } from './Radio';
 import { Radio } from './Radio';
 import type { RadioGroupProps } from './RadioGroup';
-import { RadioGroup } from './RadioGroup';
+import RadioGroup from './RadioGroup';
 
 const meta = {
   title: 'Components / Atoms / RadioGroup',

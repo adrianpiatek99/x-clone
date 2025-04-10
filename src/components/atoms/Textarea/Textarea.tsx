@@ -16,7 +16,7 @@ export type TextareaProps = Omit<ComponentPropsWithRef<'textarea'>, 'placeholder
   error?: string;
 };
 
-export const Textarea: FC<TextareaProps> = ({
+const Textarea: FC<TextareaProps> = ({
   name,
   label,
   value,
@@ -79,7 +79,7 @@ export const Textarea: FC<TextareaProps> = ({
         >
           <textarea
             className={twMerge(
-              'max-h-[650px] w-full select-text resize-none whitespace-pre-wrap break-words bg-transparent text-left text-neutral outline-none [direction:ltr] placeholder:text-neutral-300',
+              'max-h-[550px] w-full select-text resize-none whitespace-pre-wrap break-words bg-transparent text-left text-neutral outline-none [direction:ltr] placeholder:text-neutral-300',
               className
             )}
             rows={1}
@@ -104,3 +104,5 @@ export const Textarea: FC<TextareaProps> = ({
     </div>
   );
 };
+
+export default Textarea;

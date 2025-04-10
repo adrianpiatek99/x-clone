@@ -2,10 +2,10 @@ import { useState } from 'react';
 
 import type { Meta, StoryFn } from '@storybook/react';
 
-import { Box } from '../Box';
-import { Button } from '../Button';
+import Box from '../Box';
+import Button from '../Button';
 import type { ConfirmModalProps } from '.';
-import { ConfirmModal } from '.';
+import ConfirmModal from '.';
 
 const meta = {
   title: 'Components / Atoms / ConfirmModal',

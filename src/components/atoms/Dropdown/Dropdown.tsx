@@ -14,7 +14,7 @@ export type DropdownProps = {
   }>;
 };
 
-export const Dropdown: FC<DropdownProps> = ({ children, menuItems }) => {
+const Dropdown: FC<DropdownProps> = ({ children, menuItems }) => {
   const items = children.slice(1);
 
   return (
@@ -35,3 +35,5 @@ export const Dropdown: FC<DropdownProps> = ({ children, menuItems }) => {
     </Menu>
   );
 };
+
+export default Dropdown;

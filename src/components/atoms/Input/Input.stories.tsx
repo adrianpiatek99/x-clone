@@ -2,9 +2,9 @@ import { useState } from 'react';
 
 import type { Meta, StoryFn } from '@storybook/react';
 
-import { Box } from '../Box';
+import Box from '../Box';
 import type { InputProps } from '.';
-import { Input } from '.';
+import Input from '.';
 
 const meta = {
   title: 'Components / Atoms / Input',

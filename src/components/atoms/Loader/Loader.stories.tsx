@@ -1,7 +1,7 @@
 import type { Meta, StoryFn } from '@storybook/react';
 
 import type { LoaderProps } from '.';
-import { Loader } from '.';
+import Loader from '.';
 
 const meta = {
   title: 'Components / Atoms / Loader',

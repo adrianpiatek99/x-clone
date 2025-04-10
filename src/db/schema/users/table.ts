@@ -1,12 +1,8 @@
-import { boolean, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
+import { boolean, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
-import { createdAt, id, updatedAt } from '../schemaHelpers';
-
-export const UserRole = pgEnum('roles', ['ADMIN', 'MODERATOR', 'USER']);
-
-type InterUser = typeof usersTable.$inferSelect;
-
-export type User = Omit<InterUser, 'password'>;
+import { createdAt, id, updatedAt } from '../helpers';
+import type { User } from './types';
+import { UserRole, UserRoleEnum } from './types';
 
 export const usersTable = pgTable('users', {
   id,
@@ -18,13 +14,14 @@ export const usersTable = pgTable('users', {
   profileBannerUrl: text('profile_banner_url').notNull().default(''),
   description: text().notNull().default(''),
   url: text(),
-  role: UserRole().notNull().default('USER'),
+  role: UserRoleEnum().notNull().default(UserRole.USER),
   isVerified: boolean('is_verified').notNull().default(false),
   verifiedAt: timestamp('verified_at', { withTimezone: true }),
   createdAt,
   updatedAt,
 });
 
+// Select
 export const usersSelect = {
   id: usersTable.id,
   name: usersTable.name,
