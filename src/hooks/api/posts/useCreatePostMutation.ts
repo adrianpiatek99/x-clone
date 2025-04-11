@@ -1,9 +1,13 @@
 import type { CreatePostRequest, CreatePostResponse } from '@/app/api/posts/create/route';
+import type { HomeLatestTimelineResponse } from '@/app/api/posts/globalTimeline/route';
+import { QUERY_KEYS } from '@/constants/queryKeys';
 import { API_ENDPOINTS } from '@/db/constants';
 import { apiRequest } from '@/db/utils/api';
 import { useToasts } from '@/hooks/useToasts';
 import { createFormData } from '@/utils/formData';
-import { useMutation } from '@tanstack/react-query';
+import type { InfiniteQueryData } from '@/utils/queryCache';
+import { updateInfiniteQueryWithNewItem } from '@/utils/queryCache';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 
 type Props = {
@@ -14,6 +18,7 @@ type Props = {
 export const useCreatePostMutation = ({ onSuccess, onSettled }: Props = {}) => {
   const t = useTranslations();
   const { addToast } = useToasts();
+  const queryClient = useQueryClient();
 
   const { mutate, isPending } = useMutation<CreatePostResponse, ApiAxiosError, CreatePostRequest>({
     mutationFn: (data) => {
@@ -25,8 +30,15 @@ export const useCreatePostMutation = ({ onSuccess, onSettled }: Props = {}) => {
         },
       });
     },
-    onSuccess: () => {
+    onSuccess: (newPost) => {
       addToast('success', t('post.api.createPost.success'));
+
+      // Update the cache with the new post
+      queryClient.setQueryData<InfiniteQueryData<HomeLatestTimelineResponse>>(
+        QUERY_KEYS.POSTS.GLOBAL_TIMELINE,
+        (oldData) => updateInfiniteQueryWithNewItem(oldData, newPost, { itemsKey: 'posts' })
+      );
+
       onSuccess?.();
     },
     onError: () => {

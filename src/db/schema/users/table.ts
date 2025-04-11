@@ -21,7 +21,7 @@ export const usersTable = pgTable('users', {
   updatedAt,
 });
 
-// Select
+// ---- Select ----
 export const usersSelect = {
   id: usersTable.id,
   name: usersTable.name,
