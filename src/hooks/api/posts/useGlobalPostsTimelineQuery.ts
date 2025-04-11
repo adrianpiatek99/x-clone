@@ -1,4 +1,5 @@
 import type { HomeLatestTimelineResponse } from '@/app/api/posts/globalTimeline/route';
+import { QUERY_KEYS } from '@/constants/queryKeys';
 import { API_ENDPOINTS } from '@/db/constants';
 import { apiRequest } from '@/db/utils/api';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -14,7 +15,7 @@ export const useGlobalPostsTimelineQuery = ({
 }: UseHomeLatestTimelineOptions = {}) => {
   const result = useInfiniteQuery<HomeLatestTimelineResponse>({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: ['globalPostsTimeline', 'infinite'],
+    queryKey: QUERY_KEYS.POSTS.GLOBAL_TIMELINE,
     queryFn: async ({ pageParam }) =>
       apiRequest(
         'GET',
