@@ -1,4 +1,4 @@
-import { POST_MEDIA_LIMIT, POST_TEXT_MAX_LENGTH } from '@/db/constants';
+import { VALIDATION } from '@/constants/validation';
 import { db } from '@/db/db';
 import { enumToPgEnum } from '@/db/schema/helpers';
 import type { Post } from '@/db/schema/posts';
@@ -28,7 +28,7 @@ export type CreatePostRequest = Pick<Post, 'text'> & {
 export type CreatePostResponse = Post;
 
 const schema = z.object({
-  text: z.string().min(1).max(POST_TEXT_MAX_LENGTH),
+  text: z.string().min(1).max(VALIDATION.POST.TEXT.MAX),
   conversationControl: z.enum(enumToPgEnum(ConversationControl)).nullish(),
 });
 
@@ -67,8 +67,11 @@ export const POST = withAuth(async (request: NextRequest, userId: string) => {
     }
 
     if (mediaFiles.length) {
-      if (mediaFiles.length > POST_MEDIA_LIMIT) {
-        throw new ApiError(`Maximum ${POST_MEDIA_LIMIT} media files allowed per post`, 400);
+      if (mediaFiles.length > VALIDATION.POST.MEDIA.LIMIT) {
+        throw new ApiError(
+          `Maximum ${VALIDATION.POST.MEDIA.LIMIT} media files allowed per post`,
+          400
+        );
       }
 
       mediaFiles.forEach((file) => {

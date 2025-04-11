@@ -3,6 +3,7 @@ import React, { memo } from 'react';
 import Box from '@/components/atoms/Box';
 import IconButton from '@/components/atoms/IconButton';
 import ShimmerImage from '@/components/atoms/ShimmerImage';
+import { VALIDATION } from '@/constants/validation';
 import { fileValidationConfigs } from '@/db/utils/validateFile';
 import { useFileImagePicker } from '@/hooks/useFileImagePicker';
 import { useToasts } from '@/hooks/useToasts';
@@ -27,7 +28,7 @@ export const EditProfileModalBanner = memo(() => {
     onError: (error) => {
       addToast('error', error, { duration: 6000 });
     },
-    options: { maxSize: fileValidationConfigs.banner.maxSize },
+    options: { maxSize: VALIDATION.ACCOUNT.BANNER.MAX_SIZE },
   });
 
   const handleRemoveBanner = () => updateBannerFile(null);

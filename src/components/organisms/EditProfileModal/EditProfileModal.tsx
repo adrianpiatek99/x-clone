@@ -3,11 +3,7 @@ import { useState } from 'react';
 import Box from '@/components/atoms/Box';
 import Modal from '@/components/atoms/Modal';
 import DiscardChangesModal from '@/components/molecules/DiscardChangesModal';
-import {
-  PROFILE_DESCRIPTION_MAX_LENGTH,
-  PROFILE_NAME_MAX_LENGTH,
-  PROFILE_WEBSITE_MAX_LENGTH,
-} from '@/db/constants';
+import { VALIDATION } from '@/constants/validation';
 import type { User } from '@/db/schema';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
@@ -67,7 +63,7 @@ const EditProfileModal = ({ isOpen, onClose, user }: Props) => {
                     <field.InputField
                       label={t('name')}
                       isLoading={isPending}
-                      maxLength={PROFILE_NAME_MAX_LENGTH}
+                      maxLength={VALIDATION.ACCOUNT.NAME.MAX}
                     />
                   )}
                 </AppField>
@@ -77,7 +73,7 @@ const EditProfileModal = ({ isOpen, onClose, user }: Props) => {
                       label={t('description')}
                       isLoading={isPending}
                       rows={3}
-                      maxLength={PROFILE_DESCRIPTION_MAX_LENGTH}
+                      maxLength={VALIDATION.ACCOUNT.DESCRIPTION.MAX}
                     />
                   )}
                 </AppField>
@@ -86,7 +82,7 @@ const EditProfileModal = ({ isOpen, onClose, user }: Props) => {
                     <field.InputField
                       label={t('website')}
                       isLoading={isPending}
-                      maxLength={PROFILE_WEBSITE_MAX_LENGTH}
+                      maxLength={VALIDATION.ACCOUNT.WEBSITE.MAX}
                     />
                   )}
                 </AppField>

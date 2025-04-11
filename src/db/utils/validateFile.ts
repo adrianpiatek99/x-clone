@@ -1,5 +1,6 @@
 import { imageFileTypes } from '@/constants/fileTypes';
-import { POST_MEDIA_SIZE_MB_LIMIT } from '../constants';
+import { VALIDATION } from '@/constants/validation';
+
 import { ApiError } from './api';
 
 type Options = {
@@ -25,17 +26,17 @@ export const validateFile = (file: File | null, options: Options) => {
 
 export const fileValidationConfigs = {
   avatar: {
-    maxSize: 1 * 1024 * 1024,
+    maxSize: VALIDATION.ACCOUNT.AVATAR.MAX_SIZE * 1024 * 1024,
     fieldName: 'avatar',
     allowedTypes: imageFileTypes,
   },
   banner: {
-    maxSize: 2 * 1024 * 1024,
+    maxSize: VALIDATION.ACCOUNT.BANNER.MAX_SIZE * 1024 * 1024,
     fieldName: 'banner',
     allowedTypes: imageFileTypes,
   },
   media: {
-    maxSize: POST_MEDIA_SIZE_MB_LIMIT * 1024 * 1024,
+    maxSize: VALIDATION.POST.MEDIA.MAX_SIZE * 1024 * 1024,
     fieldName: 'media',
     allowedTypes: imageFileTypes,
   },

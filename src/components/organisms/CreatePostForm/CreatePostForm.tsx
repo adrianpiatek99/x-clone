@@ -7,7 +7,7 @@ import Button from '@/components/atoms/Button';
 import Textarea from '@/components/atoms/Textarea';
 import AutoHeight from '@/components/molecules/AutoHeight';
 import UserAvatar from '@/components/molecules/UserAvatar';
-import { POST_TEXT_MAX_LENGTH } from '@/db/constants';
+import { VALIDATION } from '@/constants/validation';
 import { useCreatePostMutation } from '@/hooks/api/posts/useCreatePostMutation';
 import { useCreatePostStore } from '@/stores/createPost/store';
 import { useTranslations } from 'next-intl';
@@ -60,7 +60,7 @@ const CreatePostForm = () => {
           label={t('post.textarea.label')}
           value={text}
           onValueChange={handleChangeText}
-          maxLength={POST_TEXT_MAX_LENGTH}
+          maxLength={VALIDATION.POST.TEXT.MAX}
           disabled={isPending}
         />
         <Box className='gap-0'>

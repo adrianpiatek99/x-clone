@@ -1,6 +1,7 @@
 import { useSignInMutation } from '@/hooks/api/auth/useSignInMutation';
 import { useAppForm } from '@/hooks/useFormHook';
-import { signInSchema, type SignInValues } from '@/schema';
+import type { SignInValues } from '@/schema/auth';
+import { signInSchema } from '@/schema/auth';
 import { useAuthStore } from '@/stores/auth';
 import { useTranslations } from 'next-intl';
 

@@ -1,7 +1,7 @@
 import type { CreatePostRequest, CreatePostResponse } from '@/app/api/posts/create/route';
 import type { GlobalPostsTimelineResponse } from '@/app/api/posts/globalTimeline/route';
+import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { API_ENDPOINTS } from '@/db/constants';
 import { apiRequest } from '@/db/utils/api';
 import { useToasts } from '@/hooks/useToasts';
 import { createFormData } from '@/utils/formData';

@@ -4,7 +4,7 @@ import { handleApiError } from '@/db/utils/api';
 import { withAuth } from '@/db/utils/auth';
 import { uploadFile } from '@/db/utils/uploadFile';
 import { fileValidationConfigs, validateFile } from '@/db/utils/validateFile';
-import { profileSchema } from '@/schema';
+import { profileSchema } from '@/schema/profile';
 import { eq } from 'drizzle-orm';
 import { type NextRequest, NextResponse } from 'next/server';
 
