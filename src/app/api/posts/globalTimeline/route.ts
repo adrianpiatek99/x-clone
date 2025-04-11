@@ -12,9 +12,9 @@ import { and, desc, eq, gt } from 'drizzle-orm';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-export type HomeLatestTimelineResponse = { posts: Post[]; nextCursor: string | null };
+export type GlobalPostsTimelineResponse = { posts: Post[]; nextCursor: string | null };
 
-export type HomeLatestTimelineParams = { cursor?: string; limit?: number };
+export type GlobalPostsTimelineParams = { cursor?: string; limit?: number };
 
 export const GET = async (request: NextRequest) => {
   try {
@@ -72,7 +72,7 @@ export const GET = async (request: NextRequest) => {
       })
     );
 
-    return NextResponse.json<HomeLatestTimelineResponse>({
+    return NextResponse.json<GlobalPostsTimelineResponse>({
       posts: postsWithCounts,
       nextCursor,
     });

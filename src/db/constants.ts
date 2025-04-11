@@ -1,4 +1,4 @@
-import type { HomeLatestTimelineParams } from '@/app/api/posts/globalTimeline/route';
+import type { GlobalPostsTimelineParams } from '@/app/api/posts/globalTimeline/route';
 
 export const API_ENDPOINTS = {
   AUTH: {
@@ -9,7 +9,7 @@ export const API_ENDPOINTS = {
     CREATE: '/api/posts/create',
     DETAILS: (id: string) => `/api/posts/${id}` as const,
     DELETE: (id: string) => `/api/posts/${id}` as const,
-    GLOBAL_TIMELINE: (params?: HomeLatestTimelineParams) => {
+    GLOBAL_TIMELINE: (params?: GlobalPostsTimelineParams) => {
       const searchParams = new URLSearchParams();
 
       if (params?.cursor) searchParams.append('cursor', params.cursor);
