@@ -1,12 +1,22 @@
+type Validation = Record<
+  string,
+  Partial<{
+    MIN: number;
+    MAX: number;
+    LIMIT: number;
+    MAX_SIZE_MB: number;
+  }>
+>;
+
 const postValidation = {
   MEDIA: {
     LIMIT: 4,
-    MAX_SIZE: 2.5,
+    MAX_SIZE_MB: 2.5,
   },
   TEXT: {
     MAX: 500,
   },
-} as const;
+} satisfies Validation;
 
 const accountValidation = {
   NAME: {
@@ -31,12 +41,12 @@ const accountValidation = {
     MAX: 100,
   },
   AVATAR: {
-    MAX_SIZE: 1,
+    MAX_SIZE_MB: 1,
   },
   BANNER: {
-    MAX_SIZE: 2,
+    MAX_SIZE_MB: 2,
   },
-} as const;
+} satisfies Validation;
 
 export const VALIDATION = {
   POST: postValidation,

@@ -3,8 +3,8 @@ import React, { memo } from 'react';
 
 import Box from '@/components/atoms/Box';
 import IconButton from '@/components/atoms/IconButton';
-import { imageFileTypes } from '@/constants/fileTypes';
 import { VALIDATION } from '@/constants/validation';
+import { fileValidationConfigs } from '@/db/utils/validateFile';
 import { useFileImagePicker } from '@/hooks/useFileImagePicker';
 import { useToasts } from '@/hooks/useToasts';
 import { MediaIcon } from '@/icons';
@@ -28,7 +28,7 @@ export const CreatePostFormToolbar = memo(
       onError: (error) => {
         addToast('error', error, { duration: 6000 });
       },
-      options: { limit: VALIDATION.POST.MEDIA.LIMIT, maxSize: VALIDATION.POST.MEDIA.MAX_SIZE },
+      options: fileValidationConfigs.media,
     });
     const mediaDisabled = filesCount >= VALIDATION.POST.MEDIA.LIMIT || isPending;
 
@@ -52,7 +52,7 @@ export const CreatePostFormToolbar = memo(
           type='file'
           onChange={handleFileChange}
           hidden
-          accept={imageFileTypes.toString()}
+          accept={fileValidationConfigs.media.accept.toString()}
         />
       </Box>
     );

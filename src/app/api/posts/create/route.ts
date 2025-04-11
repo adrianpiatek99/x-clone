@@ -36,10 +36,33 @@ export const POST = withAuth(async (request: NextRequest, userId: string) => {
   try {
     const formData = await request.formData();
 
+    // Validate payload
     const { text, conversationControl } = schema.parse({
       text: formData.get('text'),
       conversationControl: formData.get('conversationControl'),
     });
+    const mediaFiles: File[] = [];
+
+    for (const [key, value] of formData.entries()) {
+      if (key.startsWith('media[')) {
+        if (value instanceof File) {
+          mediaFiles.push(value);
+        }
+      }
+    }
+
+    if (mediaFiles.length) {
+      if (mediaFiles.length > fileValidationConfigs.media.limit) {
+        throw new ApiError(
+          `Maximum ${fileValidationConfigs.media.limit} media files allowed per post`,
+          400
+        );
+      }
+
+      mediaFiles.forEach((file) => {
+        validateFile(file, fileValidationConfigs.media);
+      });
+    }
 
     // Create post
     const [post] = await db
@@ -55,29 +78,8 @@ export const POST = withAuth(async (request: NextRequest, userId: string) => {
       throw new ApiError('Failed to create post', 500);
     }
 
-    // Validate media files and upload them
-    const mediaFiles: File[] = [];
-
-    for (const [key, value] of formData.entries()) {
-      if (key.startsWith('media[')) {
-        if (value instanceof File) {
-          mediaFiles.push(value);
-        }
-      }
-    }
-
+    // Upload media files
     if (mediaFiles.length) {
-      if (mediaFiles.length > VALIDATION.POST.MEDIA.LIMIT) {
-        throw new ApiError(
-          `Maximum ${VALIDATION.POST.MEDIA.LIMIT} media files allowed per post`,
-          400
-        );
-      }
-
-      mediaFiles.forEach((file) => {
-        validateFile(file, fileValidationConfigs.media);
-      });
-
       const mediaResults = await Promise.all(mediaFiles.map((file) => uploadFile(file)));
 
       await db.insert(postMediaTable).values(

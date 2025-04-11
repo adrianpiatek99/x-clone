@@ -1,22 +1,24 @@
-import { imageFileTypes } from '@/constants/fileTypes';
+import { gifFileTypes, imageFileTypes } from '@/constants/fileTypes';
 import { VALIDATION } from '@/constants/validation';
 
 import { ApiError } from './api';
 
 type Options = {
-  maxSize: number;
-  allowedTypes: string[];
   fieldName: string;
+  maxSizeMb: number;
+  accept: readonly string[];
+  limit?: number;
 };
 
 export const validateFile = (file: File | null, options: Options) => {
   if (!file) return;
 
-  const { maxSize, allowedTypes, fieldName } = options;
+  const { maxSizeMb, accept, fieldName } = options;
+  const maxSize = maxSizeMb * 1024 * 1024;
 
-  if (!allowedTypes.includes(file.type) || file.size > maxSize) {
+  if (!accept.includes(file.type) || file.size > maxSize) {
     throw new ApiError(
-      `Invalid ${fieldName} format or size. File must be ${allowedTypes.join(', ')} and under ${
+      `Invalid ${fieldName} format or size. File must be ${accept.join(', ')} and under ${
         maxSize / 1024 / 1024
       }MB`,
       400
@@ -26,18 +28,19 @@ export const validateFile = (file: File | null, options: Options) => {
 
 export const fileValidationConfigs = {
   avatar: {
-    maxSize: VALIDATION.ACCOUNT.AVATAR.MAX_SIZE * 1024 * 1024,
     fieldName: 'avatar',
-    allowedTypes: imageFileTypes,
+    maxSizeMb: VALIDATION.ACCOUNT.AVATAR.MAX_SIZE_MB,
+    accept: imageFileTypes,
   },
   banner: {
-    maxSize: VALIDATION.ACCOUNT.BANNER.MAX_SIZE * 1024 * 1024,
     fieldName: 'banner',
-    allowedTypes: imageFileTypes,
+    maxSizeMb: VALIDATION.ACCOUNT.BANNER.MAX_SIZE_MB,
+    accept: [...imageFileTypes, ...gifFileTypes],
   },
   media: {
-    maxSize: VALIDATION.POST.MEDIA.MAX_SIZE * 1024 * 1024,
     fieldName: 'media',
-    allowedTypes: imageFileTypes,
+    maxSizeMb: VALIDATION.POST.MEDIA.MAX_SIZE_MB,
+    accept: imageFileTypes,
+    limit: VALIDATION.POST.MEDIA.LIMIT,
   },
-} as const;
+} satisfies Record<string, Options>;

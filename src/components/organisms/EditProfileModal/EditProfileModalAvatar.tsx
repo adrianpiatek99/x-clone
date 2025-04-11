@@ -3,7 +3,6 @@ import React, { memo } from 'react';
 import Avatar from '@/components/atoms/Avatar';
 import Box from '@/components/atoms/Box';
 import IconButton from '@/components/atoms/IconButton';
-import { VALIDATION } from '@/constants/validation';
 import { fileValidationConfigs } from '@/db/utils/validateFile';
 import { useFileImagePicker } from '@/hooks/useFileImagePicker';
 import { useToasts } from '@/hooks/useToasts';
@@ -28,7 +27,7 @@ export const EditProfileModalAvatar = memo(() => {
     onError: (error) => {
       addToast('error', error, { duration: 6000 });
     },
-    options: { maxSize: VALIDATION.ACCOUNT.AVATAR.MAX_SIZE },
+    options: fileValidationConfigs.avatar,
   });
 
   return (
@@ -52,7 +51,7 @@ export const EditProfileModalAvatar = memo(() => {
       <input
         ref={filePickerRef}
         onChange={handleFileChange}
-        accept={fileValidationConfigs.avatar.allowedTypes.toString()}
+        accept={fileValidationConfigs.avatar.accept.toString()}
         aria-label={t('actions.addPhoto')}
         type='file'
         hidden
