@@ -72,6 +72,9 @@
     "welcome": {
       "title": "Welcome to X!",
       "description": "This is the best place to see what's happening in your world. Find some people and topics to follow now."
+    },
+    "posts": {
+      "empty": "No posts found"
     }
   },
 

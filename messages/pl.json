@@ -71,6 +71,9 @@
     "welcome": {
       "title": "Witamy na X!",
       "description": "Tutaj najszybciej dowiesz się, co słychać na świecie. Znajdź osoby i tematy warte obserwowania."
+    },
+    "posts": {
+      "empty": "Nie znaleziono wpisów"
     }
   },
 

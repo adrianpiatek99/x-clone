@@ -1,14 +1,15 @@
 'use client';
 
 import Box from '@/components/atoms/Box';
-import Loader from '@/components/atoms/Loader';
 import FlatList from '@/components/molecules/FlatList/FlatList';
-import PostCard from '@/components/molecules/PostCard';
+import PostCard, { PostCardSkeletons } from '@/components/molecules/PostCard';
 import CreatePostForm from '@/components/organisms/CreatePostForm';
 import { useGlobalPostsTimelineQuery } from '@/hooks/api/posts/useGlobalPostsTimelineQuery';
 import { useAppSession } from '@/hooks/useAppSession';
+import { useTranslations } from 'next-intl';
 
 export default function Home() {
+  const t = useTranslations();
   const { user } = useAppSession();
   const { flatData, ...restResult } = useGlobalPostsTimelineQuery();
 
@@ -22,12 +23,9 @@ export default function Home() {
       <FlatList
         data={flatData}
         renderItem={(item) => <PostCard data={item} />}
+        empty={t('homePage.posts.empty')}
         infiniteScroll={{
-          loader: <Loader className='mt-6' center />,
-          emptyMessage: {
-            title: 'No posts',
-            description: 'No posts found',
-          },
+          loader: <PostCardSkeletons />,
           ...restResult,
         }}
       />
