@@ -64,7 +64,7 @@ const CreatePostForm = () => {
           disabled={isPending}
         />
         <Box className='gap-0'>
-          <AutoHeight duration={200}>
+          <AutoHeight>
             <Suspense>
               {showMedia && (
                 <LazyCreatePostFormMedia
