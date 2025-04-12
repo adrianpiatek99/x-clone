@@ -3,14 +3,15 @@ import React, { memo } from 'react';
 
 import Avatar from '@/components/atoms/Avatar';
 import Box from '@/components/atoms/Box';
-import Typography from '@/components/atoms/Typography';
 import { ROUTES } from '@/constants/routes';
 import type { Post } from '@/db/schema';
-import { Link } from '@/i18n/routing';
-import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
-export const POST_TEXT_MAX_VISIBLE_LENGTH = 280;
+import { PostCardActions } from './PostCardActions';
+import { PostCardAuthor } from './PostCardAuthor';
+import { PostCardDropdown } from './PostCardDropdown';
+import { PostCardMedia } from './PostCardMedia';
+import { PostCardText } from './PostCardText';
 
 type Props = ComponentPropsWithRef<'div'> & {
   data: Post;
@@ -18,12 +19,8 @@ type Props = ComponentPropsWithRef<'div'> & {
 };
 
 const PostCard = memo(({ data, className, ...props }: Props) => {
-  const t = useTranslations();
-  const {
-    id,
-    text,
-    author: { profileImageUrl, screenName },
-  } = data;
+  const { id, text, author, media, createdAt } = data;
+  const { profileImageUrl, screenName } = author;
 
   return (
     <Box
@@ -41,22 +38,14 @@ const PostCard = memo(({ data, className, ...props }: Props) => {
           src={profileImageUrl}
           screenName={screenName}
         />
-        <Box className='gap-1'>
+        <Box className='grow gap-1'>
+          <PostCardAuthor id={id} author={author} createdAt={createdAt}>
+            <PostCardDropdown />
+          </PostCardAuthor>
           <Box className='mt-0.5'>
-            <div className='hide-scrollbar inline-block max-h-[550px] w-[98%] overflow-y-auto whitespace-pre-line'>
-              <Typography
-                truncate={{
-                  maxLength: POST_TEXT_MAX_VISIBLE_LENGTH,
-                  textAfter: (
-                    <Link className='link' href={ROUTES.POST.DETAILS(screenName, id)}>
-                      {t('actions.showMore')}
-                    </Link>
-                  ),
-                }}
-              >
-                {text}
-              </Typography>
-            </div>
+            <PostCardText id={id} text={text} author={author} />
+            {!!media.length && <PostCardMedia media={media} />}
+            <PostCardActions />
           </Box>
         </Box>
       </Box>

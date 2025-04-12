@@ -10,6 +10,7 @@
   "website": "Website",
   "profileImage": "Profile image",
   "search": "Search",
+  "noData": "No data",
 
   "actions": {
     "cancel": "Cancel",

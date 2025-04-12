@@ -10,7 +10,7 @@
   "website": "Strona internetowa",
   "profileImage": "Zdjęcie profilowe",
   "search": "Szukaj",
-
+  "noData": "Brak danych",
   "actions": {
     "cancel": "Anuluj",
     "close": "Zamknij",
@@ -124,6 +124,7 @@
   },
 
   "post": {
+    "noData": "Brak danych",
     "textarea": {
       "label": "Co się dzieje?!"
     },
