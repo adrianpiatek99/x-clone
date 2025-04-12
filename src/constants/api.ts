@@ -12,7 +12,7 @@ export const API_ENDPOINTS = {
     GLOBAL_TIMELINE: (params?: GlobalPostsTimelineParams) => {
       const searchParams = new URLSearchParams();
 
-      if (params?.cursor) searchParams.append('cursor', params.cursor);
+      if (params?.cursor) searchParams.append('cursor', JSON.stringify(params.cursor));
 
       if (params?.limit) searchParams.append('limit', params.limit.toString());
 

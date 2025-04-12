@@ -28,7 +28,7 @@ export type CreatePostRequest = Pick<Post, 'text'> & {
 export type CreatePostResponse = Post;
 
 const schema = z.object({
-  text: z.string().min(1).max(VALIDATION.POST.TEXT.MAX),
+  text: z.string().min(1).max(VALIDATION.POST.TEXT.MAX).trim(),
   conversationControl: z.enum(enumToPgEnum(ConversationControl)).nullish(),
 });
 

@@ -1,4 +1,7 @@
-import type { GlobalPostsTimelineResponse } from '@/app/api/posts/globalTimeline/route';
+import type {
+  GlobalPostsTimelineParams,
+  GlobalPostsTimelineResponse,
+} from '@/app/api/posts/globalTimeline/route';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
@@ -20,11 +23,11 @@ export const useGlobalPostsTimelineQuery = ({
       apiRequest(
         'GET',
         API_ENDPOINTS.POSTS.GLOBAL_TIMELINE({
-          cursor: pageParam as string,
+          cursor: pageParam as GlobalPostsTimelineParams['cursor'],
           limit,
         })
       ),
-    initialPageParam: null as string | null,
+    initialPageParam: null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     enabled,
   });
