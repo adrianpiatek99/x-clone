@@ -19,7 +19,7 @@ type Props = ComponentPropsWithRef<'div'> & {
 };
 
 const PostCard = memo(({ data, className, ...props }: Props) => {
-  const { id, text, author, media, createdAt, isAuthor } = data;
+  const { id, text, author, media, createdAt, isAuthor, isLiked, likesCount } = data;
   const { profileImageUrl, screenName } = author;
   const [isLoading, setIsLoading] = useState(false);
 
@@ -47,7 +47,7 @@ const PostCard = memo(({ data, className, ...props }: Props) => {
           <Box className='mt-0.5'>
             <PostCardText id={id} text={text} author={author} />
             {!!media.length && <PostCardMedia media={media} />}
-            <PostCardActions />
+            <PostCardActions id={id} isLiked={isLiked} likesCount={likesCount} />
           </Box>
         </Box>
       </Box>
