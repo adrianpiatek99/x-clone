@@ -20,7 +20,11 @@ export const useDeletePostMutation = ({ onSuccess, onError, onSettled }: Props =
   const { addToast } = useToasts();
   const queryClient = useQueryClient();
 
-  const { mutate, isPending } = useMutation<DeletePostResponse, ApiAxiosError, DeletePostRequest>({
+  const { mutate, isPending: isDeleting } = useMutation<
+    DeletePostResponse,
+    ApiAxiosError,
+    DeletePostRequest
+  >({
     mutationFn: ({ id }) => apiRequest('DELETE', API_ENDPOINTS.POSTS.DELETE(id)),
     onSuccess: ({ id }) => {
       addToast('success', t('post.api.deletePost.success'));
@@ -44,10 +48,10 @@ export const useDeletePostMutation = ({ onSuccess, onError, onSettled }: Props =
   });
 
   const deletePost = (data: DeletePostRequest) => {
-    if (isPending) return;
+    if (isDeleting) return;
 
     mutate(data);
   };
 
-  return { deletePost, isPending };
+  return { deletePost, isDeleting };
 };
