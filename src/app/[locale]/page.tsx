@@ -1,34 +1,28 @@
 'use client';
 
 import Box from '@/components/atoms/Box';
-import FlatList from '@/components/molecules/FlatList/FlatList';
-import PostCard, { PostCardSkeletons } from '@/components/molecules/PostCard';
 import CreatePostForm from '@/components/organisms/CreatePostForm';
-import { useGlobalPostsTimelineQuery } from '@/hooks/api/posts/useGlobalPostsTimelineQuery';
 import { useAppSession } from '@/hooks/useAppSession';
-import { useTranslations } from 'next-intl';
+import { HomeTab, useHomeStore } from '@/stores/home';
+
+import FollowingPostsTimeline from './_components/FollowingPostsTimeline';
+import GlobalPostsTimeline from './_components/GlobalPostsTimeline';
+import HomeTabBar from './_components/HomeTabBar';
 
 export default function Home() {
-  const t = useTranslations();
   const { user } = useAppSession();
-  const { flatData, ...restResult } = useGlobalPostsTimelineQuery();
+  const currentTab = useHomeStore((state) => state.currentTab);
 
   return (
     <Box className='min-h-screen gap-0'>
+      <HomeTabBar />
       {user && (
         <Box className='hidden gap-0 border-b border-border-1 sm:flex'>
           <CreatePostForm />
         </Box>
       )}
-      <FlatList
-        data={flatData}
-        renderItem={(item) => <PostCard data={item} />}
-        empty={t('homePage.posts.empty')}
-        infiniteScroll={{
-          loader: <PostCardSkeletons />,
-          ...restResult,
-        }}
-      />
+      {currentTab === HomeTab.GLOBAL && <GlobalPostsTimeline />}
+      {currentTab === HomeTab.FOLLOWING && <FollowingPostsTimeline />}
     </Box>
   );
 }

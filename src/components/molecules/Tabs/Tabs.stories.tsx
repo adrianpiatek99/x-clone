@@ -11,11 +11,11 @@ const meta = {
   title: 'Components / Molecules / Tabs',
   component: Tabs,
   decorators: [(Story) => <Box className='w-fit'>{Story()}</Box>],
-} satisfies Meta<TabsProps>;
+} satisfies Meta<TabsProps<string>>;
 
 export default meta;
 
-const Template: StoryFn<TabsProps> = () => {
+const Template: StoryFn<TabsProps<string>> = () => {
   const [currentTab, setCurrentTab] = useState('tab1');
 
   return (

@@ -39,6 +39,7 @@ export { default as PersonOutlinedIcon } from './PersonOutlinedIcon';
 export { default as PlayIcon } from './PlayIcon';
 export { default as PlusIcon } from './PlusIcon';
 export { default as RaportIcon } from './RaportIcon';
+export { default as RefreshIcon } from './RefreshIcon';
 export { default as RemoveOutlinedIcon } from './RemoveOutlinedIcon';
 export { default as RepostIcon } from './RepostIcon';
 export { default as SearchFilledIcon } from './SearchFilledIcon';

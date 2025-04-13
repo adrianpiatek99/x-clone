@@ -11,6 +11,7 @@
   "profileImage": "Profile image",
   "search": "Search",
   "noData": "No data",
+  "lostConnection": "Looks like you lost your connection. Please check it and try again.",
 
   "actions": {
     "cancel": "Cancel",
@@ -26,7 +27,8 @@
     "back": "Back",
     "follow": "Follow",
     "addPhoto": "Add photo",
-    "removePhoto": "Remove photo"
+    "removePhoto": "Remove photo",
+    "retry": "Retry"
   },
 
   "auth": {
@@ -75,6 +77,10 @@
     },
     "posts": {
       "empty": "No posts found"
+    },
+    "tabs": {
+      "global": "Global",
+      "following": "Following"
     }
   },
 

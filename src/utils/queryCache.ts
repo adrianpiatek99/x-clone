@@ -6,7 +6,7 @@ export type InfiniteQueryData<R> = {
 
 export const updateInfiniteQueryWithNewItem = <
   T,
-  R extends { nextCursor: string | null },
+  R extends { nextCursor: unknown },
   K extends keyof Omit<R, 'nextCursor'> & string,
 >(
   oldData: InfiniteQueryData<R> | undefined,

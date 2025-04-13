@@ -11,6 +11,8 @@
   "profileImage": "Zdjęcie profilowe",
   "search": "Szukaj",
   "noData": "Brak danych",
+  "lostConnection": "Wygląda na to, że straciłeś połączenie. Sprawdź je i spróbuj ponownie.",
+
   "actions": {
     "cancel": "Anuluj",
     "close": "Zamknij",
@@ -25,7 +27,8 @@
     "back": "Wróć",
     "follow": "Obserwuj",
     "addPhoto": "Dodaj zdjęcie",
-    "removePhoto": "Usuń zdjęcie"
+    "removePhoto": "Usuń zdjęcie",
+    "retry": "Spróbuj ponownie"
   },
 
   "auth": {
@@ -74,6 +77,10 @@
     },
     "posts": {
       "empty": "Nie znaleziono wpisów"
+    },
+    "tabs": {
+      "global": "Dla wszystkich",
+      "following": "Obserwujesz"
     }
   },
 

@@ -84,7 +84,7 @@ const classes: ButtonClassesReturn = {
   },
 };
 
-const ButtonElement: FC<Omit<ButtonProps, 'href' | 'linkClassName'>> = ({
+const ButtonRoot: FC<Omit<ButtonProps, 'href' | 'linkClassName'>> = ({
   children,
   type = 'button',
   variant = 'filled',
@@ -107,7 +107,7 @@ const ButtonElement: FC<Omit<ButtonProps, 'href' | 'linkClassName'>> = ({
   return (
     <button
       className={twMerge(
-        'relative flex w-auto min-w-[36px] items-center gap-[5px] break-words px-4 font-medium normal-case duration-200 disabled:cursor-not-allowed disabled:opacity-50',
+        'relative flex w-auto min-w-[36px] items-center gap-[5px] break-words px-4 py-1 font-medium normal-case duration-200 disabled:cursor-not-allowed disabled:opacity-50',
         classes.variant[variant][color],
         classes.rounded[rounded],
         classes.size[size],
@@ -125,7 +125,7 @@ const ButtonElement: FC<Omit<ButtonProps, 'href' | 'linkClassName'>> = ({
       ) : (
         startIcon &&
         cloneElement(startIcon as ReactElement<HTMLProps<HTMLElement>>, {
-          className: classes.iconSize[size],
+          className: twMerge('shrink-0', classes.iconSize[size]),
         })
       )}
       <span>{children}</span>
@@ -136,10 +136,10 @@ const ButtonElement: FC<Omit<ButtonProps, 'href' | 'linkClassName'>> = ({
 const Button: FC<ButtonProps> = ({ href, linkClassName = '', ...props }) => {
   return href ? (
     <Link href={href} tabIndex={-1} className={twMerge('rounded-full', linkClassName)}>
-      <ButtonElement {...props} />
+      <ButtonRoot {...props} />
     </Link>
   ) : (
-    <ButtonElement {...props} />
+    <ButtonRoot {...props} />
   );
 };
 
