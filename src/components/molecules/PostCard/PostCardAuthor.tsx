@@ -32,18 +32,16 @@ export const PostCardAuthor = ({ id, author, createdAt, children }: Props) => {
           <Typography color='secondary' truncate>
             {MID_DOT}
           </Typography>
-          <Typography
-            className='whitespace-nowrap'
-            data-tooltip-id={`${id}-created-at`}
-            href={postPageHref}
-            color='secondary'
-          >
-            {getRelativeTime(createdAt)}
-            <Tooltip
-              tooltipId={`${id}-created-at`}
-              content={`${getLocalTime(createdAt)} ${MID_DOT} ${getFullDate(createdAt)}`}
-            />
-          </Typography>
+          <Tooltip content={`${getLocalTime(createdAt)} ${MID_DOT} ${getFullDate(createdAt)}`}>
+            <Typography
+              className='whitespace-nowrap'
+              data-tooltip-id={`${id}-created-at`}
+              href={postPageHref}
+              color='secondary'
+            >
+              {getRelativeTime(createdAt)}
+            </Typography>
+          </Tooltip>
         </div>
       </Box>
       {children}
