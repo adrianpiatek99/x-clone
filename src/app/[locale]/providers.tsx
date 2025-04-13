@@ -14,7 +14,13 @@ import { ThemeProvider } from 'next-themes';
 import LoadingScreen from './loadingScreen';
 import Modals from './modals';
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+    },
+  },
+});
 
 type Props = {
   children: ReactNode;

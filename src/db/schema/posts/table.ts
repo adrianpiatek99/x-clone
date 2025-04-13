@@ -93,7 +93,7 @@ export const postRepliesRelations = relations(postRepliesTable, ({ one }) => ({
   }),
 }));
 
-// Columns
+// ---- Columns ----
 export const postAuthorColumns = {
   id: true,
   name: true,

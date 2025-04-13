@@ -1,12 +1,4 @@
-import {
-  EMAIL_MAX_LENGTH,
-  PASSWORD_MAX_LENGTH,
-  PASSWORD_MIN_LENGTH,
-  PROFILE_NAME_MAX_LENGTH,
-  PROFILE_NAME_MIN_LENGTH,
-  PROFILE_SCREEN_NAME_MAX_LENGTH,
-  PROFILE_SCREEN_NAME_MIN_LENGTH,
-} from '@/db/constants';
+import { VALIDATION } from '@/constants/validation';
 import { z } from 'zod';
 
 export type SignInValues = z.infer<ReturnType<typeof signInSchema>>;
@@ -20,12 +12,12 @@ export const signInSchema = (t: Translation | undefined = undefined) =>
     password: z
       .string({ required_error: t && t('errors.validation.password.required') })
       .min(
-        PASSWORD_MIN_LENGTH,
-        t && t('errors.validation.password.min', { min: PASSWORD_MIN_LENGTH })
+        VALIDATION.ACCOUNT.PASSWORD.MIN,
+        t && t('errors.validation.password.min', { min: VALIDATION.ACCOUNT.PASSWORD.MIN })
       )
       .max(
-        PASSWORD_MAX_LENGTH,
-        t && t('errors.validation.password.max', { max: PASSWORD_MAX_LENGTH })
+        VALIDATION.ACCOUNT.PASSWORD.MAX,
+        t && t('errors.validation.password.max', { max: VALIDATION.ACCOUNT.PASSWORD.MAX })
       ),
   });
 
@@ -35,12 +27,18 @@ export const signUpSchema = (t: Translation | undefined = undefined) =>
       screenName: z
         .string({ required_error: t && t('errors.validation.screenName.required') })
         .min(
-          PROFILE_SCREEN_NAME_MIN_LENGTH,
-          t && t('errors.validation.screenName.min', { min: PROFILE_SCREEN_NAME_MIN_LENGTH })
+          VALIDATION.ACCOUNT.SCREEN_NAME.MIN,
+          t &&
+            t('errors.validation.screenName.min', {
+              min: VALIDATION.ACCOUNT.SCREEN_NAME.MIN,
+            })
         )
         .max(
-          PROFILE_SCREEN_NAME_MAX_LENGTH,
-          t && t('errors.validation.screenName.max', { max: PROFILE_SCREEN_NAME_MAX_LENGTH })
+          VALIDATION.ACCOUNT.SCREEN_NAME.MAX,
+          t &&
+            t('errors.validation.screenName.max', {
+              max: VALIDATION.ACCOUNT.SCREEN_NAME.MAX,
+            })
         )
         .trim()
         .refine(
@@ -51,17 +49,20 @@ export const signUpSchema = (t: Translation | undefined = undefined) =>
         .string({ required_error: t && t('errors.validation.email.required') })
         .toLowerCase()
         .email(t && t('errors.validation.email.incorrect'))
-        .max(EMAIL_MAX_LENGTH, t && t('errors.validation.email.max', { max: EMAIL_MAX_LENGTH }))
+        .max(
+          VALIDATION.ACCOUNT.EMAIL.MAX,
+          t && t('errors.validation.email.max', { max: VALIDATION.ACCOUNT.EMAIL.MAX })
+        )
         .trim(),
       name: z
         .string({ required_error: t && t('errors.validation.name.required') })
         .min(
-          PROFILE_NAME_MIN_LENGTH,
-          t && t('errors.validation.name.min', { min: PROFILE_NAME_MIN_LENGTH })
+          VALIDATION.ACCOUNT.NAME.MIN,
+          t && t('errors.validation.name.min', { min: VALIDATION.ACCOUNT.NAME.MIN })
         )
         .max(
-          PROFILE_NAME_MAX_LENGTH,
-          t && t('errors.validation.name.max', { max: PROFILE_NAME_MAX_LENGTH })
+          VALIDATION.ACCOUNT.NAME.MAX,
+          t && t('errors.validation.name.max', { max: VALIDATION.ACCOUNT.NAME.MAX })
         )
         .trim()
         .refine(
@@ -71,22 +72,22 @@ export const signUpSchema = (t: Translation | undefined = undefined) =>
       password: z
         .string({ required_error: t && t('errors.validation.password.required') })
         .min(
-          PASSWORD_MIN_LENGTH,
-          t && t('errors.validation.password.min', { min: PASSWORD_MIN_LENGTH })
+          VALIDATION.ACCOUNT.PASSWORD.MIN,
+          t && t('errors.validation.password.min', { min: VALIDATION.ACCOUNT.PASSWORD.MIN })
         )
         .max(
-          PASSWORD_MAX_LENGTH,
-          t && t('errors.validation.password.max', { max: PASSWORD_MAX_LENGTH })
+          VALIDATION.ACCOUNT.PASSWORD.MAX,
+          t && t('errors.validation.password.max', { max: VALIDATION.ACCOUNT.PASSWORD.MAX })
         ),
       confirmPassword: z
         .string({ required_error: t && t('errors.validation.password.required') })
         .min(
-          PASSWORD_MIN_LENGTH,
-          t && t('errors.validation.password.min', { min: PASSWORD_MIN_LENGTH })
+          VALIDATION.ACCOUNT.PASSWORD.MIN,
+          t && t('errors.validation.password.min', { min: VALIDATION.ACCOUNT.PASSWORD.MIN })
         )
         .max(
-          PASSWORD_MAX_LENGTH,
-          t && t('errors.validation.password.max', { max: PASSWORD_MAX_LENGTH })
+          VALIDATION.ACCOUNT.PASSWORD.MAX,
+          t && t('errors.validation.password.max', { max: VALIDATION.ACCOUNT.PASSWORD.MAX })
         ),
     })
     .refine(({ password, confirmPassword }) => password === confirmPassword, {

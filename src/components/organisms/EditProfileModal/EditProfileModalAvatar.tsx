@@ -27,7 +27,7 @@ export const EditProfileModalAvatar = memo(() => {
     onError: (error) => {
       addToast('error', error, { duration: 6000 });
     },
-    options: { maxSize: fileValidationConfigs.avatar.maxSize },
+    options: fileValidationConfigs.avatar,
   });
 
   return (
@@ -51,7 +51,7 @@ export const EditProfileModalAvatar = memo(() => {
       <input
         ref={filePickerRef}
         onChange={handleFileChange}
-        accept={fileValidationConfigs.avatar.allowedTypes.toString()}
+        accept={fileValidationConfigs.avatar.accept.toString()}
         aria-label={t('actions.addPhoto')}
         type='file'
         hidden

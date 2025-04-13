@@ -1,9 +1,4 @@
-import {
-  PROFILE_DESCRIPTION_MAX_LENGTH,
-  PROFILE_NAME_MAX_LENGTH,
-  PROFILE_NAME_MIN_LENGTH,
-  PROFILE_WEBSITE_MAX_LENGTH,
-} from '@/db/constants';
+import { VALIDATION } from '@/constants/validation';
 import { z } from 'zod';
 
 export type ProfileValues = z.infer<ReturnType<typeof profileSchema>>;
@@ -13,12 +8,12 @@ export const profileSchema = (t: Translation | undefined = undefined) =>
     name: z
       .string({ required_error: t && t('errors.validation.name.required') })
       .min(
-        PROFILE_NAME_MIN_LENGTH,
-        t && t('errors.validation.name.min', { min: PROFILE_NAME_MIN_LENGTH })
+        VALIDATION.ACCOUNT.NAME.MIN,
+        t && t('errors.validation.name.min', { min: VALIDATION.ACCOUNT.NAME.MIN })
       )
       .max(
-        PROFILE_NAME_MAX_LENGTH,
-        t && t('errors.validation.name.max', { max: PROFILE_NAME_MAX_LENGTH })
+        VALIDATION.ACCOUNT.NAME.MAX,
+        t && t('errors.validation.name.max', { max: VALIDATION.ACCOUNT.NAME.MAX })
       )
       .trim()
       .refine(
@@ -29,15 +24,15 @@ export const profileSchema = (t: Translation | undefined = undefined) =>
       .string()
       .trim()
       .max(
-        PROFILE_DESCRIPTION_MAX_LENGTH,
-        t && t('errors.validation.description.max', { max: PROFILE_DESCRIPTION_MAX_LENGTH })
+        VALIDATION.ACCOUNT.DESCRIPTION.MAX,
+        t && t('errors.validation.description.max', { max: VALIDATION.ACCOUNT.DESCRIPTION.MAX })
       ),
     url: z.union([
       z
         .string()
         .max(
-          PROFILE_WEBSITE_MAX_LENGTH,
-          t && t('errors.validation.website.max', { max: PROFILE_WEBSITE_MAX_LENGTH })
+          VALIDATION.ACCOUNT.WEBSITE.MAX,
+          t && t('errors.validation.website.max', { max: VALIDATION.ACCOUNT.WEBSITE.MAX })
         )
         .url({ message: t && t('errors.validation.website.invalid') })
         .nullish(),

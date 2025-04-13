@@ -27,7 +27,7 @@ export const EditProfileModalBanner = memo(() => {
     onError: (error) => {
       addToast('error', error, { duration: 6000 });
     },
-    options: { maxSize: fileValidationConfigs.banner.maxSize },
+    options: fileValidationConfigs.banner,
   });
 
   const handleRemoveBanner = () => updateBannerFile(null);
@@ -62,7 +62,7 @@ export const EditProfileModalBanner = memo(() => {
       <input
         ref={filePickerRef}
         onChange={handleFileChange}
-        accept={fileValidationConfigs.banner.allowedTypes.toString()}
+        accept={fileValidationConfigs.banner.accept.toString()}
         aria-label={t('actions.addPhoto')}
         type='file'
         hidden

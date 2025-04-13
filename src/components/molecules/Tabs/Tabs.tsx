@@ -1,4 +1,4 @@
-import type { FC, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import React, {
   Children,
   cloneElement,
@@ -20,13 +20,13 @@ type TabsIndicatorPosition = {
   width: number;
 };
 
-export type TabsProps = {
+export type TabsProps<TValue> = {
   children: ReactNode;
-  value: string;
-  onChange?: (tab: string) => void;
+  value: TValue;
+  onChange?: (tab: TValue) => void;
 };
 
-const Tabs: FC<TabsProps> = ({ children, value, onChange }) => {
+const Tabs = <TValue,>({ children, value, onChange }: TabsProps<TValue>) => {
   const tabGroupRef = useRef<HTMLDivElement>(null);
   const [indicatorPosition, setIndicatorPosition] = useState<TabsIndicatorPosition>({
     left: 0,
@@ -42,8 +42,8 @@ const Tabs: FC<TabsProps> = ({ children, value, onChange }) => {
 
           return cloneElement(child, {
             selected,
-            onClick: () => onChange?.(childValue || ''),
-          } as TabProps);
+            onClick: () => onChange?.(childValue as TValue),
+          } as TabProps<TValue>);
         }
 
         return null;

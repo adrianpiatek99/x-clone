@@ -1,38 +1,33 @@
 import type { InputRecord } from '@/components/atoms/Input';
-import {
-  EMAIL_MAX_LENGTH,
-  PASSWORD_MAX_LENGTH,
-  PROFILE_NAME_MAX_LENGTH,
-  PROFILE_SCREEN_NAME_MAX_LENGTH,
-} from '@/db/constants';
-import { SignUpValues } from '@/schema';
+import { VALIDATION } from '@/constants/validation';
+import type { SignUpValues } from '@/schema/auth';
 
 export const signUpInputs = (t: Translation): InputRecord<SignUpValues>[] => [
   {
     name: 'name',
     label: t('name'),
-    maxLength: PROFILE_NAME_MAX_LENGTH,
+    maxLength: VALIDATION.ACCOUNT.NAME.MAX,
   },
   {
     name: 'email',
     label: t('email'),
-    maxLength: EMAIL_MAX_LENGTH,
+    maxLength: VALIDATION.ACCOUNT.EMAIL.MAX,
   },
   {
     name: 'screenName',
     label: t('username'),
-    maxLength: PROFILE_SCREEN_NAME_MAX_LENGTH,
+    maxLength: VALIDATION.ACCOUNT.SCREEN_NAME.MAX,
   },
   {
     type: 'password',
     name: 'password',
     label: t('password'),
-    maxLength: PASSWORD_MAX_LENGTH,
+    maxLength: VALIDATION.ACCOUNT.PASSWORD.MAX,
   },
   {
     type: 'password',
     name: 'confirmPassword',
     label: t('confirmPassword'),
-    maxLength: PASSWORD_MAX_LENGTH,
+    maxLength: VALIDATION.ACCOUNT.PASSWORD.MAX,
   },
 ];

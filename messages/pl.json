@@ -10,6 +10,8 @@
   "website": "Strona internetowa",
   "profileImage": "Zdjęcie profilowe",
   "search": "Szukaj",
+  "noData": "Brak danych",
+  "lostConnection": "Wygląda na to, że straciłeś połączenie. Sprawdź je i spróbuj ponownie.",
 
   "actions": {
     "cancel": "Anuluj",
@@ -25,7 +27,8 @@
     "back": "Wróć",
     "follow": "Obserwuj",
     "addPhoto": "Dodaj zdjęcie",
-    "removePhoto": "Usuń zdjęcie"
+    "removePhoto": "Usuń zdjęcie",
+    "retry": "Spróbuj ponownie"
   },
 
   "auth": {
@@ -71,6 +74,13 @@
     "welcome": {
       "title": "Witamy na X!",
       "description": "Tutaj najszybciej dowiesz się, co słychać na świecie. Znajdź osoby i tematy warte obserwowania."
+    },
+    "posts": {
+      "empty": "Nie znaleziono wpisów"
+    },
+    "tabs": {
+      "global": "Dla wszystkich",
+      "following": "Obserwujesz"
     }
   },
 
@@ -124,6 +134,7 @@
   },
 
   "post": {
+    "noData": "Brak danych",
     "textarea": {
       "label": "Co się dzieje?!"
     },

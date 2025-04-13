@@ -1,4 +1,4 @@
-import { POST_MEDIA_LIMIT } from '@/db/constants';
+import { VALIDATION } from '@/constants/validation';
 import { create } from 'zustand';
 
 import type { CreatePostState } from './types';
@@ -26,7 +26,7 @@ export const useCreatePostStore = create<CreatePostStore>((set, get) => ({
     }));
 
     set((state) => ({
-      files: [...state.files, ...newFiles].slice(0, POST_MEDIA_LIMIT),
+      files: [...state.files, ...newFiles].slice(0, VALIDATION.POST.MEDIA.LIMIT),
     }));
   },
   removeFile: (filePreview) => {
@@ -51,7 +51,7 @@ export const useCreatePostStore = create<CreatePostStore>((set, get) => ({
             file,
             preview: URL.createObjectURL(file),
           })),
-        ].slice(0, POST_MEDIA_LIMIT),
+        ].slice(0, VALIDATION.POST.MEDIA.LIMIT),
       },
     })),
   removeModalFile: (filePreview) => {

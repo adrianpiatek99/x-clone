@@ -4,7 +4,7 @@ import { handleApiError } from '@/db/utils/api';
 import { withAuth } from '@/db/utils/auth';
 import { uploadFile } from '@/db/utils/uploadFile';
 import { fileValidationConfigs, validateFile } from '@/db/utils/validateFile';
-import { profileSchema } from '@/schema';
+import { profileSchema } from '@/schema/profile';
 import { eq } from 'drizzle-orm';
 import { type NextRequest, NextResponse } from 'next/server';
 
@@ -18,6 +18,7 @@ export const PATCH = withAuth(async (request: NextRequest, userId: string) => {
   try {
     const formData = await request.formData();
 
+    // Validate payload
     const { name, description, url } = profileSchema().parse({
       name: formData.get('name') as string,
       description: formData.get('description') as string,
@@ -31,22 +32,25 @@ export const PATCH = withAuth(async (request: NextRequest, userId: string) => {
 
     validateFile(profileBanner, fileValidationConfigs.banner);
 
+    // Upload files
     const [profileImageResult, profileBannerResult] = await Promise.all([
       profileImage ? uploadFile(profileImage) : null,
       profileBanner ? uploadFile(profileBanner) : null,
     ]);
 
-    const updateData = {
-      name,
-      description,
-      url,
-      ...(profileImageResult && { profileImageUrl: profileImageResult.url }),
-      ...(removeBanner
-        ? { profileBannerUrl: '' }
-        : profileBannerResult && { profileBannerUrl: profileBannerResult.url }),
-    };
-
-    await db.update(usersTable).set(updateData).where(eq(usersTable.id, userId));
+    // Update user
+    await db
+      .update(usersTable)
+      .set({
+        name,
+        description,
+        url,
+        ...(profileImageResult && { profileImageUrl: profileImageResult.url }),
+        ...(removeBanner
+          ? { profileBannerUrl: '' }
+          : profileBannerResult && { profileBannerUrl: profileBannerResult.url }),
+      })
+      .where(eq(usersTable.id, userId));
 
     return NextResponse.json({});
   } catch (error) {

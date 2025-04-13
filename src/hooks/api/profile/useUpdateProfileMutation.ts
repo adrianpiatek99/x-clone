@@ -1,5 +1,5 @@
 import type { UpdateProfileRequest } from '@/app/api/profile/update/route';
-import { API_ENDPOINTS } from '@/db/constants';
+import { API_ENDPOINTS } from '@/constants/api';
 import { apiRequest } from '@/db/utils/api';
 import { useToasts } from '@/hooks/useToasts';
 import { createFormData } from '@/utils/formData';

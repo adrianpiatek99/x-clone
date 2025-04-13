@@ -7,6 +7,7 @@ import type { postLikesTable } from './table';
 import type { postMediaTable } from './table';
 import type { postsTable } from './table';
 
+// ---- Enums ----
 export enum ConversationControl {
   ALL = 'ALL',
   COMMUNITY = 'COMMUNITY',
@@ -24,6 +25,7 @@ export const ConversationControlEnum = pgEnum(
 );
 export const PostMediaTypeEnum = pgEnum('post_media_type', enumToPgEnum(PostMediaType));
 
+// ---- Types ----
 export type Post = typeof postsTable.$inferSelect & {
   author: PostAuthor;
   media: PostMedia[];

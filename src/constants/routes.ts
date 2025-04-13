@@ -6,14 +6,14 @@ export const ROUTES = {
   BOOKMARKS: '/bookmarks',
   SETTINGS: '/settings',
   PROFILE: {
-    DETAILS: (screenName: string) => `/${screenName}`,
-    REPLIES: (screenName: string) => `/${screenName}/replies`,
-    MEDIA: (screenName: string) => `/${screenName}/media`,
-    LIKES: (screenName: string) => `/${screenName}/likes`,
-    FOLLOWING: (screenName: string) => `/${screenName}/following`,
-    FOLLOWERS: (screenName: string) => `/${screenName}/followers`,
+    DETAILS: (screenName: string) => `/${screenName}` as const,
+    REPLIES: (screenName: string) => `/${screenName}/replies` as const,
+    MEDIA: (screenName: string) => `/${screenName}/media` as const,
+    LIKES: (screenName: string) => `/${screenName}/likes` as const,
+    FOLLOWING: (screenName: string) => `/${screenName}/following` as const,
+    FOLLOWERS: (screenName: string) => `/${screenName}/followers` as const,
   },
   POST: {
-    DETAILS: (screenName: string, postId: string) => `/${screenName}/post/${postId}`,
+    DETAILS: (screenName: string, postId: string) => `/${screenName}/post/${postId}` as const,
   },
 } as const;
