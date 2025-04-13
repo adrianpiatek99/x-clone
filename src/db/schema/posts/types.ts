@@ -29,6 +29,7 @@ export const PostMediaTypeEnum = pgEnum('post_media_type', enumToPgEnum(PostMedi
 export type Post = typeof postsTable.$inferSelect & {
   author: PostAuthor;
   media: PostMedia[];
+  isAuthor: boolean;
   isLiked: boolean;
   likesCount: number;
   repliesCount: number;

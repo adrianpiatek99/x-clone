@@ -159,6 +159,10 @@
       "createPost": {
         "success": "Post created successfully.",
         "error": "Failed to create post."
+      },
+      "deletePost": {
+        "success": "Post deleted successfully.",
+        "error": "Failed to delete post."
       }
     }
   },

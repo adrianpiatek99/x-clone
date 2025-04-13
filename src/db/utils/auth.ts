@@ -4,14 +4,20 @@ import type { NextResponse } from 'next/server';
 
 import { ApiError } from './api';
 
-type AuthenticatedHandler = (req: NextRequest, userId: string) => Promise<NextResponse>;
+type AuthenticatedHandler<TParams> = (
+  req: NextRequest,
+  userId: string,
+  { params }: { params: TParams }
+) => Promise<NextResponse>;
 
-export const withAuth = (handler: AuthenticatedHandler) => async (req: NextRequest) => {
-  const session = await auth();
+export const withAuth =
+  <TParams>(handler: AuthenticatedHandler<TParams>) =>
+  async (req: NextRequest, { params }: { params: TParams }) => {
+    const session = await auth();
 
-  if (!session?.user?.id) {
-    throw new ApiError('Unauthorized', 401);
-  }
+    if (!session?.user?.id) {
+      throw new ApiError('Unauthorized', 401);
+    }
 
-  return handler(req, session.user.id);
-};
+    return handler(req, session.user.id, { params });
+  };

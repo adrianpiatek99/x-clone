@@ -16,7 +16,6 @@ import { withAuth } from '@/db/utils/auth';
 import { uploadFile } from '@/db/utils/uploadFile';
 import { fileValidationConfigs, validateFile } from '@/db/utils/validateFile';
 import { eq } from 'drizzle-orm';
-import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -32,7 +31,7 @@ const schema = z.object({
   conversationControl: z.enum(enumToPgEnum(ConversationControl)).nullish(),
 });
 
-export const POST = withAuth(async (request: NextRequest, userId: string) => {
+export const POST = withAuth(async (request, userId: string) => {
   try {
     const formData = await request.formData();
 
@@ -118,10 +117,11 @@ export const POST = withAuth(async (request: NextRequest, userId: string) => {
       throw new ApiError('Failed to fetch created post', 500);
     }
 
+    const isAuthor = createdPost.author.id === userId;
     const isLiked = createdPost.likes.length > 0;
 
     return NextResponse.json<CreatePostResponse>(
-      { ...createdPost, isLiked, likesCount, repliesCount },
+      { ...createdPost, isAuthor, isLiked, likesCount, repliesCount },
       { status: 201 }
     );
   } catch (error) {

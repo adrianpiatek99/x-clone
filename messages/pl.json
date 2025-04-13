@@ -160,6 +160,10 @@
       "createPost": {
         "success": "Wpis został opublikowany.",
         "error": "Nie udało się opublikować wpisu."
+      },
+      "deletePost": {
+        "success": "Wpis został usunięty.",
+        "error": "Nie udało się usunąć wpisu."
       }
     }
   },

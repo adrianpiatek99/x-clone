@@ -9,6 +9,7 @@ const LazyNavigationDrawer = dynamic(() => import('@/components/organisms/Naviga
 const LazyLogoutConfirmModal = dynamic(() => import('@/components/molecules/LogoutConfirmModal'));
 const LazyNavigationTabs = dynamic(() => import('@/components/organisms/NavigationTabs'));
 const LazyCreatePostFormModal = dynamic(() => import('@/components/organisms/CreatePostFormModal'));
+
 const Modals = () => {
   const { user } = useAppSession();
 

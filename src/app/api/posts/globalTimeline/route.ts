@@ -86,10 +86,12 @@ export const GET = async (request: NextRequest) => {
           db.$count(postRepliesTable, eq(postRepliesTable.postId, post.id)),
         ]);
 
+        const isAuthor = post.author.id === userId;
         const isLiked = post.likes.length > 0;
 
         return {
           ...post,
+          isAuthor,
           isLiked,
           likesCount,
           repliesCount,
