@@ -118,7 +118,7 @@ export const POST = withAuth(async (request, userId: string) => {
     }
 
     const isAuthor = createdPost.author.id === userId;
-    const isLiked = createdPost.likes.length > 0;
+    const isLiked = !!createdPost.likes.length && createdPost.likes[0].userId === userId;
 
     return NextResponse.json<CreatePostResponse>(
       { ...createdPost, isAuthor, isLiked, likesCount, repliesCount },

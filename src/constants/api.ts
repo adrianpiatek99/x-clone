@@ -18,6 +18,8 @@ export const API_ENDPOINTS = {
 
       return `/api/posts/globalTimeline${searchParams.toString() ? `?${searchParams.toString()}` : ''}` as const;
     },
+    LIKE: (id: string) => `/api/posts/${id}/like` as const,
+    UNLIKE: (id: string) => `/api/posts/${id}/unlike` as const,
   },
   PROFILE: {
     UPDATE: '/api/profile/update',

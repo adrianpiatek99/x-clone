@@ -164,6 +164,14 @@
       "deletePost": {
         "success": "Post deleted successfully.",
         "error": "Failed to delete post."
+      },
+      "likePost": {
+        "success": "Post liked successfully.",
+        "error": "Failed to like post."
+      },
+      "unlikePost": {
+        "success": "Post unliked successfully.",
+        "error": "Failed to unlike post."
       }
     }
   },

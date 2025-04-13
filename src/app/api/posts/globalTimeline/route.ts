@@ -31,6 +31,7 @@ export const GET = async (request: NextRequest) => {
     const { searchParams } = new URL(request.url);
 
     const userId = session?.user?.id;
+
     const cursorStr = searchParams.get('cursor');
     const cursor: GlobalPostsTimelineParams['cursor'] = cursorStr
       ? {
@@ -87,7 +88,7 @@ export const GET = async (request: NextRequest) => {
         ]);
 
         const isAuthor = post.author.id === userId;
-        const isLiked = post.likes.length > 0;
+        const isLiked = !!post.likes.length && post.likes[0].userId === userId;
 
         return {
           ...post,

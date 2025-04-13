@@ -165,6 +165,14 @@
       "deletePost": {
         "success": "Wpis został usunięty.",
         "error": "Nie udało się usunąć wpisu."
+      },
+      "likePost": {
+        "success": "Wpis został polubiony.",
+        "error": "Nie udało się polubić wpisu."
+      },
+      "unlikePost": {
+        "success": "Wpis został odpolubiony.",
+        "error": "Nie udało się odpolubić wpisu."
       }
     }
   },
