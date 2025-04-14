@@ -37,7 +37,7 @@ const Tooltip = ({ children, content }: Props) => {
     move: false,
     delay: {
       open: 300,
-      close: 100,
+      close: 0,
     },
   });
   const focus = useFocus(context);

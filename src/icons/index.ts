@@ -31,6 +31,7 @@ export { default as MailOutlinedIcon } from './MailOutlinedIcon';
 export { default as MediaIcon } from './MediaIcon';
 export { default as MenuIcon } from './MenuIcon';
 export { default as MessageIcon } from './MessageIcon';
+export { default as MonitoringIcon } from './MonitoringIcon';
 export { default as MoreHorizontalIcon } from './MoreHorizontalIcon';
 export { default as NotificationIcon } from './NotificationIcon';
 export { default as NotificationOutlinedIcon } from './NotificationOutlinedIcon';
