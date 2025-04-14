@@ -4,7 +4,9 @@ import type { GlobalPostsTimelineResponse } from '@/app/api/posts/globalTimeline
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
+import { useAppSession } from '@/hooks/useAppSession';
 import { useToasts } from '@/hooks/useToasts';
+import { useGlobalStore } from '@/stores/global';
 import { type InfiniteQueryData, updateInfiniteQueryWithUpdatedItem } from '@/utils/queryCache';
 import { useMutation } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
@@ -18,8 +20,10 @@ type Props = {
 
 export const useToggleLikePostMutation = ({ onSuccess, onError, onSettled }: Props = {}) => {
   const t = useTranslations();
-  const { addToast } = useToasts();
   const queryClient = useQueryClient();
+  const { addToast } = useToasts();
+  const { user } = useAppSession();
+  const updateAuthRequiredModal = useGlobalStore((state) => state.updateAuthRequiredModal);
 
   const { mutate: likeMutate, isPending: isLikePending } = useMutation<
     LikePostResponse,
@@ -98,8 +102,15 @@ export const useToggleLikePostMutation = ({ onSuccess, onError, onSettled }: Pro
   const toggleLikePost = (id: string, isLiked: boolean) => {
     if (isToggleLikePending) return;
 
+    if (!user) {
+      updateAuthRequiredModal({ isOpen: true });
+
+      return;
+    }
+
     if (isLiked) {
       unlikeMutate({ id });
+
       return;
     }
 
