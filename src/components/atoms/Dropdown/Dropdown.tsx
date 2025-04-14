@@ -7,7 +7,7 @@ import { Menu, MenuButton, MenuItems } from '@headlessui/react';
 import { twMerge } from 'tailwind-merge';
 
 export type DropdownProps = {
-  children: ReactElement[];
+  children: (ReactElement | null | undefined | boolean)[];
   menuItems?: Partial<{
     className: string;
     anchorTo: 'bottom start';

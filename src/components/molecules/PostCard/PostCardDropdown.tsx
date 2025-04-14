@@ -4,7 +4,7 @@ import Dropdown, { DropdownItem } from '@/components/atoms/Dropdown';
 import IconButton from '@/components/atoms/IconButton';
 import type { Post } from '@/db/schema';
 import { useDeletePostMutation } from '@/hooks/api/posts/useDeletePostMutation';
-import { EditIcon, MoreHorizontalIcon, RemoveIcon } from '@/icons';
+import { EditIcon, MonitoringIcon, MoreHorizontalIcon, RemoveIcon } from '@/icons';
 import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
 
@@ -37,12 +37,15 @@ export const PostCardDropdown = memo(({ id, isAuthor, setIsLoading }: Props) => 
   return (
     <>
       <div className='my-[-8px] mr-[-6px] flex items-center'>
-        {isAuthor && (
-          <Dropdown>
-            <IconButton title={t('post.actions.more')} color='secondary'>
-              <MoreHorizontalIcon />
-            </IconButton>
-            <DropdownItem icon={<EditIcon />}>{t('post.actions.edit')}</DropdownItem>
+        <Dropdown>
+          <IconButton title={t('post.actions.more')} color='secondary'>
+            <MoreHorizontalIcon />
+          </IconButton>
+          {isAuthor && <DropdownItem icon={<EditIcon />}>{t('post.actions.edit')}</DropdownItem>}
+          <DropdownItem icon={<MonitoringIcon />}>
+            {t('post.actions.viewPostEngagements')}
+          </DropdownItem>
+          {isAuthor && (
             <DropdownItem
               onClick={() => setIsDeletePostModalOpen(true)}
               icon={<RemoveIcon />}
@@ -51,8 +54,8 @@ export const PostCardDropdown = memo(({ id, isAuthor, setIsLoading }: Props) => 
             >
               {t('post.actions.delete')}
             </DropdownItem>
-          </Dropdown>
-        )}
+          )}
+        </Dropdown>
       </div>
       <LazyConfirmModal
         title={t('post.confirmDeleteModal.title')}
