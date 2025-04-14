@@ -12,21 +12,22 @@ type ThemeOption = {
 
 export const themes = Object.values(Theme);
 
-export const themeOptions = [
-  {
-    theme: Theme.DARK,
-    label: 'theme.dark',
-  },
-  {
-    theme: Theme.LIGHT,
-    label: 'theme.light',
-  },
-  {
-    theme: Theme.MIDNIGHT_BLUE,
-    label: 'theme.midnightBlue',
-  },
-  {
-    theme: Theme.TOKYO_NIGHT,
-    label: 'theme.tokyoNight',
-  },
-] satisfies ThemeOption[];
+export const themeOptions = (t: Translation) =>
+  [
+    {
+      theme: Theme.DARK,
+      label: t('theme.dark'),
+    },
+    {
+      theme: Theme.LIGHT,
+      label: t('theme.light'),
+    },
+    {
+      theme: Theme.MIDNIGHT_BLUE,
+      label: t('theme.midnightBlue'),
+    },
+    {
+      theme: Theme.TOKYO_NIGHT,
+      label: t('theme.tokyoNight'),
+    },
+  ] satisfies ThemeOption[];

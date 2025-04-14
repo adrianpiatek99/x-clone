@@ -14,13 +14,14 @@ type LocaleOption = {
 export const locales = Object.values(Locale);
 export const defaultLocale = Locale.EN;
 
-export const languageOptions = [
-  {
-    label: 'locale.polish',
-    value: Locale.PL,
-  },
-  {
-    label: 'locale.english',
-    value: Locale.EN,
-  },
-] satisfies LocaleOption[];
+export const languageOptions = (t: Translation) =>
+  [
+    {
+      label: t('language.polish'),
+      value: Locale.PL,
+    },
+    {
+      label: t('language.english'),
+      value: Locale.EN,
+    },
+  ] satisfies LocaleOption[];

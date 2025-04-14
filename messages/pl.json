@@ -57,7 +57,7 @@
       "description": "Wybierz preferowany język nagłówków, przycisków i innych elementów interfejsu. Nie wpłynie to na język treści na osi czasu."
     },
     "polish": "Polski",
-    "english": "Angielski"
+    "english": "English"
   },
 
   "navigation": {
@@ -176,6 +176,13 @@
         "error": "Nie udało się odpolubić wpisu."
       }
     }
+  },
+
+  "theme": {
+    "dark": "Ciemny",
+    "light": "Jasny",
+    "midnightBlue": "Północny granat",
+    "tokyoNight": "Tokio nocą"
   },
 
   "errors": {
