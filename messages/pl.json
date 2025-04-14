@@ -57,7 +57,7 @@
       "description": "Wybierz preferowany język nagłówków, przycisków i innych elementów interfejsu. Nie wpłynie to na język treści na osi czasu."
     },
     "polish": "Polski",
-    "english": "Angielski"
+    "english": "English"
   },
 
   "navigation": {
@@ -146,7 +146,9 @@
       "unlike": "Przestań lubić",
       "repost": "Podaj dalej",
       "media": "Media",
-      "more": "Więcej"
+      "more": "Więcej",
+      "edit": "Edytuj wpis",
+      "viewPostEngagements": "Wyświetl interakcje wpisu"
     },
     "stats": {
       "likes": "Polubienia",
@@ -160,8 +162,27 @@
       "createPost": {
         "success": "Wpis został opublikowany.",
         "error": "Nie udało się opublikować wpisu."
+      },
+      "deletePost": {
+        "success": "Wpis został usunięty.",
+        "error": "Nie udało się usunąć wpisu."
+      },
+      "likePost": {
+        "success": "Wpis został polubiony.",
+        "error": "Nie udało się polubić wpisu."
+      },
+      "unlikePost": {
+        "success": "Wpis został odpolubiony.",
+        "error": "Nie udało się odpolubić wpisu."
       }
     }
+  },
+
+  "theme": {
+    "dark": "Ciemny",
+    "light": "Jasny",
+    "midnightBlue": "Północny granat",
+    "tokyoNight": "Tokio nocą"
   },
 
   "errors": {

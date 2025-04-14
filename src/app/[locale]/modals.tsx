@@ -5,16 +5,19 @@ import { useAppSession } from '@/hooks/useAppSession';
 import dynamic from 'next/dynamic';
 
 const LazyAuthModal = dynamic(() => import('@/components/organisms/AuthModal'));
+const LazyAuthRequiredModal = dynamic(() => import('@/components/organisms/AuthRequiredModal'));
 const LazyNavigationDrawer = dynamic(() => import('@/components/organisms/NavigationDrawer'));
 const LazyLogoutConfirmModal = dynamic(() => import('@/components/molecules/LogoutConfirmModal'));
 const LazyNavigationTabs = dynamic(() => import('@/components/organisms/NavigationTabs'));
 const LazyCreatePostFormModal = dynamic(() => import('@/components/organisms/CreatePostFormModal'));
+
 const Modals = () => {
   const { user } = useAppSession();
 
   return (
     <>
       {!user && <LazyAuthModal />}
+      {!user && <LazyAuthRequiredModal />}
       {user && <LazyLogoutConfirmModal />}
       <LazyNavigationDrawer />
       <LazyNavigationTabs />

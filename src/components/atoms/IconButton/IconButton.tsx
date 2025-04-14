@@ -57,27 +57,28 @@ const IconButtonElement: FC<IconButtonProps> = ({
   const tabIndex = disableFocus ? -1 : 0;
 
   return (
-    <button
-      data-label={label}
-      data-tooltip-id={title ? tooltipId : undefined}
-      className={twMerge(
-        'relative flex w-max shrink-0 items-center justify-center rounded-full p-0 duration-200 focus-visible:ring-2 focus-visible:ring-current disabled:cursor-not-allowed disabled:opacity-50 [&>svg]:shrink-0',
-        label && 'after:content-[attr(data-label)] after:px-3 pl-3',
-        isCustomColor
-          ? 'bg-opacity-0 focus-visible:bg-opacity-10 enabled:hover:bg-opacity-10 enabled:active:bg-opacity-20'
-          : classes.color[color],
-        classes.size[size],
-        isActive && 'opacity-50',
-        className
-      )}
-      aria-label={title}
-      type='button'
-      tabIndex={tabIndex}
-      {...props}
-    >
-      {children}
-      {title && <Tooltip tooltipId={tooltipId} content={title} />}
-    </button>
+    <Tooltip content={title}>
+      <button
+        data-label={label}
+        data-tooltip-id={title ? tooltipId : undefined}
+        className={twMerge(
+          'relative flex w-max shrink-0 items-center justify-center rounded-full p-0 duration-200 focus-visible:ring-2 focus-visible:ring-current disabled:cursor-not-allowed disabled:opacity-50 [&>svg]:shrink-0',
+          label && 'after:content-[attr(data-label)] after:pl-1.5 after:pr-3 pl-3',
+          isCustomColor
+            ? 'bg-opacity-0 focus-visible:bg-opacity-10 enabled:hover:bg-opacity-10 enabled:active:bg-opacity-20'
+            : classes.color[color],
+          classes.size[size],
+          isActive && 'opacity-50',
+          className
+        )}
+        aria-label={title}
+        type='button'
+        tabIndex={tabIndex}
+        {...props}
+      >
+        {children}
+      </button>
+    </Tooltip>
   );
 };
 

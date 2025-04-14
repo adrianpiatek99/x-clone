@@ -25,7 +25,7 @@ export const ConfirmModalActions: FC<Props> = ({
   return (
     <Box className='flex-row gap-0'>
       <Button
-        className='min-h-[38px] rounded-none rounded-bl-2xl border-r border-t border-border-3 bg-transparent focus-visible:ring-inset  enabled:hover:bg-text-1/10 enabled:active:bg-text-1/15'
+        className='min-h-[38px] rounded-none rounded-bl-2xl border-r border-t border-border-3 bg-transparent focus-visible:ring-inset enabled:hover:bg-text-1/10 enabled:active:bg-text-1/15'
         onClick={onClose}
         variant='gray'
         disabled={isLoading}

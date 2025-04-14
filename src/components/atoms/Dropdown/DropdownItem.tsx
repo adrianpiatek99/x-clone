@@ -48,7 +48,7 @@ export const DropdownItem: FC<DropdownItemProps> = ({
         ) : (
           cloneElement(icon, {
             className: twMerge(
-              'size-[18px] fill-text-1 text-text-1',
+              'size-[18px] fill-text-1 text-text-1 shrink-0',
               danger && 'text-error-1 fill-error-1'
             ),
           })

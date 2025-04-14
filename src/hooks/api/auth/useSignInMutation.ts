@@ -4,6 +4,7 @@ import { useToasts } from '@/hooks/useToasts';
 import { signIn as nextSignIn } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { SignInValues } from '@/schema/auth';
+import { useQueryClient } from '@tanstack/react-query';
 
 type Props = {
   onSuccess?: () => void;
@@ -13,6 +14,7 @@ type Props = {
 export const useSignInMutation = ({ onSuccess, onError }: Props = {}) => {
   const t = useTranslations();
   const { addToast } = useToasts();
+  const queryClient = useQueryClient();
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const errorMessage = t('errors.auth.signIn');
@@ -31,6 +33,8 @@ export const useSignInMutation = ({ onSuccess, onError }: Props = {}) => {
       const error = response?.error;
 
       if (error) throw Error(error);
+
+      queryClient.invalidateQueries();
 
       onSuccess?.();
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
