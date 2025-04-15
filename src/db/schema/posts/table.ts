@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { integer, pgTable, text, uuid } from 'drizzle-orm/pg-core';
+import { integer, pgTable, text, unique, uuid } from 'drizzle-orm/pg-core';
 
 import { createdAt, id, updatedAt } from '../helpers';
 import { usersTable } from '../users/table';
@@ -28,16 +28,20 @@ export const postMediaTable = pgTable('post_media', {
     .references(() => postsTable.id, { onDelete: 'cascade' }),
 });
 
-export const postLikesTable = pgTable('post_likes', {
-  id,
-  postId: uuid('post_id')
-    .notNull()
-    .references(() => postsTable.id, { onDelete: 'cascade' }),
-  userId: uuid('user_id')
-    .notNull()
-    .references(() => usersTable.id),
-  createdAt,
-});
+export const postLikesTable = pgTable(
+  'post_likes',
+  {
+    id,
+    postId: uuid('post_id')
+      .notNull()
+      .references(() => postsTable.id, { onDelete: 'cascade' }),
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => usersTable.id),
+    createdAt,
+  },
+  (t) => [unique().on(t.postId, t.userId)]
+);
 
 export const postRepliesTable = pgTable('post_reply', {
   id,

@@ -19,18 +19,14 @@ export const GET = withAuth(
     try {
       const { id } = await params;
 
-      const [existingLike] = await db
-        .select()
-        .from(postLikesTable)
-        .where(and(eq(postLikesTable.postId, id), eq(postLikesTable.userId, userId)));
+      const result = await db
+        .delete(postLikesTable)
+        .where(and(eq(postLikesTable.postId, id), eq(postLikesTable.userId, userId)))
+        .returning();
 
-      if (!existingLike) {
+      if (!result.length) {
         throw new ApiError('Post not liked', 400);
       }
-
-      await db
-        .delete(postLikesTable)
-        .where(and(eq(postLikesTable.postId, id), eq(postLikesTable.userId, userId)));
 
       return NextResponse.json<UnlikePostResponse>({ id, message: 'Post unliked successfully' });
     } catch (error) {
