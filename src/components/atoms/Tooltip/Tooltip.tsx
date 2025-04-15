@@ -1,7 +1,7 @@
 'use client';
 
 import type { ReactElement, Ref } from 'react';
-import React, { cloneElement, useEffect, useState } from 'react';
+import React, { cloneElement, useState } from 'react';
 
 import {
   autoUpdate,
