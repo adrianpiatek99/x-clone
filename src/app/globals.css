@@ -4,13 +4,17 @@
 
 :root {
   /* Base Colors */
-  --primary: 10, 132, 255;
   --black: 0, 0, 0;
-  --emerald: 0, 186, 124;
-  --pink: 249, 24, 128;
-  --error-1: 211, 47, 47;
+  /* --emerald: 0, 186, 124; */
+  --emerald: 50, 215, 75;
+  /* --pink: 249, 24, 128; */
+  /* --pink: 255, 45, 85; */
+  --pink: 211, 15, 69;
+  /* --error-1: 211, 47, 47; */
+  --error-1: 215, 0, 21;
   --info: 90, 199, 250;
-  --warning: 255, 149, 0;
+  /* --warning: 255, 149, 0; */
+  --warning: 255, 214, 10;
 
   /* State Colors */
   --tooltip: rgba(101, 119, 134, 1);
@@ -48,11 +52,12 @@
 
 .dark {
   /* Base Colors */
+  --primary: 10, 132, 255;
   --background: var(--theme-dark-background);
   --foreground: var(--theme-dark-foreground);
   --text-1: 255, 255, 255;
   --text-2: var(--theme-dark-text);
-  --border-1: 58, 58, 61;
+  --border-1: 44, 44, 46;
   --border-2: 110, 110, 115;
   --border-3: 66, 66, 66;
   --accent-1: 46, 46, 46;
@@ -65,11 +70,12 @@
 
 .light {
   /* Base Colors */
+  --primary: 0, 122, 255;
   --background: var(--theme-light-background);
   --foreground: var(--theme-light-foreground);
   --text-1: 0, 0, 0;
   --text-2: var(--theme-light-text);
-  --border-1: 214, 214, 215;
+  --border-1: 199, 199, 205;
   --border-2: 134, 134, 139;
   --border-3: 200, 200, 200;
   --accent-1: 255, 255, 255;
@@ -87,6 +93,7 @@
 
 .midnightBlue {
   /* Base Colors */
+  --primary: 10, 132, 255;
   --background: var(--theme-midnightBlue-background);
   --foreground: var(--theme-midnightBlue-foreground);
   --text-1: 255, 255, 255;

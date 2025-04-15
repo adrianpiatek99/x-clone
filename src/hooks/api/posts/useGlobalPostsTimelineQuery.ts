@@ -29,6 +29,7 @@ export const useGlobalPostsTimelineQuery = ({
       ),
     initialPageParam: null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
+    refetchOnMount: false,
     enabled,
   });
 

@@ -1,12 +1,8 @@
 import { auth } from '@/auth';
 import { db } from '@/db/db';
 import type { Post } from '@/db/schema';
-import {
-  postAuthorColumns,
-  postLikesTable,
-  postRepliesTable,
-  postsTable,
-} from '@/db/schema/posts/table';
+import { userPublicColumns } from '@/db/schema';
+import { postLikesTable, postRepliesTable, postsTable } from '@/db/schema/posts/table';
 import { handleApiError } from '@/db/utils/api';
 import { and, desc, eq, lt, or } from 'drizzle-orm';
 import type { NextRequest } from 'next/server';
@@ -32,6 +28,7 @@ export const GET = async (request: NextRequest) => {
 
     const userId = session?.user?.id;
 
+    // Validate cursor
     const cursorStr = searchParams.get('cursor');
     const cursor: GlobalPostsTimelineParams['cursor'] = cursorStr
       ? {
@@ -42,6 +39,7 @@ export const GET = async (request: NextRequest) => {
     const limit = parseInt(searchParams.get('limit') || '20', 10);
     const take = limit + 1;
 
+    // Fetch posts
     const posts = await db.query.postsTable.findMany({
       limit: take,
       where: cursor
@@ -53,7 +51,7 @@ export const GET = async (request: NextRequest) => {
       orderBy: [desc(postsTable.createdAt), desc(postsTable.id)],
       with: {
         author: {
-          columns: postAuthorColumns,
+          columns: userPublicColumns,
         },
         likes: {
           where: userId ? eq(postLikesTable.userId, userId) : undefined,
@@ -65,6 +63,7 @@ export const GET = async (request: NextRequest) => {
       },
     });
 
+    // Calculate next cursor
     let nextCursor: GlobalPostsTimelineResponse['nextCursor'] = null;
 
     if (posts.length > limit) {
@@ -88,7 +87,7 @@ export const GET = async (request: NextRequest) => {
         ]);
 
         const isAuthor = post.author.id === userId;
-        const isLiked = !!post.likes.length && post.likes[0].userId === userId;
+        const isLiked = post.likes.some((like) => like.userId === userId);
 
         return {
           ...post,

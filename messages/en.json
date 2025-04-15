@@ -75,12 +75,40 @@
       "title": "Welcome to X!",
       "description": "This is the best place to see what's happening in your world. Find some people and topics to follow now."
     },
-    "posts": {
-      "empty": "No posts found"
-    },
     "tabs": {
       "global": "Global",
       "following": "Following"
+    },
+    "globalPosts": {
+      "empty": {
+        "title": "No posts found",
+        "description": "When someone posts something, it'll show up here."
+      }
+    },
+    "followingPosts": {
+      "empty": {
+        "title": "No posts found",
+        "description": "When someone posts something, it'll show up here."
+      }
+    }
+  },
+
+  "postPage": {
+    "tabs": {
+      "likes": "Likes",
+      "reposts": "Reposts "
+    },
+    "likes": {
+      "empty": {
+        "title": "No likes yet",
+        "description": "When someone taps the heart to like this post, it'll show up here."
+      }
+    },
+    "reposts": {
+      "empty": {
+        "title": "No reposts yet",
+        "description": "Share someone else's post on your timeline by reposting it. When you do, it'll show up here."
+      }
     }
   },
 
@@ -148,10 +176,6 @@
       "more": "More",
       "edit": "Edit post",
       "viewPostEngagements": "View post engagements"
-    },
-    "stats": {
-      "likes": "Likes",
-      "replies": "Replies"
     },
     "confirmDeleteModal": {
       "title": "Delete post?",

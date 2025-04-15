@@ -13,7 +13,10 @@ const FollowingPostsTimeline = () => {
     <FlatList
       data={flatData}
       renderItem={(item) => <PostCard data={item} />}
-      empty={t('homePage.posts.empty')}
+      empty={{
+        title: t('homePage.followingPosts.empty.title'),
+        description: t('homePage.followingPosts.empty.description'),
+      }}
     />
   );
 };

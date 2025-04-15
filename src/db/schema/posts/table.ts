@@ -2,7 +2,6 @@ import { relations } from 'drizzle-orm';
 import { integer, pgTable, text, uuid } from 'drizzle-orm/pg-core';
 
 import { createdAt, id, updatedAt } from '../helpers';
-import type { User } from '../users';
 import { usersTable } from '../users/table';
 import { ConversationControl, ConversationControlEnum, PostMediaTypeEnum } from './types';
 
@@ -92,12 +91,3 @@ export const postRepliesRelations = relations(postRepliesTable, ({ one }) => ({
     references: [usersTable.id],
   }),
 }));
-
-// ---- Columns ----
-export const postAuthorColumns = {
-  id: true,
-  name: true,
-  screenName: true,
-  profileImageUrl: true,
-  isVerified: true,
-} satisfies Partial<Record<keyof User, boolean>>;

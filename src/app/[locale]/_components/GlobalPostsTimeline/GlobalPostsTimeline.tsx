@@ -13,7 +13,10 @@ const GlobalPostsTimeline = () => {
     <FlatList
       data={flatData}
       renderItem={(item) => <PostCard data={item} />}
-      empty={t('homePage.posts.empty')}
+      empty={{
+        title: t('homePage.globalPosts.empty.title'),
+        description: t('homePage.globalPosts.empty.description'),
+      }}
       infiniteScroll={{
         loader: <PostCardSkeletons />,
         ...restResult,

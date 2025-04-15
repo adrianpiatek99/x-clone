@@ -1,10 +1,10 @@
 import { VALIDATION } from '@/constants/validation';
 import { db } from '@/db/db';
+import { userPublicColumns } from '@/db/schema';
 import { enumToPgEnum } from '@/db/schema/helpers';
 import type { Post } from '@/db/schema/posts';
 import {
   ConversationControl,
-  postAuthorColumns,
   postLikesTable,
   postMediaTable,
   PostMediaType,
@@ -98,7 +98,7 @@ export const POST = withAuth(async (request, userId: string) => {
         where: eq(postsTable.id, post.id),
         with: {
           author: {
-            columns: postAuthorColumns,
+            columns: userPublicColumns,
           },
           likes: {
             where: eq(postLikesTable.userId, userId),
@@ -118,7 +118,7 @@ export const POST = withAuth(async (request, userId: string) => {
     }
 
     const isAuthor = createdPost.author.id === userId;
-    const isLiked = !!createdPost.likes.length && createdPost.likes[0].userId === userId;
+    const isLiked = createdPost.likes.some((like) => like.userId === userId);
 
     return NextResponse.json<CreatePostResponse>(
       { ...createdPost, isAuthor, isLiked, likesCount, repliesCount },
