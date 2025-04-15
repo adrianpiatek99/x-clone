@@ -165,3 +165,32 @@ input {
 .link {
   @apply text-primary hover:underline focus-within:underline;
 }
+
+/* ------------------------------- REDUCED MOTION ------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Motion-safe class for elements that should only animate when user prefers motion */
+.motion-safe {
+  @media (prefers-reduced-motion: reduce) {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Motion-reduce class for elements that should only animate when user prefers reduced motion */
+.motion-reduce {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: none !important;
+    transition: none !important;
+  }
+}

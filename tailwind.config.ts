@@ -171,6 +171,11 @@ export default {
         swipe: 'swipe 1.1s cubic-bezier(0.4, 0, 0.2, 1) infinite',
         logoAppear: 'logoAppear .4s',
       },
+      variants: {
+        extend: {
+          animation: ['motion-safe', 'motion-reduce'],
+        },
+      },
     },
   },
   plugins: [],
