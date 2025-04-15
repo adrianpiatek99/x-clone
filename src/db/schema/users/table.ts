@@ -1,7 +1,7 @@
 import { boolean, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 import { createdAt, id, updatedAt } from '../helpers';
-import type { User, UserProfile } from './types';
+import type { User, UserPublic } from './types';
 import { UserRole, UserRoleEnum } from './types';
 
 export const usersTable = pgTable('users', {
@@ -47,4 +47,4 @@ export const userPublicColumns = {
   profileBannerUrl: true,
   isVerified: true,
   createdAt: true,
-} satisfies Record<keyof UserProfile, boolean>;
+} satisfies Record<keyof UserPublic, boolean>;

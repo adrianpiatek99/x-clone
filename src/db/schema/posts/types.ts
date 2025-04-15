@@ -1,7 +1,7 @@
 import { pgEnum } from 'drizzle-orm/pg-core';
 
 import { enumToPgEnum } from '../helpers';
-import type { UserProfile } from '../users';
+import type { UserPublic } from '../users';
 import type { postRepliesTable } from './table';
 import type { postLikesTable } from './table';
 import type { postMediaTable } from './table';
@@ -27,7 +27,7 @@ export const PostMediaTypeEnum = pgEnum('post_media_type', enumToPgEnum(PostMedi
 
 // Types
 export type Post = typeof postsTable.$inferSelect & {
-  author: UserProfile;
+  author: UserPublic;
   media: PostMedia[];
   isAuthor: boolean;
   isLiked: boolean;
@@ -36,6 +36,6 @@ export type Post = typeof postsTable.$inferSelect & {
 };
 export type PostMedia = typeof postMediaTable.$inferSelect;
 export type PostLike = typeof postLikesTable.$inferSelect & {
-  user: UserProfile;
+  user: UserPublic;
 };
 export type PostReply = typeof postRepliesTable.$inferSelect;

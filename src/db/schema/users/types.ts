@@ -17,7 +17,7 @@ type InterUser = typeof usersTable.$inferSelect;
 
 export type User = Omit<InterUser, 'password'>;
 
-export type UserProfile = Pick<
+export type UserPublic = Pick<
   User,
   | 'id'
   | 'name'
