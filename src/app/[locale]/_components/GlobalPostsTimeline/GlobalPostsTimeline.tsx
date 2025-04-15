@@ -12,7 +12,7 @@ const GlobalPostsTimeline = () => {
   return (
     <FlatList
       data={flatData}
-      renderItem={(item) => <PostCard data={item} />}
+      renderItem={(item) => <PostCard post={item} />}
       empty={{
         title: t('homePage.globalPosts.empty.title'),
         description: t('homePage.globalPosts.empty.description'),

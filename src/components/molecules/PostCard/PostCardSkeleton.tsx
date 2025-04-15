@@ -5,11 +5,11 @@ import Box from '@/components/atoms/Box';
 import Skeleton from '@/components/atoms/Skeleton';
 import { createArray } from '@/utils/array';
 
-interface PostCellSkeletonProps {
+type Props = {
   isEven?: boolean;
-}
+};
 
-export const PostCardSkeleton: FC<PostCellSkeletonProps> = ({ isEven = false }) => {
+export const PostCardSkeleton: FC<Props> = ({ isEven = false }) => {
   return (
     <Box className='flex-row border-b border-border-1 px-4 py-3'>
       <Skeleton width={40} height={40} variant='circular' />

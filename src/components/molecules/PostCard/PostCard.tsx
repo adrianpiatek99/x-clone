@@ -15,12 +15,12 @@ import { PostCardMedia } from './PostCardMedia';
 import { PostCardText } from './PostCardText';
 
 type Props = ComponentPropsWithRef<'div'> & {
-  data: Post;
+  post: Post;
   ref?: RefCallback<HTMLDivElement>;
 };
 
-const PostCard = memo(({ data, className, ...props }: Props) => {
-  const { id, text, author, media, createdAt, isAuthor, isLiked, likesCount } = data;
+const PostCard = memo(({ post, className, ...props }: Props) => {
+  const { id, text, author, media, createdAt, isAuthor, isLiked, likesCount } = post;
   const { profileImageUrl, screenName } = author;
   const [isLoading, setIsLoading] = useState(false);
   const { handleOnClick, handleOnKeyUp, handleOnMouseUp } = useSyntheticEvents({

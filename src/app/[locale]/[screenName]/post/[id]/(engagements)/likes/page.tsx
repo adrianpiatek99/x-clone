@@ -26,7 +26,7 @@ const PostLikesPage = ({ params }: Props) => {
   return (
     <FlatList
       data={flatData}
-      renderItem={(item) => <ProfileCard data={item.user} />}
+      renderItem={(item) => <ProfileCard user={item.user} />}
       empty={{
         title: t('postPage.likes.empty.title'),
         description: t('postPage.likes.empty.description'),

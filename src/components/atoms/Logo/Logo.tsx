@@ -7,12 +7,12 @@ import { twMerge } from 'tailwind-merge';
 import IconButton from '../IconButton';
 import type { LogoClassesReturn, LogoColor, LogoSize } from './types';
 
-export interface LogoProps {
+export type LogoProps = {
   href?: string;
   size?: LogoSize;
   color?: LogoColor;
   className?: string;
-}
+};
 
 const classes: LogoClassesReturn = {
   size: {
