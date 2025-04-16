@@ -5,7 +5,7 @@ import React from 'react';
 import Loader from '@/components/atoms/Loader';
 import FlatList from '@/components/molecules/FlatList';
 import ProfileCard from '@/components/molecules/ProfileCard';
-import { usePostLikesQuery } from '@/hooks/api/posts/usePostLikesQuery';
+import { useGetPostLikesQuery } from '@/hooks/api/posts/useGetPostLikesQuery';
 import { useTranslations } from 'next-intl';
 
 type ParamsType = {
@@ -21,7 +21,7 @@ const PostLikesPage = ({ params }: Props) => {
   const unwrappedParams = React.use(params);
   const { id } = unwrappedParams;
   const t = useTranslations();
-  const { flatData, ...restResult } = usePostLikesQuery({ id });
+  const { flatData, ...restResult } = useGetPostLikesQuery({ id });
 
   return (
     <FlatList

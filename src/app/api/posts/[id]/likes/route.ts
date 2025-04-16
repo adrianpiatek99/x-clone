@@ -5,7 +5,7 @@ import { handleApiError } from '@/db/utils/api';
 import { and, desc, eq, lt, or } from 'drizzle-orm';
 import { type NextRequest, NextResponse } from 'next/server';
 
-export type LikesPostParams = {
+export type GetPostLikesParams = {
   id: string;
   cursor?: {
     id: string;
@@ -14,14 +14,14 @@ export type LikesPostParams = {
   limit?: number;
 };
 
-export type LikesPostResponse = {
+export type GetPostLikesResponse = {
   postLikes: PostLike[];
   nextCursor: { id: string; createdAt: string } | null;
 };
 
 export const GET = async (
   request: NextRequest,
-  { params }: { params: Promise<LikesPostParams> }
+  { params }: { params: Promise<GetPostLikesParams> }
 ) => {
   try {
     const { searchParams } = new URL(request.url);
@@ -29,7 +29,7 @@ export const GET = async (
 
     // Validate cursor
     const cursorStr = searchParams.get('cursor');
-    const cursor: LikesPostParams['cursor'] = cursorStr
+    const cursor: GetPostLikesParams['cursor'] = cursorStr
       ? {
           ...JSON.parse(cursorStr),
           createdAt: new Date(JSON.parse(cursorStr).createdAt),
@@ -59,7 +59,7 @@ export const GET = async (
     });
 
     // Calculate next cursor
-    let nextCursor: LikesPostResponse['nextCursor'] = null;
+    let nextCursor: GetPostLikesResponse['nextCursor'] = null;
 
     if (postLikes.length > limit) {
       postLikes.pop();
@@ -74,7 +74,7 @@ export const GET = async (
       }
     }
 
-    return NextResponse.json<LikesPostResponse>({
+    return NextResponse.json<GetPostLikesResponse>({
       postLikes,
       nextCursor,
     });

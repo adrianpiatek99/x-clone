@@ -1,4 +1,4 @@
-import type { LikesPostParams, LikesPostResponse } from '@/app/api/posts/[id]/likes/route';
+import type { GetPostLikesParams, GetPostLikesResponse } from '@/app/api/posts/[id]/likes/route';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
@@ -10,15 +10,15 @@ type Props = {
   enabled?: boolean;
 };
 
-export const usePostLikesQuery = ({ id, limit = 20, enabled = true }: Props) => {
-  const result = useInfiniteQuery<LikesPostResponse>({
+export const useGetPostLikesQuery = ({ id, limit = 20, enabled = true }: Props) => {
+  const result = useInfiniteQuery<GetPostLikesResponse>({
     queryKey: QUERY_KEYS.POSTS.POST_LIKES(id, limit),
     queryFn: async ({ pageParam }) =>
       apiRequest(
         'GET',
         API_ENDPOINTS.POSTS.POST_LIKES({
           id,
-          cursor: pageParam as LikesPostParams['cursor'],
+          cursor: pageParam as GetPostLikesParams['cursor'],
           limit,
         })
       ),
