@@ -4,9 +4,13 @@ import React from 'react';
 import Box from '@/components/atoms/Box';
 import IconButton from '@/components/atoms/IconButton';
 import Typography from '@/components/atoms/Typography';
+import { useIsMobile } from '@/hooks/useIsMobile';
+import { ScrollDirection } from '@/hooks/useScrollDirection';
+import { useScrollDirection } from '@/hooks/useScrollDirection';
 import { useRouter } from '@/i18n/routing';
 import { ArrowBackIcon } from '@/icons';
 import { useTranslations } from 'next-intl';
+import { twMerge } from 'tailwind-merge';
 
 export type HeaderBarProps = {
   children: ReactNode;
@@ -21,11 +25,19 @@ const HeaderBar = ({
   subtitle,
   additionalContent,
 }: HeaderBarProps) => {
-  const router = useRouter();
   const t = useTranslations();
+  const router = useRouter();
+  const scrollDirection = useScrollDirection();
+  const isScrollDirectionDown = scrollDirection === ScrollDirection.DOWN;
+  const isMobile = useIsMobile();
 
   return (
-    <div className='sticky top-0 z-10 flex min-h-[53px] w-full flex-col bg-background/65 backdrop-blur-md transition duration-200'>
+    <div
+      className={twMerge(
+        'sticky top-0 z-10 flex min-h-[53px] w-full flex-col bg-background/65 backdrop-blur-md transition duration-200',
+        isScrollDirectionDown && isMobile && 'opacity-30 -translate-y-full'
+      )}
+    >
       {(showBackButton || title) && (
         <div className='flex h-[53px] w-full shrink-0 items-center gap-x-4 gap-y-2 px-4'>
           {showBackButton && (
