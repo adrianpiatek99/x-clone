@@ -10,7 +10,7 @@
  * @param params - Object containing parameters to convert
  * @returns URLSearchParams instance
  */
-export function createSearchParams(params: Record<string, unknown>): URLSearchParams {
+export const createSearchParams = <TParams extends Record<string, unknown>>(params: TParams) => {
   const searchParams = new URLSearchParams();
 
   Object.entries(params).forEach(([key, value]) => {
@@ -26,7 +26,7 @@ export function createSearchParams(params: Record<string, unknown>): URLSearchPa
   });
 
   return searchParams;
-}
+};
 
 /**
  * Creates a URL with search parameters
@@ -35,9 +35,12 @@ export function createSearchParams(params: Record<string, unknown>): URLSearchPa
  * @param params - Object containing parameters to convert
  * @returns Complete URL with search parameters
  */
-export function createUrlWithParams(baseUrl: string, params: Record<string, unknown>): string {
+export const createUrlWithParams = <TParams extends Record<string, unknown>>(
+  baseUrl: Readonly<string>,
+  params: TParams
+): Readonly<string> => {
   const searchParams = createSearchParams(params);
   const searchString = searchParams.toString();
 
-  return searchString ? `${baseUrl}?${searchString}` : baseUrl;
-}
+  return searchString ? (`${baseUrl}?${searchString}` as const) : baseUrl;
+};

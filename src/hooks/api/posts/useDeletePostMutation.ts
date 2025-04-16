@@ -1,4 +1,4 @@
-import type { DeletePostRequest, DeletePostResponse } from '@/app/api/posts/[id]/route';
+import type { DeletePostParams, DeletePostResponse } from '@/app/api/posts/[id]/delete/route';
 import type { GetGlobalTimelineResponse } from '@/app/api/posts/globalTimeline/route';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
@@ -23,9 +23,9 @@ export const useDeletePostMutation = ({ onSuccess, onError, onSettled }: Props =
   const { mutate, isPending: isDeleting } = useMutation<
     DeletePostResponse,
     ApiAxiosError,
-    DeletePostRequest
+    DeletePostParams
   >({
-    mutationFn: ({ id }) => apiRequest('DELETE', API_ENDPOINTS.POSTS.DELETE(id)),
+    mutationFn: ({ id }) => apiRequest('DELETE', API_ENDPOINTS.POSTS.DELETE({ id })),
     onSuccess: ({ id }) => {
       addToast('success', t('post.api.deletePost.success'));
 
@@ -47,7 +47,7 @@ export const useDeletePostMutation = ({ onSuccess, onError, onSettled }: Props =
     },
   });
 
-  const deletePost = (data: DeletePostRequest) => {
+  const deletePost = (data: DeletePostParams) => {
     if (isDeleting) return;
 
     mutate(data);

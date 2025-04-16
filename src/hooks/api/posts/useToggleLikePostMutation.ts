@@ -1,5 +1,5 @@
-import type { LikePostRequest, LikePostResponse } from '@/app/api/posts/[id]/like/route';
-import type { UnlikePostRequest, UnlikePostResponse } from '@/app/api/posts/[id]/unlike/route';
+import type { LikePostParams, LikePostResponse } from '@/app/api/posts/[id]/like/route';
+import type { UnlikePostParams, UnlikePostResponse } from '@/app/api/posts/[id]/unlike/route';
 import type { GetGlobalTimelineResponse } from '@/app/api/posts/globalTimeline/route';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
@@ -28,9 +28,9 @@ export const useToggleLikePostMutation = ({ onSuccess, onError, onSettled }: Pro
   const { mutate: likeMutate, isPending: isLikePending } = useMutation<
     LikePostResponse,
     ApiAxiosError,
-    LikePostRequest
+    LikePostParams
   >({
-    mutationFn: ({ id }) => apiRequest('POST', API_ENDPOINTS.POSTS.LIKE(id)),
+    mutationFn: ({ id }) => apiRequest('POST', API_ENDPOINTS.POSTS.LIKE({ id })),
     onSuccess: ({ id }) => {
       addToast('success', t('post.api.likePost.success'));
 
@@ -64,9 +64,9 @@ export const useToggleLikePostMutation = ({ onSuccess, onError, onSettled }: Pro
   const { mutate: unlikeMutate, isPending: isUnlikePending } = useMutation<
     UnlikePostResponse,
     ApiAxiosError,
-    UnlikePostRequest
+    UnlikePostParams
   >({
-    mutationFn: ({ id }) => apiRequest('DELETE', API_ENDPOINTS.POSTS.UNLIKE(id)),
+    mutationFn: ({ id }) => apiRequest('DELETE', API_ENDPOINTS.POSTS.UNLIKE({ id })),
     onSuccess: ({ id }) => {
       addToast('success', t('post.api.unlikePost.success'));
 

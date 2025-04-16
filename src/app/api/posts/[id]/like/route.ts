@@ -4,7 +4,7 @@ import { handleApiError } from '@/db/utils/api';
 import { withAuth } from '@/db/utils/auth';
 import { NextResponse } from 'next/server';
 
-export type LikePostRequest = {
+export type LikePostParams = {
   id: string;
 };
 
@@ -14,7 +14,7 @@ export type LikePostResponse = {
 };
 
 export const POST = withAuth(
-  async (_request, userId: string, { params }: { params: Promise<LikePostRequest> }) => {
+  async (_request, userId: string, { params }: { params: Promise<LikePostParams> }) => {
     try {
       const { id } = await params;
 
