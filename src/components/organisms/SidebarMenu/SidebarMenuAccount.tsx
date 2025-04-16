@@ -33,7 +33,7 @@ export const SidebarMenuAccount = memo(() => {
           fullWidth
         >
           <Box className='relative h-[40px] flex-row items-center text-left'>
-            <Avatar src={user.profileImageUrl} />
+            <Avatar src={user.avatarUrl} />
             <Box className='hidden h-full grow justify-between gap-0 xl:flex'>
               <UserDisplayName name={user.name} isVerified={user.isVerified} />
               <Typography color='secondary' truncate>

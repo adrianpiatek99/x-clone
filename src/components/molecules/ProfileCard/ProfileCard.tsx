@@ -17,7 +17,7 @@ type Props = ComponentPropsWithRef<'div'> & {
 };
 
 const ProfileCard = memo(({ user, className, ...props }: Props) => {
-  const { profileImageUrl, description, screenName, name, isVerified } = user;
+  const { avatarUrl, description, screenName, name, isVerified } = user;
   const [isLoading] = useState(false);
   const profilePageHref = ROUTES.PROFILE.DETAILS(screenName);
   const { handleOnClick, handleOnKeyUp, handleOnMouseUp } = useSyntheticEvents({
@@ -40,7 +40,7 @@ const ProfileCard = memo(({ user, className, ...props }: Props) => {
       data-navigable='true'
     >
       <Box className={twMerge('relative flex-row items-start', isLoading && 'opacity-50')}>
-        <Avatar href={profilePageHref} src={profileImageUrl} screenName={screenName} />
+        <Avatar href={profilePageHref} src={avatarUrl} screenName={screenName} />
         <Box className='gap-1'>
           <Box className='gap-0.5'>
             <UserDisplayName name={name} isVerified={isVerified} href={profilePageHref} />

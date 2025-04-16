@@ -16,15 +16,15 @@ export const useUpdateProfileMutation = ({ onSuccess, onSettled }: Props = {}) =
   const t = useTranslations();
   const { addToast } = useToasts();
   const { mutate, isPending } = useMutation<void, ApiAxiosError, UpdateProfileRequest>({
-    mutationFn: ({ profileImage, profileBanner, ...data }) => {
+    mutationFn: ({ avatarFile, bannerFile, ...data }) => {
       const formData = createFormData(data);
 
-      if (profileImage) {
-        formData.append('profileImage', profileImage);
+      if (avatarFile) {
+        formData.append('avatarFile', avatarFile);
       }
 
-      if (profileBanner) {
-        formData.append('profileBanner', profileBanner);
+      if (bannerFile) {
+        formData.append('bannerFile', bannerFile);
       }
 
       return apiRequest('PATCH', API_ENDPOINTS.PROFILE.UPDATE, formData, {

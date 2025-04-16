@@ -21,7 +21,7 @@ type Props = ComponentPropsWithRef<'div'> & {
 
 const PostCard = memo(({ post, className, ...props }: Props) => {
   const { id, text, author, media, createdAt, isAuthor, isLiked, likesCount } = post;
-  const { profileImageUrl, screenName } = author;
+  const { avatarUrl, screenName } = author;
   const [isLoading, setIsLoading] = useState(false);
   const { handleOnClick, handleOnKeyUp, handleOnMouseUp } = useSyntheticEvents({
     href: ROUTES.POST.DETAILS(screenName, id),
@@ -43,11 +43,7 @@ const PostCard = memo(({ post, className, ...props }: Props) => {
       data-navigable='true'
     >
       <Box className={twMerge('relative flex-row items-start', isLoading && 'opacity-50')}>
-        <Avatar
-          href={ROUTES.PROFILE.DETAILS(screenName)}
-          src={profileImageUrl}
-          screenName={screenName}
-        />
+        <Avatar href={ROUTES.PROFILE.DETAILS(screenName)} src={avatarUrl} screenName={screenName} />
         <Box className='grow gap-1'>
           <PostCardAuthor id={id} author={author} createdAt={createdAt}>
             <PostCardDropdown

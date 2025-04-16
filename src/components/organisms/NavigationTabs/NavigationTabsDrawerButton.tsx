@@ -26,7 +26,7 @@ export const NavigationTabsDrawerButton = () => {
           'size-[28px] rounded-full ring-0 duration-200',
           mobileDrawer.isOpen && 'ring-2 ring-primary'
         )}
-        src={user.profileImageUrl}
+        src={user.avatarUrl}
         screenName={user.screenName}
         size='small'
       />

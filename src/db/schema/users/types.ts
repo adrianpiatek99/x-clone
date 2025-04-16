@@ -23,8 +23,8 @@ export type UserPublic = Pick<
   | 'name'
   | 'screenName'
   | 'description'
-  | 'profileImageUrl'
-  | 'profileBannerUrl'
+  | 'avatarUrl'
+  | 'bannerUrl'
   | 'isVerified'
   | 'createdAt'
 >;
