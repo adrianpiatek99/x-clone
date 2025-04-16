@@ -20,7 +20,7 @@ const PostEngagementsLayout = ({ children, params }: PropsWithChildren<Props>) =
   const unwrappedParams = React.use(params);
 
   return (
-    <Box className='min-h-screen gap-0'>
+    <Box className='gap-0'>
       <PostEngagementsHeader params={unwrappedParams} />
       {children}
     </Box>

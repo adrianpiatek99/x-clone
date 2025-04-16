@@ -7,7 +7,7 @@ import HomeHeader from './_components/HomeHeader';
 
 const HomeLayout = ({ children }: PropsWithChildren) => {
   return (
-    <Box className='min-h-screen gap-0'>
+    <Box className='gap-0'>
       <HomeHeader />
       {children}
     </Box>
