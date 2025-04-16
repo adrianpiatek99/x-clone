@@ -5,8 +5,6 @@ import type { User } from '@/db/schema';
 import {
   BookmarkIcon,
   BookmarkOutlinedIcon,
-  HashtagIcon,
-  HashtagOutlinedIcon,
   HomeIcon,
   HomeOutlinedIcon,
   MailIcon,
@@ -15,6 +13,8 @@ import {
   NotificationOutlinedIcon,
   PersonIcon,
   PersonOutlinedIcon,
+  SearchFilledIcon,
+  SearchOutlinedIcon,
   SettingsIcon,
   SettingsOutlinedIcon,
 } from '@/icons';
@@ -48,8 +48,8 @@ export const sidebarMenuItems = ({ t, user, pathname }: SidebarMenuItemsProps): 
       text: t('navigation.explore'),
       href: ROUTES.EXPLORE,
       active: pathname.includes(ROUTES.EXPLORE),
-      icon: <HashtagOutlinedIcon />,
-      activeIcon: <HashtagIcon />,
+      icon: <SearchOutlinedIcon />,
+      activeIcon: <SearchFilledIcon />,
       visible: !!user,
     },
     {
