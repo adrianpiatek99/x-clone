@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useCallback, useEffect } from 'react';
 
 import HeaderBar from '@/components/molecules/HeaderBar';
@@ -9,7 +11,7 @@ import { useShallow } from 'zustand/shallow';
 
 import { getHomeTabs, HOME_SELECTED_TAB_KEY } from './config';
 
-const HomeTabBar = () => {
+const HomeHeader = () => {
   const t = useTranslations();
   const { user } = useAppSession();
   const { currentTab, update } = useHomeStore(
@@ -64,4 +66,4 @@ const HomeTabBar = () => {
   );
 };
 
-export default HomeTabBar;
+export default HomeHeader;
