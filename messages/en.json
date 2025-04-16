@@ -94,10 +94,7 @@
   },
 
   "postPage": {
-    "tabs": {
-      "likes": "Likes",
-      "reposts": "Reposts "
-    },
+    "title": "Post",
     "likes": {
       "empty": {
         "title": "No likes yet",
@@ -108,6 +105,15 @@
       "empty": {
         "title": "No reposts yet",
         "description": "Share someone else's post on your timeline by reposting it. When you do, it'll show up here."
+      }
+    },
+    "subpages": {
+      "engagements": {
+        "title": "Post engagements",
+        "tabs": {
+          "likes": "Likes",
+          "reposts": "Reposts"
+        }
       }
     }
   },

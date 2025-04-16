@@ -26,22 +26,22 @@ export const ModalHeader: FC<ModalHeaderProps> = ({
   const t = useTranslations();
 
   return (
-    <div className='relative flex h-[53px] shrink-0 flex-row items-center justify-between gap-3 overflow-hidden px-4'>
-      <div className='flex flex-1 grow'>
+    <div className='relative flex h-[53px] shrink-0 flex-row items-center justify-between gap-x-4 gap-y-2 overflow-hidden px-4'>
+      <div className='flex'>
         <IconButton title={t('actions.close')} color='white' onClick={onClose}>
           <CloseIcon />
         </IconButton>
       </div>
       {typeof title === 'string' ? (
-        <div className='flex flex-1 grow-[3] justify-center truncate'>
-          <Typography className='min-w-0' truncate as='h2' weight='bold' size='xl'>
+        <div className='flex flex-1 truncate'>
+          <Typography as='h3' className='min-w-0' weight='bold' size='l' truncate>
             {title}
           </Typography>
         </div>
       ) : (
         title
       )}
-      <div className='flex flex-1 grow justify-end'>
+      <div className='flex justify-end'>
         {!!onAccept && (
           <Button variant='tinted' onClick={onAccept} isLoading={isLoading} {...acceptButtonProps}>
             {acceptButtonText ?? t('actions.save')}

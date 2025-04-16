@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 
+import HeaderBar from '@/components/molecules/HeaderBar';
 import Tabs, { Tab } from '@/components/molecules/Tabs';
 import { useAppSession } from '@/hooks/useAppSession';
 import { HomeTab, useHomeStore } from '@/stores/home';
@@ -49,7 +50,7 @@ const HomeTabBar = () => {
   }, [tabs, handleTabChange]);
 
   return (
-    <div className='sticky top-0 z-10 flex w-full flex-col bg-background/65 backdrop-blur-md'>
+    <HeaderBar>
       {currentTab && (
         <Tabs value={currentTab} onChange={handleTabChange}>
           {tabs.map((tab) => (
@@ -59,7 +60,7 @@ const HomeTabBar = () => {
           ))}
         </Tabs>
       )}
-    </div>
+    </HeaderBar>
   );
 };
 
