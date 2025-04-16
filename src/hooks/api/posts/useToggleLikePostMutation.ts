@@ -30,7 +30,7 @@ export const useToggleLikePostMutation = ({ onSuccess, onError, onSettled }: Pro
     ApiAxiosError,
     LikePostRequest
   >({
-    mutationFn: ({ id }) => apiRequest('GET', API_ENDPOINTS.POSTS.LIKE(id)),
+    mutationFn: ({ id }) => apiRequest('POST', API_ENDPOINTS.POSTS.LIKE(id)),
     onSuccess: ({ id }) => {
       addToast('success', t('post.api.likePost.success'));
 
@@ -66,7 +66,7 @@ export const useToggleLikePostMutation = ({ onSuccess, onError, onSettled }: Pro
     ApiAxiosError,
     UnlikePostRequest
   >({
-    mutationFn: ({ id }) => apiRequest('GET', API_ENDPOINTS.POSTS.UNLIKE(id)),
+    mutationFn: ({ id }) => apiRequest('DELETE', API_ENDPOINTS.POSTS.UNLIKE(id)),
     onSuccess: ({ id }) => {
       addToast('success', t('post.api.unlikePost.success'));
 

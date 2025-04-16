@@ -13,7 +13,7 @@ export type LikePostResponse = {
   message: string;
 };
 
-export const GET = withAuth(
+export const POST = withAuth(
   async (_request, userId: string, { params }: { params: Promise<LikePostRequest> }) => {
     try {
       const { id } = await params;

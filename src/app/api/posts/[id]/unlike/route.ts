@@ -14,7 +14,7 @@ export type UnlikePostResponse = {
   message: string;
 };
 
-export const GET = withAuth(
+export const DELETE = withAuth(
   async (_request, userId: string, { params }: { params: Promise<UnlikePostRequest> }) => {
     try {
       const { id } = await params;
