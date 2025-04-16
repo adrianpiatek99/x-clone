@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
 import { useToasts } from '@/hooks/useToasts';
+import type { SignInValues } from '@/schema/auth';
+import { useQueryClient } from '@tanstack/react-query';
 import { signIn as nextSignIn } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
-import { SignInValues } from '@/schema/auth';
-import { useQueryClient } from '@tanstack/react-query';
 
 type Props = {
   onSuccess?: () => void;

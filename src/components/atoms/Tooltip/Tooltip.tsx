@@ -56,19 +56,20 @@ const Tooltip = ({ children, content }: Props) => {
         ref: refs.setReference,
         ...getReferenceProps(),
       })}
-      <FloatingPortal>
-        <div
-          ref={refs.setFloating}
-          className={twMerge(
-            'z-[999] rounded-[4px] bg-tooltip px-2 py-1 transition-opacity duration-200 ease-out [color:#fff] [font-size:12px] [line-height:12px]',
-            isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-          )}
-          style={floatingStyles}
-          {...getFloatingProps()}
-        >
-          {content}
-        </div>
-      </FloatingPortal>
+      {isOpen && (
+        <FloatingPortal>
+          <div
+            ref={refs.setFloating}
+            className={twMerge(
+              'z-[999] rounded-[4px] bg-tooltip outline-none px-2 py-1 transition-opacity animate-initAppear [color:#fff] [font-size:12px] [line-height:12px]'
+            )}
+            style={floatingStyles}
+            {...getFloatingProps()}
+          >
+            {content}
+          </div>
+        </FloatingPortal>
+      )}
     </>
   );
 };

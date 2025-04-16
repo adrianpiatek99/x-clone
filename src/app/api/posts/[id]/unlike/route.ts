@@ -5,7 +5,7 @@ import { withAuth } from '@/db/utils/auth';
 import { and, eq } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
 
-export type UnlikePostRequest = {
+export type UnlikePostParams = {
   id: string;
 };
 
@@ -14,23 +14,19 @@ export type UnlikePostResponse = {
   message: string;
 };
 
-export const GET = withAuth(
-  async (_request, userId: string, { params }: { params: Promise<UnlikePostRequest> }) => {
+export const DELETE = withAuth(
+  async (_request, userId: string, { params }: { params: Promise<UnlikePostParams> }) => {
     try {
       const { id } = await params;
 
-      const [existingLike] = await db
-        .select()
-        .from(postLikesTable)
-        .where(and(eq(postLikesTable.postId, id), eq(postLikesTable.userId, userId)));
+      const result = await db
+        .delete(postLikesTable)
+        .where(and(eq(postLikesTable.postId, id), eq(postLikesTable.userId, userId)))
+        .returning();
 
-      if (!existingLike) {
+      if (!result.length) {
         throw new ApiError('Post not liked', 400);
       }
-
-      await db
-        .delete(postLikesTable)
-        .where(and(eq(postLikesTable.postId, id), eq(postLikesTable.userId, userId)));
 
       return NextResponse.json<UnlikePostResponse>({ id, message: 'Post unliked successfully' });
     } catch (error) {

@@ -5,7 +5,7 @@ import { withAuth } from '@/db/utils/auth';
 import { eq } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
 
-export type DeletePostRequest = { id: string };
+export type DeletePostParams = { id: string };
 
 export type DeletePostResponse = {
   id: string;
@@ -13,7 +13,7 @@ export type DeletePostResponse = {
 };
 
 export const DELETE = withAuth(
-  async (_request, userId: string, { params }: { params: Promise<DeletePostRequest> }) => {
+  async (_request, userId: string, { params }: { params: Promise<DeletePostParams> }) => {
     try {
       const { id } = await params;
 

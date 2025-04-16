@@ -1,5 +1,8 @@
+'use client';
+
 import React, { useCallback, useEffect } from 'react';
 
+import HeaderBar from '@/components/molecules/HeaderBar';
 import Tabs, { Tab } from '@/components/molecules/Tabs';
 import { useAppSession } from '@/hooks/useAppSession';
 import { HomeTab, useHomeStore } from '@/stores/home';
@@ -8,7 +11,7 @@ import { useShallow } from 'zustand/shallow';
 
 import { getHomeTabs, HOME_SELECTED_TAB_KEY } from './config';
 
-const HomeTabBar = () => {
+const HomeHeader = () => {
   const t = useTranslations();
   const { user } = useAppSession();
   const { currentTab, update } = useHomeStore(
@@ -49,7 +52,7 @@ const HomeTabBar = () => {
   }, [tabs, handleTabChange]);
 
   return (
-    <div className='sticky top-0 z-10 flex w-full flex-col bg-background/65 backdrop-blur-md'>
+    <HeaderBar>
       {currentTab && (
         <Tabs value={currentTab} onChange={handleTabChange}>
           {tabs.map((tab) => (
@@ -59,8 +62,8 @@ const HomeTabBar = () => {
           ))}
         </Tabs>
       )}
-    </div>
+    </HeaderBar>
   );
 };
 
-export default HomeTabBar;
+export default HomeHeader;

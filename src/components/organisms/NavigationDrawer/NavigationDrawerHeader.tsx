@@ -18,39 +18,41 @@ const NavigationDrawerHeader = () => {
 
   if (!user) return null;
 
-  const profilePageHref = ROUTES.PROFILE.DETAILS(user.screenName);
+  const { screenName, name, isVerified, avatarUrl } = user;
+
+  const profilePageHref = ROUTES.PROFILE.DETAILS(screenName);
 
   return (
     <div className='flex flex-col gap-2 px-6 pt-6'>
       <Box>
         <div className='w-fit' onClick={handleClose}>
-          <Avatar src={user.profileImageUrl} href={profilePageHref} screenName={user.screenName} />
+          <Avatar src={avatarUrl} href={profilePageHref} screenName={screenName} />
         </div>
       </Box>
       <div className='flex flex-col gap-3'>
         <div className='flex flex-col gap-0.5'>
           <UserDisplayName
-            name={user.name}
-            isVerified={user.isVerified}
+            name={name}
+            isVerified={isVerified}
             href={profilePageHref}
             onClick={handleClose}
             size='l'
           />
           <Typography href={profilePageHref} onClick={handleClose} color='secondary' truncate>
-            @{user.screenName}
+            @{screenName}
           </Typography>
         </div>
         <div className='flex flex-wrap gap-x-5 gap-y-2.5'>
           <Typography
             className='truncate text-neutral-300'
-            href={ROUTES.PROFILE.FOLLOWING(user.screenName)}
+            href={ROUTES.PROFILE.FOLLOWING(screenName)}
           >
             <Typography weight='bold'>0 </Typography>
             <Typography color='secondary'>{t('profilePage.following')}</Typography>
           </Typography>
           <Typography
             className='truncate text-neutral-300'
-            href={ROUTES.PROFILE.FOLLOWERS(user.screenName)}
+            href={ROUTES.PROFILE.FOLLOWERS(screenName)}
           >
             <Typography weight='bold'>0 </Typography>
             <Typography color='secondary'>{t('profilePage.followers')}</Typography>

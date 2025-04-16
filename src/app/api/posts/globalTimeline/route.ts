@@ -1,28 +1,24 @@
 import { auth } from '@/auth';
 import { db } from '@/db/db';
 import type { Post } from '@/db/schema';
-import {
-  postAuthorColumns,
-  postLikesTable,
-  postRepliesTable,
-  postsTable,
-} from '@/db/schema/posts/table';
+import { userPublicColumns } from '@/db/schema';
+import { postLikesTable, postRepliesTable, postsTable } from '@/db/schema/posts/table';
 import { handleApiError } from '@/db/utils/api';
 import { and, desc, eq, lt, or } from 'drizzle-orm';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-export type GlobalPostsTimelineResponse = {
-  posts: Post[];
-  nextCursor: { id: string; createdAt: string } | null;
-};
-
-export type GlobalPostsTimelineParams = {
+export type GetGlobalTimelineParams = {
   cursor?: {
     id: string;
     createdAt: Date;
   };
   limit?: number;
+};
+
+export type GetGlobalTimelineResponse = {
+  posts: Post[];
+  nextCursor: { id: string; createdAt: string } | null;
 };
 
 export const GET = async (request: NextRequest) => {
@@ -32,8 +28,9 @@ export const GET = async (request: NextRequest) => {
 
     const userId = session?.user?.id;
 
+    // Validate cursor
     const cursorStr = searchParams.get('cursor');
-    const cursor: GlobalPostsTimelineParams['cursor'] = cursorStr
+    const cursor: GetGlobalTimelineParams['cursor'] = cursorStr
       ? {
           ...JSON.parse(cursorStr),
           createdAt: new Date(JSON.parse(cursorStr).createdAt),
@@ -42,6 +39,7 @@ export const GET = async (request: NextRequest) => {
     const limit = parseInt(searchParams.get('limit') || '20', 10);
     const take = limit + 1;
 
+    // Fetch posts
     const posts = await db.query.postsTable.findMany({
       limit: take,
       where: cursor
@@ -53,7 +51,7 @@ export const GET = async (request: NextRequest) => {
       orderBy: [desc(postsTable.createdAt), desc(postsTable.id)],
       with: {
         author: {
-          columns: postAuthorColumns,
+          columns: userPublicColumns,
         },
         likes: {
           where: userId ? eq(postLikesTable.userId, userId) : undefined,
@@ -65,7 +63,8 @@ export const GET = async (request: NextRequest) => {
       },
     });
 
-    let nextCursor: GlobalPostsTimelineResponse['nextCursor'] = null;
+    // Calculate next cursor
+    let nextCursor: GetGlobalTimelineResponse['nextCursor'] = null;
 
     if (posts.length > limit) {
       posts.pop();
@@ -88,7 +87,7 @@ export const GET = async (request: NextRequest) => {
         ]);
 
         const isAuthor = post.author.id === userId;
-        const isLiked = !!post.likes.length && post.likes[0].userId === userId;
+        const isLiked = post.likes.some((like) => like.userId === userId);
 
         return {
           ...post,
@@ -100,7 +99,7 @@ export const GET = async (request: NextRequest) => {
       })
     );
 
-    return NextResponse.json<GlobalPostsTimelineResponse>({
+    return NextResponse.json<GetGlobalTimelineResponse>({
       posts: postsWithCounts,
       nextCursor,
     });

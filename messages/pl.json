@@ -75,12 +75,46 @@
       "title": "Witamy na X!",
       "description": "Tutaj najszybciej dowiesz się, co słychać na świecie. Znajdź osoby i tematy warte obserwowania."
     },
-    "posts": {
-      "empty": "Nie znaleziono wpisów"
-    },
     "tabs": {
       "global": "Dla wszystkich",
       "following": "Obserwujesz"
+    },
+    "globalPosts": {
+      "empty": {
+        "title": "Nie znaleziono wpisów",
+        "description": "Kiedy ktoś opublikuje wpis, pojawi się tutaj."
+      }
+    },
+    "followingPosts": {
+      "empty": {
+        "title": "Nie znaleziono wpisów",
+        "description": "Kiedy ktoś opublikuje wpis, pojawi się tutaj."
+      }
+    }
+  },
+
+  "postPage": {
+    "title": "Wpis",
+    "likes": {
+      "empty": {
+        "title": "Nie masz jeszcze żadnych polubień",
+        "description": "Kiedy ktoś polubi wpis, pojawi się tutaj."
+      }
+    },
+    "reposts": {
+      "empty": {
+        "title": "Nie ma jeszcze podanych dalej wpisów",
+        "description": "Udostępnij wpis innej osoby na swojej osi czasu, podając go dalej. Wpisy podane przez Ciebie dalej będą widoczne w tym miejscu"
+      }
+    },
+    "subpages": {
+      "engagements": {
+        "title": "Interakcje z wpisem",
+        "tabs": {
+          "likes": "Polubienia",
+          "reposts": "Wpisy podane dalej"
+        }
+      }
     }
   },
 
@@ -149,10 +183,6 @@
       "more": "Więcej",
       "edit": "Edytuj wpis",
       "viewPostEngagements": "Wyświetl interakcje wpisu"
-    },
-    "stats": {
-      "likes": "Polubienia",
-      "replies": "Odpowiedzi"
     },
     "confirmDeleteModal": {
       "title": "Usunąć wpis?",

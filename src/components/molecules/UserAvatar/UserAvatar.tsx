@@ -15,7 +15,7 @@ const UserAvatar = ({ withLink = true }: Props) => {
 
   return (
     <Avatar
-      src={user.profileImageUrl}
+      src={user.avatarUrl}
       screenName={user.screenName}
       href={withLink ? ROUTES.PROFILE.DETAILS(user.screenName) : undefined}
     />

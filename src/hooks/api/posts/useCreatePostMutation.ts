@@ -1,5 +1,5 @@
 import type { CreatePostRequest, CreatePostResponse } from '@/app/api/posts/create/route';
-import type { GlobalPostsTimelineResponse } from '@/app/api/posts/globalTimeline/route';
+import type { GetGlobalTimelineResponse } from '@/app/api/posts/globalTimeline/route';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
@@ -34,7 +34,7 @@ export const useCreatePostMutation = ({ onSuccess, onSettled }: Props = {}) => {
       addToast('success', t('post.api.createPost.success'));
 
       // Update the cache with the new post
-      queryClient.setQueryData<InfiniteQueryData<GlobalPostsTimelineResponse>>(
+      queryClient.setQueryData<InfiniteQueryData<GetGlobalTimelineResponse>>(
         QUERY_KEYS.POSTS.GLOBAL_TIMELINE,
         (oldData) => updateInfiniteQueryWithNewItem(oldData, newPost, { itemsKey: 'posts' })
       );

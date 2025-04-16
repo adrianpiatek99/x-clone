@@ -9,8 +9,8 @@ import { eq } from 'drizzle-orm';
 import { type NextRequest, NextResponse } from 'next/server';
 
 export type UpdateProfileRequest = Pick<User, 'name' | 'description' | 'url'> & {
-  profileImage?: File | null;
-  profileBanner?: File | null;
+  avatarFile?: File | null;
+  bannerFile?: File | null;
   removeBanner?: boolean;
 };
 
@@ -24,18 +24,18 @@ export const PATCH = withAuth(async (request: NextRequest, userId: string) => {
       description: formData.get('description') as string,
       url: formData.get('url') as string,
     });
-    const profileImage = formData.get('profileImage') as File | null;
-    const profileBanner = formData.get('profileBanner') as File | null;
+    const avatarFile = formData.get('avatarFile') as File | null;
+    const bannerFile = formData.get('bannerFile') as File | null;
     const removeBanner = formData.get('removeBanner') === 'true';
 
-    validateFile(profileImage, fileValidationConfigs.avatar);
+    validateFile(avatarFile, fileValidationConfigs.avatar);
 
-    validateFile(profileBanner, fileValidationConfigs.banner);
+    validateFile(bannerFile, fileValidationConfigs.banner);
 
     // Upload files
-    const [profileImageResult, profileBannerResult] = await Promise.all([
-      profileImage ? uploadFile(profileImage) : null,
-      profileBanner ? uploadFile(profileBanner) : null,
+    const [avatarResult, bannerResult] = await Promise.all([
+      avatarFile ? uploadFile(avatarFile) : null,
+      bannerFile ? uploadFile(bannerFile) : null,
     ]);
 
     // Update user
@@ -45,10 +45,8 @@ export const PATCH = withAuth(async (request: NextRequest, userId: string) => {
         name,
         description,
         url,
-        ...(profileImageResult && { profileImageUrl: profileImageResult.url }),
-        ...(removeBanner
-          ? { profileBannerUrl: '' }
-          : profileBannerResult && { profileBannerUrl: profileBannerResult.url }),
+        ...(avatarResult && { avatarUrl: avatarResult.url }),
+        ...(removeBanner ? { bannerUrl: '' } : bannerResult && { bannerUrl: bannerResult.url }),
       })
       .where(eq(usersTable.id, userId));
 

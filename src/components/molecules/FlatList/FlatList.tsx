@@ -1,3 +1,5 @@
+'use client';
+
 import type { ReactElement } from 'react';
 import React, { cloneElement } from 'react';
 
@@ -11,7 +13,10 @@ import type { InfiniteQueryObserverBaseResult } from '@tanstack/react-query';
 type Props<TData> = {
   data: TData[];
   renderItem: (item: TData) => ReactElement;
-  empty?: string;
+  empty: {
+    title: string;
+    description?: string;
+  };
   infiniteScroll?: {
     loader: ReactElement;
   } & Omit<InfiniteQueryObserverBaseResult, 'data'>;
@@ -40,7 +45,7 @@ const FlatList = <TData,>({ data, renderItem, empty, infiniteScroll }: Props<TDa
 
   if (isError) return <ErrorState onRetry={() => infiniteScroll.refetch()} />;
 
-  if (isEmpty) return <Empty message={empty} />;
+  if (isEmpty) return <Empty title={empty.title} description={empty?.description} />;
 
   return (
     <section className='relative flex w-full flex-col' ref={parentRef}>

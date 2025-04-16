@@ -1,4 +1,5 @@
-import { produce, Draft } from 'immer';
+import type { Draft } from 'immer';
+import { produce } from 'immer';
 
 export type InfiniteQueryData<R> = {
   pages: R[];

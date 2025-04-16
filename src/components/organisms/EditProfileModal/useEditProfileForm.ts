@@ -26,7 +26,7 @@ export const useEditProfileForm = ({ user, isOpen, onClose }: Props) => {
       resetStore: state.resetStore,
     }))
   );
-  const { profileImageUrl, profileBannerUrl } = user;
+  const { avatarUrl, bannerUrl } = user;
 
   const { AppField, handleSubmit, store, reset } = useAppForm({
     defaultValues: {
@@ -45,8 +45,8 @@ export const useEditProfileForm = ({ user, isOpen, onClose }: Props) => {
       updateProfileMutate({
         ...value,
         url: value.url ?? '',
-        profileImage: avatar.file,
-        profileBanner: banner.file,
+        avatarFile: avatar.file,
+        bannerFile: banner.file,
         removeBanner: !banner.url,
       });
     },
@@ -63,8 +63,8 @@ export const useEditProfileForm = ({ user, isOpen, onClose }: Props) => {
     () =>
       !Object.entries({
         ...formValues,
-        profileImageUrl: avatar.url,
-        profileBannerUrl: banner.url,
+        avatarUrl: avatar.url,
+        bannerUrl: banner.url,
       }).every(([key, value]) => value === user[key as keyof typeof user]),
     [user, formValues, avatar.url, banner.url]
   );
@@ -73,10 +73,10 @@ export const useEditProfileForm = ({ user, isOpen, onClose }: Props) => {
     if (isOpen) {
       resetStore();
       reset();
-      updateInitialState(profileImageUrl, profileBannerUrl);
+      updateInitialState(avatarUrl, bannerUrl);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isOpen, profileBannerUrl, profileImageUrl]);
+  }, [isOpen, bannerUrl, avatarUrl]);
 
   return { AppField, handleSubmit, reset, isPending, isChanged };
 };

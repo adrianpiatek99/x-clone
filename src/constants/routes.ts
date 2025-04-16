@@ -15,5 +15,8 @@ export const ROUTES = {
   },
   POST: {
     DETAILS: (screenName: string, postId: string) => `/${screenName}/post/${postId}` as const,
+    LIKES: (screenName: string, postId: string) => `/${screenName}/post/${postId}/likes` as const,
+    REPOSTS: (screenName: string, postId: string) =>
+      `/${screenName}/post/${postId}/reposts` as const,
   },
 } as const;

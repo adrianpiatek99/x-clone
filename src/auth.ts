@@ -4,7 +4,7 @@ import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 
 import { db } from './db/db';
-import { usersSelect, usersTable } from './db/schema';
+import { currentUserColumns, usersTable } from './db/schema';
 import { ApiError } from './db/utils/api';
 import { signInSchema } from './schema/auth';
 
@@ -56,16 +56,16 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         }
 
         try {
-          const [dbUser] = await db
-            .select(usersSelect)
-            .from(usersTable)
-            .where(eq(usersTable.id, user.id));
+          const currentUser = await db.query.usersTable.findFirst({
+            where: eq(usersTable.id, user.id),
+            columns: currentUserColumns,
+          });
 
-          if (!dbUser) {
+          if (!currentUser) {
             return { ...session, user: undefined };
           }
 
-          Object.assign(user, dbUser);
+          Object.assign(user, currentUser);
 
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (error) {
@@ -78,12 +78,12 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token }) {
       if (!token.sub) return null;
 
-      const [dbUser] = await db
-        .select(usersSelect)
-        .from(usersTable)
-        .where(eq(usersTable.id, token.sub));
+      const currentUser = await db.query.usersTable.findFirst({
+        where: eq(usersTable.id, token.sub),
+        columns: currentUserColumns,
+      });
 
-      if (!dbUser) {
+      if (!currentUser) {
         return null;
       }
 

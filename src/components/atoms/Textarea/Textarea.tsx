@@ -55,7 +55,7 @@ const Textarea: FC<TextareaProps> = ({
       >
         <Typography
           className={twMerge(
-            'absolute left-4 top-1/2 origin-left duration-150 group-focus-within:-translate-x-px group-focus-within:top-[9px] group-focus-within:scale-80',
+            'absolute left-4 top-1/2 origin-left duration-150 pointer-events-none group-focus-within:-translate-x-px group-focus-within:top-[9px] group-focus-within:scale-80',
             isFilled ? 'translate-x-[-1px] top-[9px] scale-80' : 'top-[18px] scale-100'
           )}
           color={isError ? 'danger' : 'secondary'}
@@ -70,7 +70,7 @@ const Textarea: FC<TextareaProps> = ({
         </Typography>
         <label
           className={twMerge(
-            'flex w-full overflow-hidden rounded-xl border border-border-2 bg-input-background px-4 pb-[9px] pt-[27px] focus-within:border-primary focus-within:ring-1 focus-within:ring-inset focus-within:ring-primary',
+            'flex w-full overflow-hidden cursor-text rounded-xl border border-border-2 bg-input-background px-4 pb-[9px] pt-[27px] focus-within:border-primary focus-within:ring-1 focus-within:ring-inset focus-within:ring-primary',
             isError &&
               'bg-error-1/10 border-error-1 focus-within:ring-error-1 focus-within:border-error-1 caret-error-1'
           )}

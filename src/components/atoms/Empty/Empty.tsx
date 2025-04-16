@@ -4,10 +4,11 @@ import { useRandomEmoji } from '@/hooks/useRandomEmoji';
 import { useTranslations } from 'next-intl';
 
 type Props = {
-  message?: string;
+  title: string;
+  description?: string;
 };
 
-const Empty = ({ message }: Props) => {
+const Empty = ({ title }: Props) => {
   const t = useTranslations();
   const { randomEmptyStateEmoji } = useRandomEmoji();
 
@@ -17,7 +18,7 @@ const Empty = ({ message }: Props) => {
         {randomEmptyStateEmoji}
       </Typography>
       <Typography color='secondary' center>
-        {message ?? t('noData')}
+        {title ?? t('noData')}
       </Typography>
     </Box>
   );

@@ -1,3 +1,4 @@
+export { default as ArrowBackIcon } from './ArrowBackIcon';
 export { default as AtSignIcon } from './AtSignIcon';
 export { default as BackIcon } from './BackIcon';
 export { default as BookmarkIcon } from './BookmarkIcon';
