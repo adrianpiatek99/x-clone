@@ -1,6 +1,6 @@
 import type { LikePostRequest, LikePostResponse } from '@/app/api/posts/[id]/like/route';
 import type { UnlikePostRequest, UnlikePostResponse } from '@/app/api/posts/[id]/unlike/route';
-import type { GlobalPostsTimelineResponse } from '@/app/api/posts/globalTimeline/route';
+import type { GetGlobalTimelineResponse } from '@/app/api/posts/globalTimeline/route';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
@@ -35,7 +35,7 @@ export const useToggleLikePostMutation = ({ onSuccess, onError, onSettled }: Pro
       addToast('success', t('post.api.likePost.success'));
 
       // Update the cache with the liked post
-      queryClient.setQueryData<InfiniteQueryData<GlobalPostsTimelineResponse>>(
+      queryClient.setQueryData<InfiniteQueryData<GetGlobalTimelineResponse>>(
         QUERY_KEYS.POSTS.GLOBAL_TIMELINE,
         (oldData) =>
           updateInfiniteQueryWithUpdatedItem(
@@ -71,7 +71,7 @@ export const useToggleLikePostMutation = ({ onSuccess, onError, onSettled }: Pro
       addToast('success', t('post.api.unlikePost.success'));
 
       // Update the cache with the unliked post
-      queryClient.setQueryData<InfiniteQueryData<GlobalPostsTimelineResponse>>(
+      queryClient.setQueryData<InfiniteQueryData<GetGlobalTimelineResponse>>(
         QUERY_KEYS.POSTS.GLOBAL_TIMELINE,
         (oldData) =>
           updateInfiniteQueryWithUpdatedItem(

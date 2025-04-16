@@ -1,5 +1,5 @@
 import type { DeletePostRequest, DeletePostResponse } from '@/app/api/posts/[id]/route';
-import type { GlobalPostsTimelineResponse } from '@/app/api/posts/globalTimeline/route';
+import type { GetGlobalTimelineResponse } from '@/app/api/posts/globalTimeline/route';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
@@ -30,7 +30,7 @@ export const useDeletePostMutation = ({ onSuccess, onError, onSettled }: Props =
       addToast('success', t('post.api.deletePost.success'));
 
       // Update the cache with the deleted post
-      queryClient.setQueryData<InfiniteQueryData<GlobalPostsTimelineResponse>>(
+      queryClient.setQueryData<InfiniteQueryData<GetGlobalTimelineResponse>>(
         QUERY_KEYS.POSTS.GLOBAL_TIMELINE,
         (oldData) => updateInfiniteQueryWithDeletedItem(oldData, id, { itemsKey: 'posts' })
       );

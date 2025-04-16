@@ -2,12 +2,12 @@ import React from 'react';
 
 import FlatList from '@/components/molecules/FlatList';
 import PostCard, { PostCardSkeletons } from '@/components/molecules/PostCard';
-import { useGlobalPostsTimelineQuery } from '@/hooks/api/posts/useGlobalPostsTimelineQuery';
+import { useGetGlobalTimelineQuery } from '@/hooks/api/posts/useGetGlobalTimelineQuery';
 import { useTranslations } from 'next-intl';
 
 const GlobalPostsTimeline = () => {
   const t = useTranslations();
-  const { flatData, ...restResult } = useGlobalPostsTimelineQuery();
+  const { flatData, ...restResult } = useGetGlobalTimelineQuery();
 
   return (
     <FlatList

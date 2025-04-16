@@ -8,17 +8,17 @@ import { and, desc, eq, lt, or } from 'drizzle-orm';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-export type GlobalPostsTimelineResponse = {
-  posts: Post[];
-  nextCursor: { id: string; createdAt: string } | null;
-};
-
-export type GlobalPostsTimelineParams = {
+export type GetGlobalTimelineParams = {
   cursor?: {
     id: string;
     createdAt: Date;
   };
   limit?: number;
+};
+
+export type GetGlobalTimelineResponse = {
+  posts: Post[];
+  nextCursor: { id: string; createdAt: string } | null;
 };
 
 export const GET = async (request: NextRequest) => {
@@ -30,7 +30,7 @@ export const GET = async (request: NextRequest) => {
 
     // Validate cursor
     const cursorStr = searchParams.get('cursor');
-    const cursor: GlobalPostsTimelineParams['cursor'] = cursorStr
+    const cursor: GetGlobalTimelineParams['cursor'] = cursorStr
       ? {
           ...JSON.parse(cursorStr),
           createdAt: new Date(JSON.parse(cursorStr).createdAt),
@@ -64,7 +64,7 @@ export const GET = async (request: NextRequest) => {
     });
 
     // Calculate next cursor
-    let nextCursor: GlobalPostsTimelineResponse['nextCursor'] = null;
+    let nextCursor: GetGlobalTimelineResponse['nextCursor'] = null;
 
     if (posts.length > limit) {
       posts.pop();
@@ -99,7 +99,7 @@ export const GET = async (request: NextRequest) => {
       })
     );
 
-    return NextResponse.json<GlobalPostsTimelineResponse>({
+    return NextResponse.json<GetGlobalTimelineResponse>({
       posts: postsWithCounts,
       nextCursor,
     });

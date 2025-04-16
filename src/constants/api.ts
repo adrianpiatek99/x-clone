@@ -1,5 +1,6 @@
-import type { LikesPostParams } from '@/app/api/posts/[id]/likes/route';
-import type { GlobalPostsTimelineParams } from '@/app/api/posts/globalTimeline/route';
+import type { GetPostLikesParams } from '@/app/api/posts/[id]/likes/route';
+import type { GetGlobalTimelineParams } from '@/app/api/posts/globalTimeline/route';
+import { createUrlWithParams } from '@/utils/urlParams';
 
 export const API_ENDPOINTS = {
   AUTH: {
@@ -10,25 +11,12 @@ export const API_ENDPOINTS = {
     CREATE: '/api/posts/create',
     DETAILS: (id: string) => `/api/posts/${id}` as const,
     DELETE: (id: string) => `/api/posts/${id}` as const,
-    GLOBAL_TIMELINE: (params?: GlobalPostsTimelineParams) => {
-      const searchParams = new URLSearchParams();
+    GLOBAL_TIMELINE: (params: GetGlobalTimelineParams) =>
+      createUrlWithParams('/api/posts/globalTimeline', params),
+    POST_LIKES: (params: GetPostLikesParams) => {
+      const { id, ...props } = params;
 
-      if (params?.cursor) searchParams.append('cursor', JSON.stringify(params.cursor));
-
-      if (params?.limit) searchParams.append('limit', params.limit.toString());
-
-      return `/api/posts/globalTimeline${searchParams.toString() ? `?${searchParams.toString()}` : ''}` as const;
-    },
-    POST_LIKES: (params: LikesPostParams) => {
-      const { id, cursor, limit } = params;
-
-      const searchParams = new URLSearchParams();
-
-      if (cursor) searchParams.append('cursor', JSON.stringify(cursor));
-
-      if (limit) searchParams.append('limit', limit.toString());
-
-      return `/api/posts/${id}/likes${searchParams.toString() ? `?${searchParams.toString()}` : ''}` as const;
+      return createUrlWithParams(`/api/posts/${id}/likes`, props);
     },
     LIKE: (id: string) => `/api/posts/${id}/like` as const,
     UNLIKE: (id: string) => `/api/posts/${id}/unlike` as const,
