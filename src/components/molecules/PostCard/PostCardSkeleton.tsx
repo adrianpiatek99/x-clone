@@ -25,7 +25,7 @@ export const PostCardSkeleton: FC<Props> = ({ isEven = false }) => {
             <Skeleton absolute />
           </div>
         )}
-        <Box className='mt-1.5 max-w-[425px] flex-row gap-6 px-2.5 py-1'>
+        <Box className='mt-1.5 max-w-[425px] flex-row gap-6 py-1'>
           <Skeleton height={15} width={54} />
           <Skeleton height={15} width={54} />
           <Skeleton height={15} width={54} />
