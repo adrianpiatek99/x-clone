@@ -25,7 +25,6 @@ export const GET = async (request: NextRequest) => {
   try {
     const session = await auth();
     const { searchParams } = new URL(request.url);
-
     const userId = session?.user?.id;
 
     // Validate cursor
@@ -79,6 +78,7 @@ export const GET = async (request: NextRequest) => {
       }
     }
 
+    // Fetch counts
     const postsWithCounts = await Promise.all(
       posts.map(async (post) => {
         const [likesCount, repliesCount] = await Promise.all([
