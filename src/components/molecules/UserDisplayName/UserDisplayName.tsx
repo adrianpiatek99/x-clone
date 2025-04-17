@@ -12,10 +12,10 @@ type Props = Pick<TypographyProps, 'href' | 'onClick' | 'className' | 'size'> & 
 const UserDisplayName = ({ name, isVerified, size, className, ...props }: Props) => {
   return (
     <Typography className='inline-flex items-center truncate' {...props}>
-      <Typography className={className} weight='bold' truncate size={size}>
+      <Typography className={className} weight='semibold' truncate size={size}>
         {name}
       </Typography>
-      {isVerified && <VerifiedIcon className='ml-1 size-[19px] shrink-0 text-primary' />}
+      {isVerified && <VerifiedIcon className='ml-1 size-[14px] shrink-0 text-primary' />}
     </Typography>
   );
 };

@@ -53,14 +53,12 @@ const IconButtonElement: FC<IconButtonProps> = ({
   ...props
 }) => {
   const isCustomColor = className.includes('bg-') && className.includes('text-');
-  const tooltipId = `${title.replaceAll(' ', '-')}-${Math.random().toString(36).slice(2, 7)}`;
   const tabIndex = disableFocus ? -1 : 0;
 
   return (
     <Tooltip content={title}>
       <button
         data-label={label}
-        data-tooltip-id={title ? tooltipId : undefined}
         className={twMerge(
           'relative flex w-max shrink-0 items-center justify-center rounded-full p-0 duration-200 focus-visible:ring-2 focus-visible:ring-current disabled:cursor-not-allowed disabled:opacity-50 [&>svg]:shrink-0',
           label && 'after:content-[attr(data-label)] after:pl-1.5 after:pr-3 pl-3',

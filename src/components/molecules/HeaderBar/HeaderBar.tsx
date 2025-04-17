@@ -13,7 +13,7 @@ import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
 export type HeaderBarProps = {
-  children: ReactNode;
+  children?: ReactNode;
   showBackButton?: boolean;
   additionalContent?: ReactNode;
 } & ({ title: string; subtitle?: string } | { title?: undefined; subtitle?: undefined });
@@ -31,6 +31,8 @@ const HeaderBar = ({
   const isScrollDirectionDown = scrollDirection === ScrollDirection.DOWN;
   const isMobile = useIsMobile();
 
+  const handleBack = () => router.back();
+
   return (
     <div
       className={twMerge(
@@ -41,7 +43,12 @@ const HeaderBar = ({
       {(showBackButton || title) && (
         <div className='flex h-[53px] w-full shrink-0 items-center gap-x-4 gap-y-2 px-4'>
           {showBackButton && (
-            <IconButton color='white' title={t('actions.back')} onClick={router.back}>
+            <IconButton
+              className='-ml-2'
+              color='white'
+              title={t('actions.back')}
+              onClick={handleBack}
+            >
               <ArrowBackIcon />
             </IconButton>
           )}
