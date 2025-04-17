@@ -1,4 +1,5 @@
 import type { LikePostParams, LikePostResponse } from '@/app/api/posts/[id]/like/route';
+import type { GetPostResponse } from '@/app/api/posts/[id]/route';
 import type { UnlikePostParams, UnlikePostResponse } from '@/app/api/posts/[id]/unlike/route';
 import type { GetGlobalTimelineResponse } from '@/app/api/posts/globalTimeline/route';
 import { API_ENDPOINTS } from '@/constants/api';
@@ -7,7 +8,7 @@ import { apiRequest } from '@/db/utils/api';
 import { useAppSession } from '@/hooks/useAppSession';
 import { useToasts } from '@/hooks/useToasts';
 import { useGlobalStore } from '@/stores/global';
-import { type InfiniteQueryData, updateInfiniteQueryWithUpdatedItem } from '@/utils/queryCache';
+import { updateItemInCache, updateItemInInfiniteQueryCache } from '@/utils/queryCache';
 import { useMutation } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
@@ -34,20 +35,22 @@ export const useToggleLikePostMutation = ({ onSuccess, onError, onSettled }: Pro
     onSuccess: ({ id }) => {
       addToast('success', t('post.api.likePost.success'));
 
-      // Update the cache with the liked post
-      queryClient.setQueryData<InfiniteQueryData<GetGlobalTimelineResponse>>(
+      // Update the cache with the updated post
+      updateItemInInfiniteQueryCache<GetGlobalTimelineResponse>(
+        queryClient,
         QUERY_KEYS.POSTS.GLOBAL_TIMELINE,
-        (oldData) =>
-          updateInfiniteQueryWithUpdatedItem(
-            oldData,
-            id,
-            (post) => {
-              post.isLiked = true;
-              post.likesCount++;
-            },
-            { itemsKey: 'posts' }
-          )
+        id,
+        (post) => {
+          post.isLiked = true;
+          post.likesCount++;
+        },
+        { itemsKey: 'posts' }
       );
+
+      updateItemInCache<GetPostResponse>(queryClient, QUERY_KEYS.POSTS.DETAILS(id), (post) => {
+        post.isLiked = true;
+        post.likesCount++;
+      });
 
       onSuccess?.();
     },
@@ -70,20 +73,22 @@ export const useToggleLikePostMutation = ({ onSuccess, onError, onSettled }: Pro
     onSuccess: ({ id }) => {
       addToast('success', t('post.api.unlikePost.success'));
 
-      // Update the cache with the unliked post
-      queryClient.setQueryData<InfiniteQueryData<GetGlobalTimelineResponse>>(
+      // Update the cache with the updated post
+      updateItemInInfiniteQueryCache<GetGlobalTimelineResponse>(
+        queryClient,
         QUERY_KEYS.POSTS.GLOBAL_TIMELINE,
-        (oldData) =>
-          updateInfiniteQueryWithUpdatedItem(
-            oldData,
-            id,
-            (post) => {
-              post.isLiked = false;
-              post.likesCount--;
-            },
-            { itemsKey: 'posts' }
-          )
+        id,
+        (post) => {
+          post.isLiked = false;
+          post.likesCount--;
+        },
+        { itemsKey: 'posts' }
       );
+
+      updateItemInCache<GetPostResponse>(queryClient, QUERY_KEYS.POSTS.DETAILS(id), (post) => {
+        post.isLiked = false;
+        post.likesCount--;
+      });
 
       onSuccess?.();
     },

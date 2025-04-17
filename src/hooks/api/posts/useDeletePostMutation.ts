@@ -4,8 +4,7 @@ import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
 import { useToasts } from '@/hooks/useToasts';
-import type { InfiniteQueryData } from '@/utils/queryCache';
-import { updateInfiniteQueryWithDeletedItem } from '@/utils/queryCache';
+import { deleteItemFromCache, deleteItemFromInfiniteQueryCache } from '@/utils/queryCache';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 
@@ -30,10 +29,14 @@ export const useDeletePostMutation = ({ onSuccess, onError, onSettled }: Props =
       addToast('success', t('post.api.deletePost.success'));
 
       // Update the cache with the deleted post
-      queryClient.setQueryData<InfiniteQueryData<GetGlobalTimelineResponse>>(
+      deleteItemFromInfiniteQueryCache<GetGlobalTimelineResponse>(
+        queryClient,
         QUERY_KEYS.POSTS.GLOBAL_TIMELINE,
-        (oldData) => updateInfiniteQueryWithDeletedItem(oldData, id, { itemsKey: 'posts' })
+        id,
+        { itemsKey: 'posts' }
       );
+
+      deleteItemFromCache(queryClient, QUERY_KEYS.POSTS.DETAILS(id), id);
 
       onSuccess?.();
     },

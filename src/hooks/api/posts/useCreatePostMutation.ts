@@ -5,8 +5,7 @@ import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
 import { useToasts } from '@/hooks/useToasts';
 import { createFormData } from '@/utils/formData';
-import type { InfiniteQueryData } from '@/utils/queryCache';
-import { updateInfiniteQueryWithNewItem } from '@/utils/queryCache';
+import { addItemToInfiniteQueryCache } from '@/utils/queryCache';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 
@@ -34,9 +33,11 @@ export const useCreatePostMutation = ({ onSuccess, onSettled }: Props = {}) => {
       addToast('success', t('post.api.createPost.success'));
 
       // Update the cache with the new post
-      queryClient.setQueryData<InfiniteQueryData<GetGlobalTimelineResponse>>(
+      addItemToInfiniteQueryCache<GetGlobalTimelineResponse>(
+        queryClient,
         QUERY_KEYS.POSTS.GLOBAL_TIMELINE,
-        (oldData) => updateInfiniteQueryWithNewItem(oldData, newPost, { itemsKey: 'posts' })
+        newPost,
+        { itemsKey: 'posts' }
       );
 
       onSuccess?.();
