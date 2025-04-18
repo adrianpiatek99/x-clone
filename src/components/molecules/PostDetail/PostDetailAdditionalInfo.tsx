@@ -8,7 +8,7 @@ import { useTime } from '@/hooks/useTime';
 
 type Props = Pick<Post, 'createdAt'>;
 
-const PostAdditionalInfo = ({ createdAt }: Props) => {
+const PostDetailAdditionalInfo = ({ createdAt }: Props) => {
   const { getLocalTime, getFullDate } = useTime();
 
   return (
@@ -20,4 +20,4 @@ const PostAdditionalInfo = ({ createdAt }: Props) => {
   );
 };
 
-export default PostAdditionalInfo;
+export default PostDetailAdditionalInfo;

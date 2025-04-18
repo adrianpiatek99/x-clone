@@ -3,7 +3,7 @@ import React from 'react';
 import Box from '@/components/atoms/Box';
 import Skeleton from '@/components/atoms/Skeleton';
 
-const PostSkeleton = () => {
+export const PostDetailSkeleton = () => {
   return (
     <Box className='px-4 py-3' as='article'>
       <Box className='relative'>
@@ -34,5 +34,3 @@ const PostSkeleton = () => {
     </Box>
   );
 };
-
-export default PostSkeleton;

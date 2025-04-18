@@ -9,7 +9,7 @@ import type { Post } from '@/db/schema';
 
 type Props = PropsWithChildren & Pick<Post, 'author'>;
 
-const PostAuthor = ({ children, author }: Props) => {
+const PostDetailAuthor = ({ children, author }: Props) => {
   const { name, screenName, isVerified } = author;
   const profilePageHref = ROUTES.PROFILE.DETAILS(screenName);
 
@@ -28,4 +28,4 @@ const PostAuthor = ({ children, author }: Props) => {
   );
 };
 
-export default PostAuthor;
+export default PostDetailAuthor;
