@@ -23,11 +23,9 @@ const PostPage = ({ params }: Props) => {
     return <PostDetailSkeleton />;
   }
 
-  if (isError) {
+  if (isError || !data) {
     return <ErrorState />;
   }
-
-  if (!data) return <span>brak posta</span>;
 
   return <PostDetail post={data} />;
 };
