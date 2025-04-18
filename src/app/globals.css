@@ -27,6 +27,7 @@
   --skeleton-swipe: rgba(255, 255, 255, 0.15);
   --switch-dot: 239, 243, 244;
   --switch-background-inactive: 113, 118, 123;
+  --loader: 105, 113, 125;
 
   /* Theme */
   --theme-dark-primary: 10, 132, 255;

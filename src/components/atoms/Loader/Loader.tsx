@@ -1,33 +1,67 @@
+import './styles.css';
+
 import type { FC } from 'react';
 
+import { createArray } from '@/utils/array';
 import { twMerge } from 'tailwind-merge';
 
 import type { LoaderClassesReturn, LoaderColor } from './types';
 
 export type LoaderProps = {
   center?: boolean;
-  color?: LoaderColor;
   className?: string;
+  color?: LoaderColor;
+  size?: 'small' | 'medium' | 'large';
 };
 
 const classes: LoaderClassesReturn = {
   color: {
-    primary: 'border-y-primary/25 border-l-primary border-r-primary/25',
-    white: 'border-y-[#fff]/25 border-l-[#fff] border-r-[#fff]/25',
-    danger: 'border-y-error-1/25 border-l-error-1 border-r-error-1/25',
+    primary: 'text-loader',
+    white: 'text-white',
+  },
+  size: {
+    small: 'size-[22px]',
+    medium: 'size-[32px]',
+    large: 'size-[48px]',
   },
 };
 
-const Loader: FC<LoaderProps> = ({ center = false, color = 'primary', className = '' }) => {
+const Loader: FC<LoaderProps> = ({
+  center = false,
+  className = '',
+  color = 'primary',
+  size = 'medium',
+}) => {
   return (
     <div
       className={twMerge(
-        'relative flex size-[10em] animate-spin rounded-full border-[3px] indent-[-9999px] text-[2.5px] duration-200',
+        'relative flex shrink-0',
         classes.color[color],
+        classes.size[size],
         center && 'mx-auto',
         className
       )}
-    />
+    >
+      <svg viewBox='0 0 50 50' className='size-full'>
+        {createArray(12).map((number) => (
+          <line
+            key={number}
+            x1='25'
+            y1='25'
+            x2='35'
+            y2='25'
+            transform={`rotate(${number * 30} 25 25) translate(11 0)`}
+            strokeLinecap='round'
+            style={{
+              stroke: 'currentColor',
+              strokeWidth: 3.5,
+              animation: 'spinner-fade 800ms linear infinite',
+              animationDelay: `${-733 + number * 66.67}ms`,
+            }}
+          />
+        ))}
+      </svg>
+    </div>
   );
 };
 

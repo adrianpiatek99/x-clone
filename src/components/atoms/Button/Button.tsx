@@ -7,7 +7,6 @@ import { Link } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
-import type { LoaderColor } from '../Loader';
 import Loader from '../Loader';
 import type {
   ButtonAlign,
@@ -70,9 +69,9 @@ const classes: ButtonClassesReturn = {
     large: 'size-4',
   },
   loaderSize: {
-    small: 'text-[1.4px]',
-    medium: 'text-[1.6px]',
-    large: 'text-[1.6px]',
+    small: 'size-[18px]',
+    medium: 'size-[24px]',
+    large: 'size-[28px]',
   },
   align: {
     left: 'justify-left',
@@ -100,9 +99,6 @@ const ButtonRoot: FC<Omit<ButtonProps, 'href' | 'linkClassName'>> = ({
   ...props
 }) => {
   const t = useTranslations();
-  const loaderColor = (
-    variant === 'filled' ? 'white' : color === 'danger' ? 'danger' : 'primary'
-  ) satisfies LoaderColor;
 
   return (
     <button
@@ -120,15 +116,17 @@ const ButtonRoot: FC<Omit<ButtonProps, 'href' | 'linkClassName'>> = ({
       disabled={isLoading || disabled}
       {...props}
     >
-      {isLoading ? (
-        <Loader className={classes.loaderSize[size]} color={loaderColor} />
-      ) : (
-        startIcon &&
-        cloneElement(startIcon as ReactElement<HTMLProps<HTMLElement>>, {
-          className: twMerge('shrink-0', classes.iconSize[size]),
-        })
+      {isLoading && (
+        <Loader
+          className={twMerge('absolute', classes.loaderSize[size])}
+          color={variant === 'filled' ? 'white' : 'primary'}
+        />
       )}
-      <span>{children}</span>
+      {startIcon &&
+        cloneElement(startIcon as ReactElement<HTMLProps<HTMLElement>>, {
+          className: twMerge('shrink-0', classes.iconSize[size], isLoading && 'opacity-10'),
+        })}
+      <span className={twMerge(isLoading && 'opacity-10')}>{children}</span>
     </button>
   );
 };

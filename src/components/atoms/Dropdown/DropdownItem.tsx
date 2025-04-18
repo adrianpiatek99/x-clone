@@ -35,24 +35,23 @@ export const DropdownItem: FC<DropdownItemProps> = ({
         onClick={onClick}
         disabled={isDisabled}
       >
-        <Typography
-          className={twMerge(
-            '[color:theme("colors.text-1")]',
-            danger && '[color:theme("colors.error-1")]'
-          )}
-        >
-          {children}
-        </Typography>
-        {isLoading ? (
-          <Loader className='size-[18px]' />
-        ) : (
-          cloneElement(icon, {
-            className: twMerge(
-              'size-[18px] fill-text-1 text-text-1 shrink-0',
-              danger && 'text-error-1 fill-error-1'
-            ),
-          })
-        )}
+        <span className='flex items-center gap-2'>
+          {isLoading && <Loader size='small' />}
+          <Typography
+            className={twMerge(
+              '[color:theme("colors.text-1")]',
+              danger && '[color:theme("colors.error-1")]'
+            )}
+          >
+            {children}
+          </Typography>
+        </span>
+        {cloneElement(icon, {
+          className: twMerge(
+            'size-[18px] fill-text-1 text-text-1 shrink-0',
+            danger && 'text-error-1 fill-error-1'
+          ),
+        })}
       </button>
     </MenuItem>
   );

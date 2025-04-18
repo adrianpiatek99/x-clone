@@ -75,6 +75,7 @@ export default {
         'input-background': 'var(--input-background)',
         'switch-dot': 'rgba(var(--switch-dot))',
         'switch-background-inactive': 'rgba(var(--switch-background-inactive))',
+        loader: 'rgba(var(--loader))',
         'accent-1': 'rgba(var(--accent-1))',
         'border-3': 'rgba(var(--border-3))',
       },
