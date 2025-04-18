@@ -17,14 +17,18 @@ const LazyConfirmModal = dynamic(() =>
 type Props = Pick<Post, 'id' | 'author'> & {
   isAuthor: boolean;
   setIsLoading: (isLoading: boolean) => void;
+  onDeleteSuccess?: () => void;
 };
 
 export const PostCardDropdown = memo(
-  ({ id, author: { screenName }, isAuthor, setIsLoading }: Props) => {
+  ({ id, author: { screenName }, isAuthor, setIsLoading, onDeleteSuccess }: Props) => {
     const t = useTranslations();
     const router = useRouter();
     const [isDeletePostModalOpen, setIsDeletePostModalOpen] = useState(false);
     const { deletePost, isDeleting } = useDeletePostMutation({
+      onSuccess: () => {
+        onDeleteSuccess?.();
+      },
       onSettled: () => {
         setIsLoading(false);
       },

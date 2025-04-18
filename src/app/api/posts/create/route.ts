@@ -27,7 +27,12 @@ export type CreatePostRequest = Pick<Post, 'text'> & {
 export type CreatePostResponse = Post;
 
 const schema = z.object({
-  text: z.string().min(1).max(VALIDATION.POST.TEXT.MAX).trim(),
+  text: z
+    .string()
+    .min(1)
+    .refine((text) => text.trim().replaceAll(/\s+/g, ' ').length <= VALIDATION.POST.TEXT.MAX, {
+      message: `Text exceeds maximum length of ${VALIDATION.POST.TEXT.MAX} characters`,
+    }),
   conversationControl: z.enum(enumToPgEnum(ConversationControl)).nullish(),
 });
 
@@ -40,6 +45,7 @@ export const POST = withAuth(async (request, userId: string) => {
       text: formData.get('text'),
       conversationControl: formData.get('conversationControl'),
     });
+
     const mediaFiles: File[] = [];
 
     for (const [key, value] of formData.entries()) {

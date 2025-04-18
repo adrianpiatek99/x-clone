@@ -10,9 +10,7 @@ type TypographyTextProps = Pick<TypographyProps, 'children'> & {
 export const TypographyText: FC<TypographyTextProps> = ({ children, truncate }) => {
   const text = useMemo(() => {
     if (Array.isArray(children)) {
-      const combinedText = children.join('');
-
-      return combinedText;
+      return children.join('');
     }
 
     return String(children);
@@ -26,12 +24,12 @@ export const TypographyText: FC<TypographyTextProps> = ({ children, truncate }) 
 
   const { maxLength, textAfter } = truncate;
 
-  const isLongText = typeof maxLength === 'number' && text.length > maxLength;
+  if (!maxLength) return children;
+
+  const isLongText = text.length > maxLength;
   const isLastCharacterSpace = isLongText && text.charAt(maxLength - 1) === ' ';
   const modifiedMaxLength = isLastCharacterSpace ? maxLength - 1 : maxLength!;
   const isTextTruncateElement = isValidElement(textAfter);
-
-  if (!maxLength) return children;
 
   return isLongText ? (
     <>

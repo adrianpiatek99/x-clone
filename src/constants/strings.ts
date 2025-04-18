@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 export const MID_DOT = '\u00B7';
 
 export const EMPTY_STATE_EMOJIS = [
@@ -9,4 +10,7 @@ export const EMPTY_STATE_EMOJIS = [
   '(´;ω;｀)',
   '(｡•́︿•̀｡)',
   '(｡╯︵╰｡)',
+  '\(^Д^)/',
+  '\(o_o)/',
+  '(˚Δ˚)',
 ] as const;

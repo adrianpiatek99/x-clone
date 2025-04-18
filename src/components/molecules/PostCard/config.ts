@@ -1,1 +1,1 @@
-export const POST_TEXT_MAX_VISIBLE_LENGTH = 280;
+export const POST_TEXT_MAX_VISIBLE_LENGTH = 180;

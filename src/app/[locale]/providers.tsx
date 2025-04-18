@@ -17,7 +17,7 @@ import Modals from './modals';
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 1,
+      retry: 0,
     },
   },
 });
