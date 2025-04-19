@@ -1,7 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { integer, pgTable, text, unique, uuid } from 'drizzle-orm/pg-core';
 
-import { createdAt, id, updatedAt } from '../helpers';
+import { createdAt, editedAt, id, updatedAt } from '../helpers';
 import { usersTable } from '../users/table';
 import { ConversationControl, ConversationControlEnum, PostMediaTypeEnum } from './types';
 
@@ -15,6 +15,15 @@ export const postsTable = pgTable('posts', {
   conversationControl: ConversationControlEnum().notNull().default(ConversationControl.ALL),
   createdAt,
   updatedAt,
+});
+
+export const postEditHistoryTable = pgTable('post_edit_history', {
+  id,
+  postId: uuid('post_id')
+    .notNull()
+    .references(() => postsTable.id, { onDelete: 'cascade' }),
+  previousText: text('previous_text').notNull(),
+  editedAt,
 });
 
 export const postMediaTable = pgTable('post_media', {
@@ -65,6 +74,7 @@ export const postRelations = relations(postsTable, ({ one, many }) => ({
   likes: many(postLikesTable),
   media: many(postMediaTable),
   replies: many(postRepliesTable),
+  editHistory: many(postEditHistoryTable),
 }));
 
 export const postMediaRelations = relations(postMediaTable, ({ one }) => ({
@@ -93,5 +103,12 @@ export const postRepliesRelations = relations(postRepliesTable, ({ one }) => ({
   author: one(usersTable, {
     fields: [postRepliesTable.authorId],
     references: [usersTable.id],
+  }),
+}));
+
+export const postEditHistoryRelations = relations(postEditHistoryTable, ({ one }) => ({
+  post: one(postsTable, {
+    fields: [postEditHistoryTable.postId],
+    references: [postsTable.id],
   }),
 }));

@@ -2,7 +2,7 @@ import { pgEnum } from 'drizzle-orm/pg-core';
 
 import { enumToPgEnum } from '../helpers';
 import type { UserPublic } from '../users';
-import type { postRepliesTable } from './table';
+import type { postEditHistoryTable, postRepliesTable } from './table';
 import type { postLikesTable } from './table';
 import type { postMediaTable } from './table';
 import type { postsTable } from './table';
@@ -33,9 +33,15 @@ export type Post = typeof postsTable.$inferSelect & {
   isLiked: boolean;
   likesCount: number;
   repliesCount: number;
+  editedAt: PostEditHistory['editedAt'] | null;
 };
+
 export type PostMedia = typeof postMediaTable.$inferSelect;
+
 export type PostLike = typeof postLikesTable.$inferSelect & {
   user: UserPublic;
 };
+
 export type PostReply = typeof postRepliesTable.$inferSelect;
+
+export type PostEditHistory = typeof postEditHistoryTable.$inferSelect;

@@ -5,6 +5,7 @@ import { enumToPgEnum } from '@/db/schema/helpers';
 import type { Post } from '@/db/schema/posts';
 import {
   ConversationControl,
+  postEditHistoryTable,
   postLikesTable,
   postMediaTable,
   PostMediaType,
@@ -15,7 +16,7 @@ import { ApiError, handleApiError } from '@/db/utils/api';
 import { withAuth } from '@/db/utils/auth';
 import { uploadFile } from '@/db/utils/uploadFile';
 import { fileValidationConfigs, validateFile } from '@/db/utils/validateFile';
-import { eq } from 'drizzle-orm';
+import { desc, eq } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -98,7 +99,7 @@ export const POST = withAuth(async (request, userId: string) => {
       );
     }
 
-    // Fetch created post
+    // Fetch created post and counts
     const [createdPost, likesCount, repliesCount] = await Promise.all([
       db.query.postsTable.findFirst({
         where: eq(postsTable.id, post.id),
@@ -113,6 +114,14 @@ export const POST = withAuth(async (request, userId: string) => {
             },
           },
           media: true,
+          editHistory: {
+            limit: 1,
+            columns: {
+              id: true,
+              editedAt: true,
+            },
+            orderBy: [desc(postEditHistoryTable.editedAt)],
+          },
         },
       }),
       db.$count(postLikesTable, eq(postLikesTable.postId, post.id)),
@@ -123,11 +132,15 @@ export const POST = withAuth(async (request, userId: string) => {
       throw new ApiError('Failed to fetch created post', 500);
     }
 
+    // Prepare response
     const isAuthor = createdPost.author.id === userId;
     const isLiked = createdPost.likes.some((like) => like.userId === userId);
+    const editedAt = createdPost.editHistory[0]?.editedAt || null;
+
+    const { likes: _likes, editHistory: _editHistory, ...postWithoutExtra } = createdPost;
 
     return NextResponse.json<CreatePostResponse>(
-      { ...createdPost, isAuthor, isLiked, likesCount, repliesCount },
+      { ...postWithoutExtra, isAuthor, isLiked, likesCount, repliesCount, editedAt },
       { status: 201 }
     );
   } catch (error) {

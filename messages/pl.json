@@ -184,7 +184,8 @@
       "media": "Media",
       "more": "Więcej",
       "edit": "Edytuj wpis",
-      "viewPostEngagements": "Wyświetl interakcje wpisu"
+      "viewPostEngagements": "Wyświetl interakcje wpisu",
+      "edited": "Edytowano"
     },
     "confirmDeleteModal": {
       "title": "Usunąć wpis?",
@@ -194,6 +195,10 @@
       "createPost": {
         "success": "Wpis został opublikowany.",
         "error": "Nie udało się opublikować wpisu."
+      },
+      "updatePost": {
+        "success": "Wpis został zaktualizowany.",
+        "error": "Nie udało się zaktualizować wpisu."
       },
       "deletePost": {
         "success": "Wpis został usunięty.",

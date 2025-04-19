@@ -2,7 +2,12 @@ import { auth } from '@/auth';
 import { db } from '@/db/db';
 import type { Post } from '@/db/schema';
 import { userPublicColumns } from '@/db/schema';
-import { postLikesTable, postRepliesTable, postsTable } from '@/db/schema/posts/table';
+import {
+  postEditHistoryTable,
+  postLikesTable,
+  postRepliesTable,
+  postsTable,
+} from '@/db/schema/posts/table';
 import { handleApiError } from '@/db/utils/api';
 import { and, desc, eq, lt, or } from 'drizzle-orm';
 import type { NextRequest } from 'next/server';
@@ -59,6 +64,14 @@ export const GET = async (request: NextRequest) => {
           },
         },
         media: true,
+        editHistory: {
+          limit: 1,
+          columns: {
+            id: true,
+            editedAt: true,
+          },
+          orderBy: [desc(postEditHistoryTable.editedAt)],
+        },
       },
     });
 
@@ -78,7 +91,7 @@ export const GET = async (request: NextRequest) => {
       }
     }
 
-    // Fetch counts
+    // Fetch counts and prepare response
     const postsWithCounts = await Promise.all(
       posts.map(async (post) => {
         const [likesCount, repliesCount] = await Promise.all([
@@ -88,13 +101,17 @@ export const GET = async (request: NextRequest) => {
 
         const isAuthor = post.author.id === userId;
         const isLiked = post.likes.some((like) => like.userId === userId);
+        const editedAt = post.editHistory[0]?.editedAt || null;
+
+        const { likes: _likes, editHistory: _editHistory, ...postWithoutExtra } = post;
 
         return {
-          ...post,
+          ...postWithoutExtra,
           isAuthor,
           isLiked,
           likesCount,
           repliesCount,
+          editedAt,
         };
       })
     );

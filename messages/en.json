@@ -183,7 +183,8 @@
       "media": "Media",
       "more": "More",
       "edit": "Edit post",
-      "viewPostEngagements": "View post engagements"
+      "viewPostEngagements": "View post engagements",
+      "edited": "Edited"
     },
     "confirmDeleteModal": {
       "title": "Delete post?",
@@ -193,6 +194,10 @@
       "createPost": {
         "success": "Post created successfully.",
         "error": "Failed to create post."
+      },
+      "updatePost": {
+        "success": "Post updated successfully.",
+        "error": "Failed to update post."
       },
       "deletePost": {
         "success": "Post deleted successfully.",

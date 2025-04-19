@@ -1,0 +1,71 @@
+import { GetPostResponse } from '@/app/api/posts/[id]/route';
+import type {
+  UpdatePostParams,
+  UpdatePostRequest,
+  UpdatePostResponse,
+} from '@/app/api/posts/[id]/update/route';
+import type { GetGlobalTimelineResponse } from '@/app/api/posts/globalTimeline/route';
+import { API_ENDPOINTS } from '@/constants/api';
+import { QUERY_KEYS } from '@/constants/queryKeys';
+import { apiRequest } from '@/db/utils/api';
+import { useToasts } from '@/hooks/useToasts';
+import { updateItemInCache, updateItemInInfiniteQueryCache } from '@/utils/queryCache';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
+
+type Props = {
+  onSuccess?: () => void;
+  onError?: () => void;
+  onSettled?: () => void;
+};
+
+export const useUpdatePostMutation = ({ onSuccess, onError, onSettled }: Props = {}) => {
+  const t = useTranslations();
+  const queryClient = useQueryClient();
+  const { addToast } = useToasts();
+
+  const { mutate, isPending } = useMutation<
+    UpdatePostResponse,
+    ApiAxiosError,
+    UpdatePostRequest & UpdatePostParams
+  >({
+    mutationFn: ({ id, ...data }) =>
+      apiRequest('PATCH', API_ENDPOINTS.POSTS.UPDATE({ id: id }), data),
+    onSuccess: (updatedPost) => {
+      addToast('success', t('post.api.updatePost.success'));
+
+      // Update the cache with the updated post
+      updateItemInInfiniteQueryCache<GetGlobalTimelineResponse>(
+        queryClient,
+        QUERY_KEYS.POSTS.GLOBAL_TIMELINE,
+        updatedPost.id,
+        (post) => Object.assign(post, updatedPost),
+        { itemsKey: 'posts' }
+      );
+
+      updateItemInCache<GetPostResponse>(
+        queryClient,
+        QUERY_KEYS.POSTS.DETAILS(updatedPost.id),
+        (post) => Object.assign(post, updatedPost)
+      );
+
+      onSuccess?.();
+    },
+    onError: () => {
+      addToast('error', t('post.api.updatePost.error'), { duration: 6000 });
+
+      onError?.();
+    },
+    onSettled: () => {
+      onSettled?.();
+    },
+  });
+
+  const updatePost = (data: UpdatePostRequest & UpdatePostParams) => {
+    if (isPending) return;
+
+    mutate(data);
+  };
+
+  return { updatePost, isPending };
+};
