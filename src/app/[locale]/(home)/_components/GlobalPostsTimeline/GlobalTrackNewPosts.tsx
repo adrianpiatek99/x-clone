@@ -14,13 +14,13 @@ type Props = GetPostsTrackingParams & {
   refetch: () => void;
 };
 
-const TrackNewPosts = ({ latestPostId, refetch }: Props) => {
+const GlobalTrackNewPosts = ({ latestPostId, refetch }: Props) => {
   const t = useTranslations();
   const queryClient = useQueryClient();
-  const { enabled, update } = useHomeStore(
+  const { enabled, updateGlobal } = useHomeStore(
     useShallow((state) => ({
-      enabled: state.enableTrackNewPosts,
-      update: state.update,
+      enabled: state.global.enableTrackNewPosts,
+      updateGlobal: state.updateGlobal,
     }))
   );
   const {
@@ -28,7 +28,7 @@ const TrackNewPosts = ({ latestPostId, refetch }: Props) => {
   } = useGetTrackNewPostsQuery({ latestPostId, enabled });
 
   const enableQuery = useCallback(() => {
-    update({ enableTrackNewPosts: true });
+    updateGlobal({ enableTrackNewPosts: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -56,4 +56,4 @@ const TrackNewPosts = ({ latestPostId, refetch }: Props) => {
   );
 };
 
-export default TrackNewPosts;
+export default GlobalTrackNewPosts;

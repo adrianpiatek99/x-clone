@@ -23,6 +23,11 @@ type Props<TData> = {
   } & Omit<InfiniteQueryObserverBaseResult, 'data'>;
 };
 
+/**
+ * A virtualized list component that efficiently renders large lists of data.
+ * Supports infinite scrolling, loading states, and empty states.
+ * Uses window-based virtualization for optimal performance with large datasets.
+ */
 const FlatList = <TData,>({ data, renderItem, empty, infiniteScroll }: Props<TData>) => {
   const { items, totalSize, parentRef, measureElement } = useWindowVirtualScroll(data.length);
   const isInfiniteScroll = !!infiniteScroll;

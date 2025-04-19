@@ -5,11 +5,14 @@ export enum HomeTab {
 
 export type HomeState = {
   currentTab: HomeTab | null;
-  enableTrackNewPosts: boolean;
+  global: {
+    enableTrackNewPosts: boolean;
+  };
 };
 
 export type HomeActions = {
   update: (payload: Partial<HomeState>) => void;
+  updateGlobal: (payload: Partial<HomeState['global']>) => void;
   resetStore: () => void;
 };
 

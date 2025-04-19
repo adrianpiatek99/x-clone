@@ -12,7 +12,7 @@ type Props = {
 
 export const useGetPostQuery = ({ id }: Props) => {
   const queryClient = useQueryClient();
-  const { data, isLoading, isFetching, isError } = useQuery<GetPostResponse>({
+  const { data, isLoading, isFetching, isRefetching, isError } = useQuery<GetPostResponse>({
     queryKey: QUERY_KEYS.POSTS.DETAILS(id),
     queryFn: () => apiRequest('GET', API_ENDPOINTS.POSTS.DETAILS({ id })),
     enabled: !!id,
@@ -33,6 +33,7 @@ export const useGetPostQuery = ({ id }: Props) => {
     data,
     isLoading,
     isFetching,
+    isRefetching,
     isError,
   };
 };

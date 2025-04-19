@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import ErrorState from '@/components/atoms/ErrorState';
+import DataState from '@/components/molecules/DataState';
 import PostDetail, { PostDetailSkeleton } from '@/components/molecules/PostDetail';
 import { useGetPostQuery } from '@/hooks/api/posts/useGetPostQuery';
 
@@ -17,17 +17,18 @@ type Props = {
 
 const PostPage = ({ params }: Props) => {
   const { id } = React.use(params);
-  const { data, isLoading, isError } = useGetPostQuery({ id });
+  const { data, isLoading, isRefetching, isError } = useGetPostQuery({ id });
 
-  if (isLoading) {
-    return <PostDetailSkeleton />;
-  }
-
-  if (isError || !data) {
-    return <ErrorState />;
-  }
-
-  return <PostDetail post={data} />;
+  return (
+    <DataState
+      isLoading={isLoading}
+      isError={isError}
+      isRefetching={isRefetching}
+      loadingComponent={<PostDetailSkeleton />}
+    >
+      {data && <PostDetail post={data} />}
+    </DataState>
+  );
 };
 
 export default PostPage;

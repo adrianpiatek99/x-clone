@@ -4,11 +4,15 @@ import type { HomeState, HomeStore } from './types';
 
 export const initialState: HomeState = {
   currentTab: null,
-  enableTrackNewPosts: false,
+  global: {
+    enableTrackNewPosts: false,
+  },
 };
 
 export const useHomeStore = create<HomeStore>((set) => ({
   ...initialState,
   update: (payload) => set((state) => ({ ...state, ...payload })),
+  updateGlobal: (payload) =>
+    set((state) => ({ ...state, global: { ...state.global, ...payload } })),
   resetStore: () => set(initialState),
 }));

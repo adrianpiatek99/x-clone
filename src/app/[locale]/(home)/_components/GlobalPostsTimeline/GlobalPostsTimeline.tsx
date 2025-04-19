@@ -5,7 +5,7 @@ import PostCard, { PostCardSkeletons } from '@/components/molecules/PostCard';
 import { useGetGlobalTimelineQuery } from '@/hooks/api/posts/useGetGlobalTimelineQuery';
 import { useTranslations } from 'next-intl';
 
-const LazyTrackNewPosts = lazy(() => import('../TrackNewPosts'));
+const LazyGlobalTrackNewPosts = lazy(() => import('./GlobalTrackNewPosts'));
 
 const GlobalPostsTimeline = () => {
   const t = useTranslations();
@@ -14,9 +14,9 @@ const GlobalPostsTimeline = () => {
 
   return (
     <div className='relative flex h-full flex-col'>
-      <Suspense fallback={<div>loadingggggg</div>}>
+      <Suspense fallback={null}>
         {latestPostId && (
-          <LazyTrackNewPosts latestPostId={latestPostId} refetch={restResult.refetch} />
+          <LazyGlobalTrackNewPosts latestPostId={latestPostId} refetch={restResult.refetch} />
         )}
       </Suspense>
       <FlatList
