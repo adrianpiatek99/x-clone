@@ -4,6 +4,7 @@ import type { GetPostLikesParams } from '@/app/api/posts/[id]/likes/route';
 import type { GetPostParams } from '@/app/api/posts/[id]/route';
 import type { UnlikePostParams } from '@/app/api/posts/[id]/unlike/route';
 import type { GetGlobalTimelineParams } from '@/app/api/posts/globalTimeline/route';
+import type { GetPostsTrackingParams } from '@/app/api/posts/trackNewPosts/route';
 import { createUrlWithParams } from '@/utils/urlParams';
 
 export const API_ENDPOINTS = {
@@ -21,6 +22,8 @@ export const API_ENDPOINTS = {
       createUrlWithParams(`/api/posts/${id}/likes`, params),
     LIKE: ({ id }: LikePostParams) => `/api/posts/${id}/like` as const,
     UNLIKE: ({ id }: UnlikePostParams) => `/api/posts/${id}/unlike` as const,
+    TRACK_NEW_POSTS: ({ latestPostId }: GetPostsTrackingParams) =>
+      createUrlWithParams('/api/posts/trackNewPosts', { latestPostId }),
   },
   PROFILE: {
     UPDATE: '/api/profile/update',

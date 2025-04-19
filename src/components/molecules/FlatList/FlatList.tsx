@@ -1,11 +1,12 @@
 'use client';
 
 import type { ReactElement } from 'react';
-import React, { cloneElement } from 'react';
+import React, { cloneElement, Suspense } from 'react';
 
 import Empty from '@/components/atoms/Empty';
 import ErrorState from '@/components/atoms/ErrorState';
 import Loader from '@/components/atoms/Loader';
+import { LazyPillNotifyRefreshing } from '@/components/molecules/PillNotify';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import { useWindowVirtualScroll } from '@/hooks/useWindowVirtualScroll';
 import type { InfiniteQueryObserverBaseResult } from '@tanstack/react-query';
@@ -22,6 +23,11 @@ type Props<TData> = {
   } & Omit<InfiniteQueryObserverBaseResult, 'data'>;
 };
 
+/**
+ * A virtualized list component that efficiently renders large lists of data.
+ * Supports infinite scrolling, loading states, and empty states.
+ * Uses window-based virtualization for optimal performance with large datasets.
+ */
 const FlatList = <TData,>({ data, renderItem, empty, infiniteScroll }: Props<TData>) => {
   const { items, totalSize, parentRef, measureElement } = useWindowVirtualScroll(data.length);
   const isInfiniteScroll = !!infiniteScroll;
@@ -49,6 +55,9 @@ const FlatList = <TData,>({ data, renderItem, empty, infiniteScroll }: Props<TDa
 
   return (
     <section className='relative flex w-full flex-col' ref={parentRef}>
+      <Suspense fallback={null}>
+        <LazyPillNotifyRefreshing isRefetching={!!infiniteScroll?.isRefetching} />
+      </Suspense>
       {isInfiniteScroll && infiniteScroll.isLoading ? (
         cloneElement(infiniteScroll.loader)
       ) : (

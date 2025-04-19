@@ -30,6 +30,7 @@ export const useGetGlobalTimelineQuery = ({
     initialPageParam: null,
     getNextPageParam: (lastPage) => lastPage.nextCursor,
     refetchOnMount: false,
+    refetchOnWindowFocus: false,
     enabled,
   });
 
