@@ -28,7 +28,9 @@
     "follow": "Follow",
     "addPhoto": "Add photo",
     "removePhoto": "Remove photo",
-    "retry": "Retry"
+    "retry": "Retry",
+    "showPosts": "{count, plural, one {Show # post} other {Show # posts}}",
+    "refreshing": "Refreshing..."
   },
 
   "auth": {

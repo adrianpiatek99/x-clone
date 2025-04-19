@@ -38,7 +38,7 @@ export const PostCardSkeleton: FC<Props> = ({ isEven = false }) => {
 export const PostCardSkeletons = () => {
   return (
     <>
-      {createArray(3).map((skeleton) => (
+      {createArray(2).map((skeleton) => (
         <PostCardSkeleton key={skeleton} isEven={skeleton % 2 === 0} />
       ))}
     </>

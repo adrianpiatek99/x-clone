@@ -5,6 +5,7 @@ export enum HomeTab {
 
 export type HomeState = {
   currentTab: HomeTab | null;
+  enableTrackNewPosts: boolean;
 };
 
 export type HomeActions = {

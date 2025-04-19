@@ -28,7 +28,9 @@
     "follow": "Obserwuj",
     "addPhoto": "Dodaj zdjęcie",
     "removePhoto": "Usuń zdjęcie",
-    "retry": "Spróbuj ponownie"
+    "retry": "Spróbuj ponownie",
+    "showPosts": "{count, plural, one {Pokaż # wpis} few {Pokaż # wpisy} other {Pokaż # wpisów}}",
+    "refreshing": "Odświeżanie..."
   },
 
   "auth": {
