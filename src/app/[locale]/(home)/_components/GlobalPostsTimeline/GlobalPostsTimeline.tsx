@@ -13,12 +13,14 @@ const GlobalPostsTimeline = () => {
   const latestPostId = flatData[0]?.id;
 
   return (
-    <div className='relative flex h-full flex-col'>
-      <Suspense fallback={null}>
-        {latestPostId && (
-          <LazyGlobalTrackNewPosts latestPostId={latestPostId} refetch={restResult.refetch} />
-        )}
-      </Suspense>
+    <div className='flex flex-col'>
+      <div className='relative'>
+        <Suspense fallback={null}>
+          {latestPostId && (
+            <LazyGlobalTrackNewPosts latestPostId={latestPostId} refetch={restResult.refetch} />
+          )}
+        </Suspense>
+      </div>
       <FlatList
         data={flatData}
         renderItem={(item) => <PostCard post={item} />}
@@ -30,6 +32,7 @@ const GlobalPostsTimeline = () => {
           loader: <PostCardSkeletons />,
           ...restResult,
         }}
+        scrollKey='global-posts-timeline'
       />
     </div>
   );
