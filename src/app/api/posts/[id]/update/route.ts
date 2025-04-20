@@ -2,15 +2,19 @@ import { VALIDATION } from '@/constants/validation';
 import { db } from '@/db/db';
 import type { Post } from '@/db/schema';
 import { userPublicColumns } from '@/db/schema';
+import { PostMediaType } from '@/db/schema/posts';
 import {
   postEditHistoryTable,
   postLikesTable,
+  postMediaTable,
   postRepliesTable,
   postsTable,
 } from '@/db/schema/posts/table';
 import { ApiError, handleApiError } from '@/db/utils/api';
 import { withAuth } from '@/db/utils/auth';
-import { desc, eq } from 'drizzle-orm';
+import { uploadFile } from '@/db/utils/uploadFile';
+import { fileValidationConfigs, validateFile } from '@/db/utils/validateFile';
+import { desc, eq, inArray } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
@@ -23,7 +27,9 @@ const schema = z.object({
     .refine((text) => text.trim().replaceAll(/\s+/g, ' ').length <= VALIDATION.POST.TEXT.MAX, {
       message: `Text exceeds maximum length of ${VALIDATION.POST.TEXT.MAX} characters`,
     }),
-}) satisfies z.ZodType<Pick<Post, 'text'>>;
+  removedMediaIds: z.array(z.string()).optional(),
+  media: z.array(z.instanceof(File)).optional(),
+}) satisfies z.ZodType<Pick<Post, 'text'> & { removedMediaIds?: string[]; media?: File[] }>;
 
 export type UpdatePostRequest = z.infer<typeof schema>;
 
@@ -33,11 +39,33 @@ export const PATCH = withAuth(
   async (request, userId, { params }: { params: Promise<UpdatePostParams> }) => {
     try {
       const { id } = await params;
-      const body = await request.json();
+      const formData = await request.formData();
 
-      const { text } = schema.parse(body);
+      // Validate payload
+      const mediaFiles: File[] = [];
+      const removedMediaIds: string[] = [];
 
-      const [post] = await db.select().from(postsTable).where(eq(postsTable.id, id));
+      for (const [key, value] of formData.entries()) {
+        if (key.startsWith('media[') && value instanceof File) {
+          mediaFiles.push(value);
+        } else if (key.startsWith('removedMediaIds[') && typeof value === 'string') {
+          removedMediaIds.push(value);
+        }
+      }
+
+      const { text } = schema.parse({
+        text: formData.get('text'),
+        removedMediaIds,
+        media: mediaFiles,
+      });
+
+      // Check if post exists
+      const post = await db.query.postsTable.findFirst({
+        where: eq(postsTable.id, id),
+        with: {
+          media: true,
+        },
+      });
 
       if (!post) {
         throw new ApiError('Post not found', 404);
@@ -47,7 +75,26 @@ export const PATCH = withAuth(
         throw new ApiError('Unauthorized', 403);
       }
 
-      // Start a transaction to ensure both operations succeed or fail together
+      // Validate new media files
+      if (mediaFiles.length) {
+        const currentMediaCount = post.media.length;
+        const removedMediaCount = removedMediaIds.length;
+        const remainingMediaCount = currentMediaCount - removedMediaCount;
+        const totalMediaCount = remainingMediaCount + mediaFiles.length;
+
+        if (totalMediaCount > fileValidationConfigs.media.limit) {
+          throw new ApiError(
+            `Maximum ${fileValidationConfigs.media.limit} media files allowed per post. You currently have ${currentMediaCount} files, removing ${removedMediaCount} and adding ${mediaFiles.length} would exceed the limit.`,
+            400
+          );
+        }
+
+        mediaFiles.forEach((file) => {
+          validateFile(file, fileValidationConfigs.media);
+        });
+      }
+
+      // Start a transaction to ensure all operations succeed or fail together
       await db.transaction(async (tx) => {
         // Save the current text to edit history
         await tx.insert(postEditHistoryTable).values({
@@ -57,6 +104,26 @@ export const PATCH = withAuth(
 
         // Update the post with new text
         await tx.update(postsTable).set({ text }).where(eq(postsTable.id, id));
+
+        // Delete removed media if any
+        if (removedMediaIds.length) {
+          await tx.delete(postMediaTable).where(inArray(postMediaTable.id, removedMediaIds));
+        }
+
+        // Upload and add new media files if any
+        if (mediaFiles.length) {
+          const mediaResults = await Promise.all(mediaFiles.map((file) => uploadFile(file)));
+
+          await tx.insert(postMediaTable).values(
+            mediaResults.map(({ url, height, width }) => ({
+              url,
+              width,
+              height,
+              type: PostMediaType.PHOTO,
+              postId: id,
+            }))
+          );
+        }
       });
 
       // Fetch updated post and counts

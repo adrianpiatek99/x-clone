@@ -50,10 +50,8 @@ export const POST = withAuth(async (request, userId: string) => {
     const mediaFiles: File[] = [];
 
     for (const [key, value] of formData.entries()) {
-      if (key.startsWith('media[')) {
-        if (value instanceof File) {
-          mediaFiles.push(value);
-        }
+      if (key.startsWith('media[') && value instanceof File) {
+        mediaFiles.push(value);
       }
     }
 

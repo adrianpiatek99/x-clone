@@ -1,4 +1,4 @@
-import { GetPostResponse } from '@/app/api/posts/[id]/route';
+import type { GetPostResponse } from '@/app/api/posts/[id]/route';
 import type {
   UpdatePostParams,
   UpdatePostRequest,
@@ -9,6 +9,7 @@ import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
 import { useToasts } from '@/hooks/useToasts';
+import { createFormData } from '@/utils/formData';
 import { updateItemInCache, updateItemInInfiniteQueryCache } from '@/utils/queryCache';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
@@ -29,8 +30,15 @@ export const useUpdatePostMutation = ({ onSuccess, onError, onSettled }: Props =
     ApiAxiosError,
     UpdatePostRequest & UpdatePostParams
   >({
-    mutationFn: ({ id, ...data }) =>
-      apiRequest('PATCH', API_ENDPOINTS.POSTS.UPDATE({ id: id }), data),
+    mutationFn: ({ id, ...data }) => {
+      const formData = createFormData(data);
+
+      return apiRequest('PATCH', API_ENDPOINTS.POSTS.UPDATE({ id }), formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+    },
     onSuccess: (updatedPost) => {
       addToast('success', t('post.api.updatePost.success'));
 
