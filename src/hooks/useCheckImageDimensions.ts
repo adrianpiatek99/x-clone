@@ -1,23 +1,36 @@
 import { useEffect, useState } from 'react';
 
-export const useCheckImageDimensions = (file: File | undefined) => {
-  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+type ImageDimensions = {
+  width: number;
+  height: number;
+};
+
+export const useCheckImageDimensions = (file: File | undefined): ImageDimensions => {
+  const [dimensions, setDimensions] = useState<ImageDimensions>({ width: 0, height: 0 });
 
   useEffect(() => {
-    if (file) {
-      const image = new Image();
+    if (!file) {
+      setDimensions({ width: 0, height: 0 });
 
-      image.src = URL.createObjectURL(file);
-
-      image.onload = () => {
-        const width = image.width;
-        const height = image.height;
-
-        setDimensions({ width, height });
-
-        return true;
-      };
+      return;
     }
+
+    const image = new Image();
+    const objectUrl = URL.createObjectURL(file);
+
+    image.src = objectUrl;
+
+    const handleLoad = () => {
+      setDimensions({ width: image.width, height: image.height });
+      URL.revokeObjectURL(objectUrl);
+    };
+
+    image.addEventListener('load', handleLoad);
+
+    return () => {
+      image.removeEventListener('load', handleLoad);
+      URL.revokeObjectURL(objectUrl);
+    };
   }, [file]);
 
   return dimensions;
