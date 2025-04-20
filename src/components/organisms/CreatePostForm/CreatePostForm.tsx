@@ -21,11 +21,10 @@ const LazyCreatePostFormMedia = lazy(() =>
 
 const CreatePostForm = () => {
   const t = useTranslations();
-  const { text, files, aspectRatio, update, addFiles, removeFile, resetStore } = useCreatePostStore(
+  const { text, files, update, addFiles, removeFile, resetStore } = useCreatePostStore(
     useShallow((state) => ({
       text: state.text,
       files: state.files,
-      aspectRatio: state.aspectRatio,
       update: state.update,
       addFiles: state.addFiles,
       removeFile: state.removeFile,
@@ -69,10 +68,8 @@ const CreatePostForm = () => {
               {showMedia && (
                 <LazyCreatePostFormMedia
                   files={files}
-                  aspectRatio={aspectRatio}
                   isPending={isPending}
                   removeFile={removeFile}
-                  updateAspectRatio={(value) => update({ aspectRatio: value })}
                 />
               )}
             </Suspense>

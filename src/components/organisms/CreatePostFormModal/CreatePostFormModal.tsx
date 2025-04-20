@@ -23,7 +23,7 @@ const LazyCreatePostFormMedia = lazy(() =>
 const CreatePostFormModal = () => {
   const t = useTranslations();
   const {
-    modal: { isOpen, text, files, aspectRatio },
+    modal: { isOpen, text, files },
     updateModal,
     addModalFiles,
     removeModalFile,
@@ -79,9 +79,7 @@ const CreatePostFormModal = () => {
                   <LazyCreatePostFormMedia
                     isPending={isPending}
                     files={files}
-                    aspectRatio={aspectRatio}
                     removeFile={removeModalFile}
-                    updateAspectRatio={(value) => updateModal({ aspectRatio: value })}
                   />
                 )}
               </Suspense>

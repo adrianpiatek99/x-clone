@@ -1,5 +1,5 @@
 export const calcAspectRatio = (width: number, height: number) => {
-  const aspectRatio = Number(((Math.round(height) / Math.round(width)) * 100).toFixed(2)) ?? 0;
+  const aspectRatio = Number(((Math.round(height) / Math.round(width)) * 100).toFixed(2));
 
   return {
     aspectRatio,
