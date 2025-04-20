@@ -12,6 +12,7 @@ import { PostCardActions } from './PostCardActions';
 import { PostCardAuthor } from './PostCardAuthor';
 import { PostCardDropdown } from './PostCardDropdown';
 import { PostCardMedia } from './PostCardMedia';
+import { PostCardStatuses } from './PostCardStatuses';
 import { PostCardText } from './PostCardText';
 
 type Props = ComponentPropsWithRef<'div'> & {
@@ -20,7 +21,7 @@ type Props = ComponentPropsWithRef<'div'> & {
 };
 
 const PostCard = memo(({ post, className, ...props }: Props) => {
-  const { id, text, author, media, createdAt, isAuthor, isLiked, likesCount } = post;
+  const { id, text, author, media, createdAt, isAuthor, isLiked, likesCount, editedAt } = post;
   const { avatarUrl, screenName } = author;
   const [isLoading, setIsLoading] = useState(false);
   const { handleOnClick, handleOnKeyUp, handleOnMouseUp } = useSyntheticEvents({
@@ -44,17 +45,19 @@ const PostCard = memo(({ post, className, ...props }: Props) => {
     >
       <Box className={twMerge('relative flex-row items-start', isLoading && 'opacity-50')}>
         <Avatar href={ROUTES.PROFILE.DETAILS(screenName)} src={avatarUrl} screenName={screenName} />
-        <Box className='grow gap-1'>
-          <PostCardAuthor id={id} author={author} createdAt={createdAt}>
+        <Box className='grow gap-1.5'>
+          <Box className='flex-row items-center justify-between gap-1'>
+            <PostCardAuthor id={id} author={author} createdAt={createdAt} />
             <PostCardDropdown
-              id={id}
-              author={author}
-              isAuthor={isAuthor}
+              post={{ id, author, text, media, isAuthor }}
               setIsLoading={setIsLoading}
             />
-          </PostCardAuthor>
-          <Box className='mt-0.5'>
-            <PostCardText id={id} text={text} author={author} />
+          </Box>
+          <Box>
+            <Box className='gap-1.5'>
+              <PostCardStatuses editedAt={editedAt} />
+              <PostCardText id={id} text={text} author={author} />
+            </Box>
             {!!media.length && <PostCardMedia media={media} />}
             <PostCardActions id={id} isLiked={isLiked} likesCount={likesCount} />
           </Box>
