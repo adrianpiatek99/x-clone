@@ -7,16 +7,14 @@ import type { CreatePostStore } from './types';
 export const initialState: CreatePostState = {
   text: '',
   files: [],
-  aspectRatio: 0,
   modal: {
     isOpen: false,
     text: '',
     files: [],
-    aspectRatio: 0,
   },
 };
 
-export const useCreatePostStore = create<CreatePostStore>((set, get) => ({
+export const useCreatePostStore = create<CreatePostStore>((set) => ({
   ...initialState,
   update: (payload) => set((state) => ({ ...state, ...payload })),
   addFiles: (files) => {
@@ -30,12 +28,6 @@ export const useCreatePostStore = create<CreatePostStore>((set, get) => ({
     }));
   },
   removeFile: (filePreview) => {
-    const files = get().files;
-
-    if (files.length === 1) {
-      set({ aspectRatio: 0 });
-    }
-
     set((state) => ({
       files: state.files.filter((file) => file.preview !== filePreview),
     }));
@@ -55,12 +47,6 @@ export const useCreatePostStore = create<CreatePostStore>((set, get) => ({
       },
     })),
   removeModalFile: (filePreview) => {
-    const files = get().modal.files;
-
-    if (files.length === 1) {
-      set({ modal: { ...get().modal, aspectRatio: 0 } });
-    }
-
     set((state) => ({
       modal: {
         ...state.modal,

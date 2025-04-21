@@ -6,6 +6,7 @@ import React from 'react';
 import type { Locale } from '@/constants/locales';
 import { themes } from '@/constants/themes';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { SessionProvider } from 'next-auth/react';
 import type { AbstractIntlMessages } from 'next-intl';
 import { NextIntlClientProvider } from 'next-intl';
@@ -39,6 +40,7 @@ const Providers: FC<Props> = ({ children, locale, messages }) => {
               <Modals />
             </LoadingScreen>
           </SessionProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </NextIntlClientProvider>
     </ThemeProvider>

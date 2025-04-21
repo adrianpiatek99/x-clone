@@ -26,7 +26,6 @@ const HomeHeader = () => {
     (tab: HomeTab) => {
       update({ currentTab: tab });
       localStorage.setItem(HOME_SELECTED_TAB_KEY, tab);
-      scrollTo({ top: 0 });
     },
     [update]
   );

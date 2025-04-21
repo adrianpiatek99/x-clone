@@ -11,3 +11,4 @@ export const updatedAt = timestamp('updated_at', { withTimezone: true })
   .notNull()
   .defaultNow()
   .$onUpdate(() => new Date());
+export const editedAt = timestamp('edited_at', { withTimezone: true }).notNull().defaultNow();

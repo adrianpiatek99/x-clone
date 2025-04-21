@@ -17,6 +17,7 @@ const FollowingPostsTimeline = () => {
         title: t('homePage.followingPosts.empty.title'),
         description: t('homePage.followingPosts.empty.description'),
       }}
+      scrollKey='following-posts-timeline'
     />
   );
 };

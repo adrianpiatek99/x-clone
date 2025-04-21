@@ -1,12 +1,10 @@
 export type CreatePostState = {
   text: string;
   files: { file: File; preview: string }[];
-  aspectRatio: number;
   modal: {
     isOpen: boolean;
     text: string;
     files: { file: File; preview: string }[];
-    aspectRatio: number;
   };
 };
 

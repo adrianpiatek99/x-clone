@@ -1,17 +1,35 @@
 import { useRef } from 'react';
 
-import { observeWindowOffset, useWindowVirtualizer } from '@tanstack/react-virtual';
+import { useVirtualScrollStore } from '@/stores/virtualScroll';
+import { useWindowVirtualizer } from '@tanstack/react-virtual';
+import { useShallow } from 'zustand/shallow';
 
-export const useWindowVirtualScroll = (count: number) => {
+export const useWindowVirtualScroll = (count: number, scrollKey?: string) => {
   const parentRef = useRef<HTMLDivElement>(null);
-  const { getVirtualItems, getTotalSize, measureElement } = useWindowVirtualizer({
+  const { getState, update } = useVirtualScrollStore(
+    useShallow((state) => ({
+      getState: state.getState,
+      update: state.update,
+    }))
+  );
+  const offset = scrollKey ? (getState(scrollKey)?.offset ?? 0) : 0;
+  const cache = scrollKey ? (getState(scrollKey)?.cache ?? []) : [];
+
+  const { getVirtualItems, getTotalSize, measureElement, options } = useWindowVirtualizer({
     count,
-    estimateSize: () => 40,
-    overscan: 2,
-    observeElementOffset: (instance, cb) =>
-      observeWindowOffset(instance, (offset, isScrolling) =>
-        cb(offset - (parentRef.current?.offsetTop || 0), isScrolling)
-      ),
+    estimateSize: () => 700,
+    overscan: 3,
+    scrollMargin: parentRef.current?.offsetTop ?? 0,
+    initialOffset: offset,
+    initialMeasurementsCache: cache,
+    onChange: (virtualizer) => {
+      if (!virtualizer.isScrolling && scrollKey) {
+        update(scrollKey, {
+          offset: virtualizer.scrollOffset ?? 0,
+          cache: virtualizer.measurementsCache,
+        });
+      }
+    },
   });
   const items = getVirtualItems();
   const totalSize = getTotalSize();
@@ -21,5 +39,6 @@ export const useWindowVirtualScroll = (count: number) => {
     totalSize,
     measureElement,
     parentRef,
+    options,
   };
 };

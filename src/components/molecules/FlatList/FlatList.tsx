@@ -21,6 +21,7 @@ type Props<TData> = {
   infiniteScroll?: {
     loader: ReactElement;
   } & Omit<InfiniteQueryObserverBaseResult, 'data'>;
+  scrollKey?: string;
 };
 
 /**
@@ -28,8 +29,11 @@ type Props<TData> = {
  * Supports infinite scrolling, loading states, and empty states.
  * Uses window-based virtualization for optimal performance with large datasets.
  */
-const FlatList = <TData,>({ data, renderItem, empty, infiniteScroll }: Props<TData>) => {
-  const { items, totalSize, parentRef, measureElement } = useWindowVirtualScroll(data.length);
+const FlatList = <TData,>({ data, renderItem, empty, infiniteScroll, scrollKey }: Props<TData>) => {
+  const { items, totalSize, parentRef, measureElement, options } = useWindowVirtualScroll(
+    data.length,
+    scrollKey
+  );
   const isInfiniteScroll = !!infiniteScroll;
   const isEmpty = isInfiniteScroll ? !infiniteScroll.isLoading && !data.length : !data.length;
   const isError = !!infiniteScroll?.isError;
@@ -67,7 +71,7 @@ const FlatList = <TData,>({ data, renderItem, empty, infiniteScroll }: Props<TDa
               key={key}
               ref={measureElement}
               style={{
-                transform: `translateY(${start}px)`,
+                transform: `translateY(${start - options.scrollMargin}px)`,
               }}
               className='absolute left-0 top-0 w-full animate-appear'
               data-index={index}
