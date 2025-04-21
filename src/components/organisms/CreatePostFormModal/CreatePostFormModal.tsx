@@ -1,7 +1,7 @@
 import React, { lazy, Suspense } from 'react';
 
 import Box from '@/components/atoms/Box';
-import Button from '@/components/atoms/Button';
+import Loader from '@/components/atoms/Loader';
 import Modal from '@/components/atoms/Modal';
 import Textarea from '@/components/atoms/Textarea';
 import AutoHeight from '@/components/molecules/AutoHeight';
@@ -48,7 +48,6 @@ const CreatePostFormModal = () => {
   const handleClose = () => updateModal({ isOpen: false });
 
   const handleCreatePost = () =>
-    !disabled &&
     createPostMutate({
       text,
       media: files.map((file) => file.file),
@@ -56,8 +55,24 @@ const CreatePostFormModal = () => {
 
   const handleChangeText = (value: string) => updateModal({ text: value });
 
+  const onSubmit = () => {
+    if (disabled) return;
+
+    handleCreatePost();
+  };
+
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} panel={{ className: 'min-h-auto' }}>
+    <Modal
+      isOpen={isOpen}
+      onClose={handleClose}
+      title={t('post.actions.send')}
+      acceptButtonText={t('post.actions.send')}
+      acceptButtonProps={{
+        disabled: disabled,
+      }}
+      onAccept={onSubmit}
+      panel={{ className: 'min-h-auto' }}
+    >
       <div className='flex gap-3 border-border-1 px-4'>
         <Box className='shrink-0 pt-2'>
           <UserAvatar withLink={false} />
@@ -74,25 +89,21 @@ const CreatePostFormModal = () => {
           />
           <Box className='gap-0'>
             <AutoHeight>
-              <Suspense>
-                {showMedia && (
+              {showMedia && (
+                <Suspense fallback={<Loader center />}>
                   <LazyCreatePostFormMedia
                     isPending={isPending}
                     files={files}
                     removeFile={removeModalFile}
                   />
-                )}
-              </Suspense>
+                </Suspense>
+              )}
             </AutoHeight>
             <CreatePostFormToolbar
               isPending={isPending}
               filesCount={files.length}
               addFiles={addModalFiles}
-            >
-              <Button onClick={handleCreatePost} disabled={disabled} isLoading={isPending}>
-                {t('post.actions.send')}
-              </Button>
-            </CreatePostFormToolbar>
+            />
           </Box>
         </Box>
       </div>

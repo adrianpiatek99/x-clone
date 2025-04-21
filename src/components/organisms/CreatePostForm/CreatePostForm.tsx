@@ -4,6 +4,7 @@ import React, { lazy, Suspense } from 'react';
 
 import Box from '@/components/atoms/Box';
 import Button from '@/components/atoms/Button';
+import Loader from '@/components/atoms/Loader';
 import Textarea from '@/components/atoms/Textarea';
 import AutoHeight from '@/components/molecules/AutoHeight';
 import UserAvatar from '@/components/molecules/UserAvatar';
@@ -64,25 +65,26 @@ const CreatePostForm = () => {
         />
         <Box className='gap-0'>
           <AutoHeight>
-            <Suspense>
-              {showMedia && (
+            {showMedia && (
+              <Suspense fallback={<Loader center />}>
                 <LazyCreatePostFormMedia
                   files={files}
                   isPending={isPending}
                   removeFile={removeFile}
                 />
-              )}
-            </Suspense>
+              </Suspense>
+            )}
           </AutoHeight>
-          <CreatePostFormToolbar
-            isPending={isPending}
-            filesCount={files.length}
-            addFiles={addFiles}
-          >
+          <Box className='flex-row items-center justify-between'>
+            <CreatePostFormToolbar
+              isPending={isPending}
+              filesCount={files.length}
+              addFiles={addFiles}
+            ></CreatePostFormToolbar>
             <Button onClick={handleCreatePost} disabled={disabled} isLoading={isPending}>
               {t('post.actions.send')}
             </Button>
-          </CreatePostFormToolbar>
+          </Box>
         </Box>
       </Box>
     </div>
