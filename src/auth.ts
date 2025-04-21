@@ -53,39 +53,24 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
         if (token.sub) {
           user.id = token.sub;
-        }
 
-        try {
           const currentUser = await db.query.usersTable.findFirst({
             where: eq(usersTable.id, user.id),
             columns: currentUserColumns,
           });
 
-          if (!currentUser) {
-            return { ...session, user: undefined };
+          if (currentUser) {
+            Object.assign(user, currentUser);
           }
-
-          Object.assign(user, currentUser);
-
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        } catch (error) {
-          return { ...session, user: undefined };
         }
+
+        return session;
       }
 
       return session;
     },
     async jwt({ token }) {
       if (!token.sub) return null;
-
-      const currentUser = await db.query.usersTable.findFirst({
-        where: eq(usersTable.id, token.sub),
-        columns: currentUserColumns,
-      });
-
-      if (!currentUser) {
-        return null;
-      }
 
       return token;
     },
