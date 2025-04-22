@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import Avatar from '@/components/atoms/Avatar';
 import Box from '@/components/atoms/Box';
+import { ROUTES } from '@/constants/routes';
 import type { Post } from '@/db/schema';
 import { useRouter } from '@/i18n/routing';
 import { twMerge } from 'tailwind-merge';
@@ -23,7 +24,7 @@ const PostDetail = ({
   return (
     <Box className={twMerge('px-4 py-3', isGlobalLoading && 'opacity-50')}>
       <Box className='grow flex-row'>
-        <Avatar src={author.avatarUrl} />
+        <Avatar src={author.avatarUrl} href={ROUTES.PROFILE.DETAILS(author.screenName)} />
         <PostDetailAuthor author={author} />
         <PostCardDropdown
           post={{ id, text, author, media, isAuthor }}

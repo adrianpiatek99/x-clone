@@ -5,4 +5,7 @@ export const QUERY_KEYS = {
     DETAILS: (id: string) => ['postDetails', id],
     TRACK_NEW_POSTS: ['trackNewPosts'],
   },
+  PROFILE: {
+    USER_BY_SCREEN_NAME: (screenName: string) => ['userByScreenName', screenName],
+  },
 } as const;

@@ -15,7 +15,12 @@ export const UserRoleEnum = pgEnum('role', enumToPgEnum(UserRole));
 // Types
 type InterUser = typeof usersTable.$inferSelect;
 
-export type User = Omit<InterUser, 'password'>;
+export type User = Omit<InterUser, 'password'> & {
+  isFollowing: boolean;
+  followersCount: number;
+  followingCount: number;
+  postsCount: number;
+};
 
 export type UserPublic = Pick<
   User,
@@ -25,6 +30,17 @@ export type UserPublic = Pick<
   | 'description'
   | 'avatarUrl'
   | 'bannerUrl'
+  | 'url'
+  | 'role'
   | 'isVerified'
+  | 'verifiedAt'
   | 'createdAt'
+  | 'updatedAt'
 >;
+
+export type UserProfile = UserPublic & {
+  isFollowing: boolean;
+  followersCount: number;
+  followingCount: number;
+  postsCount: number;
+};
