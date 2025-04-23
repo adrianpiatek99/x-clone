@@ -18,4 +18,6 @@ export const Playground = Template.bind({});
 
 Playground.args = {
   center: false,
+  color: 'primary',
+  size: 'medium',
 };

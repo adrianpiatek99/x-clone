@@ -5,6 +5,7 @@ import React from 'react';
 import Providers from '@/app/[locale]/providers';
 import type { Preview } from '@storybook/react';
 import { Inter } from 'next/font/google';
+import { SessionProvider } from 'next-auth/react';
 
 import enMessages from '../messages/en.json';
 import { Locale } from '../src/constants/locales';
@@ -34,11 +35,13 @@ const preview: Preview = {
               sans-serif;
           }
         `}</style>
-        <Providers locale={Locale.EN} messages={enMessages}>
-          <ThemeSwitcherDecorator />
-          {Story()}
-          <div id='modal' />
-        </Providers>
+        <SessionProvider>
+          <Providers locale={Locale.EN} messages={enMessages}>
+            <ThemeSwitcherDecorator />
+            {Story()}
+            <div id='modal' />
+          </Providers>
+        </SessionProvider>
       </div>
     ),
   ],
