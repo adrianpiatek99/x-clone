@@ -1,0 +1,46 @@
+import React, { Suspense, useState } from 'react';
+
+import Button from '@/components/atoms/Button';
+import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/useGetUserByScreenNameQuery';
+import { EditIcon } from '@/icons';
+import { useParams } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+
+const LazyEditProfileModal = React.lazy(() => import('@/components/organisms/EditProfileModal'));
+
+export const ProfileHeroActions = () => {
+  const t = useTranslations();
+  const { screenName } = useParams();
+  const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
+  const { data, isMe } = useGetUserByScreenNameQuery({
+    screenName: screenName as string,
+    enabled: false,
+  });
+
+  if (!data) return null;
+
+  return (
+    <>
+      {isMe ? (
+        <Button
+          variant='gray'
+          startIcon={<EditIcon />}
+          onClick={() => setIsEditProfileModalOpen(true)}
+        >
+          {t('profilePage.actions.edit')}
+        </Button>
+      ) : (
+        <Button variant='tinted'>{t('actions.follow')}</Button>
+      )}
+      {isMe && (
+        <Suspense>
+          <LazyEditProfileModal
+            isOpen={isEditProfileModalOpen}
+            onClose={() => setIsEditProfileModalOpen(false)}
+            user={data}
+          />
+        </Suspense>
+      )}
+    </>
+  );
+};

@@ -14,7 +14,7 @@ type Props = {
 export default function ProfilePage({ params }: Props) {
   return (
     <div>
-      <span>profile timeline</span>
+      <span>posts</span>
     </div>
   );
 }
