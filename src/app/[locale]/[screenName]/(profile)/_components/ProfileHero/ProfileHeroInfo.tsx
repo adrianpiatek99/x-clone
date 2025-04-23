@@ -16,7 +16,7 @@ import { useTranslations } from 'next-intl';
 export const ProfileHeroInfo = () => {
   const t = useTranslations();
   const { screenName } = useParams();
-  const [animationParent] = useAutoAnimate();
+  const [animationParent] = useAutoAnimate({ duration: 100 });
   const { getFullDate } = useTime();
   const { data, isLoading } = useGetUserByScreenNameQuery({
     screenName: screenName as string,

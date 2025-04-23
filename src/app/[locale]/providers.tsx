@@ -7,12 +7,10 @@ import type { Locale } from '@/constants/locales';
 import { themes } from '@/constants/themes';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { SessionProvider } from 'next-auth/react';
 import type { AbstractIntlMessages } from 'next-intl';
 import { NextIntlClientProvider } from 'next-intl';
 import { ThemeProvider } from 'next-themes';
 
-import LoadingScreen from './loadingScreen';
 import Modals from './modals';
 
 const queryClient = new QueryClient({
@@ -34,12 +32,8 @@ const Providers: FC<Props> = ({ children, locale, messages }) => {
     <ThemeProvider attribute='class' defaultTheme='system' enableSystem themes={themes}>
       <NextIntlClientProvider locale={locale} messages={messages}>
         <QueryClientProvider client={queryClient}>
-          <SessionProvider>
-            <LoadingScreen>
-              <div className='animate-initAppear'>{children}</div>
-              <Modals />
-            </LoadingScreen>
-          </SessionProvider>
+          <div className='animate-initAppear'>{children}</div>
+          <Modals />
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
       </NextIntlClientProvider>

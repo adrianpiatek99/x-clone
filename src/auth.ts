@@ -9,6 +9,7 @@ import { ApiError } from './db/utils/api';
 import { signInSchema } from './schema/auth';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true,
   providers: [
     Credentials({
       credentials: {

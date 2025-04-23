@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
 import Box from '@/components/atoms/Box';
 import RadioGroup, { Radio } from '@/components/atoms/RadioGroup';
 import type { Locale } from '@/constants/locales';
@@ -13,6 +15,13 @@ export default function SettingsPage() {
   const t = useTranslations();
   const { resolvedTheme, setTheme } = useTheme();
   const { currentLocale, handleChangeLocale } = useChangeLocale();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   return (
     <Box className='px-4 py-3'>
