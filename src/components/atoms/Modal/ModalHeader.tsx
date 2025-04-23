@@ -1,10 +1,10 @@
 import type { FC } from 'react';
 import React from 'react';
 
-import { CloseIcon } from '@/icons';
 import { useTranslations } from 'next-intl';
 
 import Button from '../Button';
+import Icon from '../Icon';
 import IconButton from '../IconButton';
 import LinearProgress from '../LinearProgress';
 import { Typography } from '../Typography';
@@ -29,7 +29,7 @@ export const ModalHeader: FC<ModalHeaderProps> = ({
     <div className='relative flex h-[53px] shrink-0 flex-row items-center justify-between gap-x-4 gap-y-2 overflow-hidden px-4'>
       <div className='flex'>
         <IconButton title={t('actions.close')} color='white' onClick={onClose}>
-          <CloseIcon />
+          <Icon name='CloseIcon' />
         </IconButton>
       </div>
       {typeof title === 'string' ? (

@@ -1,9 +1,9 @@
 import React, { memo } from 'react';
 
+import Icon from '@/components/atoms/Icon';
 import IconButton from '@/components/atoms/IconButton';
 import ShimmerImage from '@/components/atoms/ShimmerImage';
 import { useCheckImageDimensions } from '@/hooks/useCheckImageDimensions';
-import { CloseIcon } from '@/icons';
 import { useEditPostStore } from '@/stores/editPost';
 import { calcAspectRatio } from '@/utils/aspectRatio';
 import { useTranslations } from 'next-intl';
@@ -61,7 +61,7 @@ export const EditPostModalMedia = memo(({ isPending }: Props) => {
                     color='darker'
                     onClick={() => removeFile(preview)}
                   >
-                    <CloseIcon />
+                    <Icon name='CloseIcon' />
                   </IconButton>
                 )}
               </div>

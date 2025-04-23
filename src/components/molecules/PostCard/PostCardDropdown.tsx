@@ -1,12 +1,12 @@
 import React, { lazy, memo, Suspense, useState } from 'react';
 
 import Dropdown, { DropdownItem } from '@/components/atoms/Dropdown';
+import Icon from '@/components/atoms/Icon';
 import IconButton from '@/components/atoms/IconButton';
 import { ROUTES } from '@/constants/routes';
 import type { Post } from '@/db/schema';
 import { useDeletePostMutation } from '@/hooks/api/posts/useDeletePostMutation';
 import { useRouter } from '@/i18n/routing';
-import { EditIcon, MonitoringIcon, MoreHorizontalIcon, RemoveIcon } from '@/icons';
 import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
 
@@ -54,15 +54,15 @@ export const PostCardDropdown = memo(({ post, setIsLoading, onDeleteSuccess }: P
       <div className='my-[-8px] mr-[-6px] flex items-center'>
         <Dropdown>
           <IconButton title={t('post.actions.more')} color='secondary'>
-            <MoreHorizontalIcon />
+            <Icon name='MoreHorizontalIcon' />
           </IconButton>
           {isAuthor && (
-            <DropdownItem icon={<EditIcon />} onClick={() => setIsEditModalOpen(true)}>
+            <DropdownItem icon={<Icon name='EditIcon' />} onClick={() => setIsEditModalOpen(true)}>
               {t('post.actions.edit')}
             </DropdownItem>
           )}
           <DropdownItem
-            icon={<MonitoringIcon />}
+            icon={<Icon name='MonitoringIcon' />}
             onClick={() => router.push(ROUTES.POST.REPOSTS(screenName, id))}
           >
             {t('post.actions.viewPostEngagements')}
@@ -70,7 +70,7 @@ export const PostCardDropdown = memo(({ post, setIsLoading, onDeleteSuccess }: P
           {isAuthor && (
             <DropdownItem
               onClick={() => setIsDeletePostModalOpen(true)}
-              icon={<RemoveIcon />}
+              icon={<Icon name='RemoveIcon' />}
               disabled={isDeleting}
               danger
             >

@@ -1,10 +1,10 @@
 import React from 'react';
 
 import Box from '@/components/atoms/Box';
+import Icon from '@/components/atoms/Icon';
 import IconButton from '@/components/atoms/IconButton';
 import type { Post } from '@/db/schema';
 import { useToggleLikePostMutation } from '@/hooks/api/posts/useToggleLikePostMutation';
-import { HeartIcon, HeartOutlinedIcon } from '@/icons';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
@@ -29,7 +29,7 @@ export const PostCardActions = ({ id, isLiked, likesCount }: Props) => {
         label={likesCount.toString()}
         disabled={isToggleLikePending}
       >
-        {isLiked ? <HeartIcon /> : <HeartOutlinedIcon />}
+        {isLiked ? <Icon name='HeartIcon' /> : <Icon name='HeartOutlinedIcon' />}
       </IconButton>
     </Box>
   );

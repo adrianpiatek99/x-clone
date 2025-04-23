@@ -2,13 +2,13 @@ import type { ReactNode } from 'react';
 import React from 'react';
 
 import Box from '@/components/atoms/Box';
+import Icon from '@/components/atoms/Icon';
 import IconButton from '@/components/atoms/IconButton';
 import Typography from '@/components/atoms/Typography';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { ScrollDirection } from '@/hooks/useScrollDirection';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 import { useRouter } from '@/i18n/routing';
-import { ArrowBackIcon } from '@/icons';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
@@ -53,7 +53,7 @@ const HeaderBar = ({
               title={t('actions.back')}
               onClick={handleBack}
             >
-              <ArrowBackIcon />
+              <Icon name='ArrowBackIcon' />
             </IconButton>
           )}
           {title && (

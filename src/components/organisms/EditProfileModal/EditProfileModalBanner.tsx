@@ -1,12 +1,12 @@
 import React, { memo } from 'react';
 
 import Box from '@/components/atoms/Box';
+import Icon from '@/components/atoms/Icon';
 import IconButton from '@/components/atoms/IconButton';
 import ShimmerImage from '@/components/atoms/ShimmerImage';
 import { fileValidationConfigs } from '@/db/utils/validateFile';
 import { useFileImagePicker } from '@/hooks/useFileImagePicker';
 import { useToasts } from '@/hooks/useToasts';
-import { CameraPlusIcon, CloseIcon } from '@/icons';
 import { useEditProfileStore } from '@/stores/editProfile';
 import { useTranslations } from 'next-intl';
 import { useShallow } from 'zustand/shallow';
@@ -46,7 +46,7 @@ export const EditProfileModalBanner = memo(() => {
           color='darker'
           size='large'
         >
-          <CameraPlusIcon />
+          <Icon name='CameraPlusIcon' />
         </IconButton>
         {bannerUrl && (
           <IconButton
@@ -55,7 +55,7 @@ export const EditProfileModalBanner = memo(() => {
             color='darker'
             size='large'
           >
-            <CloseIcon />
+            <Icon name='CloseIcon' />
           </IconButton>
         )}
       </Box>

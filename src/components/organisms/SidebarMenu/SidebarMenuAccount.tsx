@@ -4,10 +4,10 @@ import Avatar from '@/components/atoms/Avatar';
 import Box from '@/components/atoms/Box';
 import Button from '@/components/atoms/Button';
 import Dropdown, { DropdownItem } from '@/components/atoms/Dropdown';
+import Icon from '@/components/atoms/Icon';
 import Typography from '@/components/atoms/Typography';
 import UserDisplayName from '@/components/molecules/UserDisplayName';
 import { useAppSession } from '@/hooks/useAppSession';
-import { EditIcon, LogoutIcon, MoreHorizontalIcon } from '@/icons';
 import { useGlobalStore } from '@/stores/global';
 import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
@@ -41,14 +41,17 @@ export const SidebarMenuAccount = memo(() => {
               </Typography>
             </Box>
             <div className='hidden items-center xl:flex [&>svg]:size-[20px]'>
-              <MoreHorizontalIcon className='text-text-1' />
+              <Icon name='MoreHorizontalIcon' className='text-text-1' />
             </div>
           </Box>
         </Button>
-        <DropdownItem onClick={() => setIsEditProfileModalOpen(true)} icon={<EditIcon />}>
+        <DropdownItem
+          onClick={() => setIsEditProfileModalOpen(true)}
+          icon={<Icon name='EditIcon' />}
+        >
           {t('profilePage.actions.edit')}
         </DropdownItem>
-        <DropdownItem onClick={handleOpenLogoutModal} icon={<LogoutIcon />} danger>
+        <DropdownItem onClick={handleOpenLogoutModal} icon={<Icon name='LogoutIcon' />} danger>
           {t('auth.logout.text')}
         </DropdownItem>
       </Dropdown>

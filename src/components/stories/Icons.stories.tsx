@@ -1,8 +1,7 @@
-import { createElement } from 'react';
-
 import * as icons from '@/icons';
 import type { Meta } from '@storybook/react';
 
+import Icon from '../atoms/Icon';
 import Tooltip from '../atoms/Tooltip';
 
 const meta = {
@@ -16,9 +15,7 @@ export const Icons = () => (
     {Object.keys(icons).map((key) => (
       <Tooltip key={key} content={key}>
         <div className='flex w-max flex-col items-center gap-2'>
-          {createElement(icons[key as keyof typeof icons], {
-            className: 'size-[36px]',
-          })}
+          <Icon name={key as keyof typeof icons} className='size-[36px] text-error-1' />
           <span className='w-[100px] truncate text-center'>{key}</span>
         </div>
       </Tooltip>

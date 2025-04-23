@@ -2,8 +2,9 @@ import Box from '@/components/atoms/Box';
 import Button from '@/components/atoms/Button';
 import Typography from '@/components/atoms/Typography';
 import { useRandomEmoji } from '@/hooks/useRandomEmoji';
-import { RefreshIcon } from '@/icons';
 import { useTranslations } from 'next-intl';
+
+import Icon from '../Icon';
 
 type Props = {
   onRetry?: () => void;
@@ -26,7 +27,7 @@ const ErrorState = ({ onRetry }: Props) => {
           className='[&>svg]:size-5'
           onClick={onRetry}
           variant='tinted'
-          startIcon={<RefreshIcon />}
+          startIcon={<Icon name='RefreshIcon' />}
         >
           {t('actions.retry')}
         </Button>

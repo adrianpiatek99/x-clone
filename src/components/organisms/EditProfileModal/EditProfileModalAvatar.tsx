@@ -2,11 +2,11 @@ import React, { memo } from 'react';
 
 import Avatar from '@/components/atoms/Avatar';
 import Box from '@/components/atoms/Box';
+import Icon from '@/components/atoms/Icon';
 import IconButton from '@/components/atoms/IconButton';
 import { fileValidationConfigs } from '@/db/utils/validateFile';
 import { useFileImagePicker } from '@/hooks/useFileImagePicker';
 import { useToasts } from '@/hooks/useToasts';
-import { CameraPlusIcon } from '@/icons';
 import { useEditProfileStore } from '@/stores/editProfile';
 import { useTranslations } from 'next-intl';
 import { useShallow } from 'zustand/shallow';
@@ -45,7 +45,7 @@ export const EditProfileModalAvatar = memo(() => {
           color='darker'
           size='large'
         >
-          <CameraPlusIcon />
+          <Icon name='CameraPlusIcon' />
         </IconButton>
       </Box>
       <input

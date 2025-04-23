@@ -131,11 +131,11 @@ const ButtonRoot: FC<Omit<ButtonProps, 'href' | 'linkClassName'>> = ({
           className: twMerge(
             'shrink-0',
             classes.iconSize[size],
-            isLoading && 'opacity-[0.05]',
-            disabled && 'opacity-50'
+            disabled && 'opacity-50',
+            isLoading && 'opacity-[0.05]'
           ),
         })}
-      <span className={twMerge(isLoading && 'opacity-[0.05]', disabled && 'opacity-50')}>
+      <span className={twMerge(disabled && 'opacity-50', isLoading && 'opacity-[0.05]')}>
         {children}
       </span>
     </button>

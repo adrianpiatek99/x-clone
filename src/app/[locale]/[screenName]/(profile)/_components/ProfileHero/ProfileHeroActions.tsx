@@ -1,8 +1,8 @@
 import React, { Suspense, useState } from 'react';
 
 import Button from '@/components/atoms/Button';
+import Icon from '@/components/atoms/Icon';
 import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/useGetUserByScreenNameQuery';
-import { EditIcon } from '@/icons';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
@@ -24,7 +24,7 @@ export const ProfileHeroActions = () => {
       {isMe ? (
         <Button
           variant='gray'
-          startIcon={<EditIcon />}
+          startIcon={<Icon name='EditIcon' />}
           onClick={() => setIsEditProfileModalOpen(true)}
         >
           {t('profilePage.actions.edit')}

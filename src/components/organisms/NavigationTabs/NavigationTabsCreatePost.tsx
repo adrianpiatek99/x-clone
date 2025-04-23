@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Button from '@/components/atoms/Button';
-import { PlusIcon } from '@/icons';
+import Icon from '@/components/atoms/Icon';
 import { useCreatePostStore } from '@/stores/createPost';
 
 export const NavigationTabsCreatePost = () => {
@@ -15,7 +15,7 @@ export const NavigationTabsCreatePost = () => {
       onClick={handleOpenCreatePostModal}
       tabIndex={-1}
     >
-      <PlusIcon className='size-[34px]' />
+      <Icon name='PlusIcon' className='size-[34px]' />
     </Button>
   );
 };

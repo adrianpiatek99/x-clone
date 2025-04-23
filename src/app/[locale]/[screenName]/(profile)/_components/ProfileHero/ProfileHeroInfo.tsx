@@ -1,13 +1,13 @@
 import React from 'react';
 
 import Box from '@/components/atoms/Box';
+import Icon from '@/components/atoms/Icon';
 import Skeleton from '@/components/atoms/Skeleton';
 import Typography from '@/components/atoms/Typography';
 import UserDisplayName from '@/components/molecules/UserDisplayName';
 import { ROUTES } from '@/constants/routes';
 import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/useGetUserByScreenNameQuery';
 import { useTime } from '@/hooks/useTime';
-import { CalendarIcon, LinkIcon } from '@/icons';
 import { removeHttp } from '@/utils/url';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { useParams } from 'next/navigation';
@@ -75,12 +75,12 @@ export const ProfileHeroInfo = () => {
                       rel: 'noopener noreferrer',
                     }}
                   >
-                    <LinkIcon className='mr-1 size-[18px] shrink-0' />
+                    <Icon name='LinkIcon' className='mr-1 size-[18px] shrink-0' />
                     {removeHttp(data.url)}
                   </Typography>
                 )}
                 <Typography color='secondary'>
-                  <CalendarIcon className='mr-1 size-[18px] shrink-0' />
+                  <Icon name='CalendarIcon' className='mr-1 size-[18px] shrink-0' />
                   {t('profilePage.joined')} {getFullDate(data.createdAt)}
                 </Typography>
               </div>

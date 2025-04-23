@@ -1,9 +1,9 @@
 import type { FC } from 'react';
 import React, { memo } from 'react';
 
-import { CloseCircleIcon, EyeClosedIcon, EyeOpenIcon } from '@/icons';
 import { useTranslations } from 'next-intl';
 
+import Icon from '../Icon';
 import type { IconButtonColor } from '../IconButton';
 import IconButton from '../IconButton';
 
@@ -41,7 +41,7 @@ export const InputIcons: FC<InputIconsProps> = memo(
             disabled={isDisabled}
             disableFocus
           >
-            {isPasswordVisible ? <EyeClosedIcon /> : <EyeOpenIcon />}
+            {isPasswordVisible ? <Icon name='EyeClosedIcon' /> : <Icon name='EyeOpenIcon' />}
           </IconButton>
         )}
         {allowClear && (
@@ -51,7 +51,7 @@ export const InputIcons: FC<InputIconsProps> = memo(
             color={color}
             disableFocus
           >
-            <CloseCircleIcon />
+            <Icon name='CloseCircleIcon' />
           </IconButton>
         )}
       </div>

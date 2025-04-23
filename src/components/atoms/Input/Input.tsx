@@ -3,9 +3,9 @@
 import type { ComponentPropsWithRef, RefCallback } from 'react';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 
-import { InfoOutlinedIcon } from '@/icons';
 import { twMerge } from 'tailwind-merge';
 
+import Icon from '../Icon';
 import { Typography } from '../Typography';
 import { InputIcons } from './InputIcons';
 import type { InputType } from './types';
@@ -137,7 +137,7 @@ const Input = ({
       </div>
       {error && (
         <div className='flex gap-1 py-1.5 pl-1 pr-4'>
-          <InfoOutlinedIcon className='mt-[0.5px] shrink-0 fill-error-1' />
+          <Icon name='InfoOutlinedIcon' className='mt-[0.5px] size-[15px] shrink-0 fill-error-1' />
           <Typography className='break-words' size='s' color='danger'>
             {error}
           </Typography>

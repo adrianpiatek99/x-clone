@@ -1,10 +1,10 @@
 import { useCallback, useEffect } from 'react';
 
 import type { GetPostsTrackingParams } from '@/app/api/posts/trackNewPosts/route';
+import Icon from '@/components/atoms/Icon';
 import PillNotify from '@/components/molecules/PillNotify';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { useGetTrackNewPostsQuery } from '@/hooks/api/posts/useGetTrackNewPostsQuery';
-import { RefreshIcon } from '@/icons';
 import { useHomeStore } from '@/stores/home';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
@@ -50,7 +50,7 @@ const GlobalTrackNewPosts = ({ latestPostId, refetch }: Props) => {
 
   return (
     <PillNotify isVisible={newPostsCount > 0} onClick={handleRefresh}>
-      <RefreshIcon className='size-[20px]' />
+      <Icon name='RefreshIcon' className='size-[20px]' />
       {!!newPostsCount && t('actions.showPosts', { count: newPostsCount })}
     </PillNotify>
   );

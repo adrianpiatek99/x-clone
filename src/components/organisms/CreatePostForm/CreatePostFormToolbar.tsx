@@ -1,12 +1,12 @@
 import React, { memo } from 'react';
 
 import Box from '@/components/atoms/Box';
+import Icon from '@/components/atoms/Icon';
 import IconButton from '@/components/atoms/IconButton';
 import { VALIDATION } from '@/constants/validation';
 import { fileValidationConfigs } from '@/db/utils/validateFile';
 import { useFileImagePicker } from '@/hooks/useFileImagePicker';
 import { useToasts } from '@/hooks/useToasts';
-import { MediaIcon } from '@/icons';
 import type { CreatePostStore } from '@/stores/createPost';
 import { useTranslations } from 'next-intl';
 
@@ -38,7 +38,7 @@ export const CreatePostFormToolbar = memo(({ isPending, filesCount, addFiles }: 
           onClick={openFilePicker}
           disabled={mediaDisabled}
         >
-          <MediaIcon />
+          <Icon name='MediaIcon' />
         </IconButton>
       </Box>
       <input

@@ -1,15 +1,8 @@
 import type { ReactElement } from 'react';
 
+import Icon from '@/components/atoms/Icon';
 import { ROUTES } from '@/constants/routes';
 import type { User } from '@/db/schema';
-import {
-  BookmarkIcon,
-  BookmarkOutlinedIcon,
-  PersonIcon,
-  PersonOutlinedIcon,
-  SettingsIcon,
-  SettingsOutlinedIcon,
-} from '@/icons';
 
 export type NavigationDrawerItem = {
   text: string;
@@ -36,24 +29,24 @@ export const navigationDrawerItems = ({
       text: t('navigation.profile'),
       href: user ? ROUTES.PROFILE.DETAILS(user.screenName) : '',
       active: user ? pathname.includes(ROUTES.PROFILE.DETAILS(user.screenName)) : false,
-      icon: <PersonOutlinedIcon />,
-      activeIcon: <PersonIcon />,
+      icon: <Icon name='PersonOutlinedIcon' />,
+      activeIcon: <Icon name='PersonIcon' />,
       visible: !!user,
     },
     {
       text: t('navigation.bookmarks'),
       href: ROUTES.BOOKMARKS,
       active: pathname.includes(ROUTES.BOOKMARKS),
-      icon: <BookmarkOutlinedIcon />,
-      activeIcon: <BookmarkIcon />,
+      icon: <Icon name='BookmarkOutlinedIcon' />,
+      activeIcon: <Icon name='BookmarkIcon' />,
       visible: !!user,
     },
     {
       text: t('navigation.settings'),
       href: ROUTES.SETTINGS,
       active: pathname.includes(ROUTES.SETTINGS),
-      icon: <SettingsOutlinedIcon />,
-      activeIcon: <SettingsIcon />,
+      icon: <Icon name='SettingsOutlinedIcon' />,
+      activeIcon: <Icon name='SettingsIcon' />,
       visible: true,
     },
   ].filter((item) => item.visible);

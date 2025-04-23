@@ -1,14 +1,14 @@
-import { CloseIcon, EditProfileIcon, HeartIcon, PlayIcon } from '@/icons';
 import type { Meta, StoryFn } from '@storybook/react';
 
+import Icon from '../Icon/Icon';
 import type { IconButtonProps } from '.';
 import IconButton from '.';
 
 const icons = {
-  Play: <PlayIcon />,
-  Like: <HeartIcon />,
-  Close: <CloseIcon />,
-  Edit: <EditProfileIcon />,
+  Play: <Icon name='PlayIcon' />,
+  Like: <Icon name='HeartIcon' />,
+  Close: <Icon name='CloseIcon' />,
+  Edit: <Icon name='EditProfileIcon' />,
 };
 
 const meta = {
@@ -31,7 +31,7 @@ const Template: StoryFn<IconButtonProps> = (args) => <IconButton {...args} />;
 export const Playground = Template.bind({});
 
 Playground.args = {
-  children: <HeartIcon />,
+  children: <Icon name='HeartIcon' />,
   title: '',
   color: 'primary',
   size: 'medium',
@@ -59,27 +59,27 @@ export const ColorsAndSizes = () => {
           <td>Small</td>
           <td>
             <IconButton title='Small' size='small'>
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
           <td>
             <IconButton color='secondary' title='Small' size='small'>
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
           <td>
             <IconButton color='danger' title='Small' size='small'>
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
           <td>
             <IconButton color='white' title='Small' size='small'>
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
           <td>
             <IconButton color='darker' title='Small' size='small'>
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
           <td>
@@ -88,7 +88,7 @@ export const ColorsAndSizes = () => {
               className='bg-emerald/0 text-emerald focus-visible:bg-emerald/10 enabled:hover:bg-emerald/10 enabled:active:bg-emerald/20'
               size='small'
             >
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
         </tr>
@@ -96,27 +96,27 @@ export const ColorsAndSizes = () => {
           <td>Medium</td>
           <td>
             <IconButton title='Medium'>
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
           <td>
             <IconButton color='secondary' title='Medium'>
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
           <td>
             <IconButton color='danger' title='Medium'>
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
           <td>
             <IconButton color='white' title='Medium'>
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
           <td>
             <IconButton color='darker' title='Medium'>
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
           <td>
@@ -124,7 +124,7 @@ export const ColorsAndSizes = () => {
               title='Custom color'
               className='bg-emerald/0 text-emerald focus-visible:bg-emerald/10 enabled:hover:bg-emerald/10 enabled:active:bg-emerald/20'
             >
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
         </tr>
@@ -132,27 +132,27 @@ export const ColorsAndSizes = () => {
           <td>Large</td>
           <td>
             <IconButton title='Large' size='large'>
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
           <td>
             <IconButton color='secondary' title='Large' size='large'>
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
           <td>
             <IconButton color='danger' title='Large' size='large'>
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
           <td>
             <IconButton color='white' title='Large' size='large'>
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
           <td>
             <IconButton color='darker' title='Large' size='large'>
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
           <td>
@@ -161,7 +161,7 @@ export const ColorsAndSizes = () => {
               className='bg-emerald/0 text-emerald focus-visible:bg-emerald/10 enabled:hover:bg-emerald/10 enabled:active:bg-emerald/20'
               size='large'
             >
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
         </tr>
@@ -190,7 +190,7 @@ export const WithLabel = () => {
               className='bg-emerald/0 text-emerald focus-visible:bg-emerald/10 enabled:hover:bg-emerald/10 enabled:active:bg-emerald/20'
               size='small'
             >
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
           <td>
@@ -200,7 +200,7 @@ export const WithLabel = () => {
               className='bg-pink/0 text-pink focus-visible:bg-pink/10 enabled:hover:bg-pink/10 enabled:active:bg-pink/20'
               size='small'
             >
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
         </tr>
@@ -212,7 +212,7 @@ export const WithLabel = () => {
               label='1000'
               className='bg-emerald/0 text-emerald focus-visible:bg-emerald/10 enabled:hover:bg-emerald/10 enabled:active:bg-emerald/20'
             >
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
           <td>
@@ -221,7 +221,7 @@ export const WithLabel = () => {
               label='23245'
               className='bg-pink/0 text-pink focus-visible:bg-pink/10 enabled:hover:bg-pink/10 enabled:active:bg-pink/20'
             >
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
         </tr>
@@ -234,7 +234,7 @@ export const WithLabel = () => {
               className='bg-emerald/0 text-emerald focus-visible:bg-emerald/10 enabled:hover:bg-emerald/10 enabled:active:bg-emerald/20'
               size='large'
             >
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
           <td>
@@ -244,7 +244,7 @@ export const WithLabel = () => {
               className='bg-pink/0 text-pink focus-visible:bg-pink/10 enabled:hover:bg-pink/10 enabled:active:bg-pink/20'
               size='large'
             >
-              <HeartIcon />
+              <Icon name='HeartIcon' />
             </IconButton>
           </td>
         </tr>

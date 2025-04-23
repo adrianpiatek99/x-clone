@@ -1,8 +1,8 @@
 import React, { memo } from 'react';
 
+import Icon from '@/components/atoms/Icon';
 import IconButton from '@/components/atoms/IconButton';
 import { useCheckImageDimensions } from '@/hooks/useCheckImageDimensions';
-import { CloseIcon } from '@/icons';
 import type { CreatePostStore } from '@/stores/createPost';
 import { calcAspectRatio } from '@/utils/aspectRatio';
 import Image from 'next/image';
@@ -54,7 +54,7 @@ export const CreatePostFormMedia = memo(({ isPending, files, removeFile }: Props
                     color='darker'
                     onClick={() => removeFile(preview)}
                   >
-                    <CloseIcon />
+                    <Icon name='CloseIcon' />
                   </IconButton>
                 )}
               </div>

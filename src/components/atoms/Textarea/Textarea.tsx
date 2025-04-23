@@ -1,9 +1,9 @@
 import type { ComponentPropsWithRef, FC } from 'react';
 import React, { useEffect, useRef } from 'react';
 
-import { InfoOutlinedIcon } from '@/icons';
 import { twMerge } from 'tailwind-merge';
 
+import Icon from '../Icon';
 import { Typography } from '../Typography';
 
 export type TextareaProps = Omit<ComponentPropsWithRef<'textarea'>, 'placeholder'> & {
@@ -95,7 +95,7 @@ const Textarea: FC<TextareaProps> = ({
       </div>
       {error && (
         <div className='flex gap-1 py-1.5 pl-1 pr-4'>
-          <InfoOutlinedIcon className='mt-[0.5px] shrink-0 fill-error-1' />
+          <Icon name='InfoOutlinedIcon' className='mt-[0.5px] size-[15px] shrink-0 fill-error-1' />
           <Typography className='break-words' size='s' color='danger'>
             {error}
           </Typography>

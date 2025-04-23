@@ -1,10 +1,10 @@
 import type { ReactElement } from 'react';
 import { useState } from 'react';
 
-import { NotificationIcon, SettingsIcon, VerifiedIcon } from '@/icons';
 import type { Meta, StoryFn } from '@storybook/react';
 
 import Box from '../Box';
+import Icon from '../Icon';
 import type { SwitchProps } from './Switch';
 import { Switch } from './Switch';
 import type { SwitchGroupProps } from './SwitchGroup';
@@ -53,7 +53,7 @@ export const SwitchItems = () => {
           onChange={(checked) => setIsCheckedOne(checked)}
           description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed hendrerit mauris vel aliquam porta.'
         >
-          <NotificationIcon className='size-[24px] fill-primary' />
+          <Icon name='NotificationIcon' className='size-[24px] fill-primary' />
         </Switch>
         <Switch
           label='Label 2'
@@ -62,7 +62,7 @@ export const SwitchItems = () => {
           onChange={(checked) => setIsCheckedTwo(checked)}
           description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed hendrerit mauris vel aliquam porta.'
         >
-          <VerifiedIcon className='size-[24px] fill-primary text-primary' />
+          <Icon name='VerifiedIcon' className='size-[24px] fill-primary text-primary' />
         </Switch>
         <Switch
           label='Label 3'
@@ -71,7 +71,7 @@ export const SwitchItems = () => {
           onChange={(checked) => setIsCheckedThree(checked)}
           description='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed hendrerit mauris vel aliquam porta.'
         >
-          <SettingsIcon className='size-[24px] fill-primary text-primary' />
+          <Icon name='SettingsIcon' className='size-[24px] fill-primary text-primary' />
         </Switch>
       </SwitchGroup>
       <SwitchGroup title='Title 2'>
