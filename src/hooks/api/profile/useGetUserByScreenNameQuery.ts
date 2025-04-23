@@ -8,15 +8,17 @@ import { apiRequest } from '@/db/utils/api';
 import { useAppSession } from '@/hooks/useAppSession';
 import { useQuery } from '@tanstack/react-query';
 
-type Props = GetUserByScreenNameParams;
+type Props = GetUserByScreenNameParams & {
+  enabled?: boolean;
+};
 
-export const useGetUserByScreenNameQuery = ({ screenName }: Props) => {
+export const useGetUserByScreenNameQuery = ({ screenName, enabled = true }: Props) => {
   const { user } = useAppSession();
 
   const { data, isLoading, isRefetching, isError } = useQuery<GetUserByScreenNameResponse>({
     queryKey: QUERY_KEYS.PROFILE.USER_BY_SCREEN_NAME(screenName),
     queryFn: () => apiRequest('GET', API_ENDPOINTS.PROFILE.USER_BY_SCREEN_NAME({ screenName })),
-    enabled: user?.screenName !== screenName,
+    enabled,
     initialData: () => {
       if (user?.screenName === screenName) {
         return {
@@ -38,9 +40,14 @@ export const useGetUserByScreenNameQuery = ({ screenName }: Props) => {
           updatedAt: user.updatedAt,
         };
       }
+
+      return undefined;
     },
+    refetchOnWindowFocus: user?.screenName !== screenName,
     staleTime: 30 * 1000, // 30 seconds
   });
+  const isEmpty = !data && !isLoading;
+  const isMe = user?.screenName === data?.screenName;
 
-  return { data, isLoading, isRefetching, isError };
+  return { data, isLoading, isRefetching, isError, isEmpty, isMe };
 };

@@ -53,7 +53,7 @@ const HeaderBar = ({
             </IconButton>
           )}
           {title && (
-            <Box className='gap-0.5'>
+            <Box className='gap-0'>
               <Typography as='h2' size='l' weight='semibold' truncate>
                 {title}
               </Typography>

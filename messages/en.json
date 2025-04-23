@@ -190,6 +190,9 @@
       "title": "Delete post?",
       "description": "This can't be undone and it will be removed from your profile, the timeline of any accounts that follow you, and from search results."
     },
+    "count": {
+      "posts": "{count, plural, one {{count} Post} other {{count} Posts}}"
+    },
     "api": {
       "createPost": {
         "success": "Post created successfully.",

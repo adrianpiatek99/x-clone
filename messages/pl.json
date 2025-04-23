@@ -191,6 +191,9 @@
       "title": "Usunąć wpis?",
       "description": "Tej czynności nie można cofnąć. Wpis zostanie usunięty z Twojego profilu, z osi czasu osób obserwujących oraz z wyników wyszukiwania."
     },
+    "count": {
+      "posts": "{count, plural, one {{count} wpis} few {{count} wpisy} other {{count} wpisów}}"
+    },
     "api": {
       "createPost": {
         "success": "Wpis został opublikowany.",

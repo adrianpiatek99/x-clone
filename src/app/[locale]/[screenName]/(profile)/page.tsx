@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 type Params = {
@@ -8,8 +10,11 @@ type Props = {
   params: Promise<Params>;
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ProfilePage({ params }: Props) {
-  const unwrappedParams = React.use(params);
-
-  return <div>ProfilePage {unwrappedParams.screenName}</div>;
+  return (
+    <div>
+      <span>profile timeline</span>
+    </div>
+  );
 }

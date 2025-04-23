@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from 'react';
 
-import type { User } from '@/db/schema';
+import type { UserProfile } from '@/db/schema';
 import { useUpdateProfileMutation } from '@/hooks/api/profile/useUpdateProfileMutation';
 import { useAppForm } from '@/hooks/useFormHook';
 import type { ProfileValues } from '@/schema/profile';
@@ -11,7 +11,7 @@ import { useTranslations } from 'next-intl';
 import { useShallow } from 'zustand/react/shallow';
 
 type Props = {
-  user: User;
+  user: UserProfile;
   isOpen: boolean;
   onClose: () => void;
 };
