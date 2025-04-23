@@ -6,6 +6,7 @@ import type { UnlikePostParams } from '@/app/api/posts/[id]/unlike/route';
 import type { UpdatePostParams } from '@/app/api/posts/[id]/update/route';
 import type { GetGlobalTimelineParams } from '@/app/api/posts/globalTimeline/route';
 import type { GetPostsTrackingParams } from '@/app/api/posts/trackNewPosts/route';
+import type { GetUserByScreenNameParams } from '@/app/api/profile/[screenName]/route';
 import { createUrlWithParams } from '@/utils/urlParams';
 
 export const API_ENDPOINTS = {
@@ -29,5 +30,7 @@ export const API_ENDPOINTS = {
   },
   PROFILE: {
     UPDATE: '/api/profile/update',
+    USER_BY_SCREEN_NAME: ({ screenName }: GetUserByScreenNameParams) =>
+      `/api/profile/${screenName}` as const,
   },
 } as const;

@@ -12,10 +12,13 @@ import { ArrowBackIcon } from '@/icons';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
+import { PillNotifyRefreshing } from '../PillNotify/PillNotifyRefreshing';
+
 export type HeaderBarProps = {
   children?: ReactNode;
   showBackButton?: boolean;
   additionalContent?: ReactNode;
+  isRefetching?: boolean;
 } & ({ title: string; subtitle?: string } | { title?: undefined; subtitle?: undefined });
 
 const HeaderBar = ({
@@ -24,6 +27,7 @@ const HeaderBar = ({
   title,
   subtitle,
   additionalContent,
+  isRefetching = false,
 }: HeaderBarProps) => {
   const t = useTranslations();
   const router = useRouter();
@@ -53,7 +57,7 @@ const HeaderBar = ({
             </IconButton>
           )}
           {title && (
-            <Box className='gap-0.5'>
+            <Box className='gap-0'>
               <Typography as='h2' size='l' weight='semibold' truncate>
                 {title}
               </Typography>
@@ -68,6 +72,9 @@ const HeaderBar = ({
         </div>
       )}
       {children}
+      <div className='absolute right-1/2 top-full -translate-y-1/2'>
+        <PillNotifyRefreshing isRefetching={isRefetching} />
+      </div>
     </div>
   );
 };

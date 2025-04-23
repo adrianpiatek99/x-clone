@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@floating-ui/react": "^0.27.7",
+    "@formkit/auto-animate": "^0.8.2",
     "@headlessui/react": "^2.2.0",
     "@neondatabase/serverless": "^1.0.0",
     "@tanstack/react-form": "^1.3.0",

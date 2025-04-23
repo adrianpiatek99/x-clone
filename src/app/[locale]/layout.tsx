@@ -2,12 +2,14 @@ import '../globals.css';
 
 import type { ReactNode } from 'react';
 
+import { auth } from '@/auth';
 import SidebarMenu from '@/components/organisms/SidebarMenu';
 import type { Locale } from '@/constants/locales';
 import { routing } from '@/i18n/routing';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { notFound } from 'next/navigation';
+import { SessionProvider } from 'next-auth/react';
 import { getMessages } from 'next-intl/server';
 
 import Providers from './providers';
@@ -30,6 +32,7 @@ type Props = {
 
 export default async function RootLayout({ children, params }: Props) {
   const { locale } = await params;
+  const session = await auth();
 
   if (!routing.locales.includes(locale)) {
     notFound();
@@ -40,16 +43,18 @@ export default async function RootLayout({ children, params }: Props) {
   return (
     <html lang={locale} className={inter.variable} suppressHydrationWarning>
       <body>
-        <Providers locale={locale} messages={messages}>
-          <div className='relative mx-auto flex min-h-screen w-full md:max-w-[688px] lg:max-w-[1008px] xl:max-w-[1265px]'>
-            <SidebarMenu />
-            <main className='relative flex w-full grow gap-[30px]'>
-              <div className='flex w-full max-w-full flex-col pb-24 sm:max-w-[600px] sm:border-x sm:border-border-1 sm:pb-48'>
-                {children}
-              </div>
-            </main>
-          </div>
-        </Providers>
+        <SessionProvider session={session}>
+          <Providers locale={locale} messages={messages}>
+            <div className='relative mx-auto flex min-h-screen w-full md:max-w-[688px] lg:max-w-[1008px] xl:max-w-[1265px]'>
+              <SidebarMenu />
+              <main className='relative flex w-full grow gap-[30px]'>
+                <div className='flex w-full max-w-full flex-col pb-24 sm:max-w-[600px] sm:border-x sm:border-border-1 sm:pb-48'>
+                  {children}
+                </div>
+              </main>
+            </div>
+          </Providers>
+        </SessionProvider>
       </body>
     </html>
   );

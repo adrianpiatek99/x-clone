@@ -36,7 +36,10 @@ export const currentUserColumns = {
   verifiedAt: true,
   createdAt: true,
   updatedAt: true,
-} satisfies Record<keyof User, boolean>;
+} satisfies Record<
+  keyof Omit<User, 'isFollowing' | 'followersCount' | 'followingCount' | 'postsCount'>,
+  boolean
+>;
 
 export const userPublicColumns = {
   id: true,
@@ -45,6 +48,10 @@ export const userPublicColumns = {
   description: true,
   avatarUrl: true,
   bannerUrl: true,
+  url: true,
+  role: true,
   isVerified: true,
+  verifiedAt: true,
   createdAt: true,
+  updatedAt: true,
 } satisfies Record<keyof UserPublic, boolean>;

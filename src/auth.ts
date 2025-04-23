@@ -4,11 +4,12 @@ import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 
 import { db } from './db/db';
-import { currentUserColumns, usersTable } from './db/schema';
+import { currentUserColumns, postsTable, usersTable } from './db/schema';
 import { ApiError } from './db/utils/api';
 import { signInSchema } from './schema/auth';
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true,
   providers: [
     Credentials({
       credentials: {
@@ -60,7 +61,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           });
 
           if (currentUser) {
-            Object.assign(user, currentUser);
+            const postsCount = await db.$count(postsTable, eq(postsTable.authorId, user.id));
+
+            Object.assign(user, {
+              ...currentUser,
+              isFollowing: false,
+              followersCount: 0,
+              followingCount: 0,
+              postsCount,
+            });
           }
         }
 

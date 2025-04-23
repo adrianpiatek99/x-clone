@@ -7,7 +7,7 @@ import Dropdown, { DropdownItem } from '@/components/atoms/Dropdown';
 import Typography from '@/components/atoms/Typography';
 import UserDisplayName from '@/components/molecules/UserDisplayName';
 import { useAppSession } from '@/hooks/useAppSession';
-import { EditProfileIcon, LogoutIcon, MoreHorizontalIcon } from '@/icons';
+import { EditIcon, LogoutIcon, MoreHorizontalIcon } from '@/icons';
 import { useGlobalStore } from '@/stores/global';
 import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
@@ -45,7 +45,7 @@ export const SidebarMenuAccount = memo(() => {
             </div>
           </Box>
         </Button>
-        <DropdownItem onClick={() => setIsEditProfileModalOpen(true)} icon={<EditProfileIcon />}>
+        <DropdownItem onClick={() => setIsEditProfileModalOpen(true)} icon={<EditIcon />}>
           {t('profilePage.actions.edit')}
         </DropdownItem>
         <DropdownItem onClick={handleOpenLogoutModal} icon={<LogoutIcon />} danger>
