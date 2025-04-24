@@ -9,6 +9,7 @@ import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/useGetUserByScr
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
+import type { ProfileParams } from '../../layout';
 import { ProfileHeroActions } from './ProfileHeroActions';
 import { ProfileHeroAvatar } from './ProfileHeroAvatar';
 import { ProfileHeroBanner } from './ProfileHeroBanner';
@@ -16,9 +17,9 @@ import { ProfileHeroInfo } from './ProfileHeroInfo';
 
 const ProfileHero = () => {
   const t = useTranslations();
-  const { screenName } = useParams();
+  const { screenName } = useParams<ProfileParams>();
   const { data, isLoading, isEmpty } = useGetUserByScreenNameQuery({
-    screenName: screenName as string,
+    screenName,
     enabled: false,
   });
 

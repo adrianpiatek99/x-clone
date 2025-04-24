@@ -1,14 +1,10 @@
 import type { ReactNode } from 'react';
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import Box from '@/components/atoms/Box';
 import Typography from '@/components/atoms/Typography';
-import { useIsMobile } from '@/hooks/useIsMobile';
-import { ScrollDirection } from '@/hooks/useScrollDirection';
-import { useScrollDirection } from '@/hooks/useScrollDirection';
-import { twMerge } from 'tailwind-merge';
 
-import { PillNotifyRefreshing } from '../PillNotify/PillNotifyRefreshing';
+import { LazyPillNotifyRefreshing } from '../PillNotify';
 import { HeaderBarBackButton } from './HeaderBarBackButton';
 
 export type HeaderBarProps = {
@@ -26,17 +22,8 @@ const HeaderBar = ({
   additionalContent,
   isRefetching = false,
 }: HeaderBarProps) => {
-  const scrollDirection = useScrollDirection();
-  const isScrollDirectionDown = scrollDirection === ScrollDirection.DOWN;
-  const isMobile = useIsMobile();
-
   return (
-    <div
-      className={twMerge(
-        'sticky top-0 z-10 flex min-h-[53px] w-full flex-col bg-background/65 backdrop-blur-md transition duration-200',
-        isScrollDirectionDown && isMobile && 'opacity-30 -translate-y-full'
-      )}
-    >
+    <div className='sticky top-0 z-10 flex min-h-[53px] w-full flex-col bg-background/65 backdrop-blur-md transition duration-200'>
       {(showBackButton || title) && (
         <div className='flex h-[53px] w-full shrink-0 items-center gap-x-4 gap-y-2 px-4'>
           {showBackButton && <HeaderBarBackButton />}
@@ -56,9 +43,11 @@ const HeaderBar = ({
         </div>
       )}
       {children}
-      <div className='absolute right-1/2 top-full -translate-y-1/2'>
-        <PillNotifyRefreshing isRefetching={isRefetching} />
-      </div>
+      <Suspense>
+        <div className='absolute left-1/2 top-full -translate-y-1/2'>
+          <LazyPillNotifyRefreshing isRefetching={isRefetching} />
+        </div>
+      </Suspense>
     </div>
   );
 };

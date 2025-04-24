@@ -14,13 +14,15 @@ import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
+import type { ProfileParams } from '../../layout';
+
 export const ProfileHeroInfo = () => {
   const t = useTranslations();
-  const { screenName } = useParams();
+  const { screenName } = useParams<ProfileParams>();
   const [animationParent] = useAutoAnimate({ duration: 100 });
   const { getFullDate } = useTime();
   const { data, isLoading } = useGetUserByScreenNameQuery({
-    screenName: screenName as string,
+    screenName,
     enabled: false,
   });
 

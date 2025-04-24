@@ -8,7 +8,7 @@ import { HomeTab, useHomeStore } from '@/stores/home';
 import FollowingPostsTimeline from './_components/FollowingPostsTimeline';
 import GlobalPostsTimeline from './_components/GlobalPostsTimeline';
 
-export default function Home() {
+export default function HomePage() {
   const { user } = useAppSession();
   const currentTab = useHomeStore((state) => state.currentTab);
 

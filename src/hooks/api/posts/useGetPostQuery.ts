@@ -8,14 +8,15 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 type Props = {
   id: string;
+  enabled?: boolean;
 };
 
-export const useGetPostQuery = ({ id }: Props) => {
+export const useGetPostQuery = ({ id, enabled = true }: Props) => {
   const queryClient = useQueryClient();
   const { data, isLoading, isFetching, isRefetching, isError } = useQuery<GetPostResponse>({
     queryKey: QUERY_KEYS.POSTS.DETAILS(id),
     queryFn: () => apiRequest('GET', API_ENDPOINTS.POSTS.DETAILS({ id })),
-    enabled: !!id,
+    enabled: enabled && !!id,
     initialData: () => {
       const state = queryClient.getQueryState(QUERY_KEYS.POSTS.GLOBAL_TIMELINE);
 

@@ -8,15 +8,16 @@ import { usePathname } from '@/i18n/routing';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
+import type { ProfileParams } from '../../layout';
+
 const ProfileTabs = memo(() => {
   const t = useTranslations();
-  const params = useParams();
-  const screenNameParam = params.screenName as string;
+  const { screenName } = useParams<ProfileParams>();
   const pathname = usePathname();
-  const postsPath = ROUTES.PROFILE.DETAILS(screenNameParam);
-  const repliesPath = ROUTES.PROFILE.REPLIES(screenNameParam);
-  const mediaPath = ROUTES.PROFILE.MEDIA(screenNameParam);
-  const likesPath = ROUTES.PROFILE.LIKES(screenNameParam);
+  const postsPath = ROUTES.PROFILE.DETAILS(screenName);
+  const repliesPath = ROUTES.PROFILE.REPLIES(screenName);
+  const mediaPath = ROUTES.PROFILE.MEDIA(screenName);
+  const likesPath = ROUTES.PROFILE.LIKES(screenName);
 
   return (
     <Tabs value={pathname}>

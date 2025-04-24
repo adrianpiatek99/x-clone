@@ -6,14 +6,16 @@ import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/useGetUserByScr
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
+import type { ProfileParams } from '../../layout';
+
 const LazyEditProfileModal = React.lazy(() => import('@/components/organisms/EditProfileModal'));
 
 export const ProfileHeroActions = () => {
   const t = useTranslations();
-  const { screenName } = useParams();
+  const { screenName } = useParams<ProfileParams>();
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
   const { data, isMe } = useGetUserByScreenNameQuery({
-    screenName: screenName as string,
+    screenName,
     enabled: false,
   });
 

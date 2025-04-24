@@ -5,27 +5,16 @@ import React from 'react';
 import DataState from '@/components/molecules/DataState';
 import PostDetail, { PostDetailSkeleton } from '@/components/molecules/PostDetail';
 import { useGetPostQuery } from '@/hooks/api/posts/useGetPostQuery';
+import { useParams } from 'next/navigation';
 
-type Params = {
-  screenName: string;
-  id: string;
-};
+import type { PostParams } from './layout';
 
-type Props = {
-  params: Promise<Params>;
-};
-
-const PostPage = ({ params }: Props) => {
-  const { id } = React.use(params);
-  const { data, isLoading, isRefetching, isError } = useGetPostQuery({ id });
+const PostPage = () => {
+  const { id } = useParams<PostParams>();
+  const { data, isLoading, isError } = useGetPostQuery({ id, enabled: false });
 
   return (
-    <DataState
-      isLoading={isLoading}
-      isError={isError}
-      isRefetching={isRefetching}
-      loadingComponent={<PostDetailSkeleton />}
-    >
+    <DataState isLoading={isLoading} isError={isError} loadingComponent={<PostDetailSkeleton />}>
       {data && <PostDetail post={data} />}
     </DataState>
   );

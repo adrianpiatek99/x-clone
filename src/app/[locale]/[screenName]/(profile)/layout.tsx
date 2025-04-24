@@ -7,21 +7,18 @@ import Box from '@/components/atoms/Box';
 import HeaderBar from '@/components/molecules/HeaderBar';
 import ScrollToTop from '@/components/molecules/ScrollToTop';
 import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/useGetUserByScreenNameQuery';
+import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 import ProfileHero from './_components/ProfileHero';
 import ProfileTabs from './_components/ProfileTabs';
 
-type Params = {
+export type ProfileParams = {
   screenName: string;
 };
 
-type Props = {
-  params: Promise<Params>;
-};
-
-const Layout = ({ children, params }: PropsWithChildren<Props>) => {
-  const { screenName } = React.use(params);
+export default function Layout({ children }: PropsWithChildren) {
+  const { screenName } = useParams<ProfileParams>();
   const t = useTranslations();
   const { data, isRefetching } = useGetUserByScreenNameQuery({
     screenName,
@@ -44,6 +41,4 @@ const Layout = ({ children, params }: PropsWithChildren<Props>) => {
       {data && children}
     </Box>
   );
-};
-
-export default Layout;
+}

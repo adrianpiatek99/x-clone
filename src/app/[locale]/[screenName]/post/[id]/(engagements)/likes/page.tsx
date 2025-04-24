@@ -6,20 +6,13 @@ import Loader from '@/components/atoms/Loader';
 import FlatList from '@/components/molecules/FlatList';
 import ProfileCard from '@/components/molecules/ProfileCard';
 import { useGetPostLikesQuery } from '@/hooks/api/posts/useGetPostLikesQuery';
+import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-type ParamsType = {
-  screenName: string;
-  id: string;
-};
+import type { PostParams } from '../../(post)/layout';
 
-type Props = {
-  params: Promise<ParamsType>;
-};
-
-const PostLikesPage = ({ params }: Props) => {
-  const unwrappedParams = React.use(params);
-  const { id } = unwrappedParams;
+export default function PostLikesPage() {
+  const { id } = useParams<PostParams>();
   const t = useTranslations();
   const { flatData, ...restResult } = useGetPostLikesQuery({ id });
 
@@ -39,8 +32,7 @@ const PostLikesPage = ({ params }: Props) => {
         ),
         ...restResult,
       }}
+      stickyTopOffset='large'
     />
   );
-};
-
-export default PostLikesPage;
+}

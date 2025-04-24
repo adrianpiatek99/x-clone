@@ -5,13 +5,11 @@ import Box from '@/components/atoms/Box';
 
 import HomeHeader from './_components/HomeHeader';
 
-const HomeLayout = ({ children }: PropsWithChildren) => {
+export default function Layout({ children }: PropsWithChildren) {
   return (
     <Box className='gap-0'>
       <HomeHeader />
       {children}
     </Box>
   );
-};
-
-export default HomeLayout;
+}

@@ -14,13 +14,11 @@ const GlobalPostsTimeline = () => {
 
   return (
     <div className='flex flex-col'>
-      <div className='relative'>
+      {latestPostId && (
         <Suspense fallback={null}>
-          {latestPostId && (
-            <LazyGlobalTrackNewPosts latestPostId={latestPostId} refetch={restResult.refetch} />
-          )}
+          <LazyGlobalTrackNewPosts latestPostId={latestPostId} refetch={restResult.refetch} />
         </Suspense>
-      </div>
+      )}
       <FlatList
         data={flatData}
         renderItem={(item) => <PostCard post={item} />}

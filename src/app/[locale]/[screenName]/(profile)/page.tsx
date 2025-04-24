@@ -2,16 +2,7 @@
 
 import React from 'react';
 
-type Params = {
-  screenName: string;
-};
-
-type Props = {
-  params: Promise<Params>;
-};
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function ProfilePage({ params }: Props) {
+export default function ProfilePage() {
   return (
     <div>
       <span>posts</span>

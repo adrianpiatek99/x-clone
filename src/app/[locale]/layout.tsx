@@ -1,6 +1,6 @@
 import '../globals.css';
 
-import type { ReactNode } from 'react';
+import type { PropsWithChildren } from 'react';
 import { lazy, Suspense } from 'react';
 
 import { auth } from '@/auth';
@@ -30,11 +30,10 @@ export const metadata: Metadata = {
 };
 
 type Props = {
-  children: ReactNode;
   params: Promise<{ locale: Locale }>;
 };
 
-export default async function RootLayout({ children, params }: Props) {
+export default async function RootLayout({ children, params }: PropsWithChildren<Props>) {
   const { locale } = await params;
   const session = await auth();
 

@@ -66,6 +66,7 @@ const CreatePostFormModal = () => {
       isOpen={isOpen}
       onClose={handleClose}
       title={t('post.actions.send')}
+      isLoading={isPending}
       acceptButtonText={t('post.actions.send')}
       acceptButtonProps={{
         disabled: disabled,

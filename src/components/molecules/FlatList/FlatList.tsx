@@ -22,6 +22,7 @@ type Props<TData> = {
     loader: ReactElement;
   } & Omit<InfiniteQueryObserverBaseResult, 'data'>;
   scrollKey?: string;
+  stickyTopOffset?: 'small' | 'large';
 };
 
 /**
@@ -29,7 +30,14 @@ type Props<TData> = {
  * Supports infinite scrolling, loading states, and empty states.
  * Uses window-based virtualization for optimal performance with large datasets.
  */
-const FlatList = <TData,>({ data, renderItem, empty, infiniteScroll, scrollKey }: Props<TData>) => {
+const FlatList = <TData,>({
+  data,
+  renderItem,
+  empty,
+  infiniteScroll,
+  scrollKey,
+  stickyTopOffset = 'small',
+}: Props<TData>) => {
   const { items, totalSize, parentRef, measureElement, options } = useWindowVirtualScroll(
     data.length,
     scrollKey
@@ -60,7 +68,12 @@ const FlatList = <TData,>({ data, renderItem, empty, infiniteScroll, scrollKey }
   return (
     <section className='relative flex w-full flex-col' ref={parentRef}>
       <Suspense fallback={null}>
-        <LazyPillNotifyRefreshing isRefetching={!!infiniteScroll?.isRefetching} />
+        <div
+          className='sticky z-[5]'
+          style={{ top: stickyTopOffset === 'small' ? '53px' : '106px' }}
+        >
+          <LazyPillNotifyRefreshing isRefetching={!!infiniteScroll?.isRefetching} />
+        </div>
       </Suspense>
       {isInfiniteScroll && infiniteScroll.isLoading ? (
         cloneElement(infiniteScroll.loader)

@@ -11,7 +11,7 @@ const LazyLogoutConfirmModal = dynamic(() => import('@/components/molecules/Logo
 const LazyNavigationTabs = dynamic(() => import('@/components/organisms/NavigationTabs'));
 const LazyCreatePostFormModal = dynamic(() => import('@/components/organisms/CreatePostFormModal'));
 
-const Modals = () => {
+export default function Modals() {
   const { user } = useAppSession();
 
   return (
@@ -25,6 +25,4 @@ const Modals = () => {
       <Toaster position='bottom-center' />
     </>
   );
-};
-
-export default Modals;
+}

@@ -35,6 +35,8 @@ const GlobalTrackNewPosts = ({ latestPostId, refetch }: Props) => {
   const handleRefresh = useCallback(() => {
     queryClient.setQueryData(QUERY_KEYS.POSTS.TRACK_NEW_POSTS, { newPostsCount: 0 });
 
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
     refetch();
   }, [queryClient, refetch]);
 
@@ -49,10 +51,12 @@ const GlobalTrackNewPosts = ({ latestPostId, refetch }: Props) => {
   }, [enableQuery]);
 
   return (
-    <PillNotify isVisible={newPostsCount > 0} onClick={handleRefresh}>
-      <Icon name='RefreshIcon' className='size-[20px]' />
-      {!!newPostsCount && t('actions.showPosts', { count: newPostsCount })}
-    </PillNotify>
+    <div className='sticky top-[53px] z-[5]'>
+      <PillNotify isVisible={newPostsCount > 0} onClick={handleRefresh}>
+        <Icon name='RefreshIcon' className='size-[20px]' />
+        {!!newPostsCount && t('actions.showPosts', { count: newPostsCount })}
+      </PillNotify>
+    </div>
   );
 };
 

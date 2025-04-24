@@ -1,6 +1,6 @@
 'use client';
 
-import type { FC, ReactNode } from 'react';
+import type { PropsWithChildren } from 'react';
 import React, { useEffect, useRef } from 'react';
 
 import type { Locale } from '@/constants/locales';
@@ -25,12 +25,11 @@ const queryClient = new QueryClient({
 });
 
 type Props = {
-  children: ReactNode;
   locale: Locale;
   messages: AbstractIntlMessages;
 };
 
-const Providers: FC<Props> = ({ children, locale, messages }) => {
+export default function Providers({ children, locale, messages }: PropsWithChildren<Props>) {
   const pathname = usePathname();
   const { update } = useGlobalStore(useShallow((state) => ({ update: state.update })));
   const currentPathnameRef = useRef(pathname);
@@ -54,6 +53,4 @@ const Providers: FC<Props> = ({ children, locale, messages }) => {
       </NextIntlClientProvider>
     </ThemeProvider>
   );
-};
-
-export default Providers;
+}

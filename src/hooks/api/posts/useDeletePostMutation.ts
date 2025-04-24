@@ -57,7 +57,7 @@ export const useDeletePostMutation = ({ onSuccess, onError, onSettled }: Props =
       addToast('success', t('post.api.deletePost.success'));
       onSuccess?.();
     },
-    onError: (err, { id }, context) => {
+    onError: (_err, { id }, context) => {
       // Rollback to the previous state on error
       if (context?.previousTimeline) {
         queryClient.setQueryData(QUERY_KEYS.POSTS.GLOBAL_TIMELINE, context.previousTimeline);

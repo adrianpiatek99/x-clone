@@ -13,7 +13,7 @@ type UseGlobalPostsTimelineOptions = {
 };
 
 export const useGetGlobalTimelineQuery = ({
-  limit = 20,
+  limit = 30,
   enabled = true,
 }: UseGlobalPostsTimelineOptions = {}) => {
   const result = useInfiniteQuery<GetGlobalTimelineResponse>({

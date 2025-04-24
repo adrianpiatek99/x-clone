@@ -3,21 +3,14 @@
 import React from 'react';
 
 import FlatList from '@/components/molecules/FlatList';
+import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-type ParamsType = {
-  screenName: string;
-  id: string;
-};
+import type { PostParams } from '../../(post)/layout';
 
-type Props = {
-  params: Promise<ParamsType>;
-};
-
-const PostRespostsPage = ({ params }: Props) => {
-  const unwrappedParams = React.use(params);
+export default function PostRespostsPage() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { id } = unwrappedParams;
+  const { id } = useParams<PostParams>();
   const t = useTranslations();
 
   return (
@@ -32,6 +25,4 @@ const PostRespostsPage = ({ params }: Props) => {
       />
     </div>
   );
-};
-
-export default PostRespostsPage;
+}
