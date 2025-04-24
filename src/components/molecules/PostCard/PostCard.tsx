@@ -23,7 +23,7 @@ type Props = ComponentPropsWithRef<'div'> & {
 const PostCard = memo(({ post, className, ...props }: Props) => {
   const { id, text, author, media, createdAt, isAuthor, isLiked, likesCount, editedAt } = post;
   const { avatarUrl, screenName } = author;
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading] = useState(false);
   const { handleOnClick, handleOnKeyUp, handleOnMouseUp } = useSyntheticEvents({
     href: ROUTES.POST.DETAILS(screenName, id),
   });
@@ -48,10 +48,7 @@ const PostCard = memo(({ post, className, ...props }: Props) => {
         <Box className='grow gap-1.5'>
           <Box className='flex-row items-center justify-between gap-1'>
             <PostCardAuthor id={id} author={author} createdAt={createdAt} />
-            <PostCardDropdown
-              post={{ id, author, text, media, isAuthor }}
-              setIsLoading={setIsLoading}
-            />
+            <PostCardDropdown post={{ id, author, text, media, isAuthor }} />
           </Box>
           <Box>
             <Box className='gap-1.5'>

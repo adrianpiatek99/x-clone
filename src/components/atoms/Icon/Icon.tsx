@@ -15,7 +15,7 @@ const Icon = ({ name, className, ...props }: Props) => {
 
   if (!IconComponent) return null;
 
-  return <IconComponent className={twMerge('text-current size-[24px]', className)} {...props} />;
+  return <IconComponent className={twMerge('[color:current] size-[24px]', className)} {...props} />;
 };
 
 export default Icon;

@@ -9,7 +9,7 @@ import Icon from '../Icon';
 import type { CustomToastClasses } from './types';
 
 const icons = {
-  success: <Icon name='CheckIcon' />,
+  success: <Icon name='CheckCircleIcon' />,
   information: <Icon name='InfoOutlinedIcon' />,
   warning: <Icon name='WarningIcon' />,
   error: <Icon name='RaportIcon' />,

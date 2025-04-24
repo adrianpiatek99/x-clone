@@ -17,11 +17,10 @@ const LazyEditPostModal = lazy(() => import('@/components/organisms/EditPostModa
 
 type Props = {
   post: Pick<Post, 'id' | 'author' | 'text' | 'media' | 'isAuthor'>;
-  setIsLoading: (isLoading: boolean) => void;
   onDeleteSuccess?: () => void;
 };
 
-export const PostCardDropdown = memo(({ post, setIsLoading, onDeleteSuccess }: Props) => {
+export const PostCardDropdown = memo(({ post, onDeleteSuccess }: Props) => {
   const {
     id,
     author: { screenName },
@@ -36,15 +35,11 @@ export const PostCardDropdown = memo(({ post, setIsLoading, onDeleteSuccess }: P
     onSuccess: () => {
       onDeleteSuccess?.();
     },
-    onSettled: () => {
-      setIsLoading(false);
-    },
   });
 
   const handleDeletePost = () => {
     if (!isAuthor) return;
 
-    setIsLoading(true);
     setIsDeletePostModalOpen(false);
     deletePost({ id });
   };
