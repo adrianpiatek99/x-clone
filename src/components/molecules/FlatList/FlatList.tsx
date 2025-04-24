@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactElement } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import React, { cloneElement, Suspense } from 'react';
 
 import Empty from '@/components/atoms/Empty';
@@ -22,7 +22,7 @@ type Props<TData> = {
     loader: ReactElement;
   } & Omit<InfiniteQueryObserverBaseResult, 'data'>;
   scrollKey?: string;
-  stickyTopOffset?: 'small' | 'large';
+  additionalPillNotify?: ReactNode;
 };
 
 /**
@@ -36,7 +36,7 @@ const FlatList = <TData,>({
   empty,
   infiniteScroll,
   scrollKey,
-  stickyTopOffset = 'small',
+  additionalPillNotify,
 }: Props<TData>) => {
   const { items, totalSize, parentRef, measureElement, options } = useWindowVirtualScroll(
     data.length,
@@ -45,6 +45,7 @@ const FlatList = <TData,>({
   const isInfiniteScroll = !!infiniteScroll;
   const isEmpty = isInfiniteScroll ? !infiniteScroll.isLoading && !data.length : !data.length;
   const isError = !!infiniteScroll?.isError;
+  const headerBarHeight = document.getElementById('header-bar')?.offsetHeight ?? 0;
 
   const { observeElement } = useIntersectionObserver({
     callback: (entry) => {
@@ -68,11 +69,9 @@ const FlatList = <TData,>({
   return (
     <section className='relative flex w-full flex-col' ref={parentRef}>
       <Suspense fallback={null}>
-        <div
-          className='sticky z-[5]'
-          style={{ top: stickyTopOffset === 'small' ? '53px' : '106px' }}
-        >
+        <div style={{ top: headerBarHeight }} className='sticky z-[5]'>
           <LazyPillNotifyRefreshing isRefetching={!!infiniteScroll?.isRefetching} />
+          {additionalPillNotify}
         </div>
       </Suspense>
       {isInfiniteScroll && infiniteScroll.isLoading ? (

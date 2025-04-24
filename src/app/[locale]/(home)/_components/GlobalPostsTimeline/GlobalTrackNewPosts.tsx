@@ -6,6 +6,7 @@ import PillNotify from '@/components/molecules/PillNotify';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { useGetTrackNewPostsQuery } from '@/hooks/api/posts/useGetTrackNewPostsQuery';
 import { useHomeStore } from '@/stores/home';
+import { formatNumber } from '@/utils/formatNumber';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 import { useShallow } from 'zustand/shallow';
@@ -51,12 +52,10 @@ const GlobalTrackNewPosts = ({ latestPostId, refetch }: Props) => {
   }, [enableQuery]);
 
   return (
-    <div className='sticky top-[53px] z-[5]'>
-      <PillNotify isVisible={newPostsCount > 0} onClick={handleRefresh}>
-        <Icon name='RefreshIcon' className='size-[20px]' />
-        {!!newPostsCount && t('actions.showPosts', { count: newPostsCount })}
-      </PillNotify>
-    </div>
+    <PillNotify isVisible={newPostsCount > 0} onClick={handleRefresh}>
+      <Icon name='RefreshIcon' className='size-[20px]' />
+      {!!newPostsCount && t('actions.showPosts', { count: formatNumber(newPostsCount) })}
+    </PillNotify>
   );
 };
 

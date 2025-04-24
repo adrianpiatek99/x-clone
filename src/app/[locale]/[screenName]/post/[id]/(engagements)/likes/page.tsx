@@ -32,7 +32,6 @@ export default function PostLikesPage() {
         ),
         ...restResult,
       }}
-      stickyTopOffset='large'
     />
   );
 }

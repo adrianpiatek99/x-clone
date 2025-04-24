@@ -23,7 +23,10 @@ const HeaderBar = ({
   isRefetching = false,
 }: HeaderBarProps) => {
   return (
-    <div className='sticky top-0 z-10 flex min-h-[53px] w-full flex-col bg-background/65 backdrop-blur-md transition duration-200'>
+    <div
+      id='header-bar'
+      className='sticky top-0 z-10 flex min-h-[53px] w-full flex-col bg-background/65 backdrop-blur-md transition duration-200'
+    >
       {(showBackButton || title) && (
         <div className='flex h-[53px] w-full shrink-0 items-center gap-x-4 gap-y-2 px-4'>
           {showBackButton && <HeaderBarBackButton />}
