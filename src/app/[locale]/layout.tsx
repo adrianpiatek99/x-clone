@@ -1,8 +1,10 @@
 import '../globals.css';
 
 import type { ReactNode } from 'react';
+import { lazy, Suspense } from 'react';
 
 import { auth } from '@/auth';
+import Loader from '@/components/atoms/Loader';
 import SidebarMenu from '@/components/organisms/SidebarMenu';
 import type { Locale } from '@/constants/locales';
 import { routing } from '@/i18n/routing';
@@ -13,6 +15,8 @@ import { SessionProvider } from 'next-auth/react';
 import { getMessages } from 'next-intl/server';
 
 import Providers from './providers';
+
+const LazyTrendingSection = lazy(() => import('@/components/organisms/TrendingSection'));
 
 const inter = Inter({
   subsets: ['latin'],
@@ -50,6 +54,11 @@ export default async function RootLayout({ children, params }: Props) {
               <main className='relative flex w-full grow gap-[30px]'>
                 <div className='flex w-full max-w-full flex-col pb-24 sm:max-w-[600px] sm:border-x sm:border-border-1 sm:pb-48'>
                   {children}
+                </div>
+                <div className='hidden min-w-0 flex-1 items-start lg:flex'>
+                  <Suspense fallback={<Loader center />}>
+                    <LazyTrendingSection />
+                  </Suspense>
                 </div>
               </main>
             </div>

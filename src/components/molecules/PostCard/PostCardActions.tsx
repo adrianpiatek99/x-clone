@@ -5,6 +5,7 @@ import Icon from '@/components/atoms/Icon';
 import IconButton from '@/components/atoms/IconButton';
 import type { Post } from '@/db/schema';
 import { useToggleLikePostMutation } from '@/hooks/api/posts/useToggleLikePostMutation';
+import { formatNumber } from '@/utils/formatNumber';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
@@ -26,7 +27,7 @@ export const PostCardActions = ({ id, isLiked, likesCount }: Props) => {
         )}
         onClick={handleToggleLike}
         title={likeTitle}
-        label={likesCount.toString()}
+        label={formatNumber(likesCount)}
         disabled={isToggleLikePending}
       >
         {isLiked ? <Icon name='HeartIcon' /> : <Icon name='HeartOutlinedIcon' />}

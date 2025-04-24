@@ -8,6 +8,7 @@ import UserDisplayName from '@/components/molecules/UserDisplayName';
 import { ROUTES } from '@/constants/routes';
 import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/useGetUserByScreenNameQuery';
 import { useTime } from '@/hooks/useTime';
+import { formatNumber } from '@/utils/formatNumber';
 import { removeHttp } from '@/utils/url';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { useParams } from 'next/navigation';
@@ -87,11 +88,11 @@ export const ProfileHeroInfo = () => {
             </div>
             <Box className='flex-row flex-wrap gap-4'>
               <Typography href={ROUTES.PROFILE.FOLLOWING(data.screenName)}>
-                <Typography weight='bold'>{data.followingCount} </Typography>
+                <Typography weight='bold'>{formatNumber(data.followingCount)} </Typography>
                 <Typography color='secondary'>{t('profilePage.following')}</Typography>
               </Typography>
               <Typography href={ROUTES.PROFILE.FOLLOWERS(data.screenName)}>
-                <Typography weight='bold'>{data.followersCount} </Typography>
+                <Typography weight='bold'>{formatNumber(data.followersCount)} </Typography>
                 <Typography color='secondary'>{t('profilePage.followers')}</Typography>
               </Typography>
             </Box>
