@@ -66,7 +66,12 @@ const Avatar: FC<AvatarProps> = memo(({ screenName, href, onClick, ...props }) =
 
   if (onClick)
     return (
-      <button className='group w-fit rounded-full' type='button' onClick={onClick} title={alt}>
+      <button
+        className='group m-0 contents w-fit rounded-full p-0'
+        type='button'
+        onClick={onClick}
+        title={alt}
+      >
         <AvatarElement alt={alt} {...props} />
       </button>
     );

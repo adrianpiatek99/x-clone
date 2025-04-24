@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
 
 import Avatar from '@/components/atoms/Avatar';
-import Box from '@/components/atoms/Box';
 import Icon from '@/components/atoms/Icon';
 import IconButton from '@/components/atoms/IconButton';
 import { fileValidationConfigs } from '@/db/utils/validateFile';
@@ -31,23 +30,22 @@ export const EditProfileModalAvatar = memo(() => {
   });
 
   return (
-    <div className='relative mt-[-8%] grid w-full min-w-[48px] max-w-[116px] place-items-center'>
-      <div className="size-full rounded-full pb-[100%] after:absolute after:inset-0 after:rounded-full after:bg-[rgba(0,0,0,0.3)] after:content-['']">
+    <div className='relative mt-[-8%] grid w-full min-w-[48px] max-w-[116px]'>
+      <div className='size-full rounded-full pb-[100%]'>
         <Avatar
           className='absolute inset-0 size-full border-[3px] border-background'
+          onClick={openFilePicker}
           src={avatarUrl}
         />
       </div>
-      <Box className='absolute flex-row'>
-        <IconButton
-          onClick={openFilePicker}
-          title={t('actions.addPhoto')}
-          color='darker'
-          size='large'
-        >
-          <Icon name='CameraPlusIcon' />
-        </IconButton>
-      </Box>
+      <IconButton
+        className='absolute right-0 '
+        onClick={openFilePicker}
+        title={t('actions.addPhoto')}
+        color='darker'
+      >
+        <Icon name='EditIcon' />
+      </IconButton>
       <input
         ref={filePickerRef}
         onChange={handleFileChange}

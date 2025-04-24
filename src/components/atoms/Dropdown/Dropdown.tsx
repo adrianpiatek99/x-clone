@@ -24,7 +24,7 @@ const Dropdown: FC<DropdownProps> = ({ children, menuItems }) => {
       </MenuButton>
       <MenuItems
         className={twMerge(
-          'w-[220px] origin-top-right rounded-xl bg-accent-1/80 shadow-lg backdrop-blur-md transition duration-200 focus:outline-none data-[closed]:scale-10 data-[leave]:scale-15 data-[closed]:opacity-0 data-[leave]:duration-150',
+          'w-[220px] origin-top-right rounded-xl bg-accent-1/80 shadow-lg backdrop-blur-md transition duration-200 focus:outline-none data-[closed]:scale-10 data-[leave]:scale-15 data-[closed]:opacity-0 data-[leave]:duration-150 z-10',
           menuItems?.className
         )}
         transition

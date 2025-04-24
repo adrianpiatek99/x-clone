@@ -32,10 +32,10 @@ const classes: IconButtonClassesReturn = {
     white:
       'text-text-1 bg-button-background-gray/0 enabled:hover:bg-button-background-gray/22 enabled:active:bg-button-background-gray/30 focus-visible:bg-button-background-gray/10',
     darker:
-      'text-white bg-[rgb(51,59,45)] enabled:hover:bg-[rgb(51,59,45)]/80 enabled:active:bg-[rgb(51,59,45)]/60',
+      'text-white bg-[rgb(21,29,15)] enabled:hover:bg-[rgb(21,29,15)]/80 enabled:active:bg-[rgb(21,29,15)]/60',
   },
   size: {
-    small: 'min-w-[34px] min-h-[34px] [&>svg]:size-[16px]',
+    small: 'min-w-[34px] min-h-[34px] [&>svg]:size-[18px]',
     medium: 'min-w-[34px] min-h-[34px] [&>svg]:size-[20px]',
     large: 'min-w-[42px] min-h-[42px] [&>svg]:size-[24px]',
   },

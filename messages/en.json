@@ -30,7 +30,8 @@
     "removePhoto": "Remove photo",
     "retry": "Retry",
     "showPosts": "{count, plural, one {Show # post} other {Show # posts}}",
-    "refreshing": "Refreshing..."
+    "refreshing": "Refreshing...",
+    "editBanner": "Edit banner"
   },
 
   "auth": {
