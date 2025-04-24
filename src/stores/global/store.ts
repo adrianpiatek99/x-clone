@@ -12,6 +12,7 @@ export const initialState: GlobalState = {
   authRequiredModal: {
     isOpen: false,
   },
+  previousPathname: null,
 };
 
 export const useGlobalStore = create<GlobalStore>((set) => ({

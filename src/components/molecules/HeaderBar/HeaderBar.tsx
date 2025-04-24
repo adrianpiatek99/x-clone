@@ -2,17 +2,14 @@ import type { ReactNode } from 'react';
 import React from 'react';
 
 import Box from '@/components/atoms/Box';
-import Icon from '@/components/atoms/Icon';
-import IconButton from '@/components/atoms/IconButton';
 import Typography from '@/components/atoms/Typography';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { ScrollDirection } from '@/hooks/useScrollDirection';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
-import { useRouter } from '@/i18n/routing';
-import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
 import { PillNotifyRefreshing } from '../PillNotify/PillNotifyRefreshing';
+import { HeaderBarBackButton } from './HeaderBarBackButton';
 
 export type HeaderBarProps = {
   children?: ReactNode;
@@ -29,13 +26,9 @@ const HeaderBar = ({
   additionalContent,
   isRefetching = false,
 }: HeaderBarProps) => {
-  const t = useTranslations();
-  const router = useRouter();
   const scrollDirection = useScrollDirection();
   const isScrollDirectionDown = scrollDirection === ScrollDirection.DOWN;
   const isMobile = useIsMobile();
-
-  const handleBack = () => router.back();
 
   return (
     <div
@@ -46,16 +39,7 @@ const HeaderBar = ({
     >
       {(showBackButton || title) && (
         <div className='flex h-[53px] w-full shrink-0 items-center gap-x-4 gap-y-2 px-4'>
-          {showBackButton && (
-            <IconButton
-              className='-ml-2'
-              color='white'
-              title={t('actions.back')}
-              onClick={handleBack}
-            >
-              <Icon name='ArrowBackIcon' />
-            </IconButton>
-          )}
+          {showBackButton && <HeaderBarBackButton />}
           {title && (
             <Box className='gap-0'>
               <Typography as='h2' size='l' weight='semibold' truncate>
