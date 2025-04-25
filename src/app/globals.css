@@ -80,6 +80,7 @@
   --accent-1: 219, 219, 219;
 
   /* State Colors */
+  --backdrop: rgba(91, 112, 131, 0.5);
 
   /* Components */
   --button-background-gray: 160, 160, 170;

@@ -65,7 +65,7 @@ const Modal: FC<ModalProps> = ({
         <div className='flex min-h-full items-center justify-center p-4'>
           <DialogPanel
             className={twMerge(
-              'absolute bottom-[calc(env(safe-area-inset-bottom))] flex max-h-[94vh] min-h-[250px] w-[98%] max-w-[500px] flex-col overflow-x-hidden rounded-t-2xl bg-background pb-[73px] shadow outline-0 duration-200 data-[closed]:translate-y-full sm:static sm:h-auto sm:max-h-[90vh] sm:w-[95%] sm:max-w-[600px] sm:rounded-2xl sm:pb-[53px] sm:data-[closed]:translate-y-0 sm:data-[closed]:scale-90 sm:data-[closed]:opacity-0',
+              'absolute bottom-[calc(env(safe-area-inset-bottom))] flex max-h-[94vh] min-h-[250px] w-[98%] max-w-[500px] flex-col border-2 border-border-1 overflow-x-hidden rounded-t-2xl bg-background pb-[73px] shadow outline-0 duration-200 data-[closed]:translate-y-full sm:static sm:h-auto sm:max-h-[90vh] sm:w-[95%] sm:max-w-[600px] sm:rounded-2xl sm:pb-[53px] sm:data-[closed]:translate-y-0 sm:data-[closed]:scale-90 sm:data-[closed]:opacity-0',
               panel?.className
             )}
             transition

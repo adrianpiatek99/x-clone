@@ -93,7 +93,6 @@ const EditProfileModal = ({ isOpen, onClose, user }: Props) => {
       </Modal>
       <DiscardChangesModal
         isOpen={isDiscardChangesModalOpen}
-        isChanged={isChanged}
         onDiscardClose={() => setIsDiscardChangesModalOpen(false)}
         onClose={onClose}
       />

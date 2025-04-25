@@ -6,6 +6,7 @@ import Providers from '@/app/[locale]/providers';
 import type { Preview } from '@storybook/react';
 import { Inter } from 'next/font/google';
 import { SessionProvider } from 'next-auth/react';
+import { NextIntlClientProvider } from 'next-intl';
 
 import enMessages from '../messages/en.json';
 import { Locale } from '../src/constants/locales';
@@ -36,11 +37,12 @@ const preview: Preview = {
           }
         `}</style>
         <SessionProvider>
-          <Providers locale={Locale.EN} messages={enMessages}>
-            <ThemeSwitcherDecorator />
-            {Story()}
-            <div id='modal' />
-          </Providers>
+          <NextIntlClientProvider locale={Locale.EN} messages={enMessages}>
+            <Providers locale={Locale.EN} messages={enMessages}>
+              <ThemeSwitcherDecorator />
+              {Story()}
+            </Providers>
+          </NextIntlClientProvider>
         </SessionProvider>
       </div>
     ),

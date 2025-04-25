@@ -34,7 +34,7 @@ export const EditProfileModalBanner = memo(() => {
   const handleRemoveBanner = () => updateBannerFile(null);
 
   return (
-    <div className='relative mx-0.5 grid place-items-center overflow-hidden bg-foreground'>
+    <div className='relative grid place-items-center overflow-hidden bg-foreground'>
       <div className='relative block w-full pb-[33.333%]'>
         {bannerUrl && (
           <ShimmerImage className='object-cover' src={bannerUrl} alt='Profile banner' fill />

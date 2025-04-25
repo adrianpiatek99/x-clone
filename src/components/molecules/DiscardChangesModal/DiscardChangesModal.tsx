@@ -5,18 +5,13 @@ import { useTranslations } from 'next-intl';
 
 type Props = {
   isOpen: boolean;
-  isChanged: boolean;
   onDiscardClose: (accept: boolean) => void;
   onClose: () => void;
   onAccept?: () => void;
 };
 
-const DiscardChangesModal = ({ isOpen, isChanged, onDiscardClose, onClose, onAccept }: Props) => {
+const DiscardChangesModal = ({ isOpen, onDiscardClose, onClose, onAccept }: Props) => {
   const t = useTranslations();
-
-  if (!isChanged) {
-    return null;
-  }
 
   const handleCloseDiscard = (accept: boolean) => {
     onDiscardClose(accept);

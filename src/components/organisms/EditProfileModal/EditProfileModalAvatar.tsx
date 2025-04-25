@@ -33,7 +33,7 @@ export const EditProfileModalAvatar = memo(() => {
     <div className='relative mt-[-8%] grid w-full min-w-[48px] max-w-[116px]'>
       <div className='size-full rounded-full pb-[100%]'>
         <Avatar
-          className='absolute inset-0 size-full border-[3px] border-background'
+          className='absolute inset-0 size-full border-[3px] border-foreground'
           onClick={openFilePicker}
           src={avatarUrl}
         />
