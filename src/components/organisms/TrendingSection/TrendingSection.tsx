@@ -5,6 +5,7 @@ import React from 'react';
 import Box from '@/components/atoms/Box';
 import Button from '@/components/atoms/Button';
 import Typography from '@/components/atoms/Typography';
+import ArticleCard from '@/components/molecules/ArticleCard';
 import { ROUTES } from '@/constants/routes';
 import { formatNumber } from '@/utils/formatNumber';
 import { useTranslations } from 'next-intl';
@@ -42,13 +43,7 @@ const TrendingSection = () => {
       </Typography>
       <Box className='gap-0'>
         {mockData.map(({ count, title }) => (
-          <Box
-            as='article'
-            key={title}
-            className='cursor-pointer px-4 py-3 outline-none ring-inset transition duration-200 hover:bg-text-1/5 focus-visible:bg-text-1/10 focus-visible:ring-2 focus-visible:ring-focus'
-            tabIndex={0}
-            data-navigable='true'
-          >
+          <ArticleCard key={title}>
             <Box className='relative flex-row items-start justify-between'>
               <Box className='gap-1'>
                 <Typography className='break-all' weight='semibold'>
@@ -59,7 +54,7 @@ const TrendingSection = () => {
                 </Typography>
               </Box>
             </Box>
-          </Box>
+          </ArticleCard>
         ))}
         <Button className='justify-start p-4' href={ROUTES.EXPLORE} variant='plain' fullWidth>
           {t('actions.showMore')}
