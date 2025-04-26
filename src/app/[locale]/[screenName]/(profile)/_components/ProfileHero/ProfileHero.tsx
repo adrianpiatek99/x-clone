@@ -5,7 +5,7 @@ import React from 'react';
 import Box from '@/components/atoms/Box';
 import Typography from '@/components/atoms/Typography';
 import UserDisplayName from '@/components/molecules/UserDisplayName';
-import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/useGetUserByScreenNameQuery';
+import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/queries';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 

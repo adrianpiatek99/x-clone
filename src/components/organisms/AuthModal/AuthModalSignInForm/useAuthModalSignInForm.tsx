@@ -1,4 +1,4 @@
-import { useSignInMutation } from '@/hooks/api/auth/useSignInMutation';
+import { useSignInMutation } from '@/hooks/api/auth/mutations';
 import { useAppForm } from '@/hooks/useFormHook';
 import type { SignInValues } from '@/schema/auth';
 import { signInSchema } from '@/schema/auth';

@@ -2,7 +2,7 @@ import React from 'react';
 
 import FlatList from '@/components/molecules/FlatList';
 import PostCard, { PostCardSkeletons } from '@/components/molecules/PostCard';
-import { useGetGlobalTimelineQuery } from '@/hooks/api/posts/useGetGlobalTimelineQuery';
+import { useGetGlobalTimelineQuery } from '@/hooks/api/posts/queries';
 import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
 

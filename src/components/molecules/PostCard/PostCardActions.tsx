@@ -4,7 +4,7 @@ import Box from '@/components/atoms/Box';
 import Icon from '@/components/atoms/Icon';
 import IconButton from '@/components/atoms/IconButton';
 import type { Post } from '@/db/schema';
-import { useToggleLikePostMutation } from '@/hooks/api/posts/useToggleLikePostMutation';
+import { useToggleLikePostMutation } from '@/hooks/api/posts/mutations';
 import { formatNumber } from '@/utils/formatNumber';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';

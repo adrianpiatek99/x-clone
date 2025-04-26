@@ -5,7 +5,7 @@ import React from 'react';
 import Loader from '@/components/atoms/Loader';
 import FlatList from '@/components/molecules/FlatList';
 import ProfileCard from '@/components/molecules/ProfileCard';
-import { useGetPostLikesQuery } from '@/hooks/api/posts/useGetPostLikesQuery';
+import { useGetPostLikesQuery } from '@/hooks/api/posts/queries';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 

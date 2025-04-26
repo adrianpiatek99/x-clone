@@ -5,7 +5,7 @@ import React from 'react';
 
 import Box from '@/components/atoms/Box';
 import HeaderBar from '@/components/molecules/HeaderBar';
-import { useGetPostQuery } from '@/hooks/api/posts/useGetPostQuery';
+import { useGetPostQuery } from '@/hooks/api/posts/queries';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 

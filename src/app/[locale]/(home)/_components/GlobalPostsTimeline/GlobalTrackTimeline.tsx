@@ -7,7 +7,7 @@ import type {
 import Icon from '@/components/atoms/Icon';
 import PillNotify from '@/components/molecules/PillNotify';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { useGetTrackTimelineQuery } from '@/hooks/api/posts/useGetTrackTimelineQuery';
+import { useGetTrackTimelineQuery } from '@/hooks/api/posts/queries';
 import { useHomeStore } from '@/stores/home';
 import { formatNumber } from '@/utils/formatNumber';
 import { useQueryClient } from '@tanstack/react-query';

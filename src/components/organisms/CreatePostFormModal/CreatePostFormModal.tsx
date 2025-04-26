@@ -7,7 +7,7 @@ import Textarea from '@/components/atoms/Textarea';
 import AutoHeight from '@/components/molecules/AutoHeight';
 import UserAvatar from '@/components/molecules/UserAvatar';
 import { VALIDATION } from '@/constants/validation';
-import { useCreatePostMutation } from '@/hooks/api/posts/useCreatePostMutation';
+import { useCreatePostMutation } from '@/hooks/api/posts/mutations';
 import { useCreatePostStore } from '@/stores/createPost';
 import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import Button from '@/components/atoms/Button';
 import Icon from '@/components/atoms/Icon';
-import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/useGetUserByScreenNameQuery';
+import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/queries';
 import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';

@@ -6,7 +6,7 @@ import React from 'react';
 import Box from '@/components/atoms/Box';
 import HeaderBar from '@/components/molecules/HeaderBar';
 import ScrollToTop from '@/components/molecules/ScrollToTop';
-import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/useGetUserByScreenNameQuery';
+import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/queries';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 

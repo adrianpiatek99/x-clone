@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 
 import type { UserProfile } from '@/db/schema';
-import { useUpdateProfileMutation } from '@/hooks/api/profile/useUpdateProfileMutation';
+import { useUpdateProfileMutation } from '@/hooks/api/profile/mutations';
 import { useAppForm } from '@/hooks/useFormHook';
 import type { ProfileValues } from '@/schema/profile';
 import { profileSchema } from '@/schema/profile';

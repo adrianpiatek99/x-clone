@@ -6,7 +6,7 @@ import Skeleton from '@/components/atoms/Skeleton';
 import Typography from '@/components/atoms/Typography';
 import UserDisplayName from '@/components/molecules/UserDisplayName';
 import { ROUTES } from '@/constants/routes';
-import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/useGetUserByScreenNameQuery';
+import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/queries';
 import { useTime } from '@/hooks/useTime';
 import { formatNumber } from '@/utils/formatNumber';
 import { removeHttp } from '@/utils/url';

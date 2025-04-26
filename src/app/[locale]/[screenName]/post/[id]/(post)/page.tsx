@@ -4,7 +4,7 @@ import React from 'react';
 
 import DataState from '@/components/molecules/DataState';
 import PostDetail, { PostDetailSkeleton } from '@/components/molecules/PostDetail';
-import { useGetPostQuery } from '@/hooks/api/posts/useGetPostQuery';
+import { useGetPostQuery } from '@/hooks/api/posts/queries';
 import { useParams } from 'next/navigation';
 
 import type { PostParams } from './layout';
