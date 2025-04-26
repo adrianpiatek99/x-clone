@@ -9,21 +9,16 @@ import {
   postsTable,
 } from '@/db/schema/posts/table';
 import { handleApiError } from '@/db/utils/api';
+import { type CursorParams, cursorSchema, type NextCursor } from '@/schema/api';
 import { and, desc, eq, lt, or } from 'drizzle-orm';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-export type GetGlobalTimelineParams = {
-  cursor?: {
-    id: string;
-    createdAt: Date;
-  };
-  limit?: number;
-};
+export type GetGlobalTimelineParams = CursorParams;
 
 export type GetGlobalTimelineResponse = {
   posts: Post[];
-  nextCursor: { id: string; createdAt: string } | null;
+  nextCursor: NextCursor;
 };
 
 export const GET = async (request: NextRequest) => {
@@ -32,15 +27,17 @@ export const GET = async (request: NextRequest) => {
     const { searchParams } = new URL(request.url);
     const userId = session?.user?.id;
 
-    // Validate cursor
-    const cursorStr = searchParams.get('cursor');
-    const cursor: GetGlobalTimelineParams['cursor'] = cursorStr
+    // Validate params
+    const { cursor: cursorParam, limit } = cursorSchema.parse({
+      cursor: searchParams.get('cursor') ? JSON.parse(searchParams.get('cursor')!) : undefined,
+      limit: parseInt(searchParams.get('limit') ?? ''),
+    });
+    const cursor = cursorParam
       ? {
-          ...JSON.parse(cursorStr),
-          createdAt: new Date(JSON.parse(cursorStr).createdAt),
+          ...cursorParam,
+          createdAt: new Date(cursorParam.createdAt),
         }
       : undefined;
-    const limit = parseInt(searchParams.get('limit') || '20', 10);
     const take = limit + 1;
 
     // Fetch posts

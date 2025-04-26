@@ -5,7 +5,7 @@ import type { HomeState, HomeStore } from './types';
 export const initialState: HomeState = {
   currentTab: null,
   global: {
-    enableTrackNewPosts: false,
+    enableTrackTimeline: false,
   },
 };
 

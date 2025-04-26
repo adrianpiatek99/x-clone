@@ -1,54 +1,65 @@
 import { db } from '@/db/db';
-import { type User, usersTable } from '@/db/schema';
+import { usersTable } from '@/db/schema';
 import { handleApiError } from '@/db/utils/api';
 import { withAuth } from '@/db/utils/auth';
 import { uploadFile } from '@/db/utils/uploadFile';
 import { fileValidationConfigs, validateFile } from '@/db/utils/validateFile';
 import { profileSchema } from '@/schema/profile';
 import { eq } from 'drizzle-orm';
-import { type NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
+import { z } from 'zod';
 
-export type UpdateProfileRequest = Pick<User, 'name' | 'description' | 'url'> & {
-  avatarFile?: File | null;
-  bannerFile?: File | null;
-  removeBanner?: boolean;
-};
+const schema = profileSchema().extend({
+  avatarFile: z.instanceof(File).nullish(),
+  bannerFile: z.instanceof(File).nullish(),
+  removeBanner: z.boolean().optional(),
+}) satisfies z.ZodType<
+  z.infer<ReturnType<typeof profileSchema>> & {
+    avatarFile?: File | null;
+    bannerFile?: File | null;
+    removeBanner?: boolean;
+  }
+>;
+
+export type UpdateProfileRequest = z.infer<typeof schema>;
 
 export const PATCH = withAuth(async (request: NextRequest, userId: string) => {
   try {
     const formData = await request.formData();
 
     // Validate payload
-    const { name, description, url } = profileSchema().parse({
+    const { name, description, url, avatarFile, bannerFile, removeBanner } = schema.parse({
       name: formData.get('name') as string,
       description: formData.get('description') as string,
       url: formData.get('url') as string,
+      avatarFile: formData.get('avatarFile'),
+      bannerFile: formData.get('bannerFile'),
+      removeBanner: formData.get('removeBanner') === 'true',
     });
-    const avatarFile = formData.get('avatarFile') as File | null;
-    const bannerFile = formData.get('bannerFile') as File | null;
-    const removeBanner = formData.get('removeBanner') === 'true';
 
     validateFile(avatarFile, fileValidationConfigs.avatar);
-
     validateFile(bannerFile, fileValidationConfigs.banner);
 
-    // Upload files
-    const [avatarResult, bannerResult] = await Promise.all([
-      avatarFile ? uploadFile(avatarFile) : null,
-      bannerFile ? uploadFile(bannerFile) : null,
-    ]);
+    await db.transaction(async (tx) => {
+      // Upload files
+      const [avatarResult, bannerResult] = await Promise.all([
+        avatarFile ? uploadFile(avatarFile) : null,
+        bannerFile ? uploadFile(bannerFile) : null,
+      ]);
 
-    // Update user
-    await db
-      .update(usersTable)
-      .set({
-        name,
-        description,
-        url,
-        ...(avatarResult && { avatarUrl: avatarResult.url }),
-        ...(removeBanner ? { bannerUrl: '' } : bannerResult && { bannerUrl: bannerResult.url }),
-      })
-      .where(eq(usersTable.id, userId));
+      // Update user
+      await tx
+        .update(usersTable)
+        .set({
+          name,
+          description,
+          url,
+          ...(avatarResult && { avatarUrl: avatarResult.url }),
+          ...(removeBanner ? { bannerUrl: '' } : bannerResult && { bannerUrl: bannerResult.url }),
+        })
+        .where(eq(usersTable.id, userId));
+    });
 
     return NextResponse.json({});
   } catch (error) {

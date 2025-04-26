@@ -5,7 +5,7 @@ import type { GetPostParams } from '@/app/api/posts/[id]/route';
 import type { UnlikePostParams } from '@/app/api/posts/[id]/unlike/route';
 import type { UpdatePostParams } from '@/app/api/posts/[id]/update/route';
 import type { GetGlobalTimelineParams } from '@/app/api/posts/globalTimeline/route';
-import type { GetPostsTrackingParams } from '@/app/api/posts/trackNewPosts/route';
+import type { GetTrackTimelineParams } from '@/app/api/posts/trackTimeline/route';
 import type { GetUserByScreenNameParams } from '@/app/api/profile/[screenName]/route';
 import { createUrlWithParams } from '@/utils/urlParams';
 
@@ -25,8 +25,8 @@ export const API_ENDPOINTS = {
       createUrlWithParams(`/api/posts/${id}/likes`, params),
     LIKE: ({ id }: LikePostParams) => `/api/posts/${id}/like` as const,
     UNLIKE: ({ id }: UnlikePostParams) => `/api/posts/${id}/unlike` as const,
-    TRACK_NEW_POSTS: ({ latestPostId }: GetPostsTrackingParams) =>
-      createUrlWithParams('/api/posts/trackNewPosts', { latestPostId }),
+    TRACK_TIMELINE: ({ latestPostId }: GetTrackTimelineParams) =>
+      createUrlWithParams('/api/posts/trackTimeline', { latestPostId }),
   },
   PROFILE: {
     UPDATE: '/api/profile/update',

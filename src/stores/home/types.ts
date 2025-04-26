@@ -6,7 +6,7 @@ export enum HomeTab {
 export type HomeState = {
   currentTab: HomeTab | null;
   global: {
-    enableTrackNewPosts: boolean;
+    enableTrackTimeline: boolean;
   };
 };
 

@@ -5,7 +5,7 @@ import PostCard, { PostCardSkeletons } from '@/components/molecules/PostCard';
 import { useGetGlobalTimelineQuery } from '@/hooks/api/posts/useGetGlobalTimelineQuery';
 import { useTranslations } from 'next-intl';
 
-const LazyGlobalTrackNewPosts = lazy(() => import('./GlobalTrackNewPosts'));
+const LazyGlobalTrackTimeline = lazy(() => import('./GlobalTrackTimeline'));
 
 const GlobalPostsTimeline = () => {
   const t = useTranslations();
@@ -28,7 +28,7 @@ const GlobalPostsTimeline = () => {
         additionalPillNotify={
           latestPostId && (
             <Suspense>
-              <LazyGlobalTrackNewPosts latestPostId={latestPostId} refetch={restResult.refetch} />
+              <LazyGlobalTrackTimeline latestPostId={latestPostId} refetch={restResult.refetch} />
             </Suspense>
           )
         }

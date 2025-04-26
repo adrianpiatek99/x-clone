@@ -10,7 +10,7 @@ type Options = {
   limit?: number;
 };
 
-export const validateFile = (file: File | null, options: Options) => {
+export const validateFile = (file: File | null | undefined, options: Options) => {
   if (!file) return;
 
   const { maxSizeMb, accept, fieldName } = options;

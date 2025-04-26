@@ -20,13 +20,6 @@ import { desc, eq } from 'drizzle-orm';
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
-export type CreatePostRequest = Pick<Post, 'text'> & {
-  media?: File[] | null;
-  conversationControl?: ConversationControl;
-};
-
-export type CreatePostResponse = Post;
-
 const schema = z.object({
   text: z
     .string()
@@ -34,19 +27,24 @@ const schema = z.object({
     .refine((text) => text.trim().replaceAll(/\s+/g, ' ').length <= VALIDATION.POST.TEXT.MAX, {
       message: `Text exceeds maximum length of ${VALIDATION.POST.TEXT.MAX} characters`,
     }),
+  media: z.array(z.instanceof(File)).nullish(),
   conversationControl: z.enum(enumToPgEnum(ConversationControl)).nullish(),
-});
+}) satisfies z.ZodType<
+  Pick<Post, 'text'> & {
+    media?: File[] | null;
+    conversationControl?: ConversationControl | null;
+  }
+>;
+
+export type CreatePostRequest = z.infer<typeof schema>;
+
+export type CreatePostResponse = Post;
 
 export const POST = withAuth(async (request, userId: string) => {
   try {
     const formData = await request.formData();
 
     // Validate payload
-    const { text, conversationControl } = schema.parse({
-      text: formData.get('text'),
-      conversationControl: formData.get('conversationControl'),
-    });
-
     const mediaFiles: File[] = [];
 
     for (const [key, value] of formData.entries()) {
@@ -55,6 +53,13 @@ export const POST = withAuth(async (request, userId: string) => {
       }
     }
 
+    const { text, conversationControl } = schema.parse({
+      text: formData.get('text'),
+      media: mediaFiles,
+      conversationControl: formData.get('conversationControl'),
+    });
+
+    // Validate media files
     if (mediaFiles.length) {
       if (mediaFiles.length > fileValidationConfigs.media.limit) {
         throw new ApiError(
