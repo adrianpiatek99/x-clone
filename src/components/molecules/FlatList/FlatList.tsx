@@ -5,19 +5,12 @@ import React, { cloneElement } from 'react';
 
 import Empty from '@/components/atoms/Empty';
 import ErrorState from '@/components/atoms/ErrorState';
-import Loader from '@/components/atoms/Loader';
-import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import { useWindowVirtualScroll } from '@/hooks/useWindowVirtualScroll';
 import type { VirtualScrollKeys } from '@/stores/virtualScroll';
 import type { InfiniteQueryObserverBaseResult } from '@tanstack/react-query';
-import dynamic from 'next/dynamic';
 
-const LazyPillNotifyRefreshing = dynamic(
-  () => import('@/components/molecules/PillNotify').then((mod) => mod.PillNotifyRefreshing),
-  {
-    ssr: false,
-  }
-);
+import { FlatListLoadMore } from './FlatListLoadMore';
+import { FlatListPillNotify } from './FlatListPillNotify';
 
 type Props<TData> = {
   data: TData[];
@@ -53,22 +46,6 @@ const FlatList = <TData,>({
   const isInfiniteScroll = !!infiniteScroll;
   const isEmpty = isInfiniteScroll ? !infiniteScroll.isLoading && !data.length : !data.length;
   const isError = !!infiniteScroll?.isError;
-  const headerBarHeight = document.getElementById('header-bar')?.offsetHeight ?? 0;
-
-  const { observeElement } = useIntersectionObserver({
-    callback: (entry) => {
-      if (!isInfiniteScroll) return;
-
-      const { isFetching, hasNextPage, fetchNextPage } = infiniteScroll!;
-
-      if (entry.isIntersecting && hasNextPage && !isFetching) {
-        fetchNextPage();
-      }
-    },
-    options: {
-      threshold: 0,
-    },
-  });
 
   if (isError) return <ErrorState onRetry={() => infiniteScroll.refetch()} />;
 
@@ -76,10 +53,10 @@ const FlatList = <TData,>({
 
   return (
     <section className='relative flex w-full flex-col' ref={parentRef}>
-      <div style={{ top: headerBarHeight }} className='sticky z-[5]'>
-        <LazyPillNotifyRefreshing isRefetching={!!infiniteScroll?.isRefetching} />
-        {additionalPillNotify}
-      </div>
+      <FlatListPillNotify
+        isRefetching={!!infiniteScroll?.isRefetching}
+        additionalPillNotify={additionalPillNotify}
+      />
       {isInfiniteScroll && infiniteScroll.isLoading ? (
         cloneElement(infiniteScroll.loader)
       ) : (
@@ -99,20 +76,12 @@ const FlatList = <TData,>({
           ))}
         </div>
       )}
-      {isInfiniteScroll && (
-        <>
-          {infiniteScroll.isFetching && !infiniteScroll.isLoading && (
-            <div className='my-[30px] pb-[40px]'>
-              <Loader center />
-            </div>
-          )}
-          {infiniteScroll.hasNextPage && !infiniteScroll.isLoading && (
-            <div
-              className='pointer-events-none absolute bottom-0 left-1/2 h-[95vh]'
-              ref={observeElement}
-            />
-          )}
-        </>
+      {isInfiniteScroll && !infiniteScroll.isLoading && (
+        <FlatListLoadMore
+          isFetching={infiniteScroll.isFetching}
+          hasNextPage={infiniteScroll.hasNextPage}
+          fetchNextPage={infiniteScroll.fetchNextPage}
+        />
       )}
     </section>
   );
