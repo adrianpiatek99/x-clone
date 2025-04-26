@@ -3,9 +3,9 @@ import { create } from 'zustand';
 
 import type { EditPostState, EditPostStore } from './types';
 
-export const initialState: EditPostState = {
+export const initialState = {
   files: [],
-};
+} satisfies EditPostState;
 
 export const useEditPostStore = create<EditPostStore>((set) => ({
   ...initialState,

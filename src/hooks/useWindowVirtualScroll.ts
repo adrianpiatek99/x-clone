@@ -1,10 +1,11 @@
 import { useRef } from 'react';
 
+import type { VirtualScrollKeys } from '@/stores/virtualScroll';
 import { useVirtualScrollStore } from '@/stores/virtualScroll';
 import { useWindowVirtualizer } from '@tanstack/react-virtual';
 import { useShallow } from 'zustand/shallow';
 
-export const useWindowVirtualScroll = (count: number, scrollKey?: string) => {
+export const useWindowVirtualScroll = (count: number, scrollKey?: VirtualScrollKeys) => {
   const parentRef = useRef<HTMLDivElement>(null);
   const { getState, update } = useVirtualScrollStore(
     useShallow((state) => ({

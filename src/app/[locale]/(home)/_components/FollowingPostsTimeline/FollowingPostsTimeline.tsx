@@ -3,6 +3,7 @@ import React from 'react';
 import FlatList from '@/components/molecules/FlatList';
 import PostCard from '@/components/molecules/PostCard';
 import type { Post } from '@/db/schema';
+import { VirtualScrollKeys } from '@/stores/virtualScroll';
 import { useTranslations } from 'next-intl';
 
 const FollowingPostsTimeline = () => {
@@ -17,7 +18,7 @@ const FollowingPostsTimeline = () => {
         title: t('homePage.followingPosts.empty.title'),
         description: t('homePage.followingPosts.empty.description'),
       }}
-      scrollKey='following-posts-timeline'
+      scrollKey={VirtualScrollKeys.FOLLOWING_TIMELINE}
     />
   );
 };

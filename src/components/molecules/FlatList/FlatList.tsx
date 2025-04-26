@@ -8,6 +8,7 @@ import ErrorState from '@/components/atoms/ErrorState';
 import Loader from '@/components/atoms/Loader';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import { useWindowVirtualScroll } from '@/hooks/useWindowVirtualScroll';
+import type { VirtualScrollKeys } from '@/stores/virtualScroll';
 import type { InfiniteQueryObserverBaseResult } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
 
@@ -28,7 +29,7 @@ type Props<TData> = {
   infiniteScroll?: {
     loader: ReactElement;
   } & Omit<InfiniteQueryObserverBaseResult, 'data'>;
-  scrollKey?: string;
+  scrollKey?: VirtualScrollKeys;
   additionalPillNotify?: ReactNode;
 };
 

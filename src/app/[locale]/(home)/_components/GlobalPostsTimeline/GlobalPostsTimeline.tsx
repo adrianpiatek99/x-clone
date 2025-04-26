@@ -3,6 +3,7 @@ import React from 'react';
 import FlatList from '@/components/molecules/FlatList';
 import PostCard, { PostCardSkeletons } from '@/components/molecules/PostCard';
 import { useGetGlobalTimelineQuery } from '@/hooks/api/posts/queries';
+import { VirtualScrollKeys } from '@/stores/virtualScroll';
 import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
 
@@ -31,7 +32,7 @@ const GlobalPostsTimeline = () => {
             <LazyGlobalTrackTimeline latestPostId={latestPostId} refetch={restResult.refetch} />
           )
         }
-        scrollKey='global-posts-timeline'
+        scrollKey={VirtualScrollKeys.GLOBAL_TIMELINE}
       />
     </div>
   );

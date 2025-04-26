@@ -2,9 +2,9 @@ import { create } from 'zustand';
 
 import type { VirtualScrollState, VirtualScrollStore } from './types';
 
-export const initialState: VirtualScrollState = {
+export const initialState = {
   states: {},
-};
+} satisfies VirtualScrollState;
 
 export const useVirtualScrollStore = create<VirtualScrollStore>((set, get) => ({
   ...initialState,
@@ -13,10 +13,5 @@ export const useVirtualScrollStore = create<VirtualScrollStore>((set, get) => ({
       states: { ...store.states, [key]: state },
     })),
   getState: (key) => get().states[key],
-  resetStore: (key) =>
-    set((store) => {
-      const { [key]: _, ...rest } = store.states;
-
-      return { states: rest };
-    }),
+  resetStore: () => set((state) => ({ ...state, ...initialState })),
 }));
