@@ -55,9 +55,7 @@ const HomeHeader = () => {
       {currentTab && (
         <Tabs value={currentTab} onChange={handleTabChange}>
           {tabs.map((tab) => (
-            <Tab key={tab.value} value={tab.value} disabled={tab.disabled}>
-              {tab.label}
-            </Tab>
+            <Tab key={tab.value} {...tab} />
           ))}
         </Tabs>
       )}
