@@ -1,6 +1,6 @@
 'use client';
 
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 
 import Box from '@/components/atoms/Box';
 import Button from '@/components/atoms/Button';
@@ -11,13 +11,18 @@ import UserAvatar from '@/components/molecules/UserAvatar';
 import { VALIDATION } from '@/constants/validation';
 import { useCreatePostMutation } from '@/hooks/api/posts/useCreatePostMutation';
 import { useCreatePostStore } from '@/stores/createPost/store';
+import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
 import { useShallow } from 'zustand/shallow';
 
 import { CreatePostFormToolbar } from './CreatePostFormToolbar';
 
-const LazyCreatePostFormMedia = lazy(() =>
-  import('./CreatePostFormMedia').then((mod) => ({ default: mod.CreatePostFormMedia }))
+const LazyCreatePostFormMedia = dynamic(
+  () => import('./CreatePostFormMedia').then((mod) => mod.CreatePostFormMedia),
+  {
+    loading: () => <Loader center />,
+    ssr: false,
+  }
 );
 
 const CreatePostForm = () => {
@@ -66,13 +71,11 @@ const CreatePostForm = () => {
         <Box className='gap-0'>
           <AutoHeight>
             {showMedia && (
-              <Suspense fallback={<Loader center />}>
-                <LazyCreatePostFormMedia
-                  files={files}
-                  isPending={isPending}
-                  removeFile={removeFile}
-                />
-              </Suspense>
+              <LazyCreatePostFormMedia
+                files={files}
+                isPending={isPending}
+                removeFile={removeFile}
+              />
             )}
           </AutoHeight>
           <Box className='flex-row items-center justify-between'>

@@ -1,4 +1,4 @@
-import React, { lazy, memo, Suspense, useState } from 'react';
+import React, { memo, useState } from 'react';
 
 import Dropdown, { DropdownItem } from '@/components/atoms/Dropdown';
 import Icon from '@/components/atoms/Icon';
@@ -10,10 +10,15 @@ import { useRouter } from '@/i18n/routing';
 import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
 
-const LazyConfirmModal = dynamic(() =>
-  import('@/components/atoms/ConfirmModal').then((mod) => mod.ConfirmModal)
+const LazyConfirmModal = dynamic(
+  () => import('@/components/atoms/ConfirmModal').then((mod) => mod.ConfirmModal),
+  {
+    ssr: false,
+  }
 );
-const LazyEditPostModal = lazy(() => import('@/components/organisms/EditPostModal'));
+const LazyEditPostModal = dynamic(() => import('@/components/organisms/EditPostModal'), {
+  ssr: false,
+});
 
 type Props = {
   post: Pick<Post, 'id' | 'author' | 'text' | 'media' | 'isAuthor'>;
@@ -83,13 +88,11 @@ export const PostCardDropdown = memo(({ post, onDeleteSuccess }: Props) => {
         onAccept={handleDeletePost}
         preventClosingOnOutside={false}
       />
-      <Suspense fallback={null}>
-        <LazyEditPostModal
-          post={post}
-          isOpen={isEditModalOpen}
-          onClose={() => setIsEditModalOpen(false)}
-        />
-      </Suspense>
+      <LazyEditPostModal
+        post={post}
+        isOpen={isEditModalOpen}
+        onClose={() => setIsEditModalOpen(false)}
+      />
     </>
   );
 });

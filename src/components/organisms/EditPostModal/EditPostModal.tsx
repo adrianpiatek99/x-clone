@@ -1,4 +1,4 @@
-import React, { lazy, memo, Suspense, useState } from 'react';
+import React, { memo, useState } from 'react';
 
 import Avatar from '@/components/atoms/Avatar';
 import Box from '@/components/atoms/Box';
@@ -9,16 +9,19 @@ import DiscardChangesModal from '@/components/molecules/DiscardChangesModal';
 import { VALIDATION } from '@/constants/validation';
 import type { Post } from '@/db/schema';
 import { useEditPostStore } from '@/stores/editPost';
+import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
 import { useShallow } from 'zustand/shallow';
 
 import { CreatePostFormToolbar } from '../CreatePostForm/CreatePostFormToolbar';
 import { useEditPostModalForm } from './useEditPostModalForm';
 
-const LazyEditPostModalMedia = lazy(() =>
-  import('./EditPostModalMedia').then((mod) => ({
-    default: mod.EditPostModalMedia,
-  }))
+const LazyEditPostModalMedia = dynamic(
+  () => import('./EditPostModalMedia').then((mod) => mod.EditPostModalMedia),
+  {
+    loading: () => <Loader center />,
+    ssr: false,
+  }
 );
 
 type Props = {
@@ -88,11 +91,7 @@ const EditPostModal = memo(({ post, isOpen, onClose, onSuccess }: Props) => {
             </form>
             <Box className='gap-0'>
               <AutoHeight>
-                {showMedia && (
-                  <Suspense fallback={<Loader center />}>
-                    <LazyEditPostModalMedia isPending={isPending} />
-                  </Suspense>
-                )}
+                {showMedia && <LazyEditPostModalMedia isPending={isPending} />}
               </AutoHeight>
               <CreatePostFormToolbar
                 isPending={isPending}

@@ -1,14 +1,17 @@
-import React, { Suspense, useState } from 'react';
+import React, { useState } from 'react';
 
 import Button from '@/components/atoms/Button';
 import Icon from '@/components/atoms/Icon';
 import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/useGetUserByScreenNameQuery';
+import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 import type { ProfileParams } from '../../layout';
 
-const LazyEditProfileModal = React.lazy(() => import('@/components/organisms/EditProfileModal'));
+const LazyEditProfileModal = dynamic(() => import('@/components/organisms/EditProfileModal'), {
+  ssr: false,
+});
 
 export const ProfileHeroActions = () => {
   const t = useTranslations();
@@ -35,13 +38,11 @@ export const ProfileHeroActions = () => {
         <Button variant='tinted'>{t('actions.follow')}</Button>
       )}
       {isMe && (
-        <Suspense>
-          <LazyEditProfileModal
-            isOpen={isEditProfileModalOpen}
-            onClose={() => setIsEditProfileModalOpen(false)}
-            user={data}
-          />
-        </Suspense>
+        <LazyEditProfileModal
+          isOpen={isEditProfileModalOpen}
+          onClose={() => setIsEditProfileModalOpen(false)}
+          user={data}
+        />
       )}
     </>
   );

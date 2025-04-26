@@ -1,11 +1,12 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 
 import FlatList from '@/components/molecules/FlatList';
 import PostCard, { PostCardSkeletons } from '@/components/molecules/PostCard';
 import { useGetGlobalTimelineQuery } from '@/hooks/api/posts/useGetGlobalTimelineQuery';
+import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
 
-const LazyGlobalTrackTimeline = lazy(() => import('./GlobalTrackTimeline'));
+const LazyGlobalTrackTimeline = dynamic(() => import('./GlobalTrackTimeline'), { ssr: false });
 
 const GlobalPostsTimeline = () => {
   const t = useTranslations();
@@ -27,9 +28,7 @@ const GlobalPostsTimeline = () => {
         }}
         additionalPillNotify={
           latestPostId && (
-            <Suspense>
-              <LazyGlobalTrackTimeline latestPostId={latestPostId} refetch={restResult.refetch} />
-            </Suspense>
+            <LazyGlobalTrackTimeline latestPostId={latestPostId} refetch={restResult.refetch} />
           )
         }
         scrollKey='global-posts-timeline'

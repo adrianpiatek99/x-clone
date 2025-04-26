@@ -1,15 +1,22 @@
 'use client';
 
 import type { ReactElement, ReactNode } from 'react';
-import React, { cloneElement, Suspense } from 'react';
+import React, { cloneElement } from 'react';
 
 import Empty from '@/components/atoms/Empty';
 import ErrorState from '@/components/atoms/ErrorState';
 import Loader from '@/components/atoms/Loader';
-import { LazyPillNotifyRefreshing } from '@/components/molecules/PillNotify';
 import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import { useWindowVirtualScroll } from '@/hooks/useWindowVirtualScroll';
 import type { InfiniteQueryObserverBaseResult } from '@tanstack/react-query';
+import dynamic from 'next/dynamic';
+
+const LazyPillNotifyRefreshing = dynamic(
+  () => import('@/components/molecules/PillNotify').then((mod) => mod.PillNotifyRefreshing),
+  {
+    ssr: false,
+  }
+);
 
 type Props<TData> = {
   data: TData[];
@@ -68,12 +75,10 @@ const FlatList = <TData,>({
 
   return (
     <section className='relative flex w-full flex-col' ref={parentRef}>
-      <Suspense fallback={null}>
-        <div style={{ top: headerBarHeight }} className='sticky z-[5]'>
-          <LazyPillNotifyRefreshing isRefetching={!!infiniteScroll?.isRefetching} />
-          {additionalPillNotify}
-        </div>
-      </Suspense>
+      <div style={{ top: headerBarHeight }} className='sticky z-[5]'>
+        <LazyPillNotifyRefreshing isRefetching={!!infiniteScroll?.isRefetching} />
+        {additionalPillNotify}
+      </div>
       {isInfiniteScroll && infiniteScroll.isLoading ? (
         cloneElement(infiniteScroll.loader)
       ) : (

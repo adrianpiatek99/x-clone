@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 
 import Box from '@/components/atoms/Box';
 import Loader from '@/components/atoms/Loader';
@@ -9,15 +9,18 @@ import UserAvatar from '@/components/molecules/UserAvatar';
 import { VALIDATION } from '@/constants/validation';
 import { useCreatePostMutation } from '@/hooks/api/posts/useCreatePostMutation';
 import { useCreatePostStore } from '@/stores/createPost';
+import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
 import { useShallow } from 'zustand/shallow';
 
 import { CreatePostFormToolbar } from '../CreatePostForm/CreatePostFormToolbar';
 
-const LazyCreatePostFormMedia = lazy(() =>
-  import('../CreatePostForm/CreatePostFormMedia').then((mod) => ({
-    default: mod.CreatePostFormMedia,
-  }))
+const LazyCreatePostFormMedia = dynamic(
+  () => import('../CreatePostForm/CreatePostFormMedia').then((mod) => mod.CreatePostFormMedia),
+  {
+    loading: () => <Loader center />,
+    ssr: false,
+  }
 );
 
 const CreatePostFormModal = () => {
@@ -91,13 +94,11 @@ const CreatePostFormModal = () => {
           <Box className='gap-0'>
             <AutoHeight>
               {showMedia && (
-                <Suspense fallback={<Loader center />}>
-                  <LazyCreatePostFormMedia
-                    isPending={isPending}
-                    files={files}
-                    removeFile={removeModalFile}
-                  />
-                </Suspense>
+                <LazyCreatePostFormMedia
+                  isPending={isPending}
+                  files={files}
+                  removeFile={removeModalFile}
+                />
               )}
             </AutoHeight>
             <CreatePostFormToolbar

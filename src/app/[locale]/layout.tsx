@@ -1,7 +1,6 @@
 import '../globals.css';
 
 import type { PropsWithChildren } from 'react';
-import { lazy, Suspense } from 'react';
 
 import { auth } from '@/auth';
 import Loader from '@/components/atoms/Loader';
@@ -9,6 +8,7 @@ import SidebarMenu from '@/components/organisms/SidebarMenu';
 import type { Locale } from '@/constants/locales';
 import { routing } from '@/i18n/routing';
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { Inter } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { SessionProvider } from 'next-auth/react';
@@ -16,7 +16,9 @@ import { getMessages } from 'next-intl/server';
 
 import Providers from './providers';
 
-const LazyTrendingSection = lazy(() => import('@/components/organisms/TrendingSection'));
+const LazyTrendingSection = dynamic(() => import('@/components/organisms/TrendingSection'), {
+  loading: () => <Loader center />,
+});
 
 const inter = Inter({
   subsets: ['latin'],
@@ -55,9 +57,7 @@ export default async function RootLayout({ children, params }: PropsWithChildren
                   {children}
                 </div>
                 <div className='hidden min-w-0 flex-1 items-start lg:flex'>
-                  <Suspense fallback={<Loader center />}>
-                    <LazyTrendingSection />
-                  </Suspense>
+                  <LazyTrendingSection />
                 </div>
               </main>
             </div>

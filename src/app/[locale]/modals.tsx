@@ -4,12 +4,27 @@ import { Toaster } from 'react-hot-toast';
 import { useAppSession } from '@/hooks/useAppSession';
 import dynamic from 'next/dynamic';
 
-const LazyAuthModal = dynamic(() => import('@/components/organisms/AuthModal'));
-const LazyAuthRequiredModal = dynamic(() => import('@/components/organisms/AuthRequiredModal'));
-const LazyNavigationDrawer = dynamic(() => import('@/components/organisms/NavigationDrawer'));
-const LazyLogoutConfirmModal = dynamic(() => import('@/components/molecules/LogoutConfirmModal'));
-const LazyNavigationTabs = dynamic(() => import('@/components/organisms/NavigationTabs'));
-const LazyCreatePostFormModal = dynamic(() => import('@/components/organisms/CreatePostFormModal'));
+const LazyAuthModal = dynamic(() => import('@/components/organisms/AuthModal'), {
+  ssr: false,
+});
+const LazyAuthRequiredModal = dynamic(() => import('@/components/organisms/AuthRequiredModal'), {
+  ssr: false,
+});
+const LazyNavigationDrawer = dynamic(() => import('@/components/organisms/NavigationDrawer'), {
+  ssr: false,
+});
+const LazyLogoutConfirmModal = dynamic(() => import('@/components/molecules/LogoutConfirmModal'), {
+  ssr: false,
+});
+const LazyNavigationTabs = dynamic(() => import('@/components/organisms/NavigationTabs'), {
+  ssr: false,
+});
+const LazyCreatePostFormModal = dynamic(
+  () => import('@/components/organisms/CreatePostFormModal'),
+  {
+    ssr: false,
+  }
+);
 
 export default function Modals() {
   const { user } = useAppSession();

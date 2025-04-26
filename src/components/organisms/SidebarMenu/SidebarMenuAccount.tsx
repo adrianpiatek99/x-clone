@@ -12,7 +12,9 @@ import { useGlobalStore } from '@/stores/global';
 import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
 
-const LazyEditProfileModal = dynamic(() => import('../EditProfileModal'));
+const LazyEditProfileModal = dynamic(() => import('../EditProfileModal'), {
+  ssr: false,
+});
 
 export const SidebarMenuAccount = memo(() => {
   const t = useTranslations();

@@ -1,11 +1,18 @@
 import type { ReactNode } from 'react';
-import React, { Suspense } from 'react';
+import React from 'react';
 
 import Box from '@/components/atoms/Box';
 import Typography from '@/components/atoms/Typography';
+import dynamic from 'next/dynamic';
 
-import { LazyPillNotifyRefreshing } from '../PillNotify';
 import { HeaderBarBackButton } from './HeaderBarBackButton';
+
+const LazyPillNotifyRefreshing = dynamic(
+  () => import('@/components/molecules/PillNotify').then((mod) => mod.PillNotifyRefreshing),
+  {
+    ssr: false,
+  }
+);
 
 export type HeaderBarProps = {
   children?: ReactNode;
@@ -46,11 +53,9 @@ const HeaderBar = ({
         </div>
       )}
       {children}
-      <Suspense>
-        <div className='absolute left-1/2 top-full -translate-y-1/2'>
-          <LazyPillNotifyRefreshing isRefetching={isRefetching} />
-        </div>
-      </Suspense>
+      <div className='absolute left-1/2 top-full -translate-y-1/2'>
+        <LazyPillNotifyRefreshing isRefetching={isRefetching} />
+      </div>
     </div>
   );
 };
