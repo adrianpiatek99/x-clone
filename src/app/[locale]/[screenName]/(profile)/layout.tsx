@@ -7,11 +7,13 @@ import Box from '@/components/atoms/Box';
 import HeaderBar from '@/components/molecules/HeaderBar';
 import ScrollToTop from '@/components/molecules/ScrollToTop';
 import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/queries';
+import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 import ProfileHero from './_components/ProfileHero';
-import ProfileTabs from './_components/ProfileTabs';
+
+const LazyProfileTabs = dynamic(() => import('./_components/ProfileTabs'), { ssr: false });
 
 export type ProfileParams = {
   screenName: string;
@@ -37,7 +39,7 @@ export default function Layout({ children }: PropsWithChildren) {
         isRefetching={isRefetching}
       />
       <ProfileHero />
-      {data && <ProfileTabs />}
+      {data && <LazyProfileTabs />}
       {data && children}
     </Box>
   );
