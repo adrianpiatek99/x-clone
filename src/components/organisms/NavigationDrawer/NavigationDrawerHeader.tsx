@@ -7,6 +7,7 @@ import UserDisplayName from '@/components/molecules/UserDisplayName';
 import { ROUTES } from '@/constants/routes';
 import { useAppSession } from '@/hooks/useAppSession';
 import { useGlobalStore } from '@/stores/global';
+import { formatNumber } from '@/utils/formatNumber';
 import { useTranslations } from 'next-intl';
 
 const NavigationDrawerHeader = () => {
@@ -23,7 +24,7 @@ const NavigationDrawerHeader = () => {
   const profilePageHref = ROUTES.PROFILE.DETAILS(screenName);
 
   return (
-    <div className='flex flex-col gap-2 px-6 pt-6'>
+    <div className='flex flex-col gap-2 px-6 pb-4 pt-6'>
       <Box>
         <div className='w-fit' onClick={handleClose}>
           <Avatar src={avatarUrl} href={profilePageHref} screenName={screenName} />
@@ -47,14 +48,14 @@ const NavigationDrawerHeader = () => {
             className='truncate text-neutral-300'
             href={ROUTES.PROFILE.FOLLOWING(screenName)}
           >
-            <Typography weight='bold'>0 </Typography>
+            <Typography weight='bold'>{formatNumber(0)} </Typography>
             <Typography color='secondary'>{t('profilePage.following')}</Typography>
           </Typography>
           <Typography
             className='truncate text-neutral-300'
             href={ROUTES.PROFILE.FOLLOWERS(screenName)}
           >
-            <Typography weight='bold'>0 </Typography>
+            <Typography weight='bold'>{formatNumber(0)} </Typography>
             <Typography color='secondary'>{t('profilePage.followers')}</Typography>
           </Typography>
         </div>

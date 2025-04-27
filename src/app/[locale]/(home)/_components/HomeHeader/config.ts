@@ -1,22 +1,20 @@
+import type { TabProps } from '@/components/molecules/Tabs';
+import { ROUTES } from '@/constants/routes';
 import { HomeTab } from '@/stores/home';
 
 export const HOME_SELECTED_TAB_KEY = 'homeSelectedTab';
-
-type TabConfig = {
-  value: HomeTab;
-  label: string;
-  disabled?: boolean;
-};
 
 export const getHomeTabs = ({ t, isAuth }: { t: Translation; isAuth: boolean }) =>
   [
     {
       value: HomeTab.GLOBAL,
-      label: t('homePage.tabs.global'),
+      children: t('homePage.tabs.global'),
+      href: ROUTES.HOME,
     },
     {
       value: HomeTab.FOLLOWING,
-      label: t('homePage.tabs.following'),
+      children: t('homePage.tabs.following'),
+      href: ROUTES.HOME,
       disabled: !isAuth,
     },
-  ] satisfies TabConfig[];
+  ] satisfies TabProps<HomeTab>[];

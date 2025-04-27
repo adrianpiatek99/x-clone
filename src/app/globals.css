@@ -60,7 +60,6 @@
   --text-2: var(--theme-dark-text);
   --border-1: 44, 44, 46;
   --border-2: 110, 110, 115;
-  --border-3: 66, 66, 66;
   --accent-1: 46, 46, 46;
 
   /* State Colors */
@@ -78,10 +77,10 @@
   --text-2: var(--theme-light-text);
   --border-1: 199, 199, 205;
   --border-2: 134, 134, 139;
-  --border-3: 200, 200, 200;
-  --accent-1: 255, 255, 255;
+  --accent-1: 219, 219, 219;
 
   /* State Colors */
+  --backdrop: rgba(91, 112, 131, 0.5);
 
   /* Components */
   --button-background-gray: 160, 160, 170;
@@ -101,8 +100,7 @@
   --text-2: var(--theme-midnightBlue-text);
   --border-1: 44, 55, 70;
   --border-2: 80, 90, 120;
-  --border-3: 33, 47, 65;
-  --accent-1: 21, 31, 46;
+  --accent-1: 46, 46, 46;
 
   /* State Colors */
   --focus: rgb(102, 178, 255);
@@ -120,8 +118,7 @@
   --text-2: var(--theme-tokyoNight-text);
   --border-1: 51, 55, 79;
   --border-2: 105, 115, 145;
-  --border-3: 80, 85, 120;
-  --accent-1: 36, 40, 59;
+  --accent-1: 46, 46, 46;
 
   /* State Colors */
   --focus: rgb(235, 177, 189);

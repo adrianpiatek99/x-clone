@@ -13,6 +13,8 @@ import { debounce } from '@/utils/debounce';
 
 import type { TabProps } from './Tab';
 
+const TAB_INDICATOR_PADDING = 24;
+
 type TabChildProps = { value?: string };
 
 type TabsIndicatorPosition = {
@@ -61,19 +63,24 @@ const Tabs = <TValue,>({ children, value, onChange }: TabsProps<TValue>) => {
         ) as HTMLElement | null;
 
         if (selectedTabElement) {
-          const left = selectedTabElement.offsetLeft;
-          const width = selectedTabElement.offsetWidth;
+          const tabRect = selectedTabElement.getBoundingClientRect();
+          const containerRect = current.getBoundingClientRect();
+          const left = tabRect.left - containerRect.left;
+          const tabInnerElement = selectedTabElement.querySelector('span');
+          const innerRect = tabInnerElement?.getBoundingClientRect();
 
-          selectedTabElement.scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest',
-            inline: 'center',
-          });
+          if (innerRect) {
+            selectedTabElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'nearest',
+              inline: 'center',
+            });
 
-          setIndicatorPosition({
-            left,
-            width,
-          });
+            setIndicatorPosition({
+              left: left + (innerRect.left - tabRect.left) - TAB_INDICATOR_PADDING / 2,
+              width: innerRect.width + TAB_INDICATOR_PADDING,
+            });
+          }
         }
       };
 
@@ -100,7 +107,7 @@ const Tabs = <TValue,>({ children, value, onChange }: TabsProps<TValue>) => {
         </div>
         {!!indicatorPosition.width && (
           <span
-            className='absolute bottom-0 flex h-[3px] w-[70px] rounded-md bg-primary delay-[width] duration-150'
+            className='absolute bottom-0 flex h-[3px] w-[70px] rounded-md bg-primary delay-[width] duration-200'
             style={{
               width: `${indicatorPosition.width}px`,
               left: `${indicatorPosition.left}px`,

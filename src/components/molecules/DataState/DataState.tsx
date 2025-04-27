@@ -3,12 +3,10 @@ import React from 'react';
 
 import ErrorState from '@/components/atoms/ErrorState';
 import Loader from '@/components/atoms/Loader';
-import { PillNotifyRefreshing } from '@/components/molecules/PillNotify/PillNotifyRefreshing';
 
 type Props = {
   isLoading: boolean;
   isError: boolean;
-  isRefetching?: boolean;
   onRetry?: () => void;
   children: ReactNode;
   loadingComponent?: ReactNode;
@@ -22,7 +20,6 @@ type Props = {
 const DataState = ({
   isLoading,
   isError,
-  isRefetching = false,
   onRetry,
   children,
   loadingComponent,
@@ -32,12 +29,7 @@ const DataState = ({
 
   if (isError) return errorComponent || <ErrorState onRetry={onRetry} />;
 
-  return (
-    <div className='relative flex flex-col'>
-      <PillNotifyRefreshing isRefetching={isRefetching} />
-      {children}
-    </div>
-  );
+  return <div className='relative flex flex-col'>{children}</div>;
 };
 
 export default DataState;

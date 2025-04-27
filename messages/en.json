@@ -12,6 +12,7 @@
   "search": "Search",
   "noData": "No data",
   "lostConnection": "Looks like you lost your connection. Please check it and try again.",
+  "trending": "Trending",
 
   "actions": {
     "cancel": "Cancel",
@@ -30,7 +31,8 @@
     "removePhoto": "Remove photo",
     "retry": "Retry",
     "showPosts": "{count, plural, one {Show # post} other {Show # posts}}",
-    "refreshing": "Refreshing..."
+    "refreshing": "Refreshing...",
+    "editBanner": "Edit banner"
   },
 
   "auth": {

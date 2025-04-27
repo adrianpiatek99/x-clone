@@ -2,7 +2,7 @@ import { create } from 'zustand';
 
 import type { EditProfileState, EditProfileStore } from './types';
 
-export const initialState: EditProfileState = {
+export const initialState = {
   avatar: {
     file: null,
     url: '',
@@ -11,7 +11,7 @@ export const initialState: EditProfileState = {
     file: null,
     url: '',
   },
-};
+} satisfies EditProfileState;
 
 export const useEditProfileStore = create<EditProfileStore>((set) => ({
   ...initialState,

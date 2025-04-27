@@ -3,10 +3,10 @@
 import type { ComponentPropsWithoutRef } from 'react';
 import React, { useRef } from 'react';
 
-import { CloseCircleIcon, SearchOutlinedIcon } from '@/icons';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
+import Icon from '../Icon';
 import IconButton from '../IconButton';
 
 const DEFAULT_MAX_LENGTH = 255;
@@ -71,7 +71,7 @@ const SearchBar = ({
         )}
         onClick={handleFocus}
       >
-        <SearchOutlinedIcon className='size-[20px]' />
+        <Icon name='SearchOutlinedIcon' className='size-[20px]' />
       </div>
       {allowClear && (
         <IconButton
@@ -81,7 +81,7 @@ const SearchBar = ({
           color='secondary'
           disableFocus
         >
-          <CloseCircleIcon />
+          <Icon name='CloseCircleIcon' />
         </IconButton>
       )}
     </div>

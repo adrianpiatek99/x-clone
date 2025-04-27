@@ -1,11 +1,13 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 
 import FlatList from '@/components/molecules/FlatList';
 import PostCard, { PostCardSkeletons } from '@/components/molecules/PostCard';
-import { useGetGlobalTimelineQuery } from '@/hooks/api/posts/useGetGlobalTimelineQuery';
+import { useGetGlobalTimelineQuery } from '@/hooks/api/posts/queries';
+import { VirtualScrollKeys } from '@/stores/virtualScroll';
+import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
 
-const LazyGlobalTrackNewPosts = lazy(() => import('./GlobalTrackNewPosts'));
+const LazyGlobalTrackTimeline = dynamic(() => import('./GlobalTrackTimeline'), { ssr: false });
 
 const GlobalPostsTimeline = () => {
   const t = useTranslations();
@@ -14,13 +16,6 @@ const GlobalPostsTimeline = () => {
 
   return (
     <div className='flex flex-col'>
-      <div className='relative'>
-        <Suspense fallback={null}>
-          {latestPostId && (
-            <LazyGlobalTrackNewPosts latestPostId={latestPostId} refetch={restResult.refetch} />
-          )}
-        </Suspense>
-      </div>
       <FlatList
         data={flatData}
         renderItem={(item) => <PostCard post={item} />}
@@ -32,7 +27,12 @@ const GlobalPostsTimeline = () => {
           loader: <PostCardSkeletons />,
           ...restResult,
         }}
-        scrollKey='global-posts-timeline'
+        additionalPillNotify={
+          latestPostId && (
+            <LazyGlobalTrackTimeline latestPostId={latestPostId} refetch={restResult.refetch} />
+          )
+        }
+        scrollKey={VirtualScrollKeys.GLOBAL_TIMELINE}
       />
     </div>
   );

@@ -1,9 +1,9 @@
 import React from 'react';
 
 import Avatar from '@/components/atoms/Avatar';
+import Icon from '@/components/atoms/Icon';
 import IconButton from '@/components/atoms/IconButton';
 import { useAppSession } from '@/hooks/useAppSession';
-import { MenuIcon } from '@/icons';
 import { useGlobalStore } from '@/stores/global';
 import { twMerge } from 'tailwind-merge';
 import { useShallow } from 'zustand/shallow';
@@ -43,7 +43,7 @@ export const NavigationTabsDrawerButton = () => {
       }}
     >
       <IconButton color='white' size='large' aria-label='Menu'>
-        <MenuIcon />
+        <Icon name='MenuIcon' />
       </IconButton>
     </div>
   );

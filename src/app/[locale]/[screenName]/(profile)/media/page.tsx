@@ -1,7 +1,5 @@
 import React from 'react';
 
-const Page = () => {
+export default function MediaPage() {
   return <div>media page</div>;
-};
-
-export default Page;
+}

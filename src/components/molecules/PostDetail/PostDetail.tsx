@@ -19,7 +19,7 @@ const PostDetail = ({
   post: { id, text, media, createdAt, isLiked, likesCount, author, isAuthor, editedAt },
 }: Props) => {
   const router = useRouter();
-  const [isGlobalLoading, setIsGlobalLoading] = useState(false);
+  const [isGlobalLoading] = useState(false);
 
   return (
     <Box className={twMerge('px-4 py-3', isGlobalLoading && 'opacity-50')}>
@@ -28,7 +28,6 @@ const PostDetail = ({
         <PostDetailAuthor author={author} />
         <PostCardDropdown
           post={{ id, text, author, media, isAuthor }}
-          setIsLoading={setIsGlobalLoading}
           onDeleteSuccess={() => router.back()}
         />
       </Box>

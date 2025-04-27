@@ -2,7 +2,7 @@ import { create } from 'zustand';
 
 import type { GlobalState, GlobalStore } from './types';
 
-export const initialState: GlobalState = {
+export const initialState = {
   mobileDrawer: {
     isOpen: false,
   },
@@ -12,7 +12,8 @@ export const initialState: GlobalState = {
   authRequiredModal: {
     isOpen: false,
   },
-};
+  previousPathname: null,
+} satisfies GlobalState;
 
 export const useGlobalStore = create<GlobalStore>((set) => ({
   ...initialState,

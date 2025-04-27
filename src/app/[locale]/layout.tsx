@@ -1,18 +1,24 @@
 import '../globals.css';
 
-import type { ReactNode } from 'react';
+import type { PropsWithChildren } from 'react';
 
 import { auth } from '@/auth';
+import Loader from '@/components/atoms/Loader';
 import SidebarMenu from '@/components/organisms/SidebarMenu';
 import type { Locale } from '@/constants/locales';
 import { routing } from '@/i18n/routing';
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { Inter } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { SessionProvider } from 'next-auth/react';
 import { getMessages } from 'next-intl/server';
 
 import Providers from './providers';
+
+const LazySidebarColumn = dynamic(() => import('@/components/organisms/SidebarColumn'), {
+  loading: () => <Loader center />,
+});
 
 const inter = Inter({
   subsets: ['latin'],
@@ -26,11 +32,10 @@ export const metadata: Metadata = {
 };
 
 type Props = {
-  children: ReactNode;
   params: Promise<{ locale: Locale }>;
 };
 
-export default async function RootLayout({ children, params }: Props) {
+export default async function RootLayout({ children, params }: PropsWithChildren<Props>) {
   const { locale } = await params;
   const session = await auth();
 
@@ -45,12 +50,13 @@ export default async function RootLayout({ children, params }: Props) {
       <body>
         <SessionProvider session={session}>
           <Providers locale={locale} messages={messages}>
-            <div className='relative mx-auto flex min-h-screen w-full md:max-w-[688px] lg:max-w-[1008px] xl:max-w-[1265px]'>
+            <div className='relative mx-auto flex min-h-screen w-full gap-3 md:max-w-[688px] lg:max-w-[1008px] xl:max-w-[1265px]'>
               <SidebarMenu />
-              <main className='relative flex w-full grow gap-[30px]'>
+              <main className='relative flex w-full grow gap-7'>
                 <div className='flex w-full max-w-full flex-col pb-24 sm:max-w-[600px] sm:border-x sm:border-border-1 sm:pb-48'>
                   {children}
                 </div>
+                <LazySidebarColumn />
               </main>
             </div>
           </Providers>

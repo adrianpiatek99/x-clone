@@ -1,8 +1,8 @@
 import React from 'react';
 
+import Icon from '@/components/atoms/Icon';
 import type { TypographyProps } from '@/components/atoms/Typography';
 import { Typography } from '@/components/atoms/Typography';
-import { VerifiedIcon } from '@/icons';
 import { twMerge } from 'tailwind-merge';
 
 type Props = Pick<TypographyProps, 'href' | 'onClick' | 'className' | 'size'> & {
@@ -25,7 +25,8 @@ const UserDisplayName = ({
         {name}
       </Typography>
       {isVerified && (
-        <VerifiedIcon
+        <Icon
+          name='VerifiedIcon'
           className={twMerge('ml-1 size-[14px] shrink-0 text-primary', verifiedClassName)}
         />
       )}

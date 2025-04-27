@@ -5,6 +5,7 @@ import { Dialog, DialogPanel } from '@headlessui/react';
 import { DialogBackdrop } from '@headlessui/react';
 import { useShallow } from 'zustand/shallow';
 
+import Footer from '../Footer';
 import NavigationDrawerHeader from './NavigationDrawerHeader';
 import NavigationDrawerList from './NavigationDrawerList';
 
@@ -40,6 +41,9 @@ const NavigationDrawer = () => {
           >
             <NavigationDrawerHeader />
             <NavigationDrawerList />
+            <div className='mt-auto px-6 py-4'>
+              <Footer />
+            </div>
           </DialogPanel>
         </div>
       </div>

@@ -2,12 +2,12 @@ import { create } from 'zustand';
 
 import type { HomeState, HomeStore } from './types';
 
-export const initialState: HomeState = {
+export const initialState = {
   currentTab: null,
   global: {
-    enableTrackNewPosts: false,
+    enableTrackTimeline: false,
   },
-};
+} satisfies HomeState;
 
 export const useHomeStore = create<HomeStore>((set) => ({
   ...initialState,

@@ -1,25 +1,28 @@
 import React from 'react';
 
 import Box from '@/components/atoms/Box';
+import Icon from '@/components/atoms/Icon';
 import Skeleton from '@/components/atoms/Skeleton';
 import Typography from '@/components/atoms/Typography';
 import UserDisplayName from '@/components/molecules/UserDisplayName';
 import { ROUTES } from '@/constants/routes';
-import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/useGetUserByScreenNameQuery';
+import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/queries';
 import { useTime } from '@/hooks/useTime';
-import { CalendarIcon, LinkIcon } from '@/icons';
+import { formatNumber } from '@/utils/formatNumber';
 import { removeHttp } from '@/utils/url';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
+import type { ProfileParams } from '../../layout';
+
 export const ProfileHeroInfo = () => {
   const t = useTranslations();
-  const { screenName } = useParams();
+  const { screenName } = useParams<ProfileParams>();
   const [animationParent] = useAutoAnimate({ duration: 100 });
   const { getFullDate } = useTime();
   const { data, isLoading } = useGetUserByScreenNameQuery({
-    screenName: screenName as string,
+    screenName,
     enabled: false,
   });
 
@@ -75,23 +78,23 @@ export const ProfileHeroInfo = () => {
                       rel: 'noopener noreferrer',
                     }}
                   >
-                    <LinkIcon className='mr-1 size-[18px] shrink-0' />
+                    <Icon name='LinkIcon' className='mr-1 size-[18px] shrink-0' />
                     {removeHttp(data.url)}
                   </Typography>
                 )}
                 <Typography color='secondary'>
-                  <CalendarIcon className='mr-1 size-[18px] shrink-0' />
+                  <Icon name='CalendarIcon' className='mr-1 size-[18px] shrink-0' />
                   {t('profilePage.joined')} {getFullDate(data.createdAt)}
                 </Typography>
               </div>
             </div>
             <Box className='flex-row flex-wrap gap-4'>
               <Typography href={ROUTES.PROFILE.FOLLOWING(data.screenName)}>
-                <Typography weight='bold'>{data.followingCount} </Typography>
+                <Typography weight='bold'>{formatNumber(data.followingCount)} </Typography>
                 <Typography color='secondary'>{t('profilePage.following')}</Typography>
               </Typography>
               <Typography href={ROUTES.PROFILE.FOLLOWERS(data.screenName)}>
-                <Typography weight='bold'>{data.followersCount} </Typography>
+                <Typography weight='bold'>{formatNumber(data.followersCount)} </Typography>
                 <Typography color='secondary'>{t('profilePage.followers')}</Typography>
               </Typography>
             </Box>

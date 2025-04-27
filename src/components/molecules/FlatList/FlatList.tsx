@@ -1,15 +1,16 @@
 'use client';
 
-import type { ReactElement } from 'react';
-import React, { cloneElement, Suspense } from 'react';
+import type { ReactElement, ReactNode } from 'react';
+import React, { cloneElement } from 'react';
 
 import Empty from '@/components/atoms/Empty';
 import ErrorState from '@/components/atoms/ErrorState';
-import Loader from '@/components/atoms/Loader';
-import { LazyPillNotifyRefreshing } from '@/components/molecules/PillNotify';
-import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import { useWindowVirtualScroll } from '@/hooks/useWindowVirtualScroll';
+import type { VirtualScrollKeys } from '@/stores/virtualScroll';
 import type { InfiniteQueryObserverBaseResult } from '@tanstack/react-query';
+
+import { FlatListLoadMore } from './FlatListLoadMore';
+import { FlatListPillNotify } from './FlatListPillNotify';
 
 type Props<TData> = {
   data: TData[];
@@ -21,7 +22,8 @@ type Props<TData> = {
   infiniteScroll?: {
     loader: ReactElement;
   } & Omit<InfiniteQueryObserverBaseResult, 'data'>;
-  scrollKey?: string;
+  scrollKey?: VirtualScrollKeys;
+  additionalPillNotify?: ReactNode;
 };
 
 /**
@@ -29,7 +31,14 @@ type Props<TData> = {
  * Supports infinite scrolling, loading states, and empty states.
  * Uses window-based virtualization for optimal performance with large datasets.
  */
-const FlatList = <TData,>({ data, renderItem, empty, infiniteScroll, scrollKey }: Props<TData>) => {
+const FlatList = <TData,>({
+  data,
+  renderItem,
+  empty,
+  infiniteScroll,
+  scrollKey,
+  additionalPillNotify,
+}: Props<TData>) => {
   const { items, totalSize, parentRef, measureElement, options } = useWindowVirtualScroll(
     data.length,
     scrollKey
@@ -38,30 +47,16 @@ const FlatList = <TData,>({ data, renderItem, empty, infiniteScroll, scrollKey }
   const isEmpty = isInfiniteScroll ? !infiniteScroll.isLoading && !data.length : !data.length;
   const isError = !!infiniteScroll?.isError;
 
-  const { observeElement } = useIntersectionObserver({
-    callback: (entry) => {
-      if (!isInfiniteScroll) return;
-
-      const { isFetching, hasNextPage, fetchNextPage } = infiniteScroll!;
-
-      if (entry.isIntersecting && hasNextPage && !isFetching) {
-        fetchNextPage();
-      }
-    },
-    options: {
-      threshold: 0,
-    },
-  });
-
   if (isError) return <ErrorState onRetry={() => infiniteScroll.refetch()} />;
 
   if (isEmpty) return <Empty title={empty.title} description={empty?.description} />;
 
   return (
     <section className='relative flex w-full flex-col' ref={parentRef}>
-      <Suspense fallback={null}>
-        <LazyPillNotifyRefreshing isRefetching={!!infiniteScroll?.isRefetching} />
-      </Suspense>
+      <FlatListPillNotify
+        isRefetching={!!infiniteScroll?.isRefetching}
+        additionalPillNotify={additionalPillNotify}
+      />
       {isInfiniteScroll && infiniteScroll.isLoading ? (
         cloneElement(infiniteScroll.loader)
       ) : (
@@ -81,20 +76,12 @@ const FlatList = <TData,>({ data, renderItem, empty, infiniteScroll, scrollKey }
           ))}
         </div>
       )}
-      {isInfiniteScroll && (
-        <>
-          {infiniteScroll.isFetching && !infiniteScroll.isLoading && (
-            <div className='my-[30px] pb-[40px]'>
-              <Loader center />
-            </div>
-          )}
-          {infiniteScroll.hasNextPage && !infiniteScroll.isLoading && (
-            <div
-              className='pointer-events-none absolute bottom-0 left-1/2 h-[95vh]'
-              ref={observeElement}
-            />
-          )}
-        </>
+      {isInfiniteScroll && !infiniteScroll.isLoading && (
+        <FlatListLoadMore
+          isFetching={infiniteScroll.isFetching}
+          hasNextPage={infiniteScroll.hasNextPage}
+          fetchNextPage={infiniteScroll.fetchNextPage}
+        />
       )}
     </section>
   );

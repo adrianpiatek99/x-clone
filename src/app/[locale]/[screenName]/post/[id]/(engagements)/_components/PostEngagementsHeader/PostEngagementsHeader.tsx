@@ -6,19 +6,14 @@ import HeaderBar from '@/components/molecules/HeaderBar';
 import Tabs, { Tab } from '@/components/molecules/Tabs';
 import { ROUTES } from '@/constants/routes';
 import { usePathname } from '@/i18n/routing';
+import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-type Params = {
-  screenName: string;
-  id: string;
-};
+import type { PostParams } from '../../../(post)/layout';
 
-type Props = {
-  params: Params;
-};
-
-const PostEngagementsHeader = ({ params: { id, screenName } }: Props) => {
+const PostEngagementsHeader = () => {
   const t = useTranslations();
+  const { id, screenName } = useParams<PostParams>();
   const pathname = usePathname();
   const repostsPath = ROUTES.POST.REPOSTS(screenName, id);
   const likesPath = ROUTES.POST.LIKES(screenName, id);

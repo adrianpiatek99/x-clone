@@ -32,16 +32,16 @@ const classes: IconButtonClassesReturn = {
     white:
       'text-text-1 bg-button-background-gray/0 enabled:hover:bg-button-background-gray/22 enabled:active:bg-button-background-gray/30 focus-visible:bg-button-background-gray/10',
     darker:
-      'text-white bg-[rgb(51,59,45)] enabled:hover:bg-[rgb(51,59,45)]/80 enabled:active:bg-[rgb(51,59,45)]/60',
+      'text-white bg-[rgb(21,29,15)] enabled:hover:bg-[rgb(21,29,15)]/80 enabled:active:bg-[rgb(21,29,15)]/60',
   },
   size: {
-    small: 'min-w-[34px] min-h-[34px] [&>svg]:size-[16px]',
+    small: 'min-w-[34px] min-h-[34px] [&>svg]:size-[18px]',
     medium: 'min-w-[34px] min-h-[34px] [&>svg]:size-[20px]',
     large: 'min-w-[42px] min-h-[42px] [&>svg]:size-[24px]',
   },
 };
 
-const IconButtonElement: FC<IconButtonProps> = ({
+const IconButtonRoot: FC<IconButtonProps> = ({
   children,
   title = '',
   size = 'medium',
@@ -60,7 +60,7 @@ const IconButtonElement: FC<IconButtonProps> = ({
       <button
         data-label={label}
         className={twMerge(
-          'relative flex w-max shrink-0 items-center justify-center rounded-full p-0 duration-200 focus-visible:ring-2 focus-visible:ring-current disabled:cursor-not-allowed disabled:opacity-50 [&>svg]:shrink-0',
+          'relative flex w-max shrink-0 items-center justify-center rounded-full p-0 duration-200 focus-visible:ring-2 focus-visible:ring-current disabled:cursor-not-allowed disabled:opacity-50 [&>svg]:shrink-0 [&>svg]:text-current',
           label && 'after:content-[attr(data-label)] after:pl-1.5 after:pr-3 pl-3',
           isCustomColor
             ? 'bg-opacity-0 focus-visible:bg-opacity-10 enabled:hover:bg-opacity-10 enabled:active:bg-opacity-20'
@@ -83,10 +83,10 @@ const IconButtonElement: FC<IconButtonProps> = ({
 const IconButton: FC<IconButtonProps> = ({ href, linkClassName = '', ...props }) => {
   return href ? (
     <Link href={href} tabIndex={-1} className={twMerge('rounded-full', linkClassName)}>
-      <IconButtonElement {...props} />
+      <IconButtonRoot {...props} />
     </Link>
   ) : (
-    <IconButtonElement {...props} />
+    <IconButtonRoot {...props} />
   );
 };
 

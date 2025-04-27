@@ -8,6 +8,7 @@ export type GlobalState = {
   authRequiredModal: {
     isOpen: boolean;
   };
+  previousPathname: string | null;
 };
 
 export type GlobalActions = {

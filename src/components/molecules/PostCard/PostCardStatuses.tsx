@@ -1,11 +1,11 @@
 import React from 'react';
 
+import Icon from '@/components/atoms/Icon';
 import Tooltip from '@/components/atoms/Tooltip';
 import Typography from '@/components/atoms/Typography';
 import { MID_DOT } from '@/constants/strings';
 import type { Post } from '@/db/schema';
 import { useTime } from '@/hooks/useTime';
-import { EditIcon } from '@/icons';
 import { useTranslations } from 'next-intl';
 
 type Props = Pick<Post, 'editedAt'>;
@@ -23,7 +23,7 @@ export const PostCardStatuses = ({ editedAt }: Props) => {
             color='secondary'
             size='s'
           >
-            <EditIcon className='size-[16px]' /> {t('post.actions.edited')}
+            <Icon name='EditIcon' className='size-[16px]' /> {t('post.actions.edited')}
           </Typography>
         </Tooltip>
       )}

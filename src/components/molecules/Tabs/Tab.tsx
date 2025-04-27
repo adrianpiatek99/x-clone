@@ -22,14 +22,13 @@ export const Tab = <TValue,>({
 }: TabProps<TValue>) => {
   const handleClick = () => !selected && onClick?.();
 
-  if (href && !selected) {
+  if (href) {
     return (
       <Link
         className={twMerge(
           'relative flex w-full cursor-pointer items-center justify-center px-4 text-m font-medium text-text-2 transition focus-visible:bg-text-1/10 duration-200 enabled:focus-visible:ring-2 enabled:focus-visible:ring-inset enabled:focus-visible:ring-focus',
-          selected
-            ? 'cursor-default text-text-1'
-            : 'hover:bg-text-1/10 enabled:active:bg-text-1/15',
+          'hover:bg-text-1/10 enabled:active:bg-text-1/15',
+          selected && 'text-text-1',
           disabled && 'cursor-not-allowed opacity-50 hover:bg-transparent'
         )}
         role='tab'
@@ -37,9 +36,9 @@ export const Tab = <TValue,>({
         tabIndex={selected ? 0 : -1}
         onClick={handleClick}
         href={disabled ? {} : href}
-        scroll={false}
+        scroll={selected ? true : false}
       >
-        {children}
+        <span>{children}</span>
       </Link>
     );
   }
@@ -58,7 +57,7 @@ export const Tab = <TValue,>({
       onClick={handleClick}
       disabled={disabled}
     >
-      {children}
+      <span>{children}</span>
     </button>
   );
 };

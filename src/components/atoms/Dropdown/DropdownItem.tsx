@@ -31,7 +31,7 @@ export const DropdownItem: FC<DropdownItemProps> = ({
   return (
     <MenuItem disabled={isDisabled}>
       <button
-        className='group flex w-full items-center justify-between gap-3 border-b border-border-2 px-4 py-3 duration-200 last:border-none enabled:active:bg-text-1/15 disabled:cursor-not-allowed disabled:opacity-50 data-[focus]:bg-text-1/10'
+        className='group flex w-full items-center justify-between gap-3 border-b border-text-1/20 px-4 py-3 duration-200 last:border-none enabled:active:bg-text-1/15 disabled:cursor-not-allowed disabled:opacity-50 data-[focus]:bg-text-1/10'
         onClick={onClick}
         disabled={isDisabled}
       >

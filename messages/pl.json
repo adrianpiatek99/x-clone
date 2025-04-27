@@ -12,6 +12,7 @@
   "search": "Szukaj",
   "noData": "Brak danych",
   "lostConnection": "Wygląda na to, że straciłeś połączenie. Sprawdź je i spróbuj ponownie.",
+  "trending": "Trendujące",
 
   "actions": {
     "cancel": "Anuluj",
@@ -30,7 +31,8 @@
     "removePhoto": "Usuń zdjęcie",
     "retry": "Spróbuj ponownie",
     "showPosts": "{count, plural, one {Pokaż # wpis} few {Pokaż # wpisy} other {Pokaż # wpisów}}",
-    "refreshing": "Odświeżanie..."
+    "refreshing": "Odświeżanie...",
+    "editBanner": "Edytuj baner"
   },
 
   "auth": {

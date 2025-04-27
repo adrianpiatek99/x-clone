@@ -1,12 +1,14 @@
+'use client';
+
 import React from 'react';
 
 import Box from '@/components/atoms/Box';
 import Button from '@/components/atoms/Button';
+import Icon from '@/components/atoms/Icon';
 import Logo from '@/components/atoms/Logo';
 import { ROUTES } from '@/constants/routes';
 import { useAppSession } from '@/hooks/useAppSession';
 import { usePathname } from '@/i18n/routing';
-import { LoginIcon, PlusIcon } from '@/icons';
 import { useAuthStore } from '@/stores/auth';
 import { useCreatePostStore } from '@/stores/createPost';
 import { useTranslations } from 'next-intl';
@@ -51,7 +53,7 @@ const SidebarMenuList = () => {
               onClick={handleOpenCreatePostModal}
               aria-label={t('post.actions.send')}
             >
-              <PlusIcon className='size-[34px]' />
+              <Icon name='PlusIcon' className='size-[34px]' />
             </Button>
           </>
         ) : (
@@ -68,7 +70,7 @@ const SidebarMenuList = () => {
               onClick={handleOpenAuthModal}
               aria-label={t('auth.signIn')}
             >
-              <LoginIcon className='size-[26px]' />
+              <Icon name='LoginIcon' className='size-[26px]' />
             </Button>
           </>
         )}

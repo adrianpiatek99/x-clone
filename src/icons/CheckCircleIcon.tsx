@@ -6,7 +6,7 @@ const SvgCheckCircleIcon = (props: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGEleme
     height='1em'
     viewBox='0 -960 960 960'
     width='1em'
-    fill='#e8eaed'
+    fill='currentColor'
     ref={ref}
     {...props}
   >

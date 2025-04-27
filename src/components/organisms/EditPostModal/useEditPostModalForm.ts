@@ -2,7 +2,7 @@ import { useEffect, useMemo } from 'react';
 
 import type { CreatePostRequest } from '@/app/api/posts/create/route';
 import type { Post } from '@/db/schema';
-import { useUpdatePostMutation } from '@/hooks/api/posts/useUpdatePostMutation';
+import { useUpdatePostMutation } from '@/hooks/api/posts/mutations';
 import { useAppForm } from '@/hooks/useFormHook';
 import { useEditPostStore } from '@/stores/editPost';
 import { useStore } from '@tanstack/react-form';

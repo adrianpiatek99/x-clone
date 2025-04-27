@@ -5,10 +5,11 @@ import React from 'react';
 import Box from '@/components/atoms/Box';
 import Typography from '@/components/atoms/Typography';
 import UserDisplayName from '@/components/molecules/UserDisplayName';
-import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/useGetUserByScreenNameQuery';
+import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/queries';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
+import type { ProfileParams } from '../../layout';
 import { ProfileHeroActions } from './ProfileHeroActions';
 import { ProfileHeroAvatar } from './ProfileHeroAvatar';
 import { ProfileHeroBanner } from './ProfileHeroBanner';
@@ -16,9 +17,9 @@ import { ProfileHeroInfo } from './ProfileHeroInfo';
 
 const ProfileHero = () => {
   const t = useTranslations();
-  const { screenName } = useParams();
+  const { screenName } = useParams<ProfileParams>();
   const { data, isLoading, isEmpty } = useGetUserByScreenNameQuery({
-    screenName: screenName as string,
+    screenName,
     enabled: false,
   });
 

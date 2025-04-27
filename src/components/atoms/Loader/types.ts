@@ -1,4 +1,4 @@
-export type LoaderColor = 'primary' | 'white';
+export type LoaderColor = 'primary' | 'secondary';
 export type LoaderSize = 'small' | 'medium' | 'large';
 
 export type LoaderClassesReturn = {

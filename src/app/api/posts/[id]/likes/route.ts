@@ -2,21 +2,18 @@ import { db } from '@/db/db';
 import type { PostLike } from '@/db/schema';
 import { postLikesTable, userPublicColumns } from '@/db/schema';
 import { handleApiError } from '@/db/utils/api';
+import { type CursorParams, cursorSchema, type NextCursor } from '@/schema/api';
 import { and, desc, eq, lt, or } from 'drizzle-orm';
-import { type NextRequest, NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server';
 
 export type GetPostLikesParams = {
   id: string;
-  cursor?: {
-    id: string;
-    createdAt: Date;
-  };
-  limit?: number;
-};
+} & CursorParams;
 
 export type GetPostLikesResponse = {
   postLikes: PostLike[];
-  nextCursor: { id: string; createdAt: string } | null;
+  nextCursor: NextCursor;
 };
 
 export const GET = async (
@@ -27,15 +24,17 @@ export const GET = async (
     const { searchParams } = new URL(request.url);
     const { id } = await params;
 
-    // Validate cursor
-    const cursorStr = searchParams.get('cursor');
-    const cursor: GetPostLikesParams['cursor'] = cursorStr
+    // Validate params
+    const { cursor: cursorParam, limit } = cursorSchema.parse({
+      cursor: searchParams.get('cursor') ? JSON.parse(searchParams.get('cursor')!) : undefined,
+      limit: parseInt(searchParams.get('limit') ?? ''),
+    });
+    const cursor = cursorParam
       ? {
-          ...JSON.parse(cursorStr),
-          createdAt: new Date(JSON.parse(cursorStr).createdAt),
+          ...cursorParam,
+          createdAt: new Date(cursorParam.createdAt),
         }
       : undefined;
-    const limit = parseInt(searchParams.get('limit') || '20', 10);
     const take = limit + 1;
 
     // Fetch post likes

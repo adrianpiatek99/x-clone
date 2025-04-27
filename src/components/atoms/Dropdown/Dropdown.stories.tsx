@@ -1,16 +1,8 @@
-import {
-  CloseIcon,
-  EditProfileIcon,
-  EmojiSmileIcon,
-  HeartOutlinedIcon,
-  PeopleIcon,
-  RemoveOutlinedIcon,
-  RepostIcon,
-} from '@/icons';
 import type { Meta, StoryFn } from '@storybook/react';
 
 import Box from '../Box';
 import Button from '../Button';
+import Icon from '../Icon';
 import Dropdown, { DropdownItem } from '.';
 import type { DropdownProps } from './Dropdown';
 
@@ -25,25 +17,25 @@ const Template: StoryFn<DropdownProps> = (args) => (
   <Box className='ml-[25%]'>
     <Dropdown {...args}>
       <Button>Open</Button>
-      <DropdownItem onClick={() => null} icon={<EditProfileIcon />}>
+      <DropdownItem onClick={() => null} icon={<Icon name='EditProfileIcon' />}>
         Edit
       </DropdownItem>
-      <DropdownItem onClick={() => null} icon={<PeopleIcon />}>
+      <DropdownItem onClick={() => null} icon={<Icon name='PeopleIcon' />}>
         Duplicate
       </DropdownItem>
-      <DropdownItem onClick={() => null} icon={<RepostIcon />}>
+      <DropdownItem onClick={() => null} icon={<Icon name='RepostIcon' />}>
         Repost
       </DropdownItem>
-      <DropdownItem onClick={() => null} icon={<EmojiSmileIcon />} isLoading>
+      <DropdownItem onClick={() => null} icon={<Icon name='EmojiSmileIcon' />} isLoading>
         Loading
       </DropdownItem>
-      <DropdownItem onClick={() => null} icon={<CloseIcon />} disabled>
+      <DropdownItem onClick={() => null} icon={<Icon name='CloseIcon' />} disabled>
         Disabled
       </DropdownItem>
-      <DropdownItem onClick={() => null} icon={<HeartOutlinedIcon />}>
+      <DropdownItem onClick={() => null} icon={<Icon name='HeartOutlinedIcon' />}>
         Like
       </DropdownItem>
-      <DropdownItem onClick={() => null} icon={<RemoveOutlinedIcon />} danger>
+      <DropdownItem onClick={() => null} icon={<Icon name='RemoveIcon' />} danger>
         Delete
       </DropdownItem>
     </Dropdown>

@@ -1,12 +1,13 @@
 'use client';
 
 import type { ComponentPropsWithRef, FC, HTMLProps, ReactElement, RefCallback } from 'react';
-import React, { cloneElement } from 'react';
+import React, { cloneElement, useMemo } from 'react';
 
 import { Link } from '@/i18n/routing';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
+import type { LoaderColor } from '../Loader';
 import Loader from '../Loader';
 import type {
   ButtonAlign,
@@ -35,21 +36,21 @@ const classes: ButtonClassesReturn = {
   variant: {
     filled: {
       primary:
-        'bg-primary [color:#fff] enabled:hover:bg-primary/75 enabled:active:bg-primary/60 focus-visible:ring-focus focus-visible:ring-2',
+        'bg-primary [color:#fff] enabled:hover:bg-primary/75 enabled:active:bg-primary/60 focus-visible:ring-focus focus-visible:ring-2 disabled:bg-primary/50',
       danger:
-        'bg-error-1 [color:#fff] focus-visible:ring-error-1 focus-visible:ring-2 enabled:hover:bg-error-1/75 enabled:active:bg-error-1/60',
+        'bg-error-1 [color:#fff] focus-visible:ring-error-1 focus-visible:ring-2 enabled:hover:bg-error-1/75 enabled:active:bg-error-1/60 disabled:bg-error-1/50',
     },
     tinted: {
       primary:
-        'bg-primary/25 [color:theme("colors.primary")] focus-visible:ring-focus focus-visible:ring-2 enabled:hover:bg-primary/35 enabled:active:bg-primary/45',
+        'bg-primary/25 [color:theme("colors.primary")] focus-visible:ring-focus focus-visible:ring-2 enabled:hover:bg-primary/35 enabled:active:bg-primary/45 disabled:bg-primary/[0.16]',
       danger:
-        'bg-error-1/25 [color:theme("colors.error-1")] focus-visible:ring-current focus-visible:ring-2 enabled:hover:bg-error-1/35 enabled:active:bg-error-1/45',
+        'bg-error-1/25 [color:theme("colors.error-1")] focus-visible:ring-current focus-visible:ring-2 enabled:hover:bg-error-1/35 enabled:active:bg-error-1/45 disabled:bg-error-1/[0.16]',
     },
     gray: {
       primary:
-        'bg-button-background-gray/15 enabled:hover:bg-button-background-gray/22 enabled:active:bg-button-background-gray/30 [color:theme("colors.primary")] focus-visible:ring-focus focus-visible:ring-2',
+        'bg-text-1/30 [color:#fff] enabled:hover:bg-text-1/22 enabled:active:bg-text-1/30 focus-visible:ring-focus focus-visible:ring-2 disabled:bg-text-1/10',
       danger:
-        'bg-button-background-gray/15 [color:theme("colors.error-1")] focus-visible:ring-current focus-visible:ring-2 enabled:hover:bg-button-background-gray/22 enabled:active:bg-button-background-gray/30',
+        'bg-text-1/15 [color:theme("colors.error-1")] focus-visible:ring-current focus-visible:ring-2 enabled:hover:bg-text-1/22 enabled:active:bg-text-1/30 disabled:bg-text-1/10',
     },
     plain: {
       primary:
@@ -100,10 +101,16 @@ const ButtonRoot: FC<Omit<ButtonProps, 'href' | 'linkClassName'>> = ({
 }) => {
   const t = useTranslations();
 
+  const iconColor = useMemo((): LoaderColor => {
+    if (variant === 'plain') return 'primary';
+
+    return 'secondary';
+  }, [variant]);
+
   return (
     <button
       className={twMerge(
-        'relative flex w-auto min-w-[36px] items-center gap-[5px] break-words px-4 py-1 font-medium normal-case duration-200 disabled:cursor-not-allowed disabled:opacity-50',
+        'relative flex w-auto min-w-[36px] items-center gap-[5px] break-words px-4 py-1 font-medium normal-case duration-200 disabled:cursor-not-allowed',
         classes.variant[variant][color],
         classes.rounded[rounded],
         classes.size[size],
@@ -117,16 +124,20 @@ const ButtonRoot: FC<Omit<ButtonProps, 'href' | 'linkClassName'>> = ({
       {...props}
     >
       {isLoading && (
-        <Loader
-          className={twMerge('absolute', classes.loaderSize[size])}
-          color={variant === 'filled' ? 'white' : 'primary'}
-        />
+        <Loader className={twMerge('absolute', classes.loaderSize[size])} color={iconColor} />
       )}
       {startIcon &&
         cloneElement(startIcon as ReactElement<HTMLProps<HTMLElement>>, {
-          className: twMerge('shrink-0', classes.iconSize[size], isLoading && 'opacity-10'),
+          className: twMerge(
+            'shrink-0',
+            classes.iconSize[size],
+            disabled && 'opacity-50',
+            isLoading && 'opacity-[0.05]'
+          ),
         })}
-      <span className={twMerge(isLoading && 'opacity-10')}>{children}</span>
+      <span className={twMerge(disabled && 'opacity-50', isLoading && 'opacity-[0.05]')}>
+        {children}
+      </span>
     </button>
   );
 };

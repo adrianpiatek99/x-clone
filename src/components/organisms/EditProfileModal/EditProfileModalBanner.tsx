@@ -1,12 +1,13 @@
 import React, { memo } from 'react';
 
 import Box from '@/components/atoms/Box';
+import Dropdown, { DropdownItem } from '@/components/atoms/Dropdown';
+import Icon from '@/components/atoms/Icon';
 import IconButton from '@/components/atoms/IconButton';
 import ShimmerImage from '@/components/atoms/ShimmerImage';
 import { fileValidationConfigs } from '@/db/utils/validateFile';
 import { useFileImagePicker } from '@/hooks/useFileImagePicker';
 import { useToasts } from '@/hooks/useToasts';
-import { CameraPlusIcon, CloseIcon } from '@/icons';
 import { useEditProfileStore } from '@/stores/editProfile';
 import { useTranslations } from 'next-intl';
 import { useShallow } from 'zustand/shallow';
@@ -33,31 +34,26 @@ export const EditProfileModalBanner = memo(() => {
   const handleRemoveBanner = () => updateBannerFile(null);
 
   return (
-    <div className='relative mx-0.5 grid place-items-center overflow-hidden bg-foreground'>
-      <div className="relative block w-full pb-[33.333%] after:absolute after:inset-0 after:bg-[rgba(0,0,0,0.3)] after:content-['']">
+    <div className='relative grid place-items-center overflow-hidden bg-foreground'>
+      <div className='relative block w-full pb-[33.333%]'>
         {bannerUrl && (
           <ShimmerImage className='object-cover' src={bannerUrl} alt='Profile banner' fill />
         )}
       </div>
-      <Box className='absolute flex-row'>
-        <IconButton
-          onClick={openFilePicker}
-          title={t('actions.addPhoto')}
-          color='darker'
-          size='large'
-        >
-          <CameraPlusIcon />
-        </IconButton>
-        {bannerUrl && (
-          <IconButton
-            onClick={handleRemoveBanner}
-            title={t('actions.removePhoto')}
-            color='darker'
-            size='large'
-          >
-            <CloseIcon />
+      <Box className='absolute right-4 top-3 my-[-8px] mr-[-6px] flex-row'>
+        <Dropdown>
+          <IconButton title={t('actions.editBanner')} color='darker'>
+            <Icon name='EditIcon' />
           </IconButton>
-        )}
+          <DropdownItem onClick={openFilePicker} icon={<Icon name='EditIcon' />}>
+            {t('actions.addPhoto')}
+          </DropdownItem>
+          {bannerUrl ? (
+            <DropdownItem onClick={handleRemoveBanner} icon={<Icon name='RemoveIcon' />} danger>
+              {t('actions.removePhoto')}
+            </DropdownItem>
+          ) : null}
+        </Dropdown>
       </Box>
       <input
         ref={filePickerRef}

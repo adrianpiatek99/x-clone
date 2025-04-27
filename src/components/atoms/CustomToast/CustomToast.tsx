@@ -3,16 +3,16 @@ import React, { cloneElement } from 'react';
 
 import type { ToastType } from '@/hooks/useToasts';
 import { useToasts } from '@/hooks/useToasts';
-import { CheckCircleIcon, InfoOutlinedIcon, RaportIcon, WarningIcon } from '@/icons';
 import { twMerge } from 'tailwind-merge';
 
+import Icon from '../Icon';
 import type { CustomToastClasses } from './types';
 
 const icons = {
-  success: <CheckCircleIcon />,
-  information: <InfoOutlinedIcon />,
-  warning: <WarningIcon />,
-  error: <RaportIcon />,
+  success: <Icon name='CheckCircleIcon' />,
+  information: <Icon name='InfoOutlinedIcon' />,
+  warning: <Icon name='WarningIcon' />,
+  error: <Icon name='RaportIcon' />,
 } satisfies Record<ToastType, ReactElement>;
 
 export type CustomToastProps = { id: string; type: ToastType; visible: boolean; message: string };

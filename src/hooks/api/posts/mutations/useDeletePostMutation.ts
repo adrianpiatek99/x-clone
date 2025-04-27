@@ -14,6 +14,11 @@ type Props = {
   onSettled?: () => void;
 };
 
+type Context = {
+  previousTimeline: GetGlobalTimelineResponse | undefined;
+  previousPost: unknown;
+};
+
 export const useDeletePostMutation = ({ onSuccess, onError, onSettled }: Props = {}) => {
   const t = useTranslations();
   const { addToast } = useToasts();
@@ -22,27 +27,47 @@ export const useDeletePostMutation = ({ onSuccess, onError, onSettled }: Props =
   const { mutate, isPending: isDeleting } = useMutation<
     DeletePostResponse,
     ApiAxiosError,
-    DeletePostParams
+    DeletePostParams,
+    Context
   >({
     mutationFn: ({ id }) => apiRequest('DELETE', API_ENDPOINTS.POSTS.DELETE({ id })),
-    onSuccess: ({ id }) => {
-      addToast('success', t('post.api.deletePost.success'));
+    onMutate: async ({ id }) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: QUERY_KEYS.POSTS.GLOBAL_TIMELINE });
+      await queryClient.cancelQueries({ queryKey: QUERY_KEYS.POSTS.DETAILS(id) });
 
-      // Update the cache with the deleted post
+      // Snapshot the previous value
+      const previousTimeline = queryClient.getQueryData<GetGlobalTimelineResponse>(
+        QUERY_KEYS.POSTS.GLOBAL_TIMELINE
+      );
+      const previousPost = queryClient.getQueryData(QUERY_KEYS.POSTS.DETAILS(id));
+
+      // Optimistically update the cache
       deleteItemFromInfiniteQueryCache<GetGlobalTimelineResponse>(
         queryClient,
         QUERY_KEYS.POSTS.GLOBAL_TIMELINE,
         id,
         { itemsKey: 'posts' }
       );
-
       deleteItemFromCache(queryClient, QUERY_KEYS.POSTS.DETAILS(id), id);
 
+      return { previousTimeline, previousPost };
+    },
+    onSuccess: () => {
+      addToast('success', t('post.api.deletePost.success'));
       onSuccess?.();
     },
-    onError: () => {
-      addToast('error', t('post.api.deletePost.error'), { duration: 6000 });
+    onError: (_err, { id }, context) => {
+      // Rollback to the previous state on error
+      if (context?.previousTimeline) {
+        queryClient.setQueryData(QUERY_KEYS.POSTS.GLOBAL_TIMELINE, context.previousTimeline);
+      }
 
+      if (context?.previousPost) {
+        queryClient.setQueryData(QUERY_KEYS.POSTS.DETAILS(id), context.previousPost);
+      }
+
+      addToast('error', t('post.api.deletePost.error'), { duration: 6000 });
       onError?.();
     },
     onSettled: () => {

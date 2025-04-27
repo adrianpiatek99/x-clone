@@ -17,7 +17,7 @@ export type LoaderProps = {
 const classes: LoaderClassesReturn = {
   color: {
     primary: 'text-loader',
-    white: 'text-white',
+    secondary: 'text-text-1',
   },
   size: {
     small: 'size-[22px]',
@@ -48,7 +48,7 @@ const Loader: FC<LoaderProps> = ({
             key={number}
             x1='25'
             y1='25'
-            x2='35'
+            x2='33'
             y2='25'
             transform={`rotate(${number * 30} 25 25) translate(11 0)`}
             strokeLinecap='round'

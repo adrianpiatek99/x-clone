@@ -61,25 +61,25 @@ export const ConfirmModal: FC<ConfirmModalProps> = ({
       <div className='fixed inset-0 z-10 w-screen'>
         <div className='flex min-h-full items-center justify-center p-4'>
           <DialogPanel
-            className='flex w-[90%] max-w-[320px] flex-col rounded-2xl bg-background text-center outline-none backdrop-blur-md duration-200 data-[closed]:scale-90 data-[closed]:opacity-0'
+            className='flex w-[90%] max-w-[440px] flex-col rounded-2xl border-2 border-border-1 bg-background text-center outline-none backdrop-blur-md duration-200 data-[closed]:scale-90 data-[closed]:opacity-0'
             transition
           >
-            <Box className='items-center gap-2 p-6'>
-              <Typography as='h2' size='xl' weight='bold' center>
+            <Box className='gap-2 p-6'>
+              <Typography as='h2' size='xl' weight='bold'>
                 {title}
               </Typography>
-              <Typography center size='s'>
+              <Typography color='secondary' size='s'>
                 {description}
               </Typography>
+              <ConfirmModalActions
+                isLoading={isLoading}
+                onAccept={onAccept}
+                onClose={onClose}
+                acceptButtonText={acceptButtonText}
+                cancelButtonText={cancelButtonText}
+                danger={danger}
+              />
             </Box>
-            <ConfirmModalActions
-              isLoading={isLoading}
-              onAccept={onAccept}
-              onClose={onClose}
-              acceptButtonText={acceptButtonText}
-              cancelButtonText={cancelButtonText}
-              danger={danger}
-            />
           </DialogPanel>
         </div>
       </div>

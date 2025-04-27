@@ -4,7 +4,7 @@ import { create } from 'zustand';
 import type { CreatePostState } from './types';
 import type { CreatePostStore } from './types';
 
-export const initialState: CreatePostState = {
+export const initialState = {
   text: '',
   files: [],
   modal: {
@@ -12,7 +12,7 @@ export const initialState: CreatePostState = {
     text: '',
     files: [],
   },
-};
+} satisfies CreatePostState;
 
 export const useCreatePostStore = create<CreatePostStore>((set) => ({
   ...initialState,

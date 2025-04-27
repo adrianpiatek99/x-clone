@@ -2,9 +2,9 @@ import React from 'react';
 
 import Box from '@/components/atoms/Box';
 import Button from '@/components/atoms/Button';
+import Icon from '@/components/atoms/Icon';
 import { useAppSession } from '@/hooks/useAppSession';
 import { usePathname } from '@/i18n/routing';
-import { LogoutIcon } from '@/icons';
 import { useAuthStore } from '@/stores/auth';
 import { useGlobalStore } from '@/stores/global';
 import { useTranslations } from 'next-intl';
@@ -38,7 +38,7 @@ const NavigationDrawerList = () => {
   };
 
   return (
-    <Box as='nav' className='gap-0 pt-4'>
+    <Box as='nav' className='gap-0 overflow-y-auto'>
       <Box as='ul' className='gap-0'>
         {navigationDrawerItems({ t, pathname, user }).map(({ ...props }) => (
           <NavigationDrawerListItem key={props.href} {...props} onClick={handleClose} />
@@ -48,7 +48,7 @@ const NavigationDrawerList = () => {
             <Button
               className='h-[50px] w-full justify-start gap-5 rounded-none bg-transparent px-6 text-xl font-light [color:bg-foreground] [&>svg]:size-[26px]'
               onClick={handleOpenLogoutModal}
-              startIcon={<LogoutIcon />}
+              startIcon={<Icon name='LogoutIcon' />}
               variant='gray'
               size='large'
             >

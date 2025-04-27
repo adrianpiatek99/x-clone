@@ -1,19 +1,24 @@
-import React, { Suspense, useState } from 'react';
+import React, { useState } from 'react';
 
 import Button from '@/components/atoms/Button';
-import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/useGetUserByScreenNameQuery';
-import { EditIcon } from '@/icons';
+import Icon from '@/components/atoms/Icon';
+import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/queries';
+import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-const LazyEditProfileModal = React.lazy(() => import('@/components/organisms/EditProfileModal'));
+import type { ProfileParams } from '../../layout';
+
+const LazyEditProfileModal = dynamic(() => import('@/components/organisms/EditProfileModal'), {
+  ssr: false,
+});
 
 export const ProfileHeroActions = () => {
   const t = useTranslations();
-  const { screenName } = useParams();
+  const { screenName } = useParams<ProfileParams>();
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
   const { data, isMe } = useGetUserByScreenNameQuery({
-    screenName: screenName as string,
+    screenName,
     enabled: false,
   });
 
@@ -24,7 +29,7 @@ export const ProfileHeroActions = () => {
       {isMe ? (
         <Button
           variant='gray'
-          startIcon={<EditIcon />}
+          startIcon={<Icon name='EditIcon' />}
           onClick={() => setIsEditProfileModalOpen(true)}
         >
           {t('profilePage.actions.edit')}
@@ -33,13 +38,11 @@ export const ProfileHeroActions = () => {
         <Button variant='tinted'>{t('actions.follow')}</Button>
       )}
       {isMe && (
-        <Suspense>
-          <LazyEditProfileModal
-            isOpen={isEditProfileModalOpen}
-            onClose={() => setIsEditProfileModalOpen(false)}
-            user={data}
-          />
-        </Suspense>
+        <LazyEditProfileModal
+          isOpen={isEditProfileModalOpen}
+          onClose={() => setIsEditProfileModalOpen(false)}
+          user={data}
+        />
       )}
     </>
   );

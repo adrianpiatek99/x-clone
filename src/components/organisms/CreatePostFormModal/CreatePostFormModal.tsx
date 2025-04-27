@@ -1,4 +1,4 @@
-import React, { lazy, Suspense } from 'react';
+import React from 'react';
 
 import Box from '@/components/atoms/Box';
 import Loader from '@/components/atoms/Loader';
@@ -7,17 +7,20 @@ import Textarea from '@/components/atoms/Textarea';
 import AutoHeight from '@/components/molecules/AutoHeight';
 import UserAvatar from '@/components/molecules/UserAvatar';
 import { VALIDATION } from '@/constants/validation';
-import { useCreatePostMutation } from '@/hooks/api/posts/useCreatePostMutation';
+import { useCreatePostMutation } from '@/hooks/api/posts/mutations';
 import { useCreatePostStore } from '@/stores/createPost';
+import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
 import { useShallow } from 'zustand/shallow';
 
 import { CreatePostFormToolbar } from '../CreatePostForm/CreatePostFormToolbar';
 
-const LazyCreatePostFormMedia = lazy(() =>
-  import('../CreatePostForm/CreatePostFormMedia').then((mod) => ({
-    default: mod.CreatePostFormMedia,
-  }))
+const LazyCreatePostFormMedia = dynamic(
+  () => import('../CreatePostForm/CreatePostFormMedia').then((mod) => mod.CreatePostFormMedia),
+  {
+    loading: () => <Loader center />,
+    ssr: false,
+  }
 );
 
 const CreatePostFormModal = () => {
@@ -66,6 +69,7 @@ const CreatePostFormModal = () => {
       isOpen={isOpen}
       onClose={handleClose}
       title={t('post.actions.send')}
+      isLoading={isPending}
       acceptButtonText={t('post.actions.send')}
       acceptButtonProps={{
         disabled: disabled,
@@ -90,13 +94,11 @@ const CreatePostFormModal = () => {
           <Box className='gap-0'>
             <AutoHeight>
               {showMedia && (
-                <Suspense fallback={<Loader center />}>
-                  <LazyCreatePostFormMedia
-                    isPending={isPending}
-                    files={files}
-                    removeFile={removeModalFile}
-                  />
-                </Suspense>
+                <LazyCreatePostFormMedia
+                  isPending={isPending}
+                  files={files}
+                  removeFile={removeModalFile}
+                />
               )}
             </AutoHeight>
             <CreatePostFormToolbar

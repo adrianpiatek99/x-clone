@@ -1,9 +1,9 @@
 import type { FC } from 'react';
 import React from 'react';
 
-import { TwitterXIcon } from '@/icons';
 import { twMerge } from 'tailwind-merge';
 
+import Icon from '../Icon';
 import IconButton from '../IconButton';
 import type { LogoClassesReturn, LogoColor, LogoSize } from './types';
 
@@ -16,10 +16,10 @@ export type LogoProps = {
 
 const classes: LogoClassesReturn = {
   size: {
-    s: '[&>svg]:h-[16px] [&>svg]:w-[16px]',
-    m: '[&>svg]:h-[20px] [&>svg]:w-[20px]',
-    l: '[&>svg]:h-[24px] [&>svg]:w-[24px]',
-    xl: '[&>svg]:h-[28px] [&>svg]:w-[28px]',
+    s: '[&>svg]:size-[16px]',
+    m: '[&>svg]:size-[20px]',
+    l: '[&>svg]:size-[24px]',
+    xl: '[&>svg]:size-[28px]',
   },
   color: {
     primary: '[&>svg]:fill-neutral',
@@ -34,7 +34,7 @@ const Logo: FC<LogoProps> = ({ href, size = 'm', color = 'primary', className = 
       color='white'
       className={twMerge('', classes.size[size], classes.color[color], className)}
     >
-      <TwitterXIcon />
+      <Icon name='TwitterXIcon' />
     </IconButton>
   ) : (
     <div
@@ -45,7 +45,7 @@ const Logo: FC<LogoProps> = ({ href, size = 'm', color = 'primary', className = 
         className
       )}
     >
-      <TwitterXIcon />
+      <Icon name='TwitterXIcon' />
     </div>
   );
 };
