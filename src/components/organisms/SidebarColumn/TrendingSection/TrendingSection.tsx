@@ -27,17 +27,13 @@ const mockData = [
     title: 'Test3',
     count: 123,
   },
-  {
-    title: 'Test4',
-    count: 123,
-  },
 ];
 
 const TrendingSection = () => {
   const t = useTranslations();
 
   return (
-    <Box as='section' className='sticky top-3 grow rounded-xl border border-border-1'>
+    <Box as='section' className='grow rounded-xl border border-border-1'>
       <Typography className='px-4 pt-3' size='xl' weight='semibold'>
         {t('trending')}
       </Typography>

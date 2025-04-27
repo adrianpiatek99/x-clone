@@ -5,7 +5,7 @@ export enum ScrollDirection {
   DOWN,
 }
 
-export const useScrollDirection = () => {
+export const useScrollDirection = (offset = 10) => {
   const [scrollDirection, setScrollDirection] = useState<ScrollDirection | null>(null);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export const useScrollDirection = () => {
 
       if (
         direction !== scrollDirection &&
-        (scrollY - lastScrollY > 10 || scrollY - lastScrollY < -10)
+        (scrollY - lastScrollY > offset || scrollY - lastScrollY < -offset)
       ) {
         setScrollDirection(direction);
       }
@@ -30,7 +30,7 @@ export const useScrollDirection = () => {
     return () => {
       window.removeEventListener('scroll', updateScrollDirection);
     };
-  }, [scrollDirection]);
+  }, [scrollDirection, offset]);
 
   return scrollDirection;
 };

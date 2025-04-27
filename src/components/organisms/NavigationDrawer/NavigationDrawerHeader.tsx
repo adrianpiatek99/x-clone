@@ -24,7 +24,7 @@ const NavigationDrawerHeader = () => {
   const profilePageHref = ROUTES.PROFILE.DETAILS(screenName);
 
   return (
-    <div className='flex flex-col gap-2 px-6 pt-6'>
+    <div className='flex flex-col gap-2 px-6 pb-4 pt-6'>
       <Box>
         <div className='w-fit' onClick={handleClose}>
           <Avatar src={avatarUrl} href={profilePageHref} screenName={screenName} />

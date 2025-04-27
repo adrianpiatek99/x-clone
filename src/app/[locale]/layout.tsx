@@ -16,7 +16,7 @@ import { getMessages } from 'next-intl/server';
 
 import Providers from './providers';
 
-const LazyTrendingSection = dynamic(() => import('@/components/organisms/TrendingSection'), {
+const LazySidebarColumn = dynamic(() => import('@/components/organisms/SidebarColumn'), {
   loading: () => <Loader center />,
 });
 
@@ -50,15 +50,13 @@ export default async function RootLayout({ children, params }: PropsWithChildren
       <body>
         <SessionProvider session={session}>
           <Providers locale={locale} messages={messages}>
-            <div className='relative mx-auto flex min-h-screen w-full md:max-w-[688px] lg:max-w-[1008px] xl:max-w-[1265px]'>
+            <div className='relative mx-auto flex min-h-screen w-full gap-3 md:max-w-[688px] lg:max-w-[1008px] xl:max-w-[1265px]'>
               <SidebarMenu />
-              <main className='relative flex w-full grow gap-[30px]'>
+              <main className='relative flex w-full grow gap-7'>
                 <div className='flex w-full max-w-full flex-col pb-24 sm:max-w-[600px] sm:border-x sm:border-border-1 sm:pb-48'>
                   {children}
                 </div>
-                <div className='hidden min-w-0 flex-1 items-start lg:flex'>
-                  <LazyTrendingSection />
-                </div>
+                <LazySidebarColumn />
               </main>
             </div>
           </Providers>

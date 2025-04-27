@@ -38,7 +38,7 @@ const NavigationDrawerList = () => {
   };
 
   return (
-    <Box as='nav' className='gap-0 pt-4'>
+    <Box as='nav' className='gap-0 overflow-y-auto'>
       <Box as='ul' className='gap-0'>
         {navigationDrawerItems({ t, pathname, user }).map(({ ...props }) => (
           <NavigationDrawerListItem key={props.href} {...props} onClick={handleClose} />

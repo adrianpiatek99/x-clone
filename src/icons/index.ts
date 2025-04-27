@@ -24,6 +24,7 @@ export { default as HomeIcon } from './HomeIcon';
 export { default as HomeOutlinedIcon } from './HomeOutlinedIcon';
 export { default as InfoOutlinedIcon } from './InfoOutlinedIcon';
 export { default as LinkIcon } from './LinkIcon';
+export { default as LinkedinIcon } from './LinkedinIcon';
 export { default as LoginIcon } from './LoginIcon';
 export { default as LogoutIcon } from './LogoutIcon';
 export { default as MailIcon } from './MailIcon';
