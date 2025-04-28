@@ -11,7 +11,7 @@ const LINKEDIN_LINK = 'https://www.linkedin.com/in/adrian-pi%C4%85tek-942204209'
 const Footer = () => {
   return (
     <div>
-      <Box className='flex-row flex-wrap items-center gap-2'>
+      <Box className='flex-row flex-wrap items-center gap-2 px-4'>
         <Typography
           className='flex flex-row gap-1'
           title={GITHUB_LINK}
