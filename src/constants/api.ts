@@ -1,3 +1,4 @@
+import type { GetUserPostsParams } from '@/app/api/[screenName]/userPosts/route';
 import type { DeletePostParams } from '@/app/api/posts/[id]/delete/route';
 import type { LikePostParams } from '@/app/api/posts/[id]/like/route';
 import type { GetPostLikesParams } from '@/app/api/posts/[id]/likes/route';
@@ -32,5 +33,9 @@ export const API_ENDPOINTS = {
     UPDATE: '/api/profile/update',
     USER_BY_SCREEN_NAME: ({ screenName }: GetUserByScreenNameParams) =>
       `/api/profile/${screenName}` as const,
+    USER_POSTS: ({ screenName, ...params }: GetUserPostsParams) =>
+      createUrlWithParams(`/api/${screenName}/userPosts`, params),
+    // USER_LIKES: ({ screenName, ...params }: GetUserLikesParams) =>
+    //   createUrlWithParams(`/api/posts/${screenName}/userLikes`, params),
   },
 } as const;

@@ -9,11 +9,11 @@ import { formatNumber } from '@/utils/formatNumber';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
-type Props = Pick<Post, 'id' | 'isLiked' | 'likesCount'>;
+type Props = Pick<Post, 'id' | 'isLiked' | 'likesCount'> & { screenName: string };
 
-export const PostCardActions = ({ id, isLiked, likesCount }: Props) => {
+export const PostCardActions = ({ id, isLiked, likesCount, screenName }: Props) => {
   const t = useTranslations();
-  const { toggleLikePost, isToggleLikePending } = useToggleLikePostMutation();
+  const { toggleLikePost, isToggleLikePending } = useToggleLikePostMutation({ screenName });
   const likeTitle = isLiked ? t('post.actions.unlike') : t('post.actions.like');
 
   const handleToggleLike = () => toggleLikePost(id, isLiked);

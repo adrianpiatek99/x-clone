@@ -1,3 +1,4 @@
+import type { GetUserPostsResponse } from '@/app/api/[screenName]/userPosts/route';
 import type { LikePostParams, LikePostResponse } from '@/app/api/posts/[id]/like/route';
 import type { GetPostResponse } from '@/app/api/posts/[id]/route';
 import type { UnlikePostParams, UnlikePostResponse } from '@/app/api/posts/[id]/unlike/route';
@@ -14,12 +15,13 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 
 type Props = {
+  screenName: string;
   onSuccess?: () => void;
   onError?: () => void;
   onSettled?: () => void;
 };
 
-export const useToggleLikePostMutation = ({ onSuccess, onError, onSettled }: Props = {}) => {
+export const useToggleLikePostMutation = ({ screenName, onSuccess, onError, onSettled }: Props) => {
   const t = useTranslations();
   const queryClient = useQueryClient();
   const { addToast } = useToasts();
@@ -39,6 +41,17 @@ export const useToggleLikePostMutation = ({ onSuccess, onError, onSettled }: Pro
       updateItemInInfiniteQueryCache<GetGlobalTimelineResponse>(
         queryClient,
         QUERY_KEYS.POSTS.GLOBAL_TIMELINE,
+        id,
+        (post) => {
+          post.isLiked = true;
+          post.likesCount++;
+        },
+        { itemsKey: 'posts' }
+      );
+
+      updateItemInInfiniteQueryCache<GetUserPostsResponse>(
+        queryClient,
+        QUERY_KEYS.PROFILE.USER_POSTS(screenName),
         id,
         (post) => {
           post.isLiked = true;
@@ -77,6 +90,17 @@ export const useToggleLikePostMutation = ({ onSuccess, onError, onSettled }: Pro
       updateItemInInfiniteQueryCache<GetGlobalTimelineResponse>(
         queryClient,
         QUERY_KEYS.POSTS.GLOBAL_TIMELINE,
+        id,
+        (post) => {
+          post.isLiked = false;
+          post.likesCount--;
+        },
+        { itemsKey: 'posts' }
+      );
+
+      updateItemInInfiniteQueryCache<GetUserPostsResponse>(
+        queryClient,
+        QUERY_KEYS.PROFILE.USER_POSTS(screenName),
         id,
         (post) => {
           post.isLiked = false;

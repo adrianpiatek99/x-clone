@@ -1,29 +1,35 @@
 import { auth } from '@/auth';
 import { db } from '@/db/db';
-import type { Post } from '@/db/schema';
-import { userPublicColumns } from '@/db/schema';
 import {
+  type Post,
   postEditHistoryTable,
   postLikesTable,
   postRepliesTable,
   postsTable,
-} from '@/db/schema/posts/table';
+  userPublicColumns,
+  usersTable,
+} from '@/db/schema';
 import { handleApiError } from '@/db/utils/api';
 import { type CursorParams, cursorSchema, type NextCursor } from '@/schema/api';
 import { and, desc, eq, lt, or } from 'drizzle-orm';
-import type { NextRequest } from 'next/server';
-import { NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 
-export type GetGlobalTimelineParams = CursorParams;
+export type GetUserPostsParams = {
+  screenName: string;
+} & CursorParams;
 
-export type GetGlobalTimelineResponse = {
+export type GetUserPostsResponse = {
   posts: Post[];
   nextCursor: NextCursor;
 };
 
-export const GET = async (request: NextRequest) => {
+export const GET = async (
+  request: NextRequest,
+  { params }: { params: Promise<GetUserPostsParams> }
+) => {
   try {
     const { searchParams } = new URL(request.url);
+    const { screenName } = await params;
     const session = await auth();
     const userId = session?.user?.id;
 
@@ -40,15 +46,30 @@ export const GET = async (request: NextRequest) => {
       : undefined;
     const take = limit + 1;
 
+    // Find user by screenName
+    const user = await db.query.usersTable.findFirst({
+      where: eq(usersTable.screenName, screenName),
+      columns: {
+        id: true,
+      },
+    });
+
+    if (!user) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    }
+
     // Fetch posts
     const posts = await db.query.postsTable.findMany({
       limit: take,
-      where: cursor
-        ? or(
-            lt(postsTable.createdAt, cursor.createdAt),
-            and(eq(postsTable.createdAt, cursor.createdAt), lt(postsTable.id, cursor.id))
-          )
-        : undefined,
+      where: and(
+        eq(postsTable.authorId, user.id),
+        cursor
+          ? or(
+              lt(postsTable.createdAt, cursor.createdAt),
+              and(eq(postsTable.createdAt, cursor.createdAt), lt(postsTable.id, cursor.id))
+            )
+          : undefined
+      ),
       orderBy: [desc(postsTable.createdAt), desc(postsTable.id)],
       with: {
         author: {
@@ -73,7 +94,7 @@ export const GET = async (request: NextRequest) => {
     });
 
     // Calculate next cursor
-    let nextCursor: GetGlobalTimelineResponse['nextCursor'] = null;
+    let nextCursor: GetUserPostsResponse['nextCursor'] = null;
 
     if (posts.length > limit) {
       posts.pop();
@@ -113,7 +134,7 @@ export const GET = async (request: NextRequest) => {
       })
     );
 
-    return NextResponse.json<GetGlobalTimelineResponse>({
+    return NextResponse.json<GetUserPostsResponse>({
       posts: postsWithCounts,
       nextCursor,
     });

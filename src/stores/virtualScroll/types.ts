@@ -3,6 +3,7 @@ import type { VirtualItem } from '@tanstack/react-virtual';
 export enum VirtualScrollKeys {
   GLOBAL_TIMELINE = 'GLOBAL_TIMELINE',
   FOLLOWING_TIMELINE = 'FOLLOWING_TIMELINE',
+  USER_POSTS = 'USER_POSTS',
 }
 
 type VirtualScroll = {

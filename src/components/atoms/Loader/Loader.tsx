@@ -43,20 +43,20 @@ const Loader: FC<LoaderProps> = ({
       )}
     >
       <svg viewBox='0 0 50 50' className='size-full'>
-        {createArray(12).map((number) => (
+        {createArray(8).map((number) => (
           <line
             key={number}
             x1='25'
             y1='25'
-            x2='33'
+            x2='34'
             y2='25'
-            transform={`rotate(${number * 30} 25 25) translate(11 0)`}
+            transform={`rotate(${number * 45} 25 25) translate(11 0)`}
             strokeLinecap='round'
             style={{
               stroke: 'currentColor',
-              strokeWidth: 3.5,
+              strokeWidth: 5,
               animation: 'spinner-fade 800ms linear infinite',
-              animationDelay: `${-733 + number * 66.67}ms`,
+              animationDelay: `${-800 + number * 100}ms`,
             }}
           />
         ))}

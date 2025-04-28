@@ -1,3 +1,4 @@
+import type { GetUserPostsResponse } from '@/app/api/[screenName]/userPosts/route';
 import type { GetPostResponse } from '@/app/api/posts/[id]/route';
 import type {
   UpdatePostParams,
@@ -46,6 +47,14 @@ export const useUpdatePostMutation = ({ onSuccess, onError, onSettled }: Props =
       updateItemInInfiniteQueryCache<GetGlobalTimelineResponse>(
         queryClient,
         QUERY_KEYS.POSTS.GLOBAL_TIMELINE,
+        updatedPost.id,
+        (post) => Object.assign(post, updatedPost),
+        { itemsKey: 'posts' }
+      );
+
+      updateItemInInfiniteQueryCache<GetUserPostsResponse>(
+        queryClient,
+        QUERY_KEYS.PROFILE.USER_POSTS(updatedPost.author.screenName),
         updatedPost.id,
         (post) => Object.assign(post, updatedPost),
         { itemsKey: 'posts' }

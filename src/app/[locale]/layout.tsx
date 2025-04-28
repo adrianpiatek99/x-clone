@@ -50,10 +50,10 @@ export default async function RootLayout({ children, params }: PropsWithChildren
       <body>
         <SessionProvider session={session}>
           <Providers locale={locale} messages={messages}>
-            <div className='relative mx-auto flex min-h-screen w-full gap-3 md:max-w-[688px] lg:max-w-[1008px] xl:max-w-[1265px]'>
+            <div className='relative mx-auto flex w-full gap-3 md:max-w-[688px] lg:max-w-[1008px] xl:max-w-[1265px]'>
               <SidebarMenu />
               <main className='relative flex w-full grow items-start gap-7'>
-                <div className='flex w-full max-w-full flex-col pb-24 sm:max-w-[600px] sm:border-x sm:border-border-1 sm:pb-48'>
+                <div className='flex min-h-screen w-full max-w-full flex-col pb-24 sm:max-w-[600px] sm:border-x sm:border-border-1 sm:pb-48'>
                   {children}
                 </div>
                 <LazySidebarColumn />
