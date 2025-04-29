@@ -4,6 +4,7 @@ import React from 'react';
 
 import FlatList from '@/components/molecules/FlatList';
 import PostCard, { PostCardSkeletons } from '@/components/molecules/PostCard';
+import ScrollToTop from '@/components/molecules/ScrollToTop';
 import { useGetUserPostsQuery } from '@/hooks/api/posts/queries/useGetUserPostsQuery';
 import { VirtualScrollKeys } from '@/stores/virtualScroll';
 import { useParams } from 'next/navigation';
@@ -17,18 +18,21 @@ export default function ProfilePage() {
   const { flatData, ...restResult } = useGetUserPostsQuery({ screenName });
 
   return (
-    <FlatList
-      data={flatData}
-      renderItem={(item) => <PostCard post={item} />}
-      empty={{
-        title: t('postPage.likes.empty.title'),
-        description: t('postPage.likes.empty.description'),
-      }}
-      infiniteScroll={{
-        loader: <PostCardSkeletons />,
-        ...restResult,
-      }}
-      scrollKey={VirtualScrollKeys.USER_POSTS}
-    />
+    <>
+      <ScrollToTop />
+      <FlatList
+        data={flatData}
+        renderItem={(item) => <PostCard post={item} />}
+        empty={{
+          title: t('profilePage.subpages.posts.title'),
+          description: t('profilePage.subpages.posts.description'),
+        }}
+        infiniteScroll={{
+          loader: <PostCardSkeletons />,
+          ...restResult,
+        }}
+        scrollKey={VirtualScrollKeys.USER_POSTS}
+      />
+    </>
   );
 }

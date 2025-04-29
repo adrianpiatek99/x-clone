@@ -46,7 +46,7 @@ export const useCreatePostMutation = ({ onSuccess, onSettled }: Props = {}) => {
       if (user) {
         addItemToInfiniteQueryCache<GetUserPostsResponse>(
           queryClient,
-          QUERY_KEYS.PROFILE.USER_POSTS(user.screenName),
+          QUERY_KEYS.POSTS.USER_POSTS(user.screenName),
           newPost,
           { itemsKey: 'posts' }
         );

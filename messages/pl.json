@@ -130,10 +130,6 @@
       "title": "To konto nie istnieje",
       "description": "Spróbuj wyszukać coś innego."
     },
-    "empty": {
-      "title": "Nie masz jeszcze żadnych wpisów",
-      "description": "Twoje wpisy będą widoczne tutaj."
-    },
     "joined": "Dołączył(a)",
     "tabs": {
       "posts": "Wpisy",
@@ -151,10 +147,20 @@
         "description": "Twoje wpisy zawierające zdjęcia lub filmy będą widoczne tutaj."
       }
     },
-    "likes": {
-      "empty": {
-        "title": "Nie masz jeszcze żadnych polubień",
-        "description": "Naciśnij serce w dowolnym wpisie, aby wyrazić uznanie. Twoje polubienia pojawią się tutaj."
+    "subpages": {
+      "posts": {
+        "title": "Nie masz jeszcze żadnych wpisów",
+        "description": "Twoje wpisy będą widoczne tutaj."
+      },
+      "media": {
+        "title": "Nie masz jeszcze żadnych mediów",
+        "description": "Kiedy opublikujesz zdjęcia lub filmy, pojawią się tutaj."
+      },
+      "likes": {
+        "empty": {
+          "title": "Nie masz jeszcze żadnych polubień",
+          "description": "Naciśnij serce w dowolnym wpisie, aby wyrazić uznanie. Twoje polubienia pojawią się tutaj."
+        }
       }
     }
   },

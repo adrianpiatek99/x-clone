@@ -1,3 +1,4 @@
+import type { GetUserLikesResponse } from '@/app/api/[screenName]/userLikes/route';
 import type { GetUserPostsResponse } from '@/app/api/[screenName]/userPosts/route';
 import type { LikePostParams, LikePostResponse } from '@/app/api/posts/[id]/like/route';
 import type { GetPostResponse } from '@/app/api/posts/[id]/route';
@@ -51,13 +52,24 @@ export const useToggleLikePostMutation = ({ screenName, onSuccess, onError, onSe
 
       updateItemInInfiniteQueryCache<GetUserPostsResponse>(
         queryClient,
-        QUERY_KEYS.PROFILE.USER_POSTS(screenName),
+        QUERY_KEYS.POSTS.USER_POSTS(screenName),
         id,
         (post) => {
           post.isLiked = true;
           post.likesCount++;
         },
         { itemsKey: 'posts' }
+      );
+
+      updateItemInInfiniteQueryCache<GetUserLikesResponse>(
+        queryClient,
+        QUERY_KEYS.POSTS.USER_LIKES(screenName),
+        id,
+        (like) => {
+          like.post.isLiked = true;
+          like.post.likesCount++;
+        },
+        { itemsKey: 'likes', findByKey: 'postId' }
       );
 
       updateItemInCache<GetPostResponse>(queryClient, QUERY_KEYS.POSTS.DETAILS(id), (post) => {
@@ -100,13 +112,24 @@ export const useToggleLikePostMutation = ({ screenName, onSuccess, onError, onSe
 
       updateItemInInfiniteQueryCache<GetUserPostsResponse>(
         queryClient,
-        QUERY_KEYS.PROFILE.USER_POSTS(screenName),
+        QUERY_KEYS.POSTS.USER_POSTS(screenName),
         id,
         (post) => {
           post.isLiked = false;
           post.likesCount--;
         },
         { itemsKey: 'posts' }
+      );
+
+      updateItemInInfiniteQueryCache<GetUserLikesResponse>(
+        queryClient,
+        QUERY_KEYS.POSTS.USER_LIKES(screenName),
+        id,
+        (like) => {
+          like.post.isLiked = false;
+          like.post.likesCount--;
+        },
+        { itemsKey: 'likes', findByKey: 'postId' }
       );
 
       updateItemInCache<GetPostResponse>(queryClient, QUERY_KEYS.POSTS.DETAILS(id), (post) => {

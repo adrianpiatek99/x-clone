@@ -1,3 +1,4 @@
+import type { GetUserLikesResponse } from '@/app/api/[screenName]/userLikes/route';
 import type { GetUserPostsResponse } from '@/app/api/[screenName]/userPosts/route';
 import type { DeletePostParams, DeletePostResponse } from '@/app/api/posts/[id]/delete/route';
 import type { GetGlobalTimelineResponse } from '@/app/api/posts/globalTimeline/route';
@@ -43,7 +44,10 @@ export const useDeletePostMutation = ({ screenName, onSuccess, onError, onSettle
         QUERY_KEYS.POSTS.GLOBAL_TIMELINE
       );
       const previousUserPosts = queryClient.getQueryData<GetUserPostsResponse>(
-        QUERY_KEYS.PROFILE.USER_POSTS(screenName)
+        QUERY_KEYS.POSTS.USER_POSTS(screenName)
+      );
+      const previousUserLikes = queryClient.getQueryData<GetUserLikesResponse>(
+        QUERY_KEYS.POSTS.USER_LIKES(screenName)
       );
       const previousPost = queryClient.getQueryData(QUERY_KEYS.POSTS.DETAILS(id));
 
@@ -57,14 +61,23 @@ export const useDeletePostMutation = ({ screenName, onSuccess, onError, onSettle
 
       deleteItemFromInfiniteQueryCache<GetUserPostsResponse>(
         queryClient,
-        QUERY_KEYS.PROFILE.USER_POSTS(screenName),
+        QUERY_KEYS.POSTS.USER_POSTS(screenName),
         id,
         { itemsKey: 'posts' }
       );
 
-      deleteItemFromCache(queryClient, QUERY_KEYS.POSTS.DETAILS(id), id);
+      deleteItemFromInfiniteQueryCache<GetUserLikesResponse>(
+        queryClient,
+        QUERY_KEYS.POSTS.USER_LIKES(screenName),
+        id,
+        { itemsKey: 'likes', deleteByKey: 'postId' }
+      );
 
-      return { previousTimeline, previousUserPosts, previousPost };
+      queryClient.removeQueries({
+        queryKey: QUERY_KEYS.POSTS.DETAILS(id),
+      });
+
+      return { previousTimeline, previousUserPosts, previousUserLikes, previousPost };
     },
     onSuccess: () => {
       addToast('success', t('post.api.deletePost.success'));

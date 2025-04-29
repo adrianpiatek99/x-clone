@@ -1,7 +1,7 @@
 import type {
-  GetUserPostsParams,
-  GetUserPostsResponse,
-} from '@/app/api/[screenName]/userPosts/route';
+  GetUserLikesParams,
+  GetUserLikesResponse,
+} from '@/app/api/[screenName]/userLikes/route';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
@@ -10,18 +10,18 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 type Props = {
   limit?: number;
   enabled?: boolean;
-} & Pick<GetUserPostsParams, 'screenName'>;
+} & Pick<GetUserLikesParams, 'screenName'>;
 
-export const useGetUserPostsQuery = ({ screenName, enabled = true, limit = 30 }: Props) => {
-  const result = useInfiniteQuery<GetUserPostsResponse>({
+export const useGetUserLikesQuery = ({ screenName, enabled = true, limit = 30 }: Props) => {
+  const result = useInfiniteQuery<GetUserLikesResponse>({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: QUERY_KEYS.POSTS.USER_POSTS(screenName),
+    queryKey: QUERY_KEYS.POSTS.USER_LIKES(screenName),
     queryFn: async ({ pageParam }) =>
       apiRequest(
         'GET',
-        API_ENDPOINTS.POSTS.USER_POSTS({
+        API_ENDPOINTS.POSTS.USER_LIKES({
           screenName,
-          cursor: pageParam as GetUserPostsParams['cursor'],
+          cursor: pageParam as GetUserLikesParams['cursor'],
           limit,
         })
       ),
@@ -32,7 +32,7 @@ export const useGetUserPostsQuery = ({ screenName, enabled = true, limit = 30 }:
     enabled,
   });
 
-  const flatData = result.data?.pages.flatMap((page) => page.posts) ?? [];
+  const flatData = result.data?.pages.flatMap((page) => page.likes) ?? [];
 
   return {
     ...result,

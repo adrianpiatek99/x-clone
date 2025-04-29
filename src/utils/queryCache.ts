@@ -45,18 +45,23 @@ const updateInfiniteQueryWithDeletedItem = <
   oldData: InfiniteQueryData<TResponse> | undefined,
   deletedItemId: string,
   options: {
+    deleteByKey?: string;
     itemsKey: TItemsKey;
   }
 ) => {
   if (!oldData) return oldData;
 
-  const { itemsKey } = options;
+  const { deleteByKey, itemsKey } = options;
 
   return produce(oldData, ({ pages }) => {
     pages.forEach((page) => {
       const typedPage = page as Record<TItemsKey, Array<{ id: string }>>;
 
-      typedPage[itemsKey] = typedPage[itemsKey].filter((item) => item.id !== deletedItemId);
+      typedPage[itemsKey] = typedPage[itemsKey].filter((item) =>
+        deleteByKey
+          ? item[deleteByKey as keyof typeof item] !== deletedItemId
+          : item.id !== deletedItemId
+      );
     });
   });
 };
@@ -70,17 +75,20 @@ const updateInfiniteQueryWithUpdatedItem = <
   itemId: string,
   update: (item: Draft<TItem>) => void,
   options: {
+    findByKey?: string;
     itemsKey: TItemsKey;
   }
 ) => {
   if (!oldData) return oldData;
 
-  const { itemsKey } = options;
+  const { findByKey, itemsKey } = options;
 
   return produce(oldData, (draft) => {
     draft.pages.forEach((page) => {
       const items = (page as Record<TItemsKey, TItem[]>)[itemsKey];
-      const item = items.find((item: TItem) => item.id === itemId);
+      const item = items.find((item: TItem) =>
+        findByKey ? item[findByKey as keyof typeof item] === itemId : item.id === itemId
+      );
 
       if (item) {
         update(item as Draft<TItem>);
@@ -146,13 +154,12 @@ export const deleteItemFromInfiniteQueryCache = <TResponse extends { nextCursor:
   queryKey: QueryKey,
   itemId: string,
   options: {
+    deleteByKey?: string;
     itemsKey: keyof Omit<TResponse, 'nextCursor'> & string;
   }
 ) => {
-  const { itemsKey } = options;
-
   queryClient.setQueryData<InfiniteQueryData<TResponse>>(queryKey, (oldData) =>
-    updateInfiniteQueryWithDeletedItem(oldData, itemId, { itemsKey })
+    updateInfiniteQueryWithDeletedItem(oldData, itemId, options)
   );
 };
 
@@ -207,13 +214,12 @@ export const updateItemInInfiniteQueryCache = <TResponse extends { nextCursor: u
     >
   ) => void,
   options: {
+    findByKey?: string;
     itemsKey: keyof Omit<TResponse, 'nextCursor'> & string;
   }
 ) => {
-  const { itemsKey } = options;
-
   queryClient.setQueryData<InfiniteQueryData<TResponse>>(queryKey, (oldData) =>
-    updateInfiniteQueryWithUpdatedItem(oldData, itemId, updateFn, { itemsKey })
+    updateInfiniteQueryWithUpdatedItem(oldData, itemId, updateFn, options)
   );
 };
 

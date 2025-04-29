@@ -130,10 +130,6 @@
       "title": "This account doesn't exist",
       "description": "Try searching for another."
     },
-    "empty": {
-      "title": "You don't have any posts yet",
-      "description": "Your posts will show up here."
-    },
     "joined": "Joined",
     "tabs": {
       "posts": "Posts",
@@ -151,10 +147,20 @@
         "description": "When you post photos or videos, they will show up here."
       }
     },
-    "likes": {
-      "empty": {
-        "title": "You don't have any likes yet",
-        "description": "Tap the heart on any post to show it some love. When you do, it'll show up here."
+    "subpages": {
+      "posts": {
+        "title": "You don't have any posts yet",
+        "description": "Your posts will show up here."
+      },
+      "media": {
+        "title": "You don't have any media yet",
+        "description": "When you post photos or videos, they will show up here."
+      },
+      "likes": {
+        "empty": {
+          "title": "You don't have any likes yet",
+          "description": "Tap the heart on any post to show it some love. When you do, it'll show up here."
+        }
       }
     }
   },
