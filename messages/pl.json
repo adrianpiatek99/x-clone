@@ -130,10 +130,6 @@
       "title": "To konto nie istnieje",
       "description": "Spróbuj wyszukać coś innego."
     },
-    "empty": {
-      "title": "Nie masz jeszcze żadnych wpisów",
-      "description": "Twoje wpisy będą widoczne tutaj."
-    },
     "joined": "Dołączył(a)",
     "tabs": {
       "posts": "Wpisy",
@@ -151,10 +147,24 @@
         "description": "Twoje wpisy zawierające zdjęcia lub filmy będą widoczne tutaj."
       }
     },
-    "likes": {
-      "empty": {
-        "title": "Nie masz jeszcze żadnych polubień",
-        "description": "Naciśnij serce w dowolnym wpisie, aby wyrazić uznanie. Twoje polubienia pojawią się tutaj."
+    "subpages": {
+      "posts": {
+        "empty": {
+          "title": "Nie masz jeszcze żadnych wpisów",
+          "description": "Twoje wpisy będą widoczne tutaj."
+        }
+      },
+      "media": {
+        "empty": {
+          "title": "Nie masz jeszcze żadnych mediów",
+          "description": "Kiedy opublikujesz zdjęcia lub filmy, pojawią się tutaj."
+        }
+      },
+      "likes": {
+        "empty": {
+          "title": "Nie masz jeszcze żadnych polubień",
+          "description": "Naciśnij serce w dowolnym wpisie, aby wyrazić uznanie. Twoje polubienia pojawią się tutaj."
+        }
       }
     }
   },
@@ -194,7 +204,10 @@
       "description": "Tej czynności nie można cofnąć. Wpis zostanie usunięty z Twojego profilu, z osi czasu osób obserwujących oraz z wyników wyszukiwania."
     },
     "count": {
-      "posts": "{count, plural, one {{count} wpis} few {{count} wpisy} other {{count} wpisów}}"
+      "posts": "{count, plural, one {{count} wpis} few {{count} wpisy} other {{count} wpisów}}",
+      "replies": "{count, plural, one {{count} odpowiedź} few {{count} odpowiedzi} other {{count} odpowiedzi}}",
+      "media": "{count, plural, one {{count} zdjęcie} few {{count} zdjęcia} other {{count} zdjęć}}",
+      "likes": "{count, plural, one {{count} polubienie} few {{count} polubienia} other {{count} polubień}}"
     },
     "api": {
       "createPost": {

@@ -45,7 +45,7 @@ export const useGetUserByScreenNameQuery = ({ screenName, enabled = true }: Prop
     },
     refetchOnWindowFocus: user?.screenName !== screenName,
     staleTime: 30 * 1000, // 30 seconds
-    gcTime: 0,
+    gcTime: user?.screenName === screenName ? 0 : 300 * 1000, // 0 if it's the current user, 5 minutes otherwise
   });
   const isEmpty = !data && !isLoading;
   const isMe = user?.screenName === data?.screenName;

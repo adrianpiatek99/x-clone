@@ -1,11 +1,16 @@
+import type { GetUserPostsResponse } from '@/app/api/[screenName]/userPosts/route';
 import type { CreatePostRequest, CreatePostResponse } from '@/app/api/posts/create/route';
 import type { GetGlobalTimelineResponse } from '@/app/api/posts/globalTimeline/route';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
+import { useAppSession } from '@/hooks/useAppSession';
 import { useToasts } from '@/hooks/useToasts';
 import { createFormData } from '@/utils/formData';
-import { addItemToInfiniteQueryCache } from '@/utils/queryCache';
+import {
+  addItemToInfiniteQueryCache,
+  updateTotalCountInInfiniteQueryCache,
+} from '@/utils/queryCache';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 
@@ -16,6 +21,7 @@ type Props = {
 
 export const useCreatePostMutation = ({ onSuccess, onSettled }: Props = {}) => {
   const t = useTranslations();
+  const { user } = useAppSession();
   const { addToast } = useToasts();
   const queryClient = useQueryClient();
 
@@ -39,6 +45,20 @@ export const useCreatePostMutation = ({ onSuccess, onSettled }: Props = {}) => {
         newPost,
         { itemsKey: 'posts' }
       );
+
+      if (user) {
+        addItemToInfiniteQueryCache<GetUserPostsResponse>(
+          queryClient,
+          QUERY_KEYS.POSTS.USER_POSTS(user.screenName),
+          newPost,
+          { itemsKey: 'posts' }
+        );
+        updateTotalCountInInfiniteQueryCache<GetUserPostsResponse>(
+          queryClient,
+          QUERY_KEYS.POSTS.USER_POSTS(user.screenName),
+          (count) => count + 1
+        );
+      }
 
       onSuccess?.();
     },

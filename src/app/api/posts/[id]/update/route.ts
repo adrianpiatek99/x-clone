@@ -121,6 +121,7 @@ export const PATCH = withAuth(
               height,
               type: PostMediaType.PHOTO,
               postId: id,
+              userId,
             }))
           );
         }

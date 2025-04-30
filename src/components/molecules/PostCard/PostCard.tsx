@@ -43,7 +43,12 @@ const PostCard = memo(({ post, className, ...props }: Props) => {
               <PostCardText id={id} text={text} author={author} />
             </Box>
             {!!media.length && <PostCardMedia media={media} />}
-            <PostCardActions id={id} isLiked={isLiked} likesCount={likesCount} />
+            <PostCardActions
+              id={id}
+              isLiked={isLiked}
+              likesCount={likesCount}
+              screenName={screenName}
+            />
           </Box>
         </Box>
       </Box>

@@ -27,6 +27,22 @@ const mockData = [
     title: 'Test3',
     count: 123,
   },
+  {
+    title: 'Test4',
+    count: 123,
+  },
+  {
+    title: 'Test5',
+    count: 123,
+  },
+  {
+    title: 'Test6',
+    count: 123,
+  },
+  {
+    title: 'Test7',
+    count: 123,
+  },
 ];
 
 const TrendingSection = () => {

@@ -98,6 +98,7 @@ export const POST = withAuth(async (request, userId: string) => {
           height: media.height,
           type: PostMediaType.PHOTO,
           postId: post.id,
+          userId,
         }))
       );
     }

@@ -25,14 +25,12 @@ const SidebarColumn = () => {
   const showTrendingSection = !pathname.includes(ROUTES.EXPLORE);
 
   return (
-    <div className='hidden flex-1 lg:block'>
-      <ScrollableSticky>
-        <Box className='grow'>
-          {showTrendingSection && <LazyTrendingSection />}
-          <Footer />
-        </Box>
-      </ScrollableSticky>
-    </div>
+    <ScrollableSticky className='hidden flex-1 lg:block' offsetBottom={80}>
+      <Box className='grow'>
+        {showTrendingSection && <LazyTrendingSection />}
+        <Footer />
+      </Box>
+    </ScrollableSticky>
   );
 };
 

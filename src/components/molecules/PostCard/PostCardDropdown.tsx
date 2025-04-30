@@ -37,6 +37,7 @@ export const PostCardDropdown = memo(({ post, onDeleteSuccess }: Props) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
   const { deletePost, isDeleting } = useDeletePostMutation({
+    screenName,
     onSuccess: () => {
       onDeleteSuccess?.();
     },

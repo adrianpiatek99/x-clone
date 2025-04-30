@@ -1,29 +1,38 @@
 import { auth } from '@/auth';
 import { db } from '@/db/db';
 import type { Post } from '@/db/schema';
-import { userPublicColumns } from '@/db/schema';
 import {
   postEditHistoryTable,
   postLikesTable,
+  postMediaTable,
   postRepliesTable,
   postsTable,
-} from '@/db/schema/posts/table';
+  userPublicColumns,
+  usersTable,
+} from '@/db/schema';
 import { handleApiError } from '@/db/utils/api';
 import { type CursorParams, cursorSchema, type NextCursor } from '@/schema/api';
-import { and, desc, eq, lt, or } from 'drizzle-orm';
+import { and, desc, eq, lt, or, sql } from 'drizzle-orm';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
-export type GetGlobalTimelineParams = CursorParams;
+export type GetUserMediaParams = {
+  screenName: string;
+} & CursorParams;
 
-export type GetGlobalTimelineResponse = {
+export type GetUserMediaResponse = {
   posts: Post[];
   nextCursor: NextCursor;
+  totalCount: number;
 };
 
-export const GET = async (request: NextRequest) => {
+export const GET = async (
+  request: NextRequest,
+  { params }: { params: Promise<GetUserMediaParams> }
+) => {
   try {
     const { searchParams } = new URL(request.url);
+    const { screenName } = await params;
     const session = await auth();
     const userId = session?.user?.id;
 
@@ -40,15 +49,35 @@ export const GET = async (request: NextRequest) => {
       : undefined;
     const take = limit + 1;
 
-    // Fetch posts
+    // Find user by screenName
+    const user = await db.query.usersTable.findFirst({
+      where: eq(usersTable.screenName, screenName),
+      columns: {
+        id: true,
+      },
+    });
+
+    if (!user) {
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+    }
+
+    // Fetch posts that have media
     const posts = await db.query.postsTable.findMany({
       limit: take,
-      where: cursor
-        ? or(
-            lt(postsTable.createdAt, cursor.createdAt),
-            and(eq(postsTable.createdAt, cursor.createdAt), lt(postsTable.id, cursor.id))
-          )
-        : undefined,
+      where: and(
+        eq(postsTable.authorId, user.id),
+        cursor
+          ? or(
+              lt(postsTable.createdAt, cursor.createdAt),
+              and(eq(postsTable.createdAt, cursor.createdAt), lt(postsTable.id, cursor.id))
+            )
+          : undefined,
+        // Only select posts that have media
+        sql`EXISTS (
+          SELECT 1 FROM ${postMediaTable} as pm2
+          WHERE pm2.post_id = ${postsTable.id}
+        )`
+      ),
       orderBy: [desc(postsTable.createdAt), desc(postsTable.id)],
       with: {
         author: {
@@ -72,8 +101,20 @@ export const GET = async (request: NextRequest) => {
       },
     });
 
+    // Get total count of posts with media
+    const totalCount = await db.$count(
+      postsTable,
+      and(
+        eq(postsTable.authorId, user.id),
+        sql`EXISTS (
+          SELECT 1 FROM ${postMediaTable} as pm2
+          WHERE pm2.post_id = ${postsTable.id}
+        )`
+      )
+    );
+
     // Calculate next cursor
-    let nextCursor: GetGlobalTimelineResponse['nextCursor'] = null;
+    let nextCursor: GetUserMediaResponse['nextCursor'] = null;
 
     if (posts.length > limit) {
       posts.pop();
@@ -113,9 +154,10 @@ export const GET = async (request: NextRequest) => {
       })
     );
 
-    return NextResponse.json<GetGlobalTimelineResponse>({
+    return NextResponse.json<GetUserMediaResponse>({
       posts: postsWithCounts,
       nextCursor,
+      totalCount,
     });
   } catch (error) {
     return handleApiError(error);

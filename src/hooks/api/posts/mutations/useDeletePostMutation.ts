@@ -1,14 +1,20 @@
+import type { GetUserLikesResponse } from '@/app/api/[screenName]/userLikes/route';
+import type { GetUserPostsResponse } from '@/app/api/[screenName]/userPosts/route';
 import type { DeletePostParams, DeletePostResponse } from '@/app/api/posts/[id]/delete/route';
 import type { GetGlobalTimelineResponse } from '@/app/api/posts/globalTimeline/route';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
 import { useToasts } from '@/hooks/useToasts';
-import { deleteItemFromCache, deleteItemFromInfiniteQueryCache } from '@/utils/queryCache';
+import {
+  deleteItemFromInfiniteQueryCache,
+  updateTotalCountInInfiniteQueryCache,
+} from '@/utils/queryCache';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 
 type Props = {
+  screenName: string;
   onSuccess?: () => void;
   onError?: () => void;
   onSettled?: () => void;
@@ -19,7 +25,7 @@ type Context = {
   previousPost: unknown;
 };
 
-export const useDeletePostMutation = ({ onSuccess, onError, onSettled }: Props = {}) => {
+export const useDeletePostMutation = ({ screenName, onSuccess, onError, onSettled }: Props) => {
   const t = useTranslations();
   const { addToast } = useToasts();
   const queryClient = useQueryClient();
@@ -40,6 +46,12 @@ export const useDeletePostMutation = ({ onSuccess, onError, onSettled }: Props =
       const previousTimeline = queryClient.getQueryData<GetGlobalTimelineResponse>(
         QUERY_KEYS.POSTS.GLOBAL_TIMELINE
       );
+      const previousUserPosts = queryClient.getQueryData<GetUserPostsResponse>(
+        QUERY_KEYS.POSTS.USER_POSTS(screenName)
+      );
+      const previousUserLikes = queryClient.getQueryData<GetUserLikesResponse>(
+        QUERY_KEYS.POSTS.USER_LIKES(screenName)
+      );
       const previousPost = queryClient.getQueryData(QUERY_KEYS.POSTS.DETAILS(id));
 
       // Optimistically update the cache
@@ -49,9 +61,31 @@ export const useDeletePostMutation = ({ onSuccess, onError, onSettled }: Props =
         id,
         { itemsKey: 'posts' }
       );
-      deleteItemFromCache(queryClient, QUERY_KEYS.POSTS.DETAILS(id), id);
 
-      return { previousTimeline, previousPost };
+      deleteItemFromInfiniteQueryCache<GetUserPostsResponse>(
+        queryClient,
+        QUERY_KEYS.POSTS.USER_POSTS(screenName),
+        id,
+        { itemsKey: 'posts' }
+      );
+      updateTotalCountInInfiniteQueryCache<GetUserPostsResponse>(
+        queryClient,
+        QUERY_KEYS.POSTS.USER_POSTS(screenName),
+        (count) => count - 1
+      );
+
+      deleteItemFromInfiniteQueryCache<GetUserLikesResponse>(
+        queryClient,
+        QUERY_KEYS.POSTS.USER_LIKES(screenName),
+        id,
+        { itemsKey: 'likes', deleteByKey: 'postId' }
+      );
+
+      queryClient.removeQueries({
+        queryKey: QUERY_KEYS.POSTS.DETAILS(id),
+      });
+
+      return { previousTimeline, previousUserPosts, previousUserLikes, previousPost };
     },
     onSuccess: () => {
       addToast('success', t('post.api.deletePost.success'));

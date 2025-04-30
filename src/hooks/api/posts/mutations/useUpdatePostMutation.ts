@@ -1,3 +1,5 @@
+import { GetUserLikesResponse } from '@/app/api/[screenName]/userLikes/route';
+import type { GetUserPostsResponse } from '@/app/api/[screenName]/userPosts/route';
 import type { GetPostResponse } from '@/app/api/posts/[id]/route';
 import type {
   UpdatePostParams,
@@ -49,6 +51,22 @@ export const useUpdatePostMutation = ({ onSuccess, onError, onSettled }: Props =
         updatedPost.id,
         (post) => Object.assign(post, updatedPost),
         { itemsKey: 'posts' }
+      );
+
+      updateItemInInfiniteQueryCache<GetUserPostsResponse>(
+        queryClient,
+        QUERY_KEYS.POSTS.USER_POSTS(updatedPost.author.screenName),
+        updatedPost.id,
+        (post) => Object.assign(post, updatedPost),
+        { itemsKey: 'posts' }
+      );
+
+      updateItemInInfiniteQueryCache<GetUserLikesResponse>(
+        queryClient,
+        QUERY_KEYS.POSTS.USER_LIKES(updatedPost.author.screenName),
+        updatedPost.id,
+        (like) => Object.assign(like.post, updatedPost),
+        { itemsKey: 'likes', findByKey: 'postId' }
       );
 
       updateItemInCache<GetPostResponse>(
