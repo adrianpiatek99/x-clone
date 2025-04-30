@@ -54,7 +54,7 @@ const Loader: FC<LoaderProps> = ({
             strokeLinecap='round'
             style={{
               stroke: 'currentColor',
-              strokeWidth: 5,
+              strokeWidth: 4.5,
               animation: 'spinner-fade 800ms linear infinite',
               animationDelay: `${-800 + number * 100}ms`,
             }}

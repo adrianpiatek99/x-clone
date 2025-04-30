@@ -23,17 +23,16 @@ export const FlatListLoadMore = ({ isFetching, hasNextPage, fetchNextPage }: Pro
 
   return (
     <>
-      {isFetching ? (
+      {isFetching && (
         <div className='my-[30px] pb-[40px]'>
           <Loader center />
         </div>
-      ) : (
-        hasNextPage && (
-          <div
-            className='pointer-events-none absolute bottom-0 left-1/2 h-[95vh]'
-            ref={observeElement}
-          />
-        )
+      )}
+      {hasNextPage && (
+        <div
+          className='pointer-events-none absolute bottom-0 left-1/2 h-[95vh]'
+          ref={observeElement}
+        />
       )}
     </>
   );

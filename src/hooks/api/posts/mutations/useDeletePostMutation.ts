@@ -6,7 +6,10 @@ import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
 import { useToasts } from '@/hooks/useToasts';
-import { deleteItemFromCache, deleteItemFromInfiniteQueryCache } from '@/utils/queryCache';
+import {
+  deleteItemFromInfiniteQueryCache,
+  updateTotalCountInInfiniteQueryCache,
+} from '@/utils/queryCache';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 
@@ -64,6 +67,11 @@ export const useDeletePostMutation = ({ screenName, onSuccess, onError, onSettle
         QUERY_KEYS.POSTS.USER_POSTS(screenName),
         id,
         { itemsKey: 'posts' }
+      );
+      updateTotalCountInInfiniteQueryCache<GetUserPostsResponse>(
+        queryClient,
+        QUERY_KEYS.POSTS.USER_POSTS(screenName),
+        (count) => count - 1
       );
 
       deleteItemFromInfiniteQueryCache<GetUserLikesResponse>(

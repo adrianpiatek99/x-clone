@@ -5,7 +5,11 @@ import { useVirtualScrollStore } from '@/stores/virtualScroll';
 import { useWindowVirtualizer } from '@tanstack/react-virtual';
 import { useShallow } from 'zustand/shallow';
 
-export const useWindowVirtualScroll = (count: number, scrollKey?: VirtualScrollKeys) => {
+export const useWindowVirtualScroll = (
+  count: number,
+  scrollKey?: VirtualScrollKeys,
+  lanes?: number
+) => {
   const parentRef = useRef<HTMLDivElement>(null);
   const { getState, update } = useVirtualScrollStore(
     useShallow((state) => ({
@@ -31,6 +35,7 @@ export const useWindowVirtualScroll = (count: number, scrollKey?: VirtualScrollK
         });
       }
     },
+    lanes,
   });
   const items = getVirtualItems();
   const totalSize = getTotalSize();

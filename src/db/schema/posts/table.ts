@@ -35,6 +35,10 @@ export const postMediaTable = pgTable('post_media', {
   postId: uuid('post_id')
     .notNull()
     .references(() => postsTable.id, { onDelete: 'cascade' }),
+  userId: uuid('user_id')
+    .notNull()
+    .references(() => usersTable.id, { onDelete: 'cascade' }),
+  createdAt,
 });
 
 export const postLikesTable = pgTable(
@@ -46,7 +50,7 @@ export const postLikesTable = pgTable(
       .references(() => postsTable.id, { onDelete: 'cascade' }),
     userId: uuid('user_id')
       .notNull()
-      .references(() => usersTable.id),
+      .references(() => usersTable.id, { onDelete: 'cascade' }),
     createdAt,
   },
   (t) => [unique().on(t.postId, t.userId)]
@@ -56,7 +60,7 @@ export const postRepliesTable = pgTable('post_reply', {
   id,
   authorId: uuid('author_id')
     .notNull()
-    .references(() => usersTable.id),
+    .references(() => usersTable.id, { onDelete: 'cascade' }),
   postId: uuid('post_id')
     .notNull()
     .references(() => postsTable.id, { onDelete: 'cascade' }),
@@ -81,6 +85,10 @@ export const postMediaRelations = relations(postMediaTable, ({ one }) => ({
   post: one(postsTable, {
     fields: [postMediaTable.postId],
     references: [postsTable.id],
+  }),
+  user: one(usersTable, {
+    fields: [postMediaTable.userId],
+    references: [usersTable.id],
   }),
 }));
 

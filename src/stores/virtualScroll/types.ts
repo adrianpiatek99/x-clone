@@ -5,6 +5,7 @@ export enum VirtualScrollKeys {
   FOLLOWING_TIMELINE = 'FOLLOWING_TIMELINE',
   USER_POSTS = 'USER_POSTS',
   USER_LIKES = 'USER_LIKES',
+  USER_MEDIA = 'USER_MEDIA',
 }
 
 type VirtualScroll = {

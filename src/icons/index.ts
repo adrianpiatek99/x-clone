@@ -5,6 +5,7 @@ export { default as BookmarkIcon } from './BookmarkIcon';
 export { default as BookmarkOutlinedIcon } from './BookmarkOutlinedIcon';
 export { default as CalendarIcon } from './CalendarIcon';
 export { default as CameraPlusIcon } from './CameraPlusIcon';
+export { default as CarouselIcon } from './CarouselIcon';
 export { default as CheckCircleIcon } from './CheckCircleIcon';
 export { default as ChevronIcon } from './ChevronIcon';
 export { default as CloseCircleIcon } from './CloseCircleIcon';

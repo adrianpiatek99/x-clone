@@ -9,10 +9,11 @@ import { useWindowVirtualScroll } from '@/hooks/useWindowVirtualScroll';
 import type { VirtualScrollKeys } from '@/stores/virtualScroll';
 import type { InfiniteQueryObserverBaseResult } from '@tanstack/react-query';
 
+import { FlatListGrid } from './FlatListGrid';
 import { FlatListLoadMore } from './FlatListLoadMore';
 import { FlatListPillNotify } from './FlatListPillNotify';
 
-type Props<TData> = {
+export type FlatListProps<TData> = {
   data: TData[];
   renderItem: (item: TData) => ReactElement;
   empty: {
@@ -24,6 +25,7 @@ type Props<TData> = {
   } & Omit<InfiniteQueryObserverBaseResult, 'data'>;
   scrollKey?: VirtualScrollKeys;
   additionalPillNotify?: ReactNode;
+  isGrid?: boolean;
 };
 
 /**
@@ -38,10 +40,12 @@ const FlatList = <TData,>({
   infiniteScroll,
   scrollKey,
   additionalPillNotify,
-}: Props<TData>) => {
+  isGrid,
+}: FlatListProps<TData>) => {
   const { items, totalSize, parentRef, measureElement, options } = useWindowVirtualScroll(
     data.length,
-    scrollKey
+    scrollKey,
+    isGrid ? 3 : undefined
   );
   const isInfiniteScroll = !!infiniteScroll;
   const isEmpty = isInfiniteScroll ? !infiniteScroll.isLoading && !data.length : !data.length;
@@ -61,19 +65,29 @@ const FlatList = <TData,>({
         cloneElement(infiniteScroll.loader)
       ) : (
         <div style={{ height: `${totalSize}px` }} className='relative w-full'>
-          {items.map(({ key, index, start }) => (
-            <div
-              key={key}
-              ref={measureElement}
-              style={{
-                transform: `translateY(${start - options.scrollMargin}px)`,
-              }}
-              className='absolute left-0 top-0 w-full animate-appear'
-              data-index={index}
-            >
-              {renderItem(data[index])}
-            </div>
-          ))}
+          {isGrid ? (
+            <FlatListGrid
+              items={items}
+              scrollMargin={options.scrollMargin}
+              measureElement={measureElement}
+              data={data}
+              renderItem={renderItem}
+            />
+          ) : (
+            items.map(({ key, index, start }) => (
+              <div
+                key={key}
+                ref={measureElement}
+                style={{
+                  transform: `translateY(${start - options.scrollMargin}px)`,
+                }}
+                className='absolute left-0 top-0 w-full animate-appear'
+                data-index={index}
+              >
+                {renderItem(data[index])}
+              </div>
+            ))
+          )}
         </div>
       )}
       {isInfiniteScroll && !infiniteScroll.isLoading && (

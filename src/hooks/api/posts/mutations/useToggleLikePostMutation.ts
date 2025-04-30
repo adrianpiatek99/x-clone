@@ -72,6 +72,13 @@ export const useToggleLikePostMutation = ({ screenName, onSuccess, onError, onSe
         { itemsKey: 'likes', findByKey: 'postId' }
       );
 
+      // Update the total count of likes
+      // updateTotalCountInInfiniteQueryCache<GetUserLikesResponse>(
+      //   queryClient,
+      //   QUERY_KEYS.POSTS.USER_LIKES(screenName),
+      //   (count) => count + 1
+      // );
+
       updateItemInCache<GetPostResponse>(queryClient, QUERY_KEYS.POSTS.DETAILS(id), (post) => {
         post.isLiked = true;
         post.likesCount++;
@@ -131,6 +138,13 @@ export const useToggleLikePostMutation = ({ screenName, onSuccess, onError, onSe
         },
         { itemsKey: 'likes', findByKey: 'postId' }
       );
+
+      // Update the total count of likes
+      // updateTotalCountInInfiniteQueryCache<GetUserLikesResponse>(
+      //   queryClient,
+      //   QUERY_KEYS.POSTS.USER_LIKES(screenName),
+      //   (count) => count - 1
+      // );
 
       updateItemInCache<GetPostResponse>(queryClient, QUERY_KEYS.POSTS.DETAILS(id), (post) => {
         post.isLiked = false;

@@ -149,12 +149,16 @@
     },
     "subpages": {
       "posts": {
-        "title": "You don't have any posts yet",
-        "description": "Your posts will show up here."
+        "empty": {
+          "title": "You don't have any posts yet",
+          "description": "Your posts will show up here."
+        }
       },
       "media": {
-        "title": "You don't have any media yet",
-        "description": "When you post photos or videos, they will show up here."
+        "empty": {
+          "title": "You don't have any media yet",
+          "description": "When you post photos or videos, they will show up here."
+        }
       },
       "likes": {
         "empty": {
@@ -199,7 +203,10 @@
       "description": "This can't be undone and it will be removed from your profile, the timeline of any accounts that follow you, and from search results."
     },
     "count": {
-      "posts": "{count, plural, one {{count} Post} other {{count} Posts}}"
+      "posts": "{count, plural, one {{count} post} other {{count} posts}}",
+      "replies": "{count, plural, one {{count} reply} other {{count} replies}}",
+      "media": "{count, plural, one {{count} photo} other {{count} photos}}",
+      "likes": "{count, plural, one {{count} like} other {{count} likes}}"
     },
     "api": {
       "createPost": {

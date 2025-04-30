@@ -21,7 +21,7 @@ export const calcAspectRatio = (
 
   const aspectRatio = Number(((Math.round(height) / Math.round(width)) * 100).toFixed(2));
 
-  const scale = 0.25;
+  const scale = 0.52;
   const ratioWidth = width * scale;
   const ratioHeight = height * scale;
 

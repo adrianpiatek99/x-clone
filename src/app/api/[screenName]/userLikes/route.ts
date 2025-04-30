@@ -5,7 +5,6 @@ import {
   postEditHistoryTable,
   postLikesTable,
   postRepliesTable,
-  postsTable,
   userPublicColumns,
   usersTable,
 } from '@/db/schema';
@@ -22,6 +21,7 @@ export type GetUserLikesParams = {
 export type GetUserLikesResponse = {
   likes: (PostLike & { post: Post })[];
   nextCursor: NextCursor;
+  totalCount: number;
 };
 
 export const GET = async (
@@ -66,12 +66,12 @@ export const GET = async (
         eq(postLikesTable.userId, user.id),
         cursor
           ? or(
-              lt(postsTable.createdAt, cursor.createdAt),
-              and(eq(postsTable.createdAt, cursor.createdAt), lt(postsTable.id, cursor.id))
+              lt(postLikesTable.createdAt, cursor.createdAt),
+              and(eq(postLikesTable.createdAt, cursor.createdAt), lt(postLikesTable.id, cursor.id))
             )
           : undefined
       ),
-      orderBy: [desc(postsTable.createdAt), desc(postsTable.id)],
+      orderBy: [desc(postLikesTable.createdAt), desc(postLikesTable.id)],
       with: {
         post: {
           with: {
@@ -97,6 +97,9 @@ export const GET = async (
         },
       },
     });
+
+    // Get total count of likes
+    const totalCount = await db.$count(postLikesTable, eq(postLikesTable.userId, user.id));
 
     // Calculate next cursor
     let nextCursor: GetUserLikesResponse['nextCursor'] = null;
@@ -146,6 +149,7 @@ export const GET = async (
     return NextResponse.json<GetUserLikesResponse>({
       likes: likesWithCounts,
       nextCursor,
+      totalCount,
     });
   } catch (error) {
     return handleApiError(error);

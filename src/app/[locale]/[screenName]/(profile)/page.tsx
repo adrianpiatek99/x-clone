@@ -24,8 +24,8 @@ export default function ProfilePage() {
         data={flatData}
         renderItem={(item) => <PostCard post={item} />}
         empty={{
-          title: t('profilePage.subpages.posts.title'),
-          description: t('profilePage.subpages.posts.description'),
+          title: t('profilePage.subpages.posts.empty.title'),
+          description: t('profilePage.subpages.posts.empty.description'),
         }}
         infiniteScroll={{
           loader: <PostCardSkeletons />,

@@ -10,7 +10,7 @@ type QueryKey = readonly unknown[] | string[];
 
 const updateInfiniteQueryWithNewItem = <
   TResponse extends { nextCursor: unknown },
-  TItemsKey extends keyof Omit<TResponse, 'nextCursor'> & string,
+  TItemsKey extends keyof Omit<TResponse, 'nextCursor' | 'totalCount'> & string,
   TNewItem,
 >(
   oldData: InfiniteQueryData<TResponse> | undefined,
@@ -40,7 +40,7 @@ const updateInfiniteQueryWithNewItem = <
 
 const updateInfiniteQueryWithDeletedItem = <
   TResponse extends { nextCursor: unknown },
-  TItemsKey extends keyof Omit<TResponse, 'nextCursor'> & string,
+  TItemsKey extends keyof Omit<TResponse, 'nextCursor' | 'totalCount'> & string,
 >(
   oldData: InfiniteQueryData<TResponse> | undefined,
   deletedItemId: string,
@@ -68,7 +68,7 @@ const updateInfiniteQueryWithDeletedItem = <
 
 const updateInfiniteQueryWithUpdatedItem = <
   TResponse extends { nextCursor: unknown },
-  TItemsKey extends keyof Omit<TResponse, 'nextCursor'> & string,
+  TItemsKey extends keyof Omit<TResponse, 'nextCursor' | 'totalCount'> & string,
   TItem extends TResponse[TItemsKey] extends (infer U)[] ? U & { id: string } : never,
 >(
   oldData: InfiniteQueryData<TResponse> | undefined,
@@ -102,11 +102,12 @@ const updateInfiniteQueryWithUpdatedItem = <
 export const addItemToInfiniteQueryCache = <TResponse extends { nextCursor: unknown }>(
   queryClient: QueryClient,
   queryKey: QueryKey,
-  newItem: TResponse[keyof Omit<TResponse, 'nextCursor'> & string] extends (infer U)[]
+  newItem: TResponse[keyof Omit<TResponse, 'nextCursor' | 'totalCount'> &
+    string] extends (infer U)[]
     ? U & { id: string }
     : never,
   options: {
-    itemsKey: keyof Omit<TResponse, 'nextCursor'> & string;
+    itemsKey: keyof Omit<TResponse, 'nextCursor' | 'totalCount'> & string;
     position?: 'start' | 'end';
   }
 ) => {
@@ -155,7 +156,7 @@ export const deleteItemFromInfiniteQueryCache = <TResponse extends { nextCursor:
   itemId: string,
   options: {
     deleteByKey?: string;
-    itemsKey: keyof Omit<TResponse, 'nextCursor'> & string;
+    itemsKey: keyof Omit<TResponse, 'nextCursor' | 'totalCount'> & string;
   }
 ) => {
   queryClient.setQueryData<InfiniteQueryData<TResponse>>(queryKey, (oldData) =>
@@ -208,14 +209,14 @@ export const updateItemInInfiniteQueryCache = <TResponse extends { nextCursor: u
   itemId: string,
   updateFn: (
     item: Draft<
-      TResponse[keyof Omit<TResponse, 'nextCursor'> & string] extends (infer U)[]
+      TResponse[keyof Omit<TResponse, 'nextCursor' | 'totalCount'> & string] extends (infer U)[]
         ? U & { id: string }
         : never
     >
   ) => void,
   options: {
     findByKey?: string;
-    itemsKey: keyof Omit<TResponse, 'nextCursor'> & string;
+    itemsKey: keyof Omit<TResponse, 'nextCursor' | 'totalCount'> & string;
   }
 ) => {
   queryClient.setQueryData<InfiniteQueryData<TResponse>>(queryKey, (oldData) =>
@@ -259,4 +260,18 @@ export const updateItemInCache = <TItem>(
       }
     })
   );
+};
+
+export const updateTotalCountInInfiniteQueryCache = <TResponse extends { totalCount: number }>(
+  queryClient: QueryClient,
+  queryKey: QueryKey,
+  updateFn: (count: number) => number
+) => {
+  queryClient.setQueryData<InfiniteQueryData<TResponse>>(queryKey, (oldData) => {
+    if (!oldData) return oldData;
+
+    return produce(oldData, (draft) => {
+      draft.pages[0].totalCount = updateFn(draft.pages[0].totalCount);
+    });
+  });
 };

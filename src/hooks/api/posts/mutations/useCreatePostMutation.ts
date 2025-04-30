@@ -7,7 +7,10 @@ import { apiRequest } from '@/db/utils/api';
 import { useAppSession } from '@/hooks/useAppSession';
 import { useToasts } from '@/hooks/useToasts';
 import { createFormData } from '@/utils/formData';
-import { addItemToInfiniteQueryCache } from '@/utils/queryCache';
+import {
+  addItemToInfiniteQueryCache,
+  updateTotalCountInInfiniteQueryCache,
+} from '@/utils/queryCache';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 
@@ -49,6 +52,11 @@ export const useCreatePostMutation = ({ onSuccess, onSettled }: Props = {}) => {
           QUERY_KEYS.POSTS.USER_POSTS(user.screenName),
           newPost,
           { itemsKey: 'posts' }
+        );
+        updateTotalCountInInfiniteQueryCache<GetUserPostsResponse>(
+          queryClient,
+          QUERY_KEYS.POSTS.USER_POSTS(user.screenName),
+          (count) => count + 1
         );
       }
 
