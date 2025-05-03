@@ -6,8 +6,10 @@ use diesel::FromSqlRow;
 use std::io::Write;
 use crate::schema::sql_types::ConversationControl as ConversationControlSql;
 use serde::{Serialize, Deserialize};
+use ts_rs::TS;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, AsExpression, FromSqlRow)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, AsExpression, FromSqlRow, TS)]
+#[ts(export, export_to = "../../frontend/src/types/enums.ts")]
 #[diesel(sql_type = ConversationControlSql)]
 pub enum ConversationControl {
     #[serde(rename = "ALL")]

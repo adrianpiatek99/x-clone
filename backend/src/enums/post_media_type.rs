@@ -6,8 +6,10 @@ use diesel::FromSqlRow;
 use std::io::Write;
 use crate::schema::sql_types::PostMediaType as PostMediaTypeSql;
 use serde::{Serialize, Deserialize};
+use ts_rs::TS;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, AsExpression, FromSqlRow)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, AsExpression, FromSqlRow, TS)]
+#[ts(export, export_to = "../../frontend/src/types/enums.ts")]
 #[diesel(sql_type = PostMediaTypeSql)]
 pub enum PostMediaType {
     #[serde(rename = "PHOTO")]

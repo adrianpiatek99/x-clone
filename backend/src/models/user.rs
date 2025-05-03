@@ -4,6 +4,8 @@ use serde::Serialize;
 use regex::Regex;
 use validator::Validate;
 use serde::Deserialize;
+use uuid::Uuid;
+use ts_rs::TS;
 
 use crate::enums::user_role::Role;
 
@@ -12,7 +14,7 @@ use crate::enums::user_role::Role;
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]
 pub struct CurrentUser {
-  pub id: uuid::Uuid,
+  pub id: Uuid,
   pub name: String,
   pub screen_name: String,
   pub email: String,
@@ -27,12 +29,13 @@ pub struct CurrentUser {
   pub updated_at: DateTime<Utc>,
 }
 
-#[derive(Queryable, Selectable, Identifiable, Serialize)]
+#[derive(Queryable, Selectable, Identifiable, Serialize, TS, Clone)]
+#[ts(export, export_to = "../../frontend/src/types/user.ts")]
 #[diesel(table_name = crate::schema::users)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]
 pub struct User {
-  pub id: uuid::Uuid,
+  pub id: Uuid,
   pub name: String,
   pub screen_name: String,
   pub description: String,
@@ -49,7 +52,7 @@ pub struct User {
 #[derive(Insertable)]
 #[diesel(table_name = crate::schema::users)]
 pub struct NewUser {
-    pub id: uuid::Uuid,
+    pub id: Uuid,
     pub name: String,
     pub screen_name: String,
     pub email: String,
@@ -69,7 +72,7 @@ impl Default for NewUser {
     fn default() -> Self {
         let now = Utc::now();
         Self {
-            id: uuid::Uuid::new_v4(),
+            id: Uuid::new_v4(),
             name: String::new(),
             screen_name: String::new(),
             email: String::new(),

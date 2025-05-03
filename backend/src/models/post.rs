@@ -1,36 +1,57 @@
-use diesel::{Queryable, Selectable, Identifiable};
-use chrono::{DateTime, Utc};
+use diesel::{Queryable, Selectable, Identifiable, Associations};
 use serde::Serialize;
+use chrono::{DateTime, Utc};
+use uuid::Uuid;
+use ts_rs::TS;
 
 use crate::enums::conversation_control::ConversationControl;
 use crate::enums::post_media_type::PostMediaType;
+use crate::models::user::User;
 
-#[derive(Queryable, Selectable, Identifiable, Serialize)]
+#[derive(Queryable, Selectable, Identifiable, Serialize, TS)]
+#[ts(export, export_to = "../../frontend/src/types/post.ts")]
 #[diesel(table_name = crate::schema::posts)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]
-pub struct Post {
-    pub id: uuid::Uuid,
+pub struct PostSchema {
+    pub id: Uuid,
     pub text: String,
-    pub author_id: uuid::Uuid,
+    pub author_id: Uuid,
     pub hashtags: Option<Vec<Option<String>>>,
     pub conversationControl: ConversationControl,
     pub created_at: DateTime<Utc>,
     pub updated_at: DateTime<Utc>,
 }
 
-
-#[derive(Queryable, Selectable, Identifiable, Serialize)]
+#[derive(Queryable, Selectable, Identifiable, Serialize, TS, Associations, Clone)]
+#[ts(export, export_to = "../../frontend/src/types/post.ts")]
 #[diesel(table_name = crate::schema::post_media)]
+#[diesel(belongs_to(Post))]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]
 pub struct PostMedia {
-    pub id: uuid::Uuid,
+    pub id: Uuid,
     pub url: String,
     pub width: i32,
     pub height: i32,
     pub type_: PostMediaType,
-    pub post_id: uuid::Uuid,
-    pub user_id: uuid::Uuid,
+    pub post_id: Uuid,
+    pub user_id: Uuid,
     pub created_at: DateTime<Utc>,
 }
+
+#[derive(Serialize, TS)]
+#[ts(export, export_to = "../../frontend/src/types/post.ts")]
+#[serde(rename_all = "camelCase")]
+pub struct Post {
+    #[serde(flatten)]
+    pub post: PostSchema,
+    pub author: User,
+    pub media: Vec<PostMedia>,
+    pub is_author: bool,
+    pub is_liked: bool,
+    pub likes_count: i64,
+    pub replies_count: i64,
+    pub edited_at: Option<DateTime<Utc>>,
+}
+

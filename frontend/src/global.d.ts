@@ -1,8 +1,8 @@
 import type { ApiError } from '@/utils/api';
 import type { AxiosError } from 'axios';
 
-import type en from '../../messages/en.json';
-import type pl from '../../messages/pl.json';
+import type en from '../messages/en.json';
+import type pl from '../messages/pl.json';
 
 type Messages = typeof en;
 
