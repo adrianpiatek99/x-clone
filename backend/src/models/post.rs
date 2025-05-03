@@ -19,7 +19,9 @@ pub struct PostSchema {
     pub author_id: Uuid,
     pub hashtags: Option<Vec<Option<String>>>,
     pub conversationControl: ConversationControl,
+    #[ts(type = "Date")]
     pub created_at: DateTime<Utc>,
+    #[ts(type = "Date")]
     pub updated_at: DateTime<Utc>,
 }
 
@@ -37,6 +39,7 @@ pub struct PostMedia {
     pub type_: PostMediaType,
     pub post_id: Uuid,
     pub user_id: Uuid,
+    #[ts(type = "Date")]
     pub created_at: DateTime<Utc>,
 }
 
@@ -52,6 +55,7 @@ pub struct Post {
     pub is_liked: bool,
     pub likes_count: i64,
     pub replies_count: i64,
+    #[ts(type = "Date")]
     pub edited_at: Option<DateTime<Utc>>,
 }
 

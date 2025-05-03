@@ -9,7 +9,8 @@ use ts_rs::TS;
 
 use crate::enums::user_role::Role;
 
-#[derive(Queryable, Selectable, Identifiable, Serialize)]
+#[derive(Queryable, Selectable, Identifiable, Serialize, TS)]
+#[ts(export, export_to = "../../frontend/src/types/user.ts")]
 #[diesel(table_name = crate::schema::users)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]
@@ -25,7 +26,9 @@ pub struct CurrentUser {
   pub role: Role,
   pub is_verified: bool,
   pub verified_at: Option<DateTime<Utc>>,
+  #[ts(type = "Date")]
   pub created_at: DateTime<Utc>,
+  #[ts(type = "Date")]
   pub updated_at: DateTime<Utc>,
 }
 
@@ -45,7 +48,9 @@ pub struct User {
   pub role: Role,
   pub is_verified: bool,
   pub verified_at: Option<DateTime<Utc>>,
+  #[ts(type = "Date")]
   pub created_at: DateTime<Utc>,
+  #[ts(type = "Date")]
   pub updated_at: DateTime<Utc>,
 }
 
