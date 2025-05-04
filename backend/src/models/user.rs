@@ -30,7 +30,7 @@ pub struct CurrentUser {
   pub updated_at: DateTime<Utc>,
 }
 
-#[derive(Queryable, Selectable, Identifiable, Serialize, TS, Clone)]
+#[derive(Queryable, Selectable, Identifiable, Serialize, TS, Clone, Debug)]
 #[ts(export, export_to = "../../frontend/src/types/user.ts")]
 #[diesel(table_name = crate::schema::users)]
 #[diesel(check_for_backend(diesel::pg::Pg))]

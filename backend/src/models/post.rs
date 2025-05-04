@@ -8,7 +8,7 @@ use crate::enums::conversation_control::ConversationControl;
 use crate::enums::post_media_type::PostMediaType;
 use crate::models::user::User;
 
-#[derive(Queryable, Selectable, Identifiable, Serialize, TS)]
+#[derive(Queryable, Selectable, Identifiable, Serialize, TS, Debug)]
 #[diesel(table_name = crate::schema::posts)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]
@@ -24,7 +24,7 @@ pub struct PostSchema {
     pub updated_at: DateTime<Utc>,
 }
 
-#[derive(Queryable, Selectable, Identifiable, Serialize, Associations, Clone, TS)]
+#[derive(Queryable, Selectable, Identifiable, Serialize, Associations, Clone, TS, Debug)]
 #[ts(export, export_to = "../../frontend/src/types/post.ts")]
 #[diesel(table_name = crate::schema::post_media)]
 #[diesel(belongs_to(Post))]
