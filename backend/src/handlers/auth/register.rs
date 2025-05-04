@@ -9,7 +9,7 @@ use crate::schema;
 use crate::models::user::NewUser;
 use crate::models::auth::RegisterRequest;
 
-#[post("/api/auth/register")]
+#[post("/register")]
 async fn register(db: web::Data<DbService>, form: web::Form<RegisterRequest>) -> impl Responder {
     // Validate the form
     if let Err(errors) = form.validate() {

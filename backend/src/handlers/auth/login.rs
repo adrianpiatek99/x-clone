@@ -13,7 +13,7 @@ use crate::models::auth::{generate_token, LoginRequest, hash_password};
 use crate::models::auth::LoginResponse;
 use crate::models::user::User;
 
-#[post("/api/auth/login")]
+#[post("/login")]
 async fn login(db: web::Data<DbService>, form: web::Form<LoginRequest>) -> impl Responder {
     // Validate the form
     if let Err(errors) = form.validate() {

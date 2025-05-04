@@ -11,7 +11,7 @@ use crate::schema::users::dsl::*;
 use crate::models::auth::{decode_token, is_token_valid, extend_token_expiration, generate_token};
 use crate::models::user::CurrentUser;
 
-#[get("/api/auth/current-user")]
+#[get("/current-user")]
 async fn current_user(db: web::Data<DbService>, req: HttpRequest) -> impl Responder {
     // Check if token cookie exists
     let token = match req.cookie("token") {

@@ -58,28 +58,36 @@ pub struct LoginResponse {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Claims {
-  pub sub: Uuid,
-  pub exp: i64,
+    pub sub: Uuid,
+    pub exp: i64,
 }
 
 pub fn generate_token(id: Uuid, secret: &str) -> Result<String, jsonwebtoken::errors::Error> {
-  let expiration = Utc::now().checked_add_signed(Duration::seconds(60 * 60 * 24 * 30)).expect("Failed to add 30 days to current time").timestamp();
+    let expiration = Utc::now().checked_add_signed(Duration::seconds(60 * 60 * 24 * 30)).expect("Failed to add 30 days to current time").timestamp();
 
-  let claims = Claims {
-    sub: id.to_owned(),
-    exp: expiration,
-  };
+    let claims = Claims {
+        sub: id,
+        exp: expiration,
+    };
 
-  encode(&Header::default(), &claims, &EncodingKey::from_secret(secret.as_ref()))
+    let header = Header::new(jsonwebtoken::Algorithm::HS256);
+    let key = EncodingKey::from_secret(secret.as_bytes());
+
+    encode(&header, &claims, &key)
 }
 
 pub fn decode_token(token: &str, secret: &str) -> Result<TokenData<Claims>, jsonwebtoken::errors::Error> {
-  decode::<Claims>(token, &DecodingKey::from_secret(secret.as_ref()), &Validation::default())
+    let key = DecodingKey::from_secret(secret.as_bytes());
+    let validation = Validation::new(jsonwebtoken::Algorithm::HS256);
+
+    decode::<Claims>(token, &key, &validation)
 }
 
 pub fn is_token_valid(claims: &Claims) -> bool {
-  let current_time = Utc::now().timestamp();
-  claims.exp > current_time
+    let current_time = Utc::now().timestamp();
+    let is_valid = claims.exp > current_time;
+
+    is_valid
 }
 
 pub fn hash_password(password: String) -> String {

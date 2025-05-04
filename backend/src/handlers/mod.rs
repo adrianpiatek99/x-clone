@@ -1,6 +1,7 @@
 pub mod auth;
 pub mod posts;
 pub mod user;
+pub mod middleware;
 
 use actix_web::web;
 
