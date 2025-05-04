@@ -9,7 +9,6 @@ use crate::enums::post_media_type::PostMediaType;
 use crate::models::user::User;
 
 #[derive(Queryable, Selectable, Identifiable, Serialize, TS)]
-#[ts(export, export_to = "../../frontend/src/types/post.ts")]
 #[diesel(table_name = crate::schema::posts)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]
@@ -25,7 +24,7 @@ pub struct PostSchema {
     pub updated_at: DateTime<Utc>,
 }
 
-#[derive(Queryable, Selectable, Identifiable, Serialize, TS, Associations, Clone)]
+#[derive(Queryable, Selectable, Identifiable, Serialize, Associations, Clone, TS)]
 #[ts(export, export_to = "../../frontend/src/types/post.ts")]
 #[diesel(table_name = crate::schema::post_media)]
 #[diesel(belongs_to(Post))]
@@ -55,7 +54,7 @@ pub struct Post {
     pub is_liked: bool,
     pub likes_count: i64,
     pub replies_count: i64,
-    #[ts(type = "Date")]
+    #[ts(type = "Date | null")]
     pub edited_at: Option<DateTime<Utc>>,
 }
 

@@ -10,7 +10,7 @@ export type Post = {
   isLiked: boolean;
   likesCount: bigint;
   repliesCount: bigint;
-  editedAt: Date;
+  editedAt: Date | null;
   id: string;
   text: string;
   authorId: string;
@@ -29,14 +29,4 @@ export type PostMedia = {
   postId: string;
   userId: string;
   createdAt: Date;
-};
-
-export type PostSchema = {
-  id: string;
-  text: string;
-  authorId: string;
-  hashtags: Array<string | null> | null;
-  conversationControl: ConversationControl;
-  createdAt: Date;
-  updatedAt: Date;
 };

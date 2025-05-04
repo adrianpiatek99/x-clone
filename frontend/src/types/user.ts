@@ -12,7 +12,7 @@ export type CurrentUser = {
   url: string | null;
   role: Role;
   isVerified: boolean;
-  verifiedAt: string | null;
+  verifiedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -27,7 +27,7 @@ export type User = {
   url: string | null;
   role: Role;
   isVerified: boolean;
-  verifiedAt: string | null;
+  verifiedAt: Date | null;
   createdAt: Date;
   updatedAt: Date;
 };

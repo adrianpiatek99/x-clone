@@ -4,9 +4,10 @@ use serde_json::json;
 use validator::Validate;
 
 use crate::db_service::DbService;
+use crate::models::auth::hash_password;
+use crate::schema;
 use crate::models::user::NewUser;
-use crate::models::user::RegisterRequest;
-use crate::schema::users;
+use crate::models::auth::RegisterRequest;
 
 #[post("/api/auth/register")]
 async fn register(db: web::Data<DbService>, form: web::Form<RegisterRequest>) -> impl Responder {
@@ -21,8 +22,8 @@ async fn register(db: web::Data<DbService>, form: web::Form<RegisterRequest>) ->
     let mut conn = db.get_conn();
 
     // Check if email already exists
-    let email_exists = users::table
-        .filter(users::email.eq(&form.email))
+    let email_exists = schema::users::table
+        .filter(schema::users::email.eq(&form.email))
         .count()
         .get_result::<i64>(&mut conn)
         .unwrap_or(0) > 0;
@@ -34,8 +35,8 @@ async fn register(db: web::Data<DbService>, form: web::Form<RegisterRequest>) ->
     }
 
     // Check if screen name already exists
-    let screen_name_exists = users::table
-        .filter(users::screen_name.eq(&form.screen_name))
+    let screen_name_exists = schema::users::table
+        .filter(schema::users::screen_name.eq(&form.screen_name))
         .count()
         .get_result::<i64>(&mut conn)
         .unwrap_or(0) > 0;
@@ -46,15 +47,17 @@ async fn register(db: web::Data<DbService>, form: web::Form<RegisterRequest>) ->
         }));
     }
 
+    let hashed_password = hash_password(form.password.clone());
+
     let new_user = NewUser {
         name: form.name.clone(),
         screen_name: form.screen_name.clone(),
         email: form.email.clone(),
-        password: form.password.clone(),
+        password: hashed_password,
         ..NewUser::default()
     };
 
-    match diesel::insert_into(users::table)
+    match diesel::insert_into(schema::users::table)
         .values(&new_user)
         .execute(&mut conn)
     {
