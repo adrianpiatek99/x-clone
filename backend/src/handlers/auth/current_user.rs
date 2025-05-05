@@ -7,8 +7,10 @@ use serde_json::json;
 use std::env;
 
 use crate::db_service::DbService;
+use crate::helpers::token::{decode_token, is_token_valid, extend_token_expiration, generate_token};
+
 use crate::schema::users::dsl::*;
-use crate::models::auth::{decode_token, is_token_valid, extend_token_expiration, generate_token};
+
 use crate::models::user::CurrentUser;
 
 #[get("/current-user")]

@@ -3,7 +3,7 @@ use actix_web_httpauth::extractors::bearer::BearerAuth;
 use std::env;
 use serde_json::json;
 
-use crate::models::auth::{decode_token, is_token_valid};
+use crate::helpers::token::{decode_token, is_token_valid};
 
 pub async fn auth_middleware(
     req: ServiceRequest,

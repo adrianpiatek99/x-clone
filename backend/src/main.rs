@@ -3,6 +3,7 @@ mod schema;
 mod models;
 mod enums;
 mod handlers;
+mod helpers;
 
 use actix_cors::Cors;
 use actix_web::{web, App, HttpServer};

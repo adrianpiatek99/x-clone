@@ -4,8 +4,10 @@ use serde_json::json;
 use validator::Validate;
 
 use crate::db_service::DbService;
-use crate::models::auth::hash_password;
+use crate::helpers::token::hash_password;
+
 use crate::schema;
+
 use crate::models::user::NewUser;
 use crate::models::auth::RegisterRequest;
 

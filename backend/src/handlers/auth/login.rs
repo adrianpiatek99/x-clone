@@ -8,9 +8,11 @@ use validator::Validate;
 use std::env;
 
 use crate::db_service::DbService;
+use crate::helpers::token::{generate_token, hash_password};
+
 use crate::schema;
-use crate::models::auth::{generate_token, LoginRequest, hash_password};
-use crate::models::auth::LoginResponse;
+
+use crate::models::auth::{LoginRequest, LoginResponse};
 use crate::models::user::CurrentUser;
 
 #[post("/login")]
