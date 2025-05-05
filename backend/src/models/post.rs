@@ -42,7 +42,7 @@ pub struct PostMedia {
     pub created_at: DateTime<Utc>,
 }
 
-#[derive(Serialize, TS)]
+#[derive(Serialize, TS, Debug)]
 #[ts(export, export_to = "../../frontend/src/types/post.ts")]
 #[serde(rename_all = "camelCase")]
 pub struct Post {
@@ -58,3 +58,14 @@ pub struct Post {
     pub edited_at: Option<DateTime<Utc>>,
 }
 
+#[derive(Serialize, TS)]
+#[ts(export, export_to = "../../frontend/src/types/post.ts")]
+#[serde(rename_all = "camelCase")]
+pub struct PostEditHistory {
+    #[serde(flatten)]
+    pub id: Uuid,
+    pub post_id: Uuid,
+    pub previous_text: String,
+    #[ts(type = "Date | null")]
+    pub edited_at: Option<DateTime<Utc>>,
+}
