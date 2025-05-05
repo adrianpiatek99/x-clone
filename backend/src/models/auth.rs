@@ -7,7 +7,7 @@ use regex::Regex;
 use validator::Validate;
 use ts_rs::TS;
 
-use crate::models::user::User;
+use super::user::CurrentUser;
 
 // Register request
 
@@ -51,7 +51,8 @@ pub struct LoginRequest {
 #[ts(export, export_to = "../../frontend/src/types/auth.ts")]
 #[serde(rename_all = "camelCase")]
 pub struct LoginResponse {
-    pub user: User,
+    #[serde(flatten)]
+    pub current_user: CurrentUser
 }
 
 // JWT

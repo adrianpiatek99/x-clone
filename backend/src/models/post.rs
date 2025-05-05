@@ -1,5 +1,5 @@
 use diesel::{Queryable, Selectable, Identifiable, Associations};
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
 use chrono::{DateTime, Utc};
 use uuid::Uuid;
 use ts_rs::TS;
@@ -7,6 +7,7 @@ use ts_rs::TS;
 use crate::enums::conversation_control::ConversationControl;
 use crate::enums::post_media_type::PostMediaType;
 use crate::models::user::User;
+use crate::models::global::Cursor;
 
 #[derive(Queryable, Selectable, Identifiable, Serialize, TS, Debug)]
 #[diesel(table_name = crate::schema::posts)]
@@ -58,8 +59,7 @@ pub struct Post {
     pub edited_at: Option<DateTime<Utc>>,
 }
 
-#[derive(Serialize, TS)]
-#[ts(export, export_to = "../../frontend/src/types/post.ts")]
+#[derive(Serialize, TS, Debug)]
 #[serde(rename_all = "camelCase")]
 pub struct PostEditHistory {
     #[serde(flatten)]
@@ -68,4 +68,23 @@ pub struct PostEditHistory {
     pub previous_text: String,
     #[ts(type = "Date | null")]
     pub edited_at: Option<DateTime<Utc>>,
+}
+
+
+
+#[derive(Debug, Serialize, TS)]
+#[ts(export, export_to = "../../frontend/src/types/post.ts")]
+#[serde(rename_all = "camelCase")]
+pub struct GlobalTimelineResponse {
+    pub posts: Vec<Post>,
+    pub next_cursor: Option<Cursor>,
+}
+
+#[derive(Debug, Deserialize, TS)]
+#[ts(export, export_to = "../../frontend/src/types/post.ts")]
+#[serde(rename_all = "camelCase")]
+pub struct GlobalTimelineRequest {
+    #[ts(type = "Cursor | null")]
+    pub cursor: Option<String>,
+    pub limit: Option<i64>,
 }

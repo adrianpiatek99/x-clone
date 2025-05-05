@@ -11,7 +11,7 @@ use crate::db_service::DbService;
 use crate::schema;
 use crate::models::auth::{generate_token, LoginRequest, hash_password};
 use crate::models::auth::LoginResponse;
-use crate::models::user::User;
+use crate::models::user::CurrentUser;
 
 #[post("/login")]
 async fn login(db: web::Data<DbService>, form: web::Form<LoginRequest>) -> impl Responder {
@@ -28,8 +28,8 @@ async fn login(db: web::Data<DbService>, form: web::Form<LoginRequest>) -> impl 
     let user_result = schema::users::table
         .filter(schema::users::email.eq(&form.email_or_screen_name))
         .or_filter(schema::users::screen_name.eq(&form.email_or_screen_name))
-        .select((User::as_select(), schema::users::password))
-        .first::<(User, String)>(&mut conn);
+        .select((CurrentUser::as_select(), schema::users::password))
+        .first::<(CurrentUser, String)>(&mut conn);
 
     match user_result {
         Ok((user, stored_password)) => {
@@ -52,7 +52,7 @@ async fn login(db: web::Data<DbService>, form: web::Form<LoginRequest>) -> impl 
                 .finish();
 
             let response = LoginResponse {
-                user,
+                current_user: user,
             };
 
             HttpResponse::Ok().cookie(cookie).json(response)
