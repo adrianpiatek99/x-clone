@@ -2,14 +2,14 @@
 import type { ConversationControl } from './enums';
 import type { PostMediaType } from './enums';
 import type { Cursor } from './global';
-import type { User } from './user';
+import type { BaseUser } from './user';
 
 export type GlobalTimelineRequest = { cursor: Cursor | null; limit: bigint | null };
 
 export type GlobalTimelineResponse = { posts: Array<Post>; nextCursor: Cursor | null };
 
 export type Post = {
-  author: User;
+  author: BaseUser;
   media: Array<PostMedia>;
   isAuthor: boolean;
   isLiked: boolean;

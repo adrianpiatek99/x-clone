@@ -2,14 +2,18 @@ import '../globals.css';
 
 import type { PropsWithChildren } from 'react';
 
-import { auth } from '@/auth';
 import Loader from '@/components/atoms/Loader';
+import { AuthProvider } from '@/components/context/AuthContext';
 import SidebarMenu from '@/components/organisms/SidebarMenu';
+import { API_ENDPOINTS } from '@/constants/api';
 import type { Locale } from '@/constants/locales';
+import { apiRequest } from '@/db/utils/api';
 import { routing } from '@/i18n/routing';
+import type { AuthUser } from '@/types/user';
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import { Inter } from 'next/font/google';
+import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
 import { SessionProvider } from 'next-auth/react';
 import { getMessages } from 'next-intl/server';
@@ -37,7 +41,26 @@ type Props = {
 
 export default async function RootLayout({ children, params }: PropsWithChildren<Props>) {
   const { locale } = await params;
-  const session = await auth();
+  const cookieStore = await cookies();
+
+  const getAuthUser = async () => {
+    try {
+      const response = await apiRequest<AuthUser>('GET', API_ENDPOINTS.AUTH.AUTH_USER, undefined, {
+        headers: {
+          Cookie: cookieStore
+            .getAll()
+            .map(({ name, value }) => `${name}=${value}`)
+            .join('; '),
+        },
+      });
+
+      return response;
+    } catch {
+      return undefined;
+    }
+  };
+
+  const authUser = await getAuthUser();
 
   if (!routing.locales.includes(locale)) {
     notFound();
@@ -48,18 +71,20 @@ export default async function RootLayout({ children, params }: PropsWithChildren
   return (
     <html lang={locale} className={inter.variable} suppressHydrationWarning>
       <body>
-        <SessionProvider session={session}>
-          <Providers locale={locale} messages={messages}>
-            <div className='relative mx-auto flex w-full gap-3 md:max-w-[688px] lg:max-w-[1008px] xl:max-w-[1265px]'>
-              <SidebarMenu />
-              <main className='relative flex w-full grow items-start gap-7'>
-                <div className='flex min-h-screen w-full max-w-full flex-col pb-24 sm:max-w-[600px] sm:border-x sm:border-border-1 sm:pb-48'>
-                  {children}
-                </div>
-                <LazySidebarColumn />
-              </main>
-            </div>
-          </Providers>
+        <SessionProvider>
+          <AuthProvider authUser={authUser}>
+            <Providers locale={locale} messages={messages}>
+              <div className='relative mx-auto flex w-full gap-3 md:max-w-[688px] lg:max-w-[1008px] xl:max-w-[1265px]'>
+                <SidebarMenu />
+                <main className='relative flex w-full grow items-start gap-7'>
+                  <div className='flex min-h-screen w-full max-w-full flex-col pb-24 sm:max-w-[600px] sm:border-x sm:border-border-1 sm:pb-48'>
+                    {children}
+                  </div>
+                  <LazySidebarColumn />
+                </main>
+              </div>
+            </Providers>
+          </AuthProvider>
         </SessionProvider>
       </body>
     </html>

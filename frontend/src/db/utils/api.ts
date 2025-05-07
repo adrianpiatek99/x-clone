@@ -45,6 +45,7 @@ export const apiRequest = async <T, D = unknown>(
       method,
       url,
       data,
+      withCredentials: true,
       ...config,
     });
 

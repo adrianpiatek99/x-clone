@@ -14,6 +14,8 @@ import { createUrlWithParams } from '@/utils/urlParams';
 
 export const API_ENDPOINTS = {
   AUTH: {
+    AUTH_USER: 'http://localhost:8080/api/auth/authUser',
+    LOGIN: 'http://localhost:8080/api/auth/login',
     SIGN_UP: '/api/auth/signUp',
   },
   POSTS: {

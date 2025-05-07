@@ -1,4 +1,4 @@
-import { useSignInMutation } from '@/hooks/api/auth/mutations';
+import { useLoginMutation } from '@/hooks/api/auth/mutations';
 import { useAppForm } from '@/hooks/useFormHook';
 import type { SignInValues } from '@/schema/auth';
 import { signInSchema } from '@/schema/auth';
@@ -18,11 +18,11 @@ export const useAuthModalSignInForm = () => {
     onSubmit: ({ value }) => {
       if (isPending) return;
 
-      signIn(value);
+      login(value);
     },
   });
 
-  const { signIn, isPending } = useSignInMutation({
+  const { login, isPending } = useLoginMutation({
     onSuccess: () => {
       reset();
       resetStore();

@@ -1,4 +1,4 @@
-import { useSignInMutation, useSignUpMutation } from '@/hooks/api/auth/mutations';
+import { useLoginMutation, useSignUpMutation } from '@/hooks/api/auth/mutations';
 import { useAppForm } from '@/hooks/useFormHook';
 import type { SignUpValues } from '@/schema/auth';
 import { signUpSchema } from '@/schema/auth';
@@ -25,7 +25,7 @@ export const useAuthModalSignUpForm = () => {
     },
   });
 
-  const { signIn, isPending: isSignInPending } = useSignInMutation({
+  const { login, isPending: isLoginPending } = useLoginMutation({
     onSuccess: () => {
       reset();
       resetStore();
@@ -36,10 +36,10 @@ export const useAuthModalSignUpForm = () => {
       const email = getFieldValue('email');
       const password = getFieldValue('password');
 
-      signIn({ emailOrScreenName: email, password });
+      login({ emailOrScreenName: email, password });
     },
   });
-  const isPending = isSignInPending || isSignUpPending;
+  const isPending = isLoginPending || isSignUpPending;
 
   return { AppField, AppForm, SubscribeButton, handleSubmit, isPending };
 };

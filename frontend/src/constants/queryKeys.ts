@@ -1,4 +1,7 @@
 export const QUERY_KEYS = {
+  AUTH: {
+    AUTH_USER: ['authUser'],
+  },
   POSTS: {
     GLOBAL_TIMELINE: ['globalTimeline', 'infinite'],
     POST_LIKES: (id: string, limit: number) => ['postLikes', id, limit, 'infinite'] as const,
