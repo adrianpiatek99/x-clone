@@ -1,4 +1,4 @@
-use diesel::{Queryable, Selectable, Identifiable, Associations};
+use diesel::{Queryable, Selectable, Identifiable};
 use serde::{Deserialize, Serialize};
 use chrono::{DateTime, Utc};
 use uuid::Uuid;
@@ -6,8 +6,9 @@ use ts_rs::TS;
 
 use crate::enums::conversation_control::ConversationControl;
 use crate::enums::post_media_type::PostMediaType;
-use crate::models::user::User;
 use crate::models::global::Cursor;
+
+use super::user::BaseUser;
 
 #[derive(Queryable, Selectable, Identifiable, Serialize, TS, Debug)]
 #[diesel(table_name = crate::schema::posts)]
@@ -25,12 +26,12 @@ pub struct PostSchema {
     pub updated_at: DateTime<Utc>,
 }
 
-#[derive(Queryable, Selectable, Identifiable, Serialize, Associations, Clone, TS, Debug)]
-#[ts(export, export_to = "../../frontend/src/types/post.ts")]
+#[derive(Queryable, Selectable, Identifiable, Serialize, TS, Debug)]
 #[diesel(table_name = crate::schema::post_media)]
 #[diesel(belongs_to(Post))]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/post.ts")]
 pub struct PostMedia {
     pub id: Uuid,
     pub url: String,
@@ -43,13 +44,15 @@ pub struct PostMedia {
     pub created_at: DateTime<Utc>,
 }
 
-#[derive(Serialize, TS, Debug)]
-#[ts(export, export_to = "../../frontend/src/types/post.ts")]
+#[derive(Queryable, Serialize, TS, Debug)]
+#[diesel(table_name = crate::schema::posts)]
+#[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/post.ts")]
 pub struct Post {
     #[serde(flatten)]
     pub post: PostSchema,
-    pub author: User,
+    pub author: BaseUser,
     pub media: Vec<PostMedia>,
     pub is_author: bool,
     pub is_liked: bool,
@@ -73,16 +76,16 @@ pub struct PostEditHistory {
 
 
 #[derive(Debug, Serialize, TS)]
-#[ts(export, export_to = "../../frontend/src/types/post.ts")]
 #[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/post.ts")]
 pub struct GlobalTimelineResponse {
     pub posts: Vec<Post>,
     pub next_cursor: Option<Cursor>,
 }
 
 #[derive(Debug, Deserialize, TS)]
-#[ts(export, export_to = "../../frontend/src/types/post.ts")]
 #[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/post.ts")]
 pub struct GlobalTimelineRequest {
     #[ts(type = "Cursor | null")]
     pub cursor: Option<String>,

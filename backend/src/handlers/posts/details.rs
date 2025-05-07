@@ -1,4 +1,4 @@
-use actix_web::{get, web, HttpRequest, HttpResponse, Responder};
+use actix_web::{get, web, HttpRequest, HttpResponse};
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use diesel::dsl::{count_star, exists, select};
 use diesel::prelude::*;
@@ -15,14 +15,14 @@ use crate::schema::post_likes::dsl as post_likes;
 use crate::schema::post_edit_history::dsl as post_edit_history;
 
 use crate::models::post::*;
-use crate::models::user::*;
+use crate::models::user::{UserSelect, BaseUser};
 
 #[get("/posts/{post_id}")]
 async fn post_details(
     db: web::Data<DbService>,
     path: web::Path<String>,
     req: HttpRequest,
-) -> impl Responder {
+) -> HttpResponse {
     let current_user_id = match get_user_id_from_token(&req).await {
         Ok(id) => Some(id),
         Err(_) => None,
@@ -39,9 +39,9 @@ async fn post_details(
     // Fetch post and author
     let (post, author) = match posts::posts
         .inner_join(users::users.on(posts::author_id.eq(users::id)))
-        .select((PostSchema::as_select(), User::as_select()))
+        .select((PostSchema::as_select(), UserSelect::as_select()))
         .filter(posts::id.eq(pid))
-        .first::<(PostSchema, User)>(&mut conn)
+        .first::<(PostSchema, UserSelect)>(&mut conn)
     {
         Ok(data) => data,
         Err(diesel::result::Error::NotFound) => {
@@ -92,7 +92,7 @@ async fn post_details(
 
     let response = Post {
         post,
-        author,
+        author: BaseUser { user: author },
         media,
         is_author,
         is_liked,

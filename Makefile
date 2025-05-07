@@ -21,3 +21,5 @@ generate-types:
 	@sleep 2
 	@echo "Formatting TypeScript types..."
 	@cd frontend && yarn prettier --write src/types/**/*.ts
+	@echo "Linting TypeScript types..."
+	@cd frontend && yarn eslint --fix src/types/**/*.ts

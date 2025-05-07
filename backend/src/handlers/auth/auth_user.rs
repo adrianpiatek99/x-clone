@@ -1,4 +1,4 @@
-use actix_web::{get, web, HttpResponse, Responder, HttpRequest};
+use actix_web::{get, web, HttpResponse, HttpRequest};
 use actix_web::cookie::{Cookie, SameSite};
 use time::Duration;
 use diesel::{QueryDsl, RunQueryDsl, ExpressionMethods};
@@ -9,14 +9,14 @@ use std::env;
 use crate::db_service::DbService;
 use crate::helpers::token::{decode_token, is_token_valid, extend_token_expiration, generate_token};
 
+use crate::models::auth::GetAuthUserResponse;
+use crate::models::user::{AuthUser, AuthUserSelect};
 use crate::schema::users::dsl::*;
 
-use crate::models::user::CurrentUser;
-
-#[get("/current-user")]
-async fn current_user(db: web::Data<DbService>, req: HttpRequest) -> impl Responder {
+#[get("/authUser")]
+async fn auth_user(db: web::Data<DbService>, req: HttpRequest) -> HttpResponse {
     // Check if token cookie exists
-    let token = match req.cookie("token") {
+    let token = match req.cookie("AUTH_TOKEN") {
         Some(cookie) => cookie.value().to_string(),
         None => return HttpResponse::Unauthorized().json(json!({
             "error": "No authentication token provided"
@@ -42,7 +42,7 @@ async fn current_user(db: web::Data<DbService>, req: HttpRequest) -> impl Respon
     // Extend token expiration time
     extend_token_expiration(&mut token_data.claims);
     let new_token = generate_token(token_data.claims.sub, &jwt_secret).unwrap();
-    let cookie = Cookie::build("token", new_token)
+    let cookie = Cookie::build("AUTH_TOKEN", new_token)
         .path("/")
         .max_age(Duration::seconds(60 * 60 * 24 * 30))
         .same_site(SameSite::None)
@@ -54,10 +54,23 @@ async fn current_user(db: web::Data<DbService>, req: HttpRequest) -> impl Respon
     // Get user from database
     match users
         .filter(id.eq(token_data.claims.sub))
-        .select(CurrentUser::as_select())
-        .first::<CurrentUser>(&mut conn)
+        .select(AuthUserSelect::as_select())
+        .first::<AuthUserSelect>(&mut conn)
     {
-        Ok(user) => HttpResponse::Ok().cookie(cookie).json(user),
+        Ok(user) => {
+            let auth_user = AuthUser {
+                user,
+                is_following: false,
+                followers_count: 0,
+                following_count: 0,
+            };
+
+            let response = GetAuthUserResponse {
+                user: auth_user,
+            };
+
+            HttpResponse::Ok().cookie(cookie).json(response)
+        },
         Err(_) => HttpResponse::NotFound().json(json!({
             "error": "User not found"
         })),

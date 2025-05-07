@@ -25,14 +25,15 @@ async fn main() -> std::io::Result<()> {
             .allow_any_origin()
             .allow_any_method()
             .allow_any_header()
-            .max_age(3600);
+            .supports_credentials();
 
         App::new()
             .wrap(cors)
             .app_data(db.clone())
             .configure(handlers::config)
     })
-    .bind("127.0.0.1:8080")?
+    .bind("127.0.0.1:8080")
+    .unwrap()
     .run()
     .await
 }

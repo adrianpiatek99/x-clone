@@ -1,4 +1,4 @@
-use actix_web::{get, web, HttpResponse, Responder, HttpRequest};
+use actix_web::{get, web, HttpResponse, HttpRequest};
 use diesel::{QueryDsl, RunQueryDsl, ExpressionMethods};
 use diesel::prelude::*;
 use diesel::dsl::count;
@@ -17,14 +17,14 @@ use crate::schema::post_reply::dsl as post_replies;
 
 use crate::models::post::*;
 use crate::models::global::Cursor;
-use crate::models::user::User;
+use crate::models::user::{BaseUser, UserSelect};
 
 #[get("/posts/test")]
 async fn global_timeline(
     db: web::Data<DbService>,
     req: HttpRequest,
     query: web::Query<GlobalTimelineRequest>,
-) -> impl Responder {
+) -> HttpResponse {
     let current_user_id = match get_user_id_from_token(&req).await {
         Ok(id) => Some(id),
         Err(_) => None,
@@ -52,9 +52,9 @@ async fn global_timeline(
     let posts_list = query
         .order(posts::created_at.desc())
         .then_order_by(posts::id.desc())
-        .select((PostSchema::as_select(), User::as_select()))
+        .select((PostSchema::as_select(), UserSelect::as_select()))
         .limit(take)
-        .load::<(PostSchema, User)>(&mut conn)
+        .load::<(PostSchema, UserSelect)>(&mut conn)
         .expect("Error loading posts");
 
     // Calculate next cursor
@@ -142,7 +142,7 @@ async fn global_timeline(
 
         Post {
             post,
-            author,
+            author: BaseUser { user: author },
             media,
             is_author,
             is_liked,

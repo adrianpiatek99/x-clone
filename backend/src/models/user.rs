@@ -1,17 +1,40 @@
 use diesel::{Queryable, Selectable, Identifiable, Insertable};
-use chrono::{DateTime, Utc};
 use serde::Serialize;
+use chrono::{DateTime, Utc};
 use uuid::Uuid;
 use ts_rs::TS;
 
 use crate::enums::user_role::Role;
 
-#[derive(Queryable, Selectable, Identifiable, Serialize, TS)]
-#[ts(export, export_to = "../../frontend/src/types/user.ts")]
+// UserSelect is the user select for the public user
+#[derive(Queryable, Selectable, Identifiable, Serialize, TS, Debug)]
 #[diesel(table_name = crate::schema::users)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]
-pub struct CurrentUser {
+pub struct UserSelect {
+  pub id: Uuid,
+  pub name: String,
+  pub screen_name: String,
+  pub description: String,
+  pub avatar_url: String,
+  pub banner_url: String,
+  pub url: Option<String>,
+  pub role: Role,
+  pub is_verified: bool,
+  #[ts(type = "Date | null")]
+  pub verified_at: Option<DateTime<Utc>>,
+  #[ts(type = "Date")]
+  pub created_at: DateTime<Utc>,
+  #[ts(type = "Date")]
+  pub updated_at: DateTime<Utc>,
+}
+
+// AuthUserSelect is the user select for the auth user
+#[derive(Queryable, Selectable, Serialize, TS, Debug)]
+#[diesel(table_name = crate::schema::users)]
+#[diesel(check_for_backend(diesel::pg::Pg))]
+#[serde(rename_all = "camelCase")]
+pub struct AuthUserSelect {
   pub id: Uuid,
   pub name: String,
   pub screen_name: String,
@@ -30,29 +53,7 @@ pub struct CurrentUser {
   pub updated_at: DateTime<Utc>,
 }
 
-#[derive(Queryable, Selectable, Identifiable, Serialize, TS, Clone, Debug)]
-#[ts(export, export_to = "../../frontend/src/types/user.ts")]
-#[diesel(table_name = crate::schema::users)]
-#[diesel(check_for_backend(diesel::pg::Pg))]
-#[serde(rename_all = "camelCase")]
-pub struct User {
-  pub id: Uuid,
-  pub name: String,
-  pub screen_name: String,
-  pub description: String,
-  pub avatar_url: String,
-  pub banner_url: String,
-  pub url: Option<String>,
-  pub role: Role,
-  pub is_verified: bool,
-  #[ts(type = "Date | null")]
-  pub verified_at: Option<DateTime<Utc>>,
-  #[ts(type = "Date")]
-  pub created_at: DateTime<Utc>,
-  #[ts(type = "Date")]
-  pub updated_at: DateTime<Utc>,
-}
-
+// NewUser is the new user insert for the auth user
 #[derive(Insertable)]
 #[diesel(table_name = crate::schema::users)]
 pub struct NewUser {
@@ -92,4 +93,45 @@ impl Default for NewUser {
             updated_at: now,
         }
     }
+}
+
+// BaseUser is the base user for the public user
+#[derive(Queryable, Serialize, TS, Debug)]
+#[diesel(table_name = crate::schema::users)]
+#[diesel(check_for_backend(diesel::pg::Pg))]
+#[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/user.ts")]
+pub struct BaseUser
+{
+  #[serde(flatten)]
+  pub user: UserSelect,
+}
+
+// PublicUser is the public user for the public user
+#[derive(Queryable, Serialize, TS, Debug)]
+#[diesel(table_name = crate::schema::users)]
+#[diesel(check_for_backend(diesel::pg::Pg))]
+#[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/user.ts")]
+pub struct PublicUser
+{
+  #[serde(flatten)]
+  pub user: UserSelect,
+  pub is_following: bool,
+  pub followers_count: i64,
+  pub following_count: i64,
+}
+
+// AuthUser is the auth user for the auth user
+#[derive(Queryable, Serialize, TS, Debug)]
+#[diesel(table_name = crate::schema::users)]
+#[diesel(check_for_backend(diesel::pg::Pg))]
+#[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/user.ts")]
+pub struct AuthUser {
+  #[serde(flatten)]
+  pub user: AuthUserSelect,
+  pub is_following: bool,
+  pub followers_count: i64,
+  pub following_count: i64,
 }

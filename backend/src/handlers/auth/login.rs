@@ -1,10 +1,10 @@
-use actix_web::{post, web, HttpResponse, Responder};
+use actix_web::{post, web, HttpResponse};
 use actix_web::cookie::{Cookie, SameSite};
 use time::Duration;
 use diesel::{RunQueryDsl, QueryDsl, ExpressionMethods};
-use diesel::prelude::*;
 use serde_json::json;
 use validator::Validate;
+use diesel::prelude::*;
 use std::env;
 
 use crate::db_service::DbService;
@@ -12,11 +12,11 @@ use crate::helpers::token::{generate_token, hash_password};
 
 use crate::schema;
 
+use crate::models::user::{AuthUser, AuthUserSelect};
 use crate::models::auth::{LoginRequest, LoginResponse};
-use crate::models::user::CurrentUser;
 
 #[post("/login")]
-async fn login(db: web::Data<DbService>, form: web::Form<LoginRequest>) -> impl Responder {
+async fn login(db: web::Data<DbService>, form: web::Json<LoginRequest>) -> HttpResponse {
     // Validate the form
     if let Err(errors) = form.validate() {
         return HttpResponse::BadRequest().json(json!({
@@ -30,8 +30,8 @@ async fn login(db: web::Data<DbService>, form: web::Form<LoginRequest>) -> impl 
     let user_result = schema::users::table
         .filter(schema::users::email.eq(&form.email_or_screen_name))
         .or_filter(schema::users::screen_name.eq(&form.email_or_screen_name))
-        .select((CurrentUser::as_select(), schema::users::password))
-        .first::<(CurrentUser, String)>(&mut conn);
+        .select((AuthUserSelect::as_select(), schema::users::password))
+        .first::<(AuthUserSelect, String)>(&mut conn);
 
     match user_result {
         Ok((user, stored_password)) => {
@@ -46,15 +46,22 @@ async fn login(db: web::Data<DbService>, form: web::Form<LoginRequest>) -> impl 
 
             let jwt_secret = env::var("JWT_SECRET").expect("JWT_SECRET must be set in .env file");
 
-            let cookie = Cookie::build("token", generate_token(user.id, &jwt_secret).unwrap())
+            let cookie = Cookie::build("AUTH_TOKEN", generate_token(user.id, &jwt_secret).unwrap())
                 .path("/")
                 .max_age(Duration::seconds(60 * 60 * 24 * 30))
                 .same_site(SameSite::None)
                 .http_only(true)
                 .finish();
 
+            let auth_user = AuthUser {
+                user,
+                is_following: false,
+                followers_count: 0,
+                following_count: 0,
+            };
+
             let response = LoginResponse {
-                current_user: user,
+                user: auth_user,
             };
 
             HttpResponse::Ok().cookie(cookie).json(response)

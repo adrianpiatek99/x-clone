@@ -11,8 +11,8 @@ use uuid::Uuid;
 // }
 
 #[derive(Debug, Serialize, Deserialize, TS)]
-#[ts(export, export_to = "../../frontend/src/types/global.ts")]
 #[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/global.ts")]
 pub struct Cursor {
     pub id: Uuid,
     pub created_at: DateTime<Utc>,

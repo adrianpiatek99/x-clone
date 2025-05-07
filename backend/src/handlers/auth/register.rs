@@ -12,7 +12,7 @@ use crate::models::user::NewUser;
 use crate::models::auth::RegisterRequest;
 
 #[post("/register")]
-async fn register(db: web::Data<DbService>, form: web::Form<RegisterRequest>) -> impl Responder {
+async fn register(db: web::Data<DbService>, form: web::Json<RegisterRequest>) -> impl Responder {
     // Validate the form
     if let Err(errors) = form.validate() {
         return HttpResponse::BadRequest().json(json!({

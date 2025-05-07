@@ -3,16 +3,17 @@ use regex::Regex;
 use validator::Validate;
 use ts_rs::TS;
 
-use super::user::CurrentUser;
+use super::user::AuthUser;
 
 lazy_static::lazy_static! {
   static ref SCREEN_NAME_REGEX: Regex = Regex::new(r"^[a-zA-Z0-9][a-zA-Z0-9_]*$").unwrap();
   static ref NAME_REGEX: Regex = Regex::new(r"^[\p{L}0-9]+(?:[\s-][\p{L}0-9]+)*$").unwrap();
 }
 
+// register
 #[derive(Deserialize, Validate, TS)]
-#[ts(export, export_to = "../../frontend/src/types/auth.ts")]
 #[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/auth.ts")]
 pub struct RegisterRequest {
   #[validate(length(min = 4, max = 50, message = "Name must be between 4 and 50 characters"))]
   #[validate(regex(path = "*NAME_REGEX", message = "Name can only contain letters, numbers, spaces, and hyphens"))]
@@ -30,9 +31,10 @@ pub struct RegisterRequest {
   pub password: String,
 }
 
+// login
 #[derive(Deserialize, Validate, TS)]
-#[ts(export, export_to = "../../frontend/src/types/auth.ts")]
 #[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/auth.ts")]
 pub struct LoginRequest {
   #[validate(length(max = 100, message = "Email or screen name must be less than 100 characters"))]
   pub email_or_screen_name: String,
@@ -42,11 +44,19 @@ pub struct LoginRequest {
 }
 
 #[derive(Serialize, TS)]
-#[ts(export, export_to = "../../frontend/src/types/auth.ts")]
 #[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/auth.ts")]
 pub struct LoginResponse {
     #[serde(flatten)]
-    pub current_user: CurrentUser
+    pub user: AuthUser
 }
 
+// current user
+#[derive(Serialize, TS)]
+#[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/auth.ts")]
+pub struct GetAuthUserResponse {
+    #[serde(flatten)]
+    pub user: AuthUser
+}
 
