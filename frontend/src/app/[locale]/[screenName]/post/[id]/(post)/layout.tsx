@@ -5,7 +5,7 @@ import React from 'react';
 
 import Box from '@/components/atoms/Box';
 import HeaderBar from '@/components/molecules/HeaderBar';
-import { useGetPostQuery } from '@/hooks/api/posts/queries';
+import { useGetPostDetailsQuery } from '@/hooks/api/posts/queries';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
@@ -17,7 +17,7 @@ export type PostParams = {
 const Layout = ({ children }: PropsWithChildren) => {
   const t = useTranslations();
   const { id } = useParams<PostParams>();
-  const { isRefetching } = useGetPostQuery({ id });
+  const { isRefetching } = useGetPostDetailsQuery({ id });
 
   return (
     <Box className='gap-0'>

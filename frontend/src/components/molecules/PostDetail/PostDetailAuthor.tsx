@@ -5,7 +5,7 @@ import Box from '@/components/atoms/Box';
 import Typography from '@/components/atoms/Typography';
 import UserDisplayName from '@/components/molecules/UserDisplayName';
 import { ROUTES } from '@/constants/routes';
-import type { Post } from '@/db/schema';
+import type { Post } from '@/types/post';
 
 type Props = PropsWithChildren & Pick<Post, 'author'>;
 

@@ -2,8 +2,8 @@ import React from 'react';
 
 import Typography from '@/components/atoms/Typography';
 import { ROUTES } from '@/constants/routes';
-import type { Post } from '@/db/schema';
 import { Link } from '@/i18n/routing';
+import type { Post } from '@/types/post';
 import { useTranslations } from 'next-intl';
 
 import { POST_TEXT_MAX_VISIBLE_LENGTH } from './config';

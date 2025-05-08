@@ -4,6 +4,25 @@ import type { PostMediaType } from './enums';
 import type { Cursor } from './global';
 import type { BaseUser } from './user';
 
+export type GetPostDetailsParams = { postId: string };
+
+export type GetPostDetailsResponse = {
+  author: BaseUser;
+  media: Array<PostMedia>;
+  isAuthor: boolean;
+  isLiked: boolean;
+  likesCount: number;
+  repliesCount: number;
+  editedAt: Date | null;
+  id: string;
+  text: string;
+  authorId: string;
+  hashtags: Array<string | null> | null;
+  conversationControl: ConversationControl;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 export type GlobalTimelineRequest = { cursor: Cursor | null; limit: bigint | null };
 
 export type GlobalTimelineResponse = { posts: Array<Post>; nextCursor: Cursor | null };

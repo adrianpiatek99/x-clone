@@ -1,9 +1,9 @@
 import type { GetUserPostsResponse } from '@/app/api/[screenName]/userPosts/route';
-import type { GetPostResponse } from '@/app/api/posts/[id]/route';
 import type { GetGlobalTimelineResponse } from '@/app/api/posts/globalTimeline/route';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
+import type { GetPostDetailsResponse } from '@/types/post';
 import type { InfiniteQueryData } from '@/utils/queryCache';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
@@ -13,12 +13,12 @@ type Props = {
   enabled?: boolean;
 };
 
-export const useGetPostQuery = ({ id, enabled = true }: Props) => {
+export const useGetPostDetailsQuery = ({ id, enabled = true }: Props) => {
   const queryClient = useQueryClient();
   const { screenName } = useParams<{ screenName: string }>();
-  const { data, isLoading, isFetching, isRefetching, isError } = useQuery<GetPostResponse>({
+  const { data, isLoading, isFetching, isRefetching, isError } = useQuery<GetPostDetailsResponse>({
     queryKey: QUERY_KEYS.POSTS.DETAILS(id),
-    queryFn: () => apiRequest('GET', API_ENDPOINTS.POSTS.DETAILS({ id })),
+    queryFn: () => apiRequest('GET', API_ENDPOINTS.POSTS.DETAILS({ postId: id })),
     enabled: enabled && !!id,
     initialData: () => {
       const globalTimelineState = queryClient.getQueryState(QUERY_KEYS.POSTS.GLOBAL_TIMELINE);

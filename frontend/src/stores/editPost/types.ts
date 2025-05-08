@@ -1,4 +1,4 @@
-import type { PostMedia } from '@/db/schema';
+import type { PostMedia } from '@/types/post';
 
 export type EditPostState = {
   files: { media?: PostMedia; file?: File; preview: string }[];

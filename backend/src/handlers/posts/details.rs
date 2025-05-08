@@ -3,6 +3,8 @@ use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use diesel::dsl::{count_star, exists, select};
 use diesel::prelude::*;
 use chrono::{DateTime, Utc};
+use serde::Serialize;
+use ts_rs::TS;
 use uuid::Uuid;
 
 use crate::db_service::DbService;
@@ -14,8 +16,24 @@ use crate::schema::users::dsl as users;
 use crate::schema::post_likes::dsl as post_likes;
 use crate::schema::post_edit_history::dsl as post_edit_history;
 
-use crate::models::post::*;
+use crate::models::post::{PostSchema, Post, PostMedia};
 use crate::models::user::{UserSelect, BaseUser};
+
+#[derive(Serialize, TS)]
+#[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/post.ts")]
+pub struct GetPostDetailsParams {
+    pub post_id: String
+}
+
+#[derive(Serialize, TS)]
+#[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/post.ts")]
+pub struct GetPostDetailsResponse {
+    #[serde(flatten)]
+    pub post: Post
+}
+
 
 #[get("/details/{post_id}")]
 async fn post_details(
@@ -87,15 +105,17 @@ async fn post_details(
     // Determine if current user is author
     let is_author = session_user_id.map_or(false, |id| id == author.id);
 
-    let response = Post {
-        post,
-        author: BaseUser { user: author },
-        media,
-        is_author,
-        is_liked,
-        likes_count,
-        replies_count: 0,
-        edited_at,
+    let response = GetPostDetailsResponse {
+        post: Post {
+            post,
+            author: BaseUser { user: author },
+            media,
+            is_author,
+            is_liked,
+            likes_count,
+            replies_count: 0,
+            edited_at,
+        },
     };
 
     HttpResponse::Ok().json(response)

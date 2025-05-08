@@ -4,9 +4,9 @@ import Dropdown, { DropdownItem } from '@/components/atoms/Dropdown';
 import Icon from '@/components/atoms/Icon';
 import IconButton from '@/components/atoms/IconButton';
 import { ROUTES } from '@/constants/routes';
-import type { Post } from '@/db/schema';
 import { useDeletePostMutation } from '@/hooks/api/posts/mutations';
 import { useRouter } from '@/i18n/routing';
+import type { Post } from '@/types/post';
 import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
 

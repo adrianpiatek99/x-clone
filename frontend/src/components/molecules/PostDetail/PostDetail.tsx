@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import Avatar from '@/components/atoms/Avatar';
 import Box from '@/components/atoms/Box';
 import { ROUTES } from '@/constants/routes';
-import type { Post } from '@/db/schema';
 import { useRouter } from '@/i18n/routing';
+import type { Post } from '@/types/post';
 import { twMerge } from 'tailwind-merge';
 
 import { PostCardActions, PostCardDropdown, PostCardMedia, PostCardText } from '../PostCard';

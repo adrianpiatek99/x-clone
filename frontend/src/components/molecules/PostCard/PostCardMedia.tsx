@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ShimmerImage from '@/components/atoms/ShimmerImage';
-import type { Post } from '@/db/schema';
+import type { Post } from '@/types/post';
 import { calcAspectRatio } from '@/utils/aspectRatio';
 import { twMerge } from 'tailwind-merge';
 

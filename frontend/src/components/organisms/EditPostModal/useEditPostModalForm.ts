@@ -1,10 +1,10 @@
 import { useEffect, useMemo } from 'react';
 
 import type { CreatePostRequest } from '@/app/api/posts/create/route';
-import type { Post } from '@/db/schema';
 import { useUpdatePostMutation } from '@/hooks/api/posts/mutations';
 import { useAppForm } from '@/hooks/useFormHook';
 import { useEditPostStore } from '@/stores/editPost';
+import type { Post } from '@/types/post';
 import { useStore } from '@tanstack/react-form';
 import { useShallow } from 'zustand/shallow';
 
