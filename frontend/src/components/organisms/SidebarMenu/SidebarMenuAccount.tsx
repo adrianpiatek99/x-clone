@@ -6,8 +6,8 @@ import Button from '@/components/atoms/Button';
 import Dropdown, { DropdownItem } from '@/components/atoms/Dropdown';
 import Icon from '@/components/atoms/Icon';
 import Typography from '@/components/atoms/Typography';
+import { useAuth } from '@/components/context/AuthContext';
 import UserDisplayName from '@/components/molecules/UserDisplayName';
-import { useAppSession } from '@/hooks/useAppSession';
 import { useGlobalStore } from '@/stores/global';
 import dynamic from 'next/dynamic';
 import { useTranslations } from 'next-intl';
@@ -18,7 +18,7 @@ const LazyEditProfileModal = dynamic(() => import('../EditProfileModal'), {
 
 export const SidebarMenuAccount = memo(() => {
   const t = useTranslations();
-  const { user } = useAppSession();
+  const { user } = useAuth();
   const updateLogoutModal = useGlobalStore((state) => state.updateLogoutModal);
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
 

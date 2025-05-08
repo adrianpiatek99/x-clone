@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 
 import Icon from '@/components/atoms/Icon';
 import { ROUTES } from '@/constants/routes';
-import type { User } from '@/db/schema';
+import type { AuthUser } from '@/types/user';
 
 export type SidebarMenuItem = {
   text: string;
@@ -15,7 +15,7 @@ export type SidebarMenuItem = {
 
 type SidebarMenuItemsProps = {
   t: Translation;
-  user: User | undefined;
+  user: AuthUser | undefined;
   pathname: string;
 };
 

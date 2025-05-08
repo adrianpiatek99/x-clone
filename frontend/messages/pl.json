@@ -288,7 +288,8 @@
     },
     "auth": {
       "signIn": "Nie udało się zalogować. Sprawdź swoje dane i spróbuj ponownie.",
-      "signUp": "Nie udało się zarejestrować."
+      "signUp": "Nie udało się zarejestrować.",
+      "logout": "Nie udało się wylogować. Spróbuj ponownie."
     },
     "api": {
       "somethingWentWrong": "Coś poszło nie tak. Spróbuj ponownie później."

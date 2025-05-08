@@ -24,6 +24,9 @@ regex = "1.11.1"
 ts-rs = { version = "10.1.0", features = ["uuid-impl", "chrono-impl"] }
 time = "0.3.41"
 actix-web-httpauth = "0.8.2"
+actix-multipart = "0.7.2"
+futures = "0.3.31"
+reqwest = { version = "0.12.15", features = ["multipart", "json"] }
 
 [build-dependencies]
 

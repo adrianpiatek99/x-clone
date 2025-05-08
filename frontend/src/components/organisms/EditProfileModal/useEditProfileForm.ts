@@ -1,17 +1,17 @@
 import { useEffect, useMemo } from 'react';
 
-import type { UserProfile } from '@/db/schema';
 import { useUpdateProfileMutation } from '@/hooks/api/profile/mutations';
 import { useAppForm } from '@/hooks/useFormHook';
 import type { ProfileValues } from '@/schema/profile';
 import { profileSchema } from '@/schema/profile';
 import { useEditProfileStore } from '@/stores/editProfile';
+import type { AuthUser } from '@/types/user';
 import { useStore } from '@tanstack/react-form';
 import { useTranslations } from 'next-intl';
 import { useShallow } from 'zustand/react/shallow';
 
 type Props = {
-  user: UserProfile;
+  user: AuthUser;
   isOpen: boolean;
   onClose: () => void;
 };

@@ -1,19 +1,40 @@
 use actix_web::{post, web, HttpResponse};
 use actix_web::cookie::{Cookie, SameSite};
+use serde::{Deserialize, Serialize};
 use time::Duration;
 use diesel::{RunQueryDsl, QueryDsl, ExpressionMethods};
 use serde_json::json;
+use ts_rs::TS;
 use validator::Validate;
 use diesel::prelude::*;
 use std::env;
 
 use crate::db_service::DbService;
 use crate::helpers::token::{generate_token, hash_password};
+use crate::helpers::validation::validate_password;
 
 use crate::schema;
 
-use crate::models::user::{AuthUser, AuthUserSelect};
-use crate::models::auth::{LoginRequest, LoginResponse};
+use crate::models::user::{CurrentUser, CurrentUserSelect};
+
+#[derive(Deserialize, Validate, TS)]
+#[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/auth.ts")]
+pub struct LoginRequest {
+  #[validate(length(max = 100, message = "Email or screen name must be less than 100 characters"))]
+  pub email_or_screen_name: String,
+  #[validate(custom(function = "validate_password"))]
+  pub password: String,
+}
+
+#[derive(Serialize, TS)]
+#[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/auth.ts")]
+pub struct LoginResponse {
+    #[serde(flatten)]
+    pub user: CurrentUser
+}
+
 
 #[post("/login")]
 async fn login(db: web::Data<DbService>, form: web::Json<LoginRequest>) -> HttpResponse {
@@ -30,8 +51,8 @@ async fn login(db: web::Data<DbService>, form: web::Json<LoginRequest>) -> HttpR
     let user_result = schema::users::table
         .filter(schema::users::email.eq(&form.email_or_screen_name))
         .or_filter(schema::users::screen_name.eq(&form.email_or_screen_name))
-        .select((AuthUserSelect::as_select(), schema::users::password))
-        .first::<(AuthUserSelect, String)>(&mut conn);
+        .select((CurrentUserSelect::as_select(), schema::users::password))
+        .first::<(CurrentUserSelect, String)>(&mut conn);
 
     match user_result {
         Ok((user, stored_password)) => {
@@ -53,7 +74,7 @@ async fn login(db: web::Data<DbService>, form: web::Json<LoginRequest>) -> HttpR
                 .http_only(true)
                 .finish();
 
-            let auth_user = AuthUser {
+            let current_user = CurrentUser {
                 user,
                 is_following: false,
                 followers_count: 0,
@@ -61,7 +82,7 @@ async fn login(db: web::Data<DbService>, form: web::Json<LoginRequest>) -> HttpR
             };
 
             let response = LoginResponse {
-                user: auth_user,
+                user: current_user,
             };
 
             HttpResponse::Ok().cookie(cookie).json(response)

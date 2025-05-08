@@ -1,15 +1,35 @@
 use actix_web::{post, web, HttpResponse, Responder};
 use diesel::{RunQueryDsl, QueryDsl, ExpressionMethods};
+use serde::Deserialize;
 use serde_json::json;
+use ts_rs::TS;
 use validator::Validate;
 
 use crate::db_service::DbService;
 use crate::helpers::token::hash_password;
+use crate::helpers::validation::{validate_screen_name, validate_name, validate_email, validate_password};
 
 use crate::schema;
 
 use crate::models::user::NewUser;
-use crate::models::auth::RegisterRequest;
+
+#[derive(Deserialize, Validate, TS)]
+#[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/auth.ts")]
+pub struct RegisterRequest {
+  #[validate(custom(function = "validate_name"))]
+  pub name: String,
+
+  #[validate(custom(function = "validate_screen_name"))]
+  pub screen_name: String,
+
+  #[validate(email(message = "Invalid email format"), custom(function = "validate_email"))]
+  pub email: String,
+
+  #[validate(custom(function = "validate_password"))]
+  pub password: String,
+}
+
 
 #[post("/register")]
 async fn register(db: web::Data<DbService>, form: web::Json<RegisterRequest>) -> impl Responder {

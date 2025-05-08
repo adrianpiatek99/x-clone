@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { ConfirmModal } from '@/components/atoms/ConfirmModal';
+import { useLogoutMutation } from '@/hooks/api/auth/mutations/useLogoutMutation';
 import { useGlobalStore } from '@/stores/global';
-import { signOut } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { useShallow } from 'zustand/shallow';
 
@@ -14,12 +14,13 @@ const LogoutConfirmModal = () => {
       updateLogoutModal: state.updateLogoutModal,
     }))
   );
+  const { logout } = useLogoutMutation();
 
   const handleClose = () => updateLogoutModal({ isOpen: false });
 
   const handleLogout = () => {
     handleClose();
-    signOut();
+    logout();
   };
 
   return (

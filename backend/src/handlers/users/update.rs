@@ -1,0 +1,204 @@
+use actix_web::{patch, web, HttpRequest, HttpResponse};
+use actix_multipart::Multipart;
+use diesel::prelude::AsChangeset;
+use diesel::{RunQueryDsl, QueryDsl, ExpressionMethods, SelectableHelper};
+use serde::Deserialize;
+use serde_json::json;
+use ts_rs::TS;
+use validator::Validate;
+use chrono::{DateTime, Utc};
+use futures::{StreamExt, TryStreamExt};
+
+use crate::db_service::DbService;
+use crate::handlers::middleware::get_user_id_from_token;
+use crate::helpers::file::{validate_file, upload_file, read_file_data, FILE_VALIDATION_CONFIGS};
+use crate::helpers::validation::{validate_name, validate_description};
+
+use crate::models::user::CurrentUserSelect;
+use crate::schema::users;
+
+#[derive(Deserialize, Validate, TS)]
+#[serde(rename_all = "camelCase")]
+#[allow(dead_code)]
+#[ts(export, export_to = "../../frontend/src/types/user.ts")]
+pub struct UpdateProfileRequest {
+    #[validate(custom(function = "validate_name"))]
+    pub name: String,
+
+    #[validate(custom(function = "validate_description"))]
+    pub description: String,
+
+    #[validate(url(message = "Invalid URL format"))]
+    pub url: Option<String>,
+
+    pub remove_banner: Option<bool>,
+
+    #[ts(type = "File | null")]
+    pub avatar_file: Option<String>,
+
+    #[ts(type = "File | null")]
+    pub banner_file: Option<String>,
+}
+
+
+#[derive(AsChangeset, Default)]
+#[diesel(table_name = users)]
+struct UserChangeset {
+    name: Option<String>,
+    description: Option<String>,
+    url: Option<String>,
+    avatar_url: Option<String>,
+    banner_url: Option<String>,
+    updated_at: Option<DateTime<Utc>>,
+}
+
+#[patch("/update")]
+async fn update_profile(
+    db: web::Data<DbService>,
+    req: HttpRequest,
+    mut payload: Multipart,
+) -> HttpResponse {
+    // Get user ID from token
+    let auth_user_id = match get_user_id_from_token(&req).await {
+        Ok(id) => id,
+        Err(_) => {
+            return HttpResponse::Unauthorized().json(json!({
+                "error": "Unauthorized"
+            }))
+        },
+    };
+
+    // Form fields
+    let mut name = String::new();
+    let mut description = String::new();
+    let mut url = None;
+    let mut remove_banner = false;
+    let mut avatar_file_data = None;
+    let mut avatar_file_type = None;
+    let mut banner_file_data = None;
+    let mut banner_file_type = None;
+
+
+    // Read multipart fields
+    while let Ok(Some(mut field)) = payload.try_next().await {
+        let content_disposition = field.content_disposition().unwrap();
+        let field_name = content_disposition.get_name().unwrap_or_default();
+
+        match field_name {
+            "name" => {
+                while let Some(chunk) = field.next().await {
+                    name = String::from_utf8_lossy(&chunk.unwrap()).to_string();
+                }
+            }
+            "description" => {
+                while let Some(chunk) = field.next().await {
+                    description = String::from_utf8_lossy(&chunk.unwrap()).to_string();
+                }
+            }
+            "url" => {
+                while let Some(chunk) = field.next().await {
+                    let val = String::from_utf8_lossy(&chunk.unwrap()).to_string();
+                    if !val.is_empty() {
+                        url = Some(val);
+                    }
+                }
+            }
+            "removeBanner" => {
+                while let Some(chunk) = field.next().await {
+                    let data = chunk.unwrap();
+                    let val = String::from_utf8_lossy(&data);
+                    remove_banner = val.trim() == "true";
+                }
+            }
+            "avatar_file" => {
+                if let Ok((data, mime)) = read_file_data(field).await {
+                    avatar_file_data = Some(data);
+                    avatar_file_type = Some(mime);
+                }
+            }
+            "banner_file" => {
+                if let Ok((data, mime)) = read_file_data(field).await {
+                    banner_file_data = Some(data);
+                    banner_file_type = Some(mime);
+                }
+            }
+            _ => {
+                // skip
+                while field.next().await.is_some() {}
+            }
+        }
+    }
+
+    // Validate with DTO
+    let form = UpdateProfileRequest {
+        name: name.clone().into(),
+        description: description.clone().into(),
+        url: url.clone(),
+        avatar_file: None,
+        banner_file: None,
+        remove_banner: Some(remove_banner),
+    };
+
+    if let Err(errors) = form.validate() {
+        return HttpResponse::BadRequest().json(json!({
+            "error": "Validation failed",
+            "details": errors
+        }));
+    }
+
+    // Upload avatar
+    let mut avatar_url = None;
+    if let (Some(data), Some(mime)) = (avatar_file_data, avatar_file_type) {
+        if let Err(e) = validate_file(&data, &mime, &FILE_VALIDATION_CONFIGS[0].1) {
+            return HttpResponse::BadRequest().json(json!({ "error": e }));
+        }
+        match upload_file(&data, &mime).await {
+            Ok(file) => avatar_url = Some(file.url),
+            Err(e) => return HttpResponse::InternalServerError().json(json!({
+                "error": format!("Failed to upload avatar: {}", e)
+            })),
+        }
+    }
+
+    // Upload banner
+    let mut banner_url = None;
+    if let (Some(data), Some(mime)) = (banner_file_data, banner_file_type) {
+        if let Err(e) = validate_file(&data, &mime, &FILE_VALIDATION_CONFIGS[1].1) {
+            return HttpResponse::BadRequest().json(json!({ "error": e }));
+        }
+        match upload_file(&data, &mime).await {
+            Ok(file) => banner_url = Some(file.url),
+            Err(e) => return HttpResponse::InternalServerError().json(json!({
+                "error": format!("Failed to upload banner: {}", e)
+            })),
+        }
+    }
+
+    // Usuwanie bannera (ustaw pusty string)
+    if remove_banner {
+        banner_url = Some(String::new());
+    }
+
+    let changeset = UserChangeset {
+        name: Some(name),
+        description: Some(description),
+        url,
+        avatar_url,
+        banner_url,
+        updated_at: Some(Utc::now()),
+    };
+
+    let mut conn = db.get_conn();
+
+    // Update user profile
+    match diesel::update(users::table.filter(users::id.eq(auth_user_id)))
+        .set(changeset)
+        .returning(CurrentUserSelect::as_returning())
+        .get_result::<CurrentUserSelect>(&mut conn)
+    {
+        Ok(user) => HttpResponse::Ok().json(user),
+        Err(e) => HttpResponse::InternalServerError().json(json!({
+            "error": format!("Failed to update profile: {}", e)
+        })),
+    }
+}

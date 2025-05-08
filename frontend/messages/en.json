@@ -287,7 +287,8 @@
     },
     "auth": {
       "signIn": "Sign-in failed. Please check your credentials and try again.",
-      "signUp": "Sign-up failed."
+      "signUp": "Sign-up failed.",
+      "logout": "Failed to sign out. Please try again."
     },
     "api": {
       "somethingWentWrong": "Something went wrong. Please try again later."

@@ -1,6 +1,7 @@
 pub mod register;
 pub mod login;
-pub mod auth_user;
+pub mod current_user;
+pub mod logout;
 
 use actix_web::web;
 
@@ -9,6 +10,7 @@ pub fn config(cfg: &mut web::ServiceConfig) {
         web::scope("/api/auth")
         .service(register::register)
         .service(login::login)
-        .service(auth_user::auth_user)
+        .service(current_user::current_user)
+        .service(logout::logout)
     );
 }

@@ -15,13 +15,14 @@ pub fn config(cfg: &mut web::ServiceConfig) {
     // let auth = HttpAuthentication::bearer(auth_middleware);
 
     cfg.service(
-        web::scope("/api")
-        .service(global_timeline::global_timeline)
-        .service(details::post_details)
-        // .service(
-        //     web::scope("")
-        //         .wrap(auth)
-        //         .service(protected::protected_endpoint)
-        // )
+        web::scope("/api/posts")
+            .service(global_timeline::global_timeline)
+            .service(details::post_details)
+            // .service(create::create_post)
+            // .service(delete::delete_post)
+            // .service(update::update_post)
+            // .service(like::like_post)
+            // .service(unlike::unlike_post)
+            // .service(track_timeline::track_timeline)
     );
 }

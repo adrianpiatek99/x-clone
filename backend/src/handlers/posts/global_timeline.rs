@@ -3,6 +3,8 @@ use diesel::{QueryDsl, RunQueryDsl, ExpressionMethods};
 use diesel::prelude::*;
 use diesel::dsl::count;
 use chrono::{DateTime, Utc};
+use serde::{Deserialize, Serialize};
+use ts_rs::TS;
 use uuid::Uuid;
 
 use crate::db_service::DbService;
@@ -19,13 +21,31 @@ use crate::models::post::*;
 use crate::models::global::Cursor;
 use crate::models::user::{BaseUser, UserSelect};
 
-#[get("/posts/test")]
+#[derive(Deserialize, TS)]
+#[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/post.ts")]
+pub struct GlobalTimelineRequest {
+    #[ts(type = "Cursor | null")]
+    pub cursor: Option<String>,
+    pub limit: Option<i64>,
+}
+
+#[derive(Serialize, TS)]
+#[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/post.ts")]
+pub struct GlobalTimelineResponse {
+    pub posts: Vec<Post>,
+    pub next_cursor: Option<Cursor>,
+}
+
+
+#[get("/globalTimeline")]
 async fn global_timeline(
     db: web::Data<DbService>,
     req: HttpRequest,
     query: web::Query<GlobalTimelineRequest>,
 ) -> HttpResponse {
-    let current_user_id = match get_user_id_from_token(&req).await {
+    let auth_user_id = match get_user_id_from_token(&req).await {
         Ok(id) => Some(id),
         Err(_) => None,
     };
@@ -101,7 +121,7 @@ async fn global_timeline(
         .expect("Error loading replies counts");
 
     // User's likes
-    let user_likes = if let Some(user_id) = current_user_id {
+    let user_likes = if let Some(user_id) = auth_user_id {
         post_likes::post_likes
             .filter(post_likes::user_id.eq(user_id))
             .filter(post_likes::post_id.eq_any(&post_ids))
@@ -133,7 +153,7 @@ async fn global_timeline(
     // Final response
     let response_posts = posts_list.into_iter().map(|(post, author)| {
         let post_id = post.id;
-        let is_author = current_user_id.map_or(false, |id| id == author.id);
+        let is_author = auth_user_id.map_or(false, |id| id == author.id);
         let is_liked = user_likes_set.contains(&post_id);
         let likes_count = *likes_count_map.get(&post_id).unwrap_or(&0);
         let replies_count = *replies_count_map.get(&post_id).unwrap_or(&0);

@@ -1,36 +1,44 @@
 'use client';
 
 import type { PropsWithChildren } from 'react';
-import { createContext, useCallback, useContext, useMemo, useRef } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 
-import type { AuthUser } from '@/types/user';
+import type { CurrentUser } from '@/types/user';
 
 type AuthContextType = {
-  user: AuthUser | undefined;
-  setUser: (user: AuthUser | undefined) => void;
+  user: CurrentUser | undefined;
+  setUser: (user: CurrentUser | undefined) => void;
 };
 
 type AuthProviderProps = {
-  authUser: AuthUser | undefined;
+  currentUser: CurrentUser | undefined;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children, authUser }: PropsWithChildren<AuthProviderProps>) => {
-  const userRef = useRef<AuthUser | undefined>(authUser);
+export const AuthProvider = ({ children, currentUser }: PropsWithChildren<AuthProviderProps>) => {
+  const [user, setUserState] = useState<CurrentUser | undefined>(currentUser);
+  const subscribersRef = useRef<Set<(user: CurrentUser | undefined) => void>>(new Set());
 
-  const setUser = useCallback((user: AuthUser | undefined) => {
-    userRef.current = user;
+  const setUser = useCallback((newUser: CurrentUser | undefined) => {
+    setUserState(newUser);
+    subscribersRef.current.forEach((callback) => callback(newUser));
   }, []);
 
   const value = useMemo(
     () => ({
-      get user() {
-        return userRef.current;
-      },
+      user,
       setUser,
     }),
-    [setUser]
+    [user, setUser]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
@@ -43,5 +51,14 @@ export const useAuth = () => {
     throw new Error('useAuth must be used within an AuthProvider');
   }
 
-  return ctx;
+  const [currentUser, setCurrentUser] = useState<CurrentUser | undefined>(ctx.user);
+
+  useEffect(() => {
+    setCurrentUser(ctx.user);
+  }, [ctx.user]);
+
+  return {
+    user: currentUser,
+    setUser: ctx.setUser,
+  };
 };

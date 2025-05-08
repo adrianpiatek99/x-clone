@@ -34,7 +34,7 @@ pub struct UserSelect {
 #[diesel(table_name = crate::schema::users)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]
-pub struct AuthUserSelect {
+pub struct CurrentUserSelect {
   pub id: Uuid,
   pub name: String,
   pub screen_name: String,
@@ -128,9 +128,9 @@ pub struct PublicUser
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]
 #[ts(export, export_to = "../../frontend/src/types/user.ts")]
-pub struct AuthUser {
+pub struct CurrentUser {
   #[serde(flatten)]
-  pub user: AuthUserSelect,
+  pub user: CurrentUserSelect,
   pub is_following: bool,
   pub followers_count: i64,
   pub following_count: i64,

@@ -6,8 +6,8 @@ import Box from '@/components/atoms/Box';
 import Button from '@/components/atoms/Button';
 import Icon from '@/components/atoms/Icon';
 import Logo from '@/components/atoms/Logo';
+import { useAuth } from '@/components/context/AuthContext';
 import { ROUTES } from '@/constants/routes';
-import { useAppSession } from '@/hooks/useAppSession';
 import { usePathname } from '@/i18n/routing';
 import { useAuthStore } from '@/stores/auth';
 import { useCreatePostStore } from '@/stores/createPost';
@@ -18,7 +18,7 @@ import SidebarMenuListItem from './SidebarMenuListItem';
 
 const SidebarMenuList = () => {
   const t = useTranslations();
-  const { user } = useAppSession();
+  const { user } = useAuth();
   const updateAuth = useAuthStore((state) => state.update);
   const updateCreatePostModal = useCreatePostStore((state) => state.updateModal);
   const pathname = usePathname();

@@ -3,13 +3,13 @@
 import React from 'react';
 
 import Box from '@/components/atoms/Box';
-import { useAppSession } from '@/hooks/useAppSession';
+import { useAuth } from '@/components/context/AuthContext';
 
 import { SidebarMenuAccount } from './SidebarMenuAccount';
 import SidebarMenuList from './SidebarMenuList';
 
 const SidebarMenu = () => {
-  const { user } = useAppSession();
+  const { user } = useAuth();
 
   return (
     <div className='hidden sm:flex sm:w-full sm:max-w-[88px] xl:max-w-[275px]'>

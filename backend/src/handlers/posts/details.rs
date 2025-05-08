@@ -17,13 +17,13 @@ use crate::schema::post_edit_history::dsl as post_edit_history;
 use crate::models::post::*;
 use crate::models::user::{UserSelect, BaseUser};
 
-#[get("/posts/{post_id}")]
+#[get("/details/{post_id}")]
 async fn post_details(
     db: web::Data<DbService>,
     path: web::Path<String>,
     req: HttpRequest,
 ) -> HttpResponse {
-    let current_user_id = match get_user_id_from_token(&req).await {
+    let auth_user_id = match get_user_id_from_token(&req).await {
         Ok(id) => Some(id),
         Err(_) => None,
     };
@@ -67,7 +67,7 @@ async fn post_details(
         .unwrap_or(0);
 
     // Is liked
-    let is_liked = if let Some(user_id) = current_user_id {
+    let is_liked = if let Some(user_id) = auth_user_id {
         select(exists(
             post_likes::post_likes
                 .filter(post_likes::post_id.eq(post.id))
@@ -88,7 +88,7 @@ async fn post_details(
         .ok();
 
     // Determine if current user is author
-    let is_author = current_user_id.map_or(false, |id| id == author.id);
+    let is_author = auth_user_id.map_or(false, |id| id == author.id);
 
     let response = Post {
         post,

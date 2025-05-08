@@ -1,7 +1,7 @@
 import React from 'react';
 import { Toaster } from 'react-hot-toast';
 
-import { useAppSession } from '@/hooks/useAppSession';
+import { useAuth } from '@/components/context/AuthContext';
 import dynamic from 'next/dynamic';
 
 const LazyAuthModal = dynamic(() => import('@/components/organisms/AuthModal'), {
@@ -27,7 +27,7 @@ const LazyCreatePostFormModal = dynamic(
 );
 
 export default function Modals() {
-  const { user } = useAppSession();
+  const { user } = useAuth();
 
   return (
     <>

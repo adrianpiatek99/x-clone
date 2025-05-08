@@ -1,12 +1,11 @@
 use diesel::{Queryable, Selectable, Identifiable};
-use serde::{Deserialize, Serialize};
+use serde::Serialize;
 use chrono::{DateTime, Utc};
 use uuid::Uuid;
 use ts_rs::TS;
 
 use crate::enums::conversation_control::ConversationControl;
 use crate::enums::post_media_type::PostMediaType;
-use crate::models::global::Cursor;
 
 use super::user::BaseUser;
 
@@ -71,23 +70,4 @@ pub struct PostEditHistory {
     pub previous_text: String,
     #[ts(type = "Date | null")]
     pub edited_at: Option<DateTime<Utc>>,
-}
-
-
-
-#[derive(Debug, Serialize, TS)]
-#[serde(rename_all = "camelCase")]
-#[ts(export, export_to = "../../frontend/src/types/post.ts")]
-pub struct GlobalTimelineResponse {
-    pub posts: Vec<Post>,
-    pub next_cursor: Option<Cursor>,
-}
-
-#[derive(Debug, Deserialize, TS)]
-#[serde(rename_all = "camelCase")]
-#[ts(export, export_to = "../../frontend/src/types/post.ts")]
-pub struct GlobalTimelineRequest {
-    #[ts(type = "Cursor | null")]
-    pub cursor: Option<String>,
-    pub limit: Option<i64>,
 }

@@ -10,6 +10,8 @@ use actix_web::{web, App, HttpServer};
 use db_service::DbService;
 use env_logger::Env;
 
+
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     // Initialize logger
@@ -32,8 +34,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(db.clone())
             .configure(handlers::config)
     })
-    .bind("127.0.0.1:8080")
-    .unwrap()
+    .bind("127.0.0.1:8080")?
     .run()
     .await
 }

@@ -1,20 +1,30 @@
 use actix_web::{get, web, HttpResponse, HttpRequest};
 use actix_web::cookie::{Cookie, SameSite};
+use serde::Serialize;
 use time::Duration;
 use diesel::{QueryDsl, RunQueryDsl, ExpressionMethods};
 use diesel::prelude::*;
 use serde_json::json;
+use ts_rs::TS;
 use std::env;
 
 use crate::db_service::DbService;
 use crate::helpers::token::{decode_token, is_token_valid, extend_token_expiration, generate_token};
 
-use crate::models::auth::GetAuthUserResponse;
-use crate::models::user::{AuthUser, AuthUserSelect};
+use crate::models::user::{CurrentUser, CurrentUserSelect};
 use crate::schema::users::dsl::*;
 
-#[get("/authUser")]
-async fn auth_user(db: web::Data<DbService>, req: HttpRequest) -> HttpResponse {
+#[derive(Serialize, TS)]
+#[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/auth.ts")]
+pub struct GetCurrentUserResponse {
+    #[serde(flatten)]
+    pub user: CurrentUser
+}
+
+
+#[get("/currentUser")]
+async fn current_user(db: web::Data<DbService>, req: HttpRequest) -> HttpResponse {
     // Check if token cookie exists
     let token = match req.cookie("AUTH_TOKEN") {
         Some(cookie) => cookie.value().to_string(),
@@ -54,19 +64,19 @@ async fn auth_user(db: web::Data<DbService>, req: HttpRequest) -> HttpResponse {
     // Get user from database
     match users
         .filter(id.eq(token_data.claims.sub))
-        .select(AuthUserSelect::as_select())
-        .first::<AuthUserSelect>(&mut conn)
+        .select(CurrentUserSelect::as_select())
+        .first::<CurrentUserSelect>(&mut conn)
     {
         Ok(user) => {
-            let auth_user = AuthUser {
+            let current_user = CurrentUser {
                 user,
                 is_following: false,
                 followers_count: 0,
                 following_count: 0,
             };
 
-            let response = GetAuthUserResponse {
-                user: auth_user,
+            let response = GetCurrentUserResponse {
+                user: current_user,
             };
 
             HttpResponse::Ok().cookie(cookie).json(response)

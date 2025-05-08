@@ -9,7 +9,7 @@ import { API_ENDPOINTS } from '@/constants/api';
 import type { Locale } from '@/constants/locales';
 import { apiRequest } from '@/db/utils/api';
 import { routing } from '@/i18n/routing';
-import type { AuthUser } from '@/types/user';
+import type { CurrentUser } from '@/types/user';
 import type { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 import { Inter } from 'next/font/google';
@@ -43,16 +43,21 @@ export default async function RootLayout({ children, params }: PropsWithChildren
   const { locale } = await params;
   const cookieStore = await cookies();
 
-  const getAuthUser = async () => {
+  const getCurrentUser = async () => {
     try {
-      const response = await apiRequest<AuthUser>('GET', API_ENDPOINTS.AUTH.AUTH_USER, undefined, {
-        headers: {
-          Cookie: cookieStore
-            .getAll()
-            .map(({ name, value }) => `${name}=${value}`)
-            .join('; '),
-        },
-      });
+      const response = await apiRequest<CurrentUser>(
+        'GET',
+        API_ENDPOINTS.AUTH.CURRENT_USER,
+        undefined,
+        {
+          headers: {
+            Cookie: cookieStore
+              .getAll()
+              .map(({ name, value }) => `${name}=${value}`)
+              .join('; '),
+          },
+        }
+      );
 
       return response;
     } catch {
@@ -60,7 +65,7 @@ export default async function RootLayout({ children, params }: PropsWithChildren
     }
   };
 
-  const authUser = await getAuthUser();
+  const currentUser = await getCurrentUser();
 
   if (!routing.locales.includes(locale)) {
     notFound();
@@ -72,12 +77,12 @@ export default async function RootLayout({ children, params }: PropsWithChildren
     <html lang={locale} className={inter.variable} suppressHydrationWarning>
       <body>
         <SessionProvider>
-          <AuthProvider authUser={authUser}>
+          <AuthProvider currentUser={currentUser}>
             <Providers locale={locale} messages={messages}>
               <div className='relative mx-auto flex w-full gap-3 md:max-w-[688px] lg:max-w-[1008px] xl:max-w-[1265px]'>
                 <SidebarMenu />
                 <main className='relative flex w-full grow items-start gap-7'>
-                  <div className='flex min-h-screen w-full max-w-full flex-col pb-24 sm:max-w-[600px] sm:border-x sm:border-border-1 sm:pb-48'>
+                  <div className='sm:border-border-1 flex min-h-screen w-full max-w-full flex-col pb-24 sm:max-w-[600px] sm:border-x sm:pb-48'>
                     {children}
                   </div>
                   <LazySidebarColumn />
