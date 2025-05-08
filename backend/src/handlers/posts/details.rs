@@ -6,7 +6,7 @@ use chrono::{DateTime, Utc};
 use uuid::Uuid;
 
 use crate::db_service::DbService;
-use crate::handlers::middleware::get_user_id_from_token;
+use crate::handlers::middleware::try_get_session;
 
 use crate::schema::posts::dsl as posts;
 use crate::schema::post_media::dsl as post_media;
@@ -23,10 +23,7 @@ async fn post_details(
     path: web::Path<String>,
     req: HttpRequest,
 ) -> HttpResponse {
-    let auth_user_id = match get_user_id_from_token(&req).await {
-        Ok(id) => Some(id),
-        Err(_) => None,
-    };
+    let session_user_id = try_get_session(&req).await;
 
     let mut conn = db.get_conn();
     let pid_str = path.into_inner();
@@ -67,7 +64,7 @@ async fn post_details(
         .unwrap_or(0);
 
     // Is liked
-    let is_liked = if let Some(user_id) = auth_user_id {
+    let is_liked = if let Some(user_id) = session_user_id {
         select(exists(
             post_likes::post_likes
                 .filter(post_likes::post_id.eq(post.id))
@@ -88,7 +85,7 @@ async fn post_details(
         .ok();
 
     // Determine if current user is author
-    let is_author = auth_user_id.map_or(false, |id| id == author.id);
+    let is_author = session_user_id.map_or(false, |id| id == author.id);
 
     let response = Post {
         post,

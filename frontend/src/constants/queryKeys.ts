@@ -1,6 +1,6 @@
 export const QUERY_KEYS = {
   AUTH: {
-    AUTH_USER: ['authUser'],
+    CURRENT_USER: ['currentUser'],
   },
   POSTS: {
     GLOBAL_TIMELINE: ['globalTimeline', 'infinite'],

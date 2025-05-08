@@ -8,7 +8,7 @@ use ts_rs::TS;
 use uuid::Uuid;
 
 use crate::db_service::DbService;
-use crate::handlers::middleware::get_user_id_from_token;
+use crate::handlers::middleware::try_get_session;
 
 use crate::schema::posts::dsl as posts;
 use crate::schema::post_media::dsl as post_media;
@@ -45,10 +45,7 @@ async fn global_timeline(
     req: HttpRequest,
     query: web::Query<GlobalTimelineRequest>,
 ) -> HttpResponse {
-    let auth_user_id = match get_user_id_from_token(&req).await {
-        Ok(id) => Some(id),
-        Err(_) => None,
-    };
+    let session_user_id = try_get_session(&req).await;
     let mut conn = db.get_conn();
 
     let limit = query.limit.unwrap_or(20);
@@ -121,7 +118,7 @@ async fn global_timeline(
         .expect("Error loading replies counts");
 
     // User's likes
-    let user_likes = if let Some(user_id) = auth_user_id {
+    let user_likes = if let Some(user_id) = session_user_id {
         post_likes::post_likes
             .filter(post_likes::user_id.eq(user_id))
             .filter(post_likes::post_id.eq_any(&post_ids))
@@ -153,7 +150,7 @@ async fn global_timeline(
     // Final response
     let response_posts = posts_list.into_iter().map(|(post, author)| {
         let post_id = post.id;
-        let is_author = auth_user_id.map_or(false, |id| id == author.id);
+        let is_author = session_user_id.map_or(false, |id| id == author.id);
         let is_liked = user_likes_set.contains(&post_id);
         let likes_count = *likes_count_map.get(&post_id).unwrap_or(&0);
         let replies_count = *replies_count_map.get(&post_id).unwrap_or(&0);

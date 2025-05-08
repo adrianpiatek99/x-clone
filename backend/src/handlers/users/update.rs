@@ -10,7 +10,7 @@ use chrono::{DateTime, Utc};
 use futures::{StreamExt, TryStreamExt};
 
 use crate::db_service::DbService;
-use crate::handlers::middleware::get_user_id_from_token;
+use crate::handlers::middleware::require_session;
 use crate::helpers::file::{validate_file, upload_file, read_file_data, FILE_VALIDATION_CONFIGS};
 use crate::helpers::validation::{validate_name, validate_description};
 
@@ -44,9 +44,9 @@ pub struct UpdateProfileRequest {
 #[derive(AsChangeset, Default)]
 #[diesel(table_name = users)]
 struct UserChangeset {
-    name: Option<String>,
-    description: Option<String>,
-    url: Option<String>,
+    name: String,
+    description: String,
+    url: String,
     avatar_url: Option<String>,
     banner_url: Option<String>,
     updated_at: Option<DateTime<Utc>>,
@@ -58,14 +58,9 @@ async fn update_profile(
     req: HttpRequest,
     mut payload: Multipart,
 ) -> HttpResponse {
-    // Get user ID from token
-    let auth_user_id = match get_user_id_from_token(&req).await {
-        Ok(id) => id,
-        Err(_) => {
-            return HttpResponse::Unauthorized().json(json!({
-                "error": "Unauthorized"
-            }))
-        },
+    let session_user_id = match require_session(&req).await {
+        Some(id) => id,
+        None => return HttpResponse::Unauthorized().finish(),
     };
 
     // Form fields
@@ -98,9 +93,7 @@ async fn update_profile(
             "url" => {
                 while let Some(chunk) = field.next().await {
                     let val = String::from_utf8_lossy(&chunk.unwrap()).to_string();
-                    if !val.is_empty() {
-                        url = Some(val);
-                    }
+                    url = Some(val);
                 }
             }
             "removeBanner" => {
@@ -110,13 +103,13 @@ async fn update_profile(
                     remove_banner = val.trim() == "true";
                 }
             }
-            "avatar_file" => {
+            "avatarFile" => {
                 if let Ok((data, mime)) = read_file_data(field).await {
                     avatar_file_data = Some(data);
                     avatar_file_type = Some(mime);
                 }
             }
-            "banner_file" => {
+            "bannerFile" => {
                 if let Ok((data, mime)) = read_file_data(field).await {
                     banner_file_data = Some(data);
                     banner_file_type = Some(mime);
@@ -129,7 +122,7 @@ async fn update_profile(
         }
     }
 
-    // Validate with DTO
+    // Validate
     let form = UpdateProfileRequest {
         name: name.clone().into(),
         description: description.clone().into(),
@@ -180,9 +173,9 @@ async fn update_profile(
     }
 
     let changeset = UserChangeset {
-        name: Some(name),
-        description: Some(description),
-        url,
+        name,
+        description,
+        url: url.unwrap_or_else(|| "".to_string()),
         avatar_url,
         banner_url,
         updated_at: Some(Utc::now()),
@@ -190,8 +183,7 @@ async fn update_profile(
 
     let mut conn = db.get_conn();
 
-    // Update user profile
-    match diesel::update(users::table.filter(users::id.eq(auth_user_id)))
+    match diesel::update(users::table.filter(users::id.eq(session_user_id)))
         .set(changeset)
         .returning(CurrentUserSelect::as_returning())
         .get_result::<CurrentUserSelect>(&mut conn)

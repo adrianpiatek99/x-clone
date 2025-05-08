@@ -6,7 +6,7 @@ use serde::Serialize;
 use ts_rs::TS;
 
 use crate::db_service::DbService;
-use crate::handlers::middleware::get_user_id_from_token;
+use crate::handlers::middleware::try_get_session;
 
 use crate::schema::users::dsl as users;
 // use crate::schema::posts::dsl as posts;
@@ -28,10 +28,7 @@ async fn profile_details(
     path: web::Path<String>,
     req: HttpRequest,
 ) -> HttpResponse {
-    let auth_user_id = match get_user_id_from_token(&req).await {
-        Ok(id) => Some(id),
-        Err(_) => None,
-    };
+    let session_user_id = try_get_session(&req).await;
 
     let mut conn = db.get_conn();
     let screen_name = path.into_inner();

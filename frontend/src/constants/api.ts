@@ -41,7 +41,7 @@ export const API_ENDPOINTS = {
       createUrlWithParams(`/api/${screenName}/userMedia`, params),
   },
   PROFILE: {
-    UPDATE: '/api/profile/update',
+    UPDATE: 'http://localhost:8080/api/profile/update',
     USER_BY_SCREEN_NAME: ({ screenName }: GetUserByScreenNameParams) =>
       `/api/profile/${screenName}` as const,
   },

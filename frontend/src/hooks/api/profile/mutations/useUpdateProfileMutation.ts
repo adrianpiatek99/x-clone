@@ -1,9 +1,9 @@
-import type { UpdateProfileRequest } from '@/app/api/profile/update/route';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
 import { useAppSession } from '@/hooks/useAppSession';
 import { useToasts } from '@/hooks/useToasts';
+import type { UpdateProfileRequest } from '@/types/user';
 import { createFormData } from '@/utils/formData';
 import { reloadSession } from '@/utils/session';
 import { useMutation, useQueryClient } from '@tanstack/react-query';

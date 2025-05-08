@@ -1,7 +1,6 @@
 'use client';
 
 import Box from '@/components/atoms/Box';
-import { useAuth } from '@/components/context/AuthContext';
 import CreatePostForm from '@/components/organisms/CreatePostForm';
 import { useAppSession } from '@/hooks/useAppSession';
 import { HomeTab, useHomeStore } from '@/stores/home';
@@ -12,14 +11,11 @@ import GlobalPostsTimeline from './_components/GlobalPostsTimeline';
 export default function HomePage() {
   const { user } = useAppSession();
   const currentTab = useHomeStore((state) => state.currentTab);
-  const { user: authUser } = useAuth();
-
-  console.log('authUser', authUser);
 
   return (
     <>
       {user && (
-        <Box className='border-border-1 hidden gap-0 border-b sm:flex'>
+        <Box className='hidden gap-0 border-b border-border-1 sm:flex'>
           <CreatePostForm />
         </Box>
       )}
