@@ -34,7 +34,9 @@ pub struct PostSchema {
 pub struct PostMedia {
     pub id: Uuid,
     pub url: String,
+    #[ts(type = "Number")]
     pub width: i32,
+    #[ts(type = "Number")]
     pub height: i32,
     pub type_: PostMediaType,
     pub post_id: Uuid,
@@ -55,7 +57,9 @@ pub struct Post {
     pub media: Vec<PostMedia>,
     pub is_author: bool,
     pub is_liked: bool,
+    #[ts(type = "Number")]
     pub likes_count: i64,
+    #[ts(type = "Number")]
     pub replies_count: i64,
     #[ts(type = "Date | null")]
     pub edited_at: Option<DateTime<Utc>>,

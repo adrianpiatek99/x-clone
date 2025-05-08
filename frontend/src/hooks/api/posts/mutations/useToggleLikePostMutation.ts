@@ -4,10 +4,10 @@ import type { LikePostParams, LikePostResponse } from '@/app/api/posts/[id]/like
 import type { GetPostResponse } from '@/app/api/posts/[id]/route';
 import type { UnlikePostParams, UnlikePostResponse } from '@/app/api/posts/[id]/unlike/route';
 import type { GetGlobalTimelineResponse } from '@/app/api/posts/globalTimeline/route';
+import { useAuth } from '@/components/context/AuthContext';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
-import { useAppSession } from '@/hooks/useAppSession';
 import { useToasts } from '@/hooks/useToasts';
 import { useGlobalStore } from '@/stores/global';
 import { updateItemInCache, updateItemInInfiniteQueryCache } from '@/utils/queryCache';
@@ -26,7 +26,7 @@ export const useToggleLikePostMutation = ({ screenName, onSuccess, onError, onSe
   const t = useTranslations();
   const queryClient = useQueryClient();
   const { addToast } = useToasts();
-  const { user } = useAppSession();
+  const { user } = useAuth();
   const updateAuthRequiredModal = useGlobalStore((state) => state.updateAuthRequiredModal);
 
   const { mutate: likeMutate, isPending: isLikePending } = useMutation<

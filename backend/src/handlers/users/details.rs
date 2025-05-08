@@ -16,7 +16,14 @@ use crate::models::user::{PublicUser, UserSelect};
 #[derive(Serialize, TS)]
 #[serde(rename_all = "camelCase")]
 #[ts(export, export_to = "../../frontend/src/types/user.ts")]
-pub struct ProfileDetailsResponse {
+pub struct GetProfileDetailsParams {
+    pub screen_name: String
+}
+
+#[derive(Serialize, TS)]
+#[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/user.ts")]
+pub struct GetProfileDetailsResponse {
     #[serde(flatten)]
     pub user: PublicUser
 }
@@ -82,7 +89,7 @@ async fn profile_details(
         following_count: 0,
     };
 
-    let response = ProfileDetailsResponse {
+    let response = GetProfileDetailsResponse {
         user: public_user,
     };
 

@@ -1,15 +1,15 @@
 'use client';
 
 import Box from '@/components/atoms/Box';
+import { useAuth } from '@/components/context/AuthContext';
 import CreatePostForm from '@/components/organisms/CreatePostForm';
-import { useAppSession } from '@/hooks/useAppSession';
 import { HomeTab, useHomeStore } from '@/stores/home';
 
 import FollowingPostsTimeline from './_components/FollowingPostsTimeline';
 import GlobalPostsTimeline from './_components/GlobalPostsTimeline';
 
 export default function HomePage() {
-  const { user } = useAppSession();
+  const { user } = useAuth();
   const currentTab = useHomeStore((state) => state.currentTab);
 
   return (

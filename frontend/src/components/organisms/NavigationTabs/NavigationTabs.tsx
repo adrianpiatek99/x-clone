@@ -1,7 +1,7 @@
 import React from 'react';
 
 import IconButton from '@/components/atoms/IconButton';
-import { useAppSession } from '@/hooks/useAppSession';
+import { useAuth } from '@/components/context/AuthContext';
 import { useIsMobile } from '@/hooks/useIsMobile';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 import { ScrollDirection } from '@/hooks/useScrollDirection';
@@ -16,7 +16,7 @@ import { NavigationTabsDrawerButton } from './NavigationTabsDrawerButton';
 const NavigationTabs = () => {
   const t = useTranslations();
   const pathname = usePathname();
-  const { user } = useAppSession();
+  const { user } = useAuth();
   const scrollDirection = useScrollDirection();
   const isScrollDirectionDown = scrollDirection === ScrollDirection.DOWN;
   const isMobile = useIsMobile();

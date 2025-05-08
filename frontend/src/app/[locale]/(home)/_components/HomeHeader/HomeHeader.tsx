@@ -2,9 +2,9 @@
 
 import React, { useCallback, useEffect } from 'react';
 
+import { useAuth } from '@/components/context/AuthContext';
 import HeaderBar from '@/components/molecules/HeaderBar';
 import Tabs, { Tab } from '@/components/molecules/Tabs';
-import { useAppSession } from '@/hooks/useAppSession';
 import { HomeTab, useHomeStore } from '@/stores/home';
 import { useTranslations } from 'next-intl';
 import { useShallow } from 'zustand/shallow';
@@ -13,7 +13,7 @@ import { getHomeTabs, HOME_SELECTED_TAB_KEY } from './config';
 
 const HomeHeader = () => {
   const t = useTranslations();
-  const { user } = useAppSession();
+  const { user } = useAuth();
   const { currentTab, update } = useHomeStore(
     useShallow((state) => ({
       currentTab: state.currentTab,

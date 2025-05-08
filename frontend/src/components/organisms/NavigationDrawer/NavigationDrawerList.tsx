@@ -3,7 +3,7 @@ import React from 'react';
 import Box from '@/components/atoms/Box';
 import Button from '@/components/atoms/Button';
 import Icon from '@/components/atoms/Icon';
-import { useAppSession } from '@/hooks/useAppSession';
+import { useAuth } from '@/components/context/AuthContext';
 import { usePathname } from '@/i18n/routing';
 import { useAuthStore } from '@/stores/auth';
 import { useGlobalStore } from '@/stores/global';
@@ -16,7 +16,7 @@ import NavigationDrawerListItem from './NavigationDrawerListItem';
 const NavigationDrawerList = () => {
   const t = useTranslations();
   const pathname = usePathname();
-  const { user } = useAppSession();
+  const { user } = useAuth();
   const { updateMobileDrawer, updateLogoutModal } = useGlobalStore(
     useShallow((state) => ({
       updateMobileDrawer: state.updateMobileDrawer,

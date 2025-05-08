@@ -3,16 +3,16 @@ import React from 'react';
 import Avatar from '@/components/atoms/Avatar';
 import Box from '@/components/atoms/Box';
 import Typography from '@/components/atoms/Typography';
+import { useAuth } from '@/components/context/AuthContext';
 import UserDisplayName from '@/components/molecules/UserDisplayName';
 import { ROUTES } from '@/constants/routes';
-import { useAppSession } from '@/hooks/useAppSession';
 import { useGlobalStore } from '@/stores/global';
 import { formatNumber } from '@/utils/formatNumber';
 import { useTranslations } from 'next-intl';
 
 const NavigationDrawerHeader = () => {
   const t = useTranslations();
-  const { user } = useAppSession();
+  const { user } = useAuth();
   const updateMobileDrawer = useGlobalStore((state) => state.updateMobileDrawer);
 
   const handleClose = () => updateMobileDrawer({ isOpen: false });

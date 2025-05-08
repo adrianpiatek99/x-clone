@@ -18,8 +18,8 @@ export type BaseUser = {
 
 export type CurrentUser = {
   isFollowing: boolean;
-  followersCount: bigint;
-  followingCount: bigint;
+  followersCount: number;
+  followingCount: number;
   id: string;
   name: string;
   screenName: string;
@@ -35,10 +35,12 @@ export type CurrentUser = {
   updatedAt: Date;
 };
 
-export type ProfileDetailsResponse = {
+export type GetProfileDetailsParams = { screenName: string };
+
+export type GetProfileDetailsResponse = {
   isFollowing: boolean;
-  followersCount: bigint;
-  followingCount: bigint;
+  followersCount: number;
+  followingCount: number;
   id: string;
   name: string;
   screenName: string;
@@ -55,8 +57,8 @@ export type ProfileDetailsResponse = {
 
 export type PublicUser = {
   isFollowing: boolean;
-  followersCount: bigint;
-  followingCount: bigint;
+  followersCount: number;
+  followingCount: number;
   id: string;
   name: string;
   screenName: string;

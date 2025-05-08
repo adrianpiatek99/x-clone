@@ -2,7 +2,7 @@ import type { ReactElement } from 'react';
 
 import Icon from '@/components/atoms/Icon';
 import { ROUTES } from '@/constants/routes';
-import type { User } from '@/db/schema';
+import type { CurrentUser } from '@/types/user';
 
 export type NavigationDrawerItem = {
   text: string;
@@ -15,7 +15,7 @@ export type NavigationDrawerItem = {
 
 type NavigationDrawerItemsProps = {
   t: Translation;
-  user: User | undefined;
+  user: CurrentUser | undefined;
   pathname: string;
 };
 

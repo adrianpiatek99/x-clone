@@ -3,13 +3,13 @@ import React from 'react';
 import Avatar from '@/components/atoms/Avatar';
 import Icon from '@/components/atoms/Icon';
 import IconButton from '@/components/atoms/IconButton';
-import { useAppSession } from '@/hooks/useAppSession';
+import { useAuth } from '@/components/context/AuthContext';
 import { useGlobalStore } from '@/stores/global';
 import { twMerge } from 'tailwind-merge';
 import { useShallow } from 'zustand/shallow';
 
 export const NavigationTabsDrawerButton = () => {
-  const { user } = useAppSession();
+  const { user } = useAuth();
   const { mobileDrawer, updateMobileDrawer } = useGlobalStore(
     useShallow((state) => ({
       mobileDrawer: state.mobileDrawer,

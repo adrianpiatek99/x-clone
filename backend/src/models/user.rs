@@ -118,7 +118,9 @@ pub struct PublicUser
   #[serde(flatten)]
   pub user: UserSelect,
   pub is_following: bool,
+  #[ts(type = "Number")]
   pub followers_count: i64,
+  #[ts(type = "Number")]
   pub following_count: i64,
 }
 
@@ -132,6 +134,8 @@ pub struct CurrentUser {
   #[serde(flatten)]
   pub user: CurrentUserSelect,
   pub is_following: bool,
+  #[ts(type = "Number")]
   pub followers_count: i64,
+  #[ts(type = "Number")]
   pub following_count: i64,
 }

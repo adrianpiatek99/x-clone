@@ -1,23 +1,20 @@
-import type {
-  GetUserByScreenNameParams,
-  GetUserByScreenNameResponse,
-} from '@/app/api/profile/[screenName]/route';
+import { useAuth } from '@/components/context/AuthContext';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
-import { useAppSession } from '@/hooks/useAppSession';
+import type { GetProfileDetailsParams, GetProfileDetailsResponse } from '@/types/user';
 import { useQuery } from '@tanstack/react-query';
 
-type Props = GetUserByScreenNameParams & {
+type Props = GetProfileDetailsParams & {
   enabled?: boolean;
 };
 
 export const useGetUserByScreenNameQuery = ({ screenName, enabled = true }: Props) => {
-  const { user } = useAppSession();
+  const { user } = useAuth();
 
-  const { data, isLoading, isRefetching, isError } = useQuery<GetUserByScreenNameResponse>({
+  const { data, isLoading, isRefetching, isError } = useQuery<GetProfileDetailsResponse>({
     queryKey: QUERY_KEYS.PROFILE.USER_BY_SCREEN_NAME(screenName),
-    queryFn: () => apiRequest('GET', API_ENDPOINTS.PROFILE.USER_BY_SCREEN_NAME({ screenName })),
+    queryFn: () => apiRequest('GET', API_ENDPOINTS.PROFILE.DETAILS({ screenName })),
     enabled,
     initialData: () => {
       if (user?.screenName === screenName) {
@@ -34,7 +31,6 @@ export const useGetUserByScreenNameQuery = ({ screenName, enabled = true }: Prop
           isFollowing: false,
           followersCount: user.followersCount,
           followingCount: user.followingCount,
-          postsCount: user.postsCount,
           verifiedAt: user.verifiedAt,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,

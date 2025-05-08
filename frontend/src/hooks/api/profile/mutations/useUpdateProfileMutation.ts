@@ -1,7 +1,7 @@
+import { useAuth } from '@/components/context/AuthContext';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
-import { useAppSession } from '@/hooks/useAppSession';
 import { useToasts } from '@/hooks/useToasts';
 import type { UpdateProfileRequest } from '@/types/user';
 import { createFormData } from '@/utils/formData';
@@ -18,7 +18,7 @@ export const useUpdateProfileMutation = ({ onSuccess, onSettled }: Props = {}) =
   const t = useTranslations();
   const { addToast } = useToasts();
   const queryClient = useQueryClient();
-  const { user } = useAppSession();
+  const { user } = useAuth();
 
   const { mutate, isPending } = useMutation<void, ApiAxiosError, UpdateProfileRequest>({
     mutationFn: ({ avatarFile, bannerFile, ...data }) => {

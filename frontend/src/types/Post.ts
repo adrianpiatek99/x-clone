@@ -13,8 +13,8 @@ export type Post = {
   media: Array<PostMedia>;
   isAuthor: boolean;
   isLiked: boolean;
-  likesCount: bigint;
-  repliesCount: bigint;
+  likesCount: number;
+  repliesCount: number;
   editedAt: Date | null;
   id: string;
   text: string;

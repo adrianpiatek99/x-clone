@@ -1,15 +1,15 @@
 import React from 'react';
 
 import Avatar from '@/components/atoms/Avatar';
+import { useAuth } from '@/components/context/AuthContext';
 import { ROUTES } from '@/constants/routes';
-import { useAppSession } from '@/hooks/useAppSession';
 
 type Props = {
   withLink?: boolean;
 };
 
 const UserAvatar = ({ withLink = true }: Props) => {
-  const { user } = useAppSession();
+  const { user } = useAuth();
 
   if (!user) return null;
 

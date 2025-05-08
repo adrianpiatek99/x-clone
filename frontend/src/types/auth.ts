@@ -3,8 +3,8 @@ import type { Role } from './enums';
 
 export type GetCurrentUserResponse = {
   isFollowing: boolean;
-  followersCount: bigint;
-  followingCount: bigint;
+  followersCount: number;
+  followingCount: number;
   id: string;
   name: string;
   screenName: string;
@@ -24,8 +24,8 @@ export type LoginRequest = { emailOrScreenName: string; password: string };
 
 export type LoginResponse = {
   isFollowing: boolean;
-  followersCount: bigint;
-  followingCount: bigint;
+  followersCount: number;
+  followingCount: number;
   id: string;
   name: string;
   screenName: string;
