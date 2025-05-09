@@ -1,11 +1,11 @@
 import type { GetUserLikesResponse } from '@/app/api/[screenName]/userLikes/route';
 import type { GetUserPostsResponse } from '@/app/api/[screenName]/userPosts/route';
 import type { DeletePostParams, DeletePostResponse } from '@/app/api/posts/[id]/delete/route';
-import type { GetGlobalTimelineResponse } from '@/app/api/posts/globalTimeline/route';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
 import { useToasts } from '@/hooks/useToasts';
+import type { GetGlobalTimelineResponse } from '@/types/post';
 import {
   deleteItemFromInfiniteQueryCache,
   updateTotalCountInInfiniteQueryCache,
@@ -22,6 +22,8 @@ type Props = {
 
 type Context = {
   previousTimeline: GetGlobalTimelineResponse | undefined;
+  previousUserPosts: GetUserPostsResponse | undefined;
+  previousUserLikes: GetUserLikesResponse | undefined;
   previousPost: unknown;
 };
 
@@ -96,6 +98,14 @@ export const useDeletePostMutation = ({ screenName, onSuccess, onError, onSettle
       if (context?.previousTimeline) {
         queryClient.setQueryData(QUERY_KEYS.POSTS.GLOBAL_TIMELINE, context.previousTimeline);
       }
+
+      // if (context?.previousUserPosts) {
+      //   queryClient.setQueryData(QUERY_KEYS.POSTS.USER_POSTS(), context.previousUserPosts);
+      // }
+
+      // if (context?.previousUserLikes) {
+      //   queryClient.setQueryData(QUERY_KEYS.POSTS.USER_LIKES(), context.previousUserLikes);
+      // }
 
       if (context?.previousPost) {
         queryClient.setQueryData(QUERY_KEYS.POSTS.DETAILS(id), context.previousPost);

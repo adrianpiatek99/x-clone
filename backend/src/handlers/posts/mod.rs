@@ -18,7 +18,7 @@ pub fn config(cfg: &mut web::ServiceConfig) {
         web::scope("/api/posts")
             .service(global_timeline::global_timeline)
             .service(details::post_details)
-            // .service(create::create_post)
+            .service(create::create_post)
             // .service(delete::delete_post)
             // .service(update::update_post)
             // .service(like::like_post)

@@ -1,16 +1,15 @@
-import { GetUserLikesResponse } from '@/app/api/[screenName]/userLikes/route';
+import type { GetUserLikesResponse } from '@/app/api/[screenName]/userLikes/route';
 import type { GetUserPostsResponse } from '@/app/api/[screenName]/userPosts/route';
-import type { GetPostResponse } from '@/app/api/posts/[id]/route';
 import type {
   UpdatePostParams,
   UpdatePostRequest,
   UpdatePostResponse,
 } from '@/app/api/posts/[id]/update/route';
-import type { GetGlobalTimelineResponse } from '@/app/api/posts/globalTimeline/route';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
 import { useToasts } from '@/hooks/useToasts';
+import type { GetGlobalTimelineResponse, GetPostDetailsResponse } from '@/types/post';
 import { createFormData } from '@/utils/formData';
 import { updateItemInCache, updateItemInInfiniteQueryCache } from '@/utils/queryCache';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -69,7 +68,7 @@ export const useUpdatePostMutation = ({ onSuccess, onError, onSettled }: Props =
         { itemsKey: 'likes', findByKey: 'postId' }
       );
 
-      updateItemInCache<GetPostResponse>(
+      updateItemInCache<GetPostDetailsResponse>(
         queryClient,
         QUERY_KEYS.POSTS.DETAILS(updatedPost.id),
         (post) => Object.assign(post, updatedPost)

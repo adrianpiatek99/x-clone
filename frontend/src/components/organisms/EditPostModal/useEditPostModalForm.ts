@@ -1,10 +1,9 @@
 import { useEffect, useMemo } from 'react';
 
-import type { CreatePostRequest } from '@/app/api/posts/create/route';
 import { useUpdatePostMutation } from '@/hooks/api/posts/mutations';
 import { useAppForm } from '@/hooks/useFormHook';
 import { useEditPostStore } from '@/stores/editPost';
-import type { Post } from '@/types/post';
+import type { CreatePostRequest, Post } from '@/types/post';
 import { useStore } from '@tanstack/react-form';
 import { useShallow } from 'zustand/shallow';
 
@@ -28,7 +27,7 @@ export const useEditPostModalForm = ({ post, isOpen, onClose, onSuccess }: Props
   const { AppField, handleSubmit, store, reset } = useAppForm({
     defaultValues: {
       text,
-    } satisfies CreatePostRequest,
+    } satisfies Omit<CreatePostRequest, 'media'>,
     onSubmit: ({ value }) => {
       const removedMediaIds = media
         .filter((mediaItem) => !files.some((file) => file.preview === mediaItem.url))

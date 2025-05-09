@@ -1,11 +1,14 @@
 import type { GetUserPostsResponse } from '@/app/api/[screenName]/userPosts/route';
-import type { CreatePostRequest, CreatePostResponse } from '@/app/api/posts/create/route';
-import type { GetGlobalTimelineResponse } from '@/app/api/posts/globalTimeline/route';
 import { useAuth } from '@/components/context/AuthContext';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
 import { useToasts } from '@/hooks/useToasts';
+import type {
+  CreatePostRequest,
+  CreatePostResponse,
+  GetGlobalTimelineResponse,
+} from '@/types/post';
 import { createFormData } from '@/utils/formData';
 import {
   addItemToInfiniteQueryCache,

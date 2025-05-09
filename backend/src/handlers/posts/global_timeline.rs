@@ -24,16 +24,17 @@ use crate::models::user::{BaseUser, UserSelect};
 #[derive(Deserialize, TS)]
 #[serde(rename_all = "camelCase")]
 #[ts(export, export_to = "../../frontend/src/types/post.ts")]
-pub struct GlobalTimelineRequest {
+pub struct GetGlobalTimelineParams {
     #[ts(type = "Cursor | null")]
     pub cursor: Option<String>,
+    #[ts(type = "Number | null")]
     pub limit: Option<i64>,
 }
 
 #[derive(Serialize, TS)]
 #[serde(rename_all = "camelCase")]
 #[ts(export, export_to = "../../frontend/src/types/post.ts")]
-pub struct GlobalTimelineResponse {
+pub struct GetGlobalTimelineResponse {
     pub posts: Vec<Post>,
     pub next_cursor: Option<Cursor>,
 }
@@ -43,7 +44,7 @@ pub struct GlobalTimelineResponse {
 async fn global_timeline(
     db: web::Data<DbService>,
     req: HttpRequest,
-    query: web::Query<GlobalTimelineRequest>,
+    query: web::Query<GetGlobalTimelineParams>,
 ) -> HttpResponse {
     let session_user_id = try_get_session(&req).await;
     let mut conn = db.get_conn();
@@ -169,7 +170,7 @@ async fn global_timeline(
         }
     }).collect();
 
-    let response = GlobalTimelineResponse {
+    let response = GetGlobalTimelineResponse {
         posts: response_posts,
         next_cursor,
     };

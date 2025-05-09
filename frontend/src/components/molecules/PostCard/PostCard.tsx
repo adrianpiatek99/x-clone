@@ -4,7 +4,7 @@ import React, { memo } from 'react';
 import Avatar from '@/components/atoms/Avatar';
 import Box from '@/components/atoms/Box';
 import { ROUTES } from '@/constants/routes';
-import type { Post } from '@/db/schema';
+import type { Post } from '@/types/post';
 import { twMerge } from 'tailwind-merge';
 
 import ArticleCard from '../ArticleCard';

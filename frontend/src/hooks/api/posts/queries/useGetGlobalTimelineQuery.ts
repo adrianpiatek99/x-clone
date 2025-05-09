@@ -1,10 +1,7 @@
-import type {
-  GetGlobalTimelineParams,
-  GetGlobalTimelineResponse,
-} from '@/app/api/posts/globalTimeline/route';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
+import type { GetGlobalTimelineParams, GetGlobalTimelineResponse } from '@/types/post';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 type UseGlobalPostsTimelineOptions = {

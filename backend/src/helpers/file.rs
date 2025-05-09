@@ -21,15 +21,17 @@ pub struct FileValidationConfig {
     pub field_name: &'static str,
     pub max_size_mb: u64,
     pub accept: &'static [&'static str],
+    pub limit: u32,
 }
 
-pub const FILE_VALIDATION_CONFIGS: [(&str, FileValidationConfig); 2] = [
+pub const FILE_VALIDATION_CONFIGS: [(&str, FileValidationConfig); 3] = [
     (
         "avatar",
         FileValidationConfig {
             field_name: "avatar",
             max_size_mb: 1,
             accept: &IMAGE_FILE_TYPES,
+            limit: 1,
         },
     ),
     (
@@ -38,6 +40,16 @@ pub const FILE_VALIDATION_CONFIGS: [(&str, FileValidationConfig); 2] = [
             field_name: "banner",
             max_size_mb: 2,
             accept: &BANNER_FILE_TYPES,
+            limit: 1,
+        },
+    ),
+    (
+        "media",
+        FileValidationConfig {
+            field_name: "media",
+            max_size_mb: 3,
+            accept: &IMAGE_FILE_TYPES,
+            limit: 4,
         },
     ),
 ];
@@ -58,6 +70,18 @@ pub fn validate_file(file_data: &[u8], file_type: &str, config: &FileValidationC
             "Invalid {} size. File must be under {}MB",
             config.field_name,
             config.max_size_mb
+        ));
+    }
+
+    Ok(())
+}
+
+pub fn validate_files_count(files_count: usize, config: &FileValidationConfig) -> Result<(), String> {
+    if files_count > config.limit as usize {
+        return Err(format!(
+            "Maximum {} {} files allowed",
+            config.limit,
+            config.field_name
         ));
     }
 

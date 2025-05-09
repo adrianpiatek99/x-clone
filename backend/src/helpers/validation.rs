@@ -2,6 +2,8 @@ use validator::ValidationError;
 
 use super::regex::{NAME_REGEX, SCREEN_NAME_REGEX};
 
+pub const MAX_POST_TEXT_LENGTH: usize = 500;
+
 pub fn validate_name(name: &str) -> Result<(), ValidationError> {
   if name.len() < 4 || name.len() > 50 {
       let mut err = ValidationError::new("length");
@@ -62,4 +64,15 @@ pub fn validate_description(desc: &str) -> Result<(), ValidationError> {
   }
 
   Ok(())
+}
+
+pub fn validate_post_text(text: &str) -> Result<(), ValidationError> {
+    let trimmed_text = text.trim().replace(|c: char| c.is_whitespace(), " ");
+    if trimmed_text.is_empty() {
+        return Err(ValidationError::new("empty_text"));
+    }
+    if trimmed_text.len() > MAX_POST_TEXT_LENGTH {
+        return Err(ValidationError::new("text_too_long"));
+    }
+    Ok(())
 }

@@ -1,15 +1,14 @@
 import type { GetUserLikesResponse } from '@/app/api/[screenName]/userLikes/route';
 import type { GetUserPostsResponse } from '@/app/api/[screenName]/userPosts/route';
 import type { LikePostParams, LikePostResponse } from '@/app/api/posts/[id]/like/route';
-import type { GetPostResponse } from '@/app/api/posts/[id]/route';
 import type { UnlikePostParams, UnlikePostResponse } from '@/app/api/posts/[id]/unlike/route';
-import type { GetGlobalTimelineResponse } from '@/app/api/posts/globalTimeline/route';
 import { useAuth } from '@/components/context/AuthContext';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
 import { useToasts } from '@/hooks/useToasts';
 import { useGlobalStore } from '@/stores/global';
+import type { GetGlobalTimelineResponse, GetPostDetailsResponse } from '@/types/post';
 import { updateItemInCache, updateItemInInfiniteQueryCache } from '@/utils/queryCache';
 import { useMutation } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
@@ -79,10 +78,14 @@ export const useToggleLikePostMutation = ({ screenName, onSuccess, onError, onSe
       //   (count) => count + 1
       // );
 
-      updateItemInCache<GetPostResponse>(queryClient, QUERY_KEYS.POSTS.DETAILS(id), (post) => {
-        post.isLiked = true;
-        post.likesCount++;
-      });
+      updateItemInCache<GetPostDetailsResponse>(
+        queryClient,
+        QUERY_KEYS.POSTS.DETAILS(id),
+        (post) => {
+          post.isLiked = true;
+          post.likesCount++;
+        }
+      );
 
       onSuccess?.();
     },
@@ -146,10 +149,14 @@ export const useToggleLikePostMutation = ({ screenName, onSuccess, onError, onSe
       //   (count) => count - 1
       // );
 
-      updateItemInCache<GetPostResponse>(queryClient, QUERY_KEYS.POSTS.DETAILS(id), (post) => {
-        post.isLiked = false;
-        post.likesCount--;
-      });
+      updateItemInCache<GetPostDetailsResponse>(
+        queryClient,
+        QUERY_KEYS.POSTS.DETAILS(id),
+        (post) => {
+          post.isLiked = false;
+          post.likesCount--;
+        }
+      );
 
       onSuccess?.();
     },
