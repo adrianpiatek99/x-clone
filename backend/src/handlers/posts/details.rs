@@ -54,7 +54,7 @@ async fn post_details(
         Err(_) => return HttpResponse::BadRequest().body("Invalid UUID format"),
     };
 
-    // Fetch post and author
+    // Fetch post and author with a single query
     let (post, author) = match posts::posts
         .inner_join(users::users.on(posts::author_id.eq(users::id)))
         .select((PostSchema::as_select(), UserSelect::as_select()))
@@ -71,39 +71,55 @@ async fn post_details(
         }
     };
 
-    // Media
-    let media = post_media::post_media
-        .filter(post_media::post_id.eq(post.id))
-        .load::<PostMedia>(&mut conn)
-        .unwrap_or_default();
+    // Execute multiple queries concurrently using a transaction
+    let result = match conn.transaction(|conn| {
+        // Media query
+        let media = post_media::post_media
+            .filter(post_media::post_id.eq(post.id))
+            .load::<PostMedia>(conn)?;
 
-    // Likes count
-    let likes_count: i64 = post_likes::post_likes
-        .filter(post_likes::post_id.eq(post.id))
-        .select(count_star())
-        .first::<i64>(&mut conn)
-        .unwrap_or(0);
-
-    // Is liked
-    let is_liked = if let Some(user_id) = session_user_id {
-        select(exists(
-            post_likes::post_likes
+        // Combined likes count and is_liked query
+        let (likes_count, is_liked) = {
+            let likes_count = post_likes::post_likes
                 .filter(post_likes::post_id.eq(post.id))
-                .filter(post_likes::user_id.eq(user_id)),
-        ))
-        .get_result::<bool>(&mut conn)
-        .unwrap_or(false)
-    } else {
-        false
+                .select(count_star())
+                .first::<i64>(conn)
+                .unwrap_or(0);
+
+            let is_liked = if let Some(user_id) = session_user_id {
+                select(exists(
+                    post_likes::post_likes
+                        .filter(post_likes::post_id.eq(post.id))
+                        .filter(post_likes::user_id.eq(user_id)),
+                ))
+                .get_result::<bool>(conn)
+                .unwrap_or(false)
+            } else {
+                false
+            };
+
+            (likes_count, is_liked)
+        };
+
+        // Last edit query
+        let edited_at = post_edit_history::post_edit_history
+            .filter(post_edit_history::post_id.eq(post.id))
+            .select(post_edit_history::edited_at)
+            .order_by(post_edit_history::edited_at.desc())
+            .limit(1)
+            .first::<DateTime<Utc>>(conn)
+            .ok();
+
+        Result::<_, diesel::result::Error>::Ok((media, likes_count, is_liked, edited_at))
+    }) {
+        Ok(data) => data,
+        Err(e) => {
+            eprintln!("Transaction error: {:?}", e);
+            return HttpResponse::InternalServerError().body("Internal server error");
+        }
     };
 
-    // Edit history (last edited_at)
-    let edited_at = post_edit_history::post_edit_history
-        .filter(post_edit_history::post_id.eq(post.id))
-        .select(post_edit_history::edited_at)
-        .order_by(post_edit_history::edited_at.desc())
-        .first::<DateTime<Utc>>(&mut conn)
-        .ok();
+    let (media, likes_count, is_liked, edited_at) = result;
 
     // Determine if current user is author
     let is_author = session_user_id.map_or(false, |id| id == author.id);

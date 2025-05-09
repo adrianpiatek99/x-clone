@@ -6,6 +6,7 @@ use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use ts_rs::TS;
 use uuid::Uuid;
+use std::collections::{HashMap, HashSet};
 
 use crate::{
     db_service::DbService,
@@ -69,13 +70,19 @@ async fn global_timeline(
         );
     }
 
-    let posts_list = query
+    let posts_list = match query
         .order(posts::created_at.desc())
         .then_order_by(posts::id.desc())
         .select((PostSchema::as_select(), UserSelect::as_select()))
         .limit(take)
         .load::<(PostSchema, UserSelect)>(&mut conn)
-        .expect("Error loading posts");
+    {
+        Ok(posts) => posts,
+        Err(e) => {
+            eprintln!("Database error: {:?}", e);
+            return HttpResponse::InternalServerError().body("Error loading posts");
+        }
+    };
 
     // Calculate next cursor
     let next_cursor = if posts_list.len() > limit as usize {
@@ -90,80 +97,92 @@ async fn global_timeline(
 
     // Take only the requested number of posts
     let posts_list = posts_list.into_iter().take(limit as usize).collect::<Vec<_>>();
-
     let post_ids: Vec<Uuid> = posts_list.iter().map(|(post, _)| post.id).collect();
 
-    // Media
-    let media_list = post_media::post_media
-        .filter(post_media::post_id.eq_any(&post_ids))
-        .load::<PostMedia>(&mut conn)
-        .expect("Error loading media");
+    // Execute all related queries in a single transaction
+    let result = match conn.transaction(|conn| {
+        // Media with post grouping
+        let media_list = post_media::post_media
+            .filter(post_media::post_id.eq_any(&post_ids))
+            .load::<PostMedia>(conn)?;
 
-    let mut media_by_post: std::collections::HashMap<Uuid, Vec<PostMedia>> = std::collections::HashMap::new();
-    for media in media_list {
-        media_by_post.entry(media.post_id).or_default().push(media);
-    }
+        let mut media_by_post: HashMap<Uuid, Vec<PostMedia>> = HashMap::new();
+        for media in media_list {
+            media_by_post.entry(media.post_id).or_default().push(media);
+        }
 
-    // Likes count
-    let likes_counts = post_likes::post_likes
-        .filter(post_likes::post_id.eq_any(&post_ids))
-        .group_by(post_likes::post_id)
-        .select((post_likes::post_id, count(post_likes::id)))
-        .load::<(Uuid, i64)>(&mut conn)
-        .expect("Error loading likes counts");
+        // Combined likes and replies counts
+        let (likes_counts, replies_counts) = {
+            let likes = post_likes::post_likes
+                .filter(post_likes::post_id.eq_any(&post_ids))
+                .group_by(post_likes::post_id)
+                .select((post_likes::post_id, count(post_likes::id)))
+                .load::<(Uuid, i64)>(conn)?;
 
-    // Replies count
-    let replies_counts = post_replies::post_reply
-        .filter(post_replies::post_id.eq_any(&post_ids))
-        .group_by(post_replies::post_id)
-        .select((post_replies::post_id, count(post_replies::id)))
-        .load::<(Uuid, i64)>(&mut conn)
-        .expect("Error loading replies counts");
+            let replies = post_replies::post_reply
+                .filter(post_replies::post_id.eq_any(&post_ids))
+                .group_by(post_replies::post_id)
+                .select((post_replies::post_id, count(post_replies::id)))
+                .load::<(Uuid, i64)>(conn)?;
 
-    // User's likes
-    let user_likes = if let Some(user_id) = session_user_id {
-        post_likes::post_likes
-            .filter(post_likes::user_id.eq(user_id))
-            .filter(post_likes::post_id.eq_any(&post_ids))
-            .select(post_likes::post_id)
-            .load::<Uuid>(&mut conn)
-            .expect("Error loading user likes")
-    } else {
-        Vec::new()
+            (likes, replies)
+        };
+
+        // User's likes (if logged in)
+        let user_likes = if let Some(user_id) = session_user_id {
+            post_likes::post_likes
+                .filter(post_likes::user_id.eq(user_id))
+                .filter(post_likes::post_id.eq_any(&post_ids))
+                .select(post_likes::post_id)
+                .load::<Uuid>(conn)?
+        } else {
+            Vec::new()
+        };
+
+        // Latest edits with optimization
+        let edit_history = post_edit_history::post_edit_history
+            .filter(post_edit_history::post_id.eq_any(&post_ids))
+            .distinct_on(post_edit_history::post_id)
+            .select((post_edit_history::post_id, post_edit_history::edited_at))
+            .order_by((post_edit_history::post_id, post_edit_history::edited_at.desc()))
+            .load::<(Uuid, DateTime<Utc>)>(conn)?;
+
+        Result::<_, diesel::result::Error>::Ok((
+            media_by_post,
+            likes_counts,
+            replies_counts,
+            user_likes,
+            edit_history
+        ))
+    }) {
+        Ok(data) => data,
+        Err(e) => {
+            eprintln!("Transaction error: {:?}", e);
+            return HttpResponse::InternalServerError().body("Error processing posts data");
+        }
     };
 
-    // Latest edit
-    let edit_history = post_edit_history::post_edit_history
-        .filter(post_edit_history::post_id.eq_any(&post_ids))
-        .select((post_edit_history::post_id, post_edit_history::edited_at))
-        .order_by(post_edit_history::edited_at.desc())
-        .load::<(Uuid, DateTime<Utc>)>(&mut conn)
-        .expect("Error loading edit history");
+    let (media_by_post, likes_counts, replies_counts, user_likes, edit_history) = result;
 
-    let edit_by_post = edit_history.into_iter()
-        .fold(std::collections::HashMap::new(), |mut acc, (post_id, edited_at)| {
-            acc.entry(post_id).or_insert(edited_at);
-            acc
-        });
-
-    let likes_count_map = likes_counts.into_iter().collect::<std::collections::HashMap<_, _>>();
-    let replies_count_map = replies_counts.into_iter().collect::<std::collections::HashMap<_, _>>();
-    let user_likes_set = user_likes.into_iter().collect::<std::collections::HashSet<_>>();
+    let likes_count_map: HashMap<_, _> = likes_counts.into_iter().collect();
+    let replies_count_map: HashMap<_, _> = replies_counts.into_iter().collect();
+    let user_likes_set: HashSet<_> = user_likes.into_iter().collect();
+    let edit_by_post: HashMap<_, _> = edit_history.into_iter().collect();
 
     // Final response
     let response_posts = posts_list.into_iter().map(|(post, author)| {
         let post_id = post.id;
+        let all_media = media_by_post.get(&post_id).cloned().unwrap_or_default();
         let is_author = session_user_id.map_or(false, |id| id == author.id);
         let is_liked = user_likes_set.contains(&post_id);
         let likes_count = *likes_count_map.get(&post_id).unwrap_or(&0);
         let replies_count = *replies_count_map.get(&post_id).unwrap_or(&0);
         let edited_at = edit_by_post.get(&post_id).copied();
-        let media = media_by_post.remove(&post_id).unwrap_or_default();
 
         Post {
             post,
             author: BaseUser { user: author },
-            media,
+            media: all_media,
             is_author,
             is_liked,
             likes_count,

@@ -25,7 +25,7 @@ pub struct PostSchema {
     pub updated_at: DateTime<Utc>,
 }
 
-#[derive(Queryable, Selectable, Identifiable, Serialize, TS, Debug)]
+#[derive(Queryable, Selectable, Identifiable, Serialize, Clone, TS, Debug)]
 #[diesel(table_name = crate::schema::post_media)]
 #[diesel(belongs_to(Post))]
 #[diesel(check_for_backend(diesel::pg::Pg))]
