@@ -15,7 +15,6 @@ import dynamic from 'next/dynamic';
 import { Inter } from 'next/font/google';
 import { cookies } from 'next/headers';
 import { notFound } from 'next/navigation';
-import { SessionProvider } from 'next-auth/react';
 import { getMessages } from 'next-intl/server';
 
 import Providers from './providers';
@@ -76,21 +75,19 @@ export default async function RootLayout({ children, params }: PropsWithChildren
   return (
     <html lang={locale} className={inter.variable} suppressHydrationWarning>
       <body>
-        <SessionProvider>
-          <AuthProvider currentUser={currentUser}>
-            <Providers locale={locale} messages={messages}>
-              <div className='relative mx-auto flex w-full gap-3 md:max-w-[688px] lg:max-w-[1008px] xl:max-w-[1265px]'>
-                <SidebarMenu />
-                <main className='relative flex w-full grow items-start gap-7'>
-                  <div className='flex min-h-screen w-full max-w-full flex-col pb-24 sm:max-w-[600px] sm:border-x sm:border-border-1 sm:pb-48'>
-                    {children}
-                  </div>
-                  <LazySidebarColumn />
-                </main>
-              </div>
-            </Providers>
-          </AuthProvider>
-        </SessionProvider>
+        <AuthProvider currentUser={currentUser}>
+          <Providers locale={locale} messages={messages}>
+            <div className='relative mx-auto flex w-full gap-3 md:max-w-[688px] lg:max-w-[1008px] xl:max-w-[1265px]'>
+              <SidebarMenu />
+              <main className='relative flex w-full grow items-start gap-7'>
+                <div className='sm:border-border-1 flex min-h-screen w-full max-w-full flex-col pb-24 sm:max-w-[600px] sm:border-x sm:pb-48'>
+                  {children}
+                </div>
+                <LazySidebarColumn />
+              </main>
+            </div>
+          </Providers>
+        </AuthProvider>
       </body>
     </html>
   );

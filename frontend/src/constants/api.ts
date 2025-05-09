@@ -16,7 +16,7 @@ export const API_ENDPOINTS = {
     CURRENT_USER: 'http://localhost:8080/api/auth/currentUser',
     LOGIN: 'http://localhost:8080/api/auth/login',
     LOGOUT: 'http://localhost:8080/api/auth/logout',
-    SIGN_UP: '/api/auth/signUp',
+    REGISTER: 'http://localhost:8080/api/auth/register',
   },
   POSTS: {
     LIST: '/api/posts',
