@@ -7,17 +7,20 @@ use serde::Serialize;
 use ts_rs::TS;
 use uuid::Uuid;
 
-use crate::db_service::DbService;
-use crate::handlers::middleware::try_get_session;
+use crate::{
+    db_service::DbService,
+    handlers::middleware::try_get_session,
 
-use crate::schema::posts::dsl as posts;
-use crate::schema::post_media::dsl as post_media;
-use crate::schema::users::dsl as users;
-use crate::schema::post_likes::dsl as post_likes;
-use crate::schema::post_edit_history::dsl as post_edit_history;
+    schema::posts::dsl as posts,
+    schema::post_media::dsl as post_media,
+    schema::users::dsl as users,
+    schema::post_likes::dsl as post_likes,
+    schema::post_edit_history::dsl as post_edit_history,
 
-use crate::models::post::{PostSchema, Post, PostMedia};
-use crate::models::user::{UserSelect, BaseUser};
+    models::post::{PostSchema, Post, PostMedia},
+    models::user::{UserSelect, BaseUser},
+};
+
 
 #[derive(Serialize, TS)]
 #[serde(rename_all = "camelCase")]

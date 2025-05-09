@@ -5,13 +5,15 @@ use diesel::prelude::*;
 use serde::Serialize;
 use ts_rs::TS;
 
-use crate::db_service::DbService;
-use crate::handlers::middleware::try_get_session;
+use crate::{
+    db_service::DbService,
+    handlers::middleware::try_get_session,
 
-use crate::schema::users::dsl as users;
-// use crate::schema::posts::dsl as posts;
+    schema::users::dsl as users,
+    // schema::posts::dsl as posts;
 
-use crate::models::user::{PublicUser, UserSelect};
+    models::user::{PublicUser, UserSelect},
+};
 
 #[derive(Serialize, TS)]
 #[serde(rename_all = "camelCase")]

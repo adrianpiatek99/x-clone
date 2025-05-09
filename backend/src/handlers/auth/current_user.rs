@@ -8,11 +8,14 @@ use serde_json::json;
 use ts_rs::TS;
 use std::env;
 
-use crate::db_service::DbService;
-use crate::helpers::token::{decode_token, is_token_valid, extend_token_expiration, generate_token};
+use crate::{
+    db_service::DbService,
+    helpers::token::{decode_token, is_token_valid, extend_token_expiration, generate_token},
 
-use crate::models::user::{CurrentUser, CurrentUserSelect};
-use crate::schema::users::dsl::*;
+    schema::users::dsl as users,
+
+    models::user::{CurrentUser, CurrentUserSelect},
+};
 
 #[derive(Serialize, TS)]
 #[serde(rename_all = "camelCase")]
@@ -62,8 +65,8 @@ async fn current_user(db: web::Data<DbService>, req: HttpRequest) -> HttpRespons
     let mut conn = db.get_conn();
 
     // Get user from database
-    match users
-        .filter(id.eq(token_data.claims.sub))
+    match users::users
+        .filter(users::id.eq(token_data.claims.sub))
         .select(CurrentUserSelect::as_select())
         .first::<CurrentUserSelect>(&mut conn)
     {

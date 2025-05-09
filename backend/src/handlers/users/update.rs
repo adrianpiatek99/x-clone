@@ -9,13 +9,15 @@ use validator::Validate;
 use chrono::{DateTime, Utc};
 use futures::{StreamExt, TryStreamExt};
 
-use crate::db_service::DbService;
-use crate::handlers::middleware::require_session;
-use crate::helpers::file::{validate_file, upload_file, read_file_data, FILE_VALIDATION_CONFIGS};
-use crate::helpers::validation::{validate_name, validate_description};
+use crate::{
+    db_service::DbService,
+    handlers::middleware::require_session,
+    helpers::file::{validate_file, upload_file, read_file_data, FILE_VALIDATION_CONFIGS},
+    helpers::validation::{validate_name, validate_description},
 
-use crate::models::user::CurrentUserSelect;
-use crate::schema::users;
+    models::user::CurrentUserSelect,
+    schema::users,
+};
 
 #[derive(Deserialize, Validate, TS)]
 #[serde(rename_all = "camelCase")]

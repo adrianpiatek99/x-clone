@@ -9,13 +9,15 @@ use validator::Validate;
 use diesel::prelude::*;
 use std::env;
 
-use crate::db_service::DbService;
-use crate::helpers::token::{generate_token, hash_password};
-use crate::helpers::validation::validate_password;
+use crate::{
+    db_service::DbService,
+    helpers::token::{generate_token, hash_password},
+    helpers::validation::validate_password,
 
-use crate::schema;
+    schema::users::dsl as users,
 
-use crate::models::user::{CurrentUser, CurrentUserSelect};
+    models::user::{CurrentUser, CurrentUserSelect},
+};
 
 #[derive(Deserialize, Validate, TS)]
 #[serde(rename_all = "camelCase")]
@@ -48,10 +50,10 @@ async fn login(db: web::Data<DbService>, form: web::Json<LoginRequest>) -> HttpR
 
     let mut conn = db.get_conn();
 
-    let user_result = schema::users::table
-        .filter(schema::users::email.eq(&form.email_or_screen_name))
-        .or_filter(schema::users::screen_name.eq(&form.email_or_screen_name))
-        .select((CurrentUserSelect::as_select(), schema::users::password))
+    let user_result = users::users
+        .filter(users::email.eq(&form.email_or_screen_name))
+        .or_filter(users::screen_name.eq(&form.email_or_screen_name))
+        .select((CurrentUserSelect::as_select(), users::password))
         .first::<(CurrentUserSelect, String)>(&mut conn);
 
     match user_result {

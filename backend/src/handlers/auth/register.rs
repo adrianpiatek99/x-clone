@@ -5,13 +5,15 @@ use serde_json::json;
 use ts_rs::TS;
 use validator::Validate;
 
-use crate::db_service::DbService;
-use crate::helpers::token::hash_password;
-use crate::helpers::validation::{validate_screen_name, validate_name, validate_email, validate_password};
+use crate::{
+    db_service::DbService,
+    helpers::token::hash_password,
+    helpers::validation::{validate_screen_name, validate_name, validate_email, validate_password},
 
-use crate::schema;
+    schema::users::dsl as users,
 
-use crate::models::user::NewUser;
+    models::user::NewUser,
+};
 
 #[derive(Deserialize, Validate, TS)]
 #[serde(rename_all = "camelCase")]
@@ -44,8 +46,8 @@ async fn register(db: web::Data<DbService>, form: web::Json<RegisterRequest>) ->
     let mut conn = db.get_conn();
 
     // Check if email already exists
-    let email_exists = schema::users::table
-        .filter(schema::users::email.eq(&form.email))
+    let email_exists = users::users
+        .filter(users::email.eq(&form.email))
         .count()
         .get_result::<i64>(&mut conn)
         .unwrap_or(0) > 0;
@@ -57,8 +59,8 @@ async fn register(db: web::Data<DbService>, form: web::Json<RegisterRequest>) ->
     }
 
     // Check if screen name already exists
-    let screen_name_exists = schema::users::table
-        .filter(schema::users::screen_name.eq(&form.screen_name))
+    let screen_name_exists = users::users
+        .filter(users::screen_name.eq(&form.screen_name))
         .count()
         .get_result::<i64>(&mut conn)
         .unwrap_or(0) > 0;
@@ -79,7 +81,7 @@ async fn register(db: web::Data<DbService>, form: web::Json<RegisterRequest>) ->
         ..NewUser::default()
     };
 
-    match diesel::insert_into(schema::users::table)
+    match diesel::insert_into(users::users)
         .values(&new_user)
         .execute(&mut conn)
     {
