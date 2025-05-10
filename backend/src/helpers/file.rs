@@ -99,7 +99,7 @@ pub fn validate_files_count(
     Ok(())
 }
 
-pub async fn upload_file(file_data: &[u8], file_type: &str) -> Result<UploadFileOutput, String> {
+pub async fn upload_file(file_data: &[u8], _file_type: &str) -> Result<UploadFileOutput, String> {
     let client = reqwest::Client::new();
 
     let form = Form::new()

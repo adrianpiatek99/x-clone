@@ -27,7 +27,7 @@ use crate::{
     },
 };
 
-#[derive(Deserialize, Validate, TS)]
+#[derive(Deserialize, TS)]
 #[serde(rename_all = "camelCase")]
 #[allow(dead_code)]
 #[ts(export, export_to = "../../frontend/src/types/post.ts")]
@@ -139,11 +139,10 @@ async fn update_post(
     let mut conn = db.get_conn();
 
     // Check if post exists and get current media
-    let (post_schema, _author) = match posts::posts
-        .inner_join(users::users)
-        .select((PostSchema::as_select(), UserSelect::as_select()))
+    let post_schema = match posts::posts
+        .select(PostSchema::as_select())
         .filter(posts::id.eq(path_post_id))
-        .first::<(PostSchema, UserSelect)>(&mut conn)
+        .first::<PostSchema>(&mut conn)
     {
         Ok(data) => data,
         Err(_) => return HttpResponse::NotFound().json(json!({ "error": "Post not found" })),

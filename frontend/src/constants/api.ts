@@ -1,12 +1,16 @@
 import type { GetUserLikesParams } from '@/app/api/[screenName]/userLikes/route';
 import type { GetUserMediaParams } from '@/app/api/[screenName]/userMedia/route';
 import type { GetUserPostsParams } from '@/app/api/[screenName]/userPosts/route';
-import type { DeletePostParams } from '@/app/api/posts/[id]/delete/route';
 import type { LikePostParams } from '@/app/api/posts/[id]/like/route';
 import type { GetPostLikesParams } from '@/app/api/posts/[id]/likes/route';
 import type { UnlikePostParams } from '@/app/api/posts/[id]/unlike/route';
 import type { GetTrackTimelineParams } from '@/app/api/posts/trackTimeline/route';
-import type { GetGlobalTimelineParams, GetPostDetailsParams, UpdatePostParams } from '@/types/post';
+import type {
+  DeletePostParams,
+  GetGlobalTimelineParams,
+  GetPostDetailsParams,
+  UpdatePostParams,
+} from '@/types/post';
 import type { GetProfileDetailsParams } from '@/types/user';
 import { createUrlWithParams } from '@/utils/urlParams';
 
@@ -23,7 +27,7 @@ export const API_ENDPOINTS = {
       `http://localhost:8080/api/posts/details/${postId}` as const,
     CREATE: 'http://localhost:8080/api/posts/create',
     UPDATE: ({ id }: UpdatePostParams) => `http://localhost:8080/api/posts/update/${id}` as const,
-    DELETE: ({ id }: DeletePostParams) => `/api/posts/${id}/delete` as const,
+    DELETE: ({ id }: DeletePostParams) => `http://localhost:8080/api/posts/delete/${id}` as const,
     GLOBAL_TIMELINE: (params: GetGlobalTimelineParams) =>
       createUrlWithParams('http://localhost:8080/api/posts/globalTimeline', params),
     POST_LIKES: ({ id, ...params }: GetPostLikesParams) =>

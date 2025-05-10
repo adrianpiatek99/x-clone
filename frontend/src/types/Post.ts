@@ -23,6 +23,10 @@ export type CreatePostResponse = {
   updatedAt: Date;
 };
 
+export type DeletePostParams = { id: string };
+
+export type DeletePostResponse = { id: string; message: string };
+
 export type GetGlobalTimelineParams = { cursor: Cursor | null; limit: number | null };
 
 export type GetGlobalTimelineResponse = { posts: Array<Post>; nextCursor: Cursor | null };
