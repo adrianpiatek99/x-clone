@@ -1,20 +1,18 @@
-use actix_web::{get, web, HttpResponse, HttpRequest};
 use actix_web::cookie::{Cookie, SameSite};
-use serde::Serialize;
-use time::Duration;
-use diesel::{QueryDsl, RunQueryDsl, ExpressionMethods};
+use actix_web::{HttpRequest, HttpResponse, get, web};
 use diesel::prelude::*;
+use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
+use serde::Serialize;
 use serde_json::json;
-use ts_rs::TS;
 use std::env;
+use time::Duration;
+use ts_rs::TS;
 
 use crate::{
     db_service::DbService,
-    helpers::token::{decode_token, is_token_valid, extend_token_expiration, generate_token},
-
-    schema::users::dsl as users,
-
+    helpers::token::{decode_token, extend_token_expiration, generate_token, is_token_valid},
     models::user::{CurrentUser, CurrentUserSelect},
+    schema::users::dsl as users,
 };
 
 #[derive(Serialize, TS)]
@@ -22,18 +20,19 @@ use crate::{
 #[ts(export, export_to = "../../frontend/src/types/auth.ts")]
 pub struct GetCurrentUserResponse {
     #[serde(flatten)]
-    pub user: CurrentUser
+    pub user: CurrentUser,
 }
-
 
 #[get("/currentUser")]
 async fn current_user(db: web::Data<DbService>, req: HttpRequest) -> HttpResponse {
     // Check if token cookie exists
     let token = match req.cookie("AUTH_TOKEN") {
         Some(cookie) => cookie.value().to_string(),
-        None => return HttpResponse::Unauthorized().json(json!({
-            "error": "No authentication token provided"
-        })),
+        None => {
+            return HttpResponse::Unauthorized().json(json!({
+                "error": "No authentication token provided"
+            }));
+        }
     };
 
     let jwt_secret = env::var("JWT_SECRET").expect("JWT_SECRET must be set in .env file");
@@ -41,9 +40,11 @@ async fn current_user(db: web::Data<DbService>, req: HttpRequest) -> HttpRespons
     // Decode and validate token
     let mut token_data = match decode_token(&token, &jwt_secret) {
         Ok(data) => data,
-        Err(_) => return HttpResponse::Unauthorized().json(json!({
-            "error": "Invalid token"
-        })),
+        Err(_) => {
+            return HttpResponse::Unauthorized().json(json!({
+                "error": "Invalid token"
+            }));
+        }
     };
 
     if !is_token_valid(&token_data.claims) {
@@ -78,12 +79,10 @@ async fn current_user(db: web::Data<DbService>, req: HttpRequest) -> HttpRespons
                 following_count: 0,
             };
 
-            let response = GetCurrentUserResponse {
-                user: current_user,
-            };
+            let response = GetCurrentUserResponse { user: current_user };
 
             HttpResponse::Ok().cookie(cookie).json(response)
-        },
+        }
         Err(_) => HttpResponse::NotFound().json(json!({
             "error": "User not found"
         })),

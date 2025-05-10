@@ -1,8 +1,8 @@
-use diesel::{Queryable, Selectable, Identifiable, Insertable};
-use serde::Serialize;
 use chrono::{DateTime, Utc};
-use uuid::Uuid;
+use diesel::{Identifiable, Insertable, Queryable, Selectable};
+use serde::Serialize;
 use ts_rs::TS;
+use uuid::Uuid;
 
 use crate::enums::user_role::Role;
 
@@ -12,21 +12,21 @@ use crate::enums::user_role::Role;
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]
 pub struct UserSelect {
-  pub id: Uuid,
-  pub name: String,
-  pub screen_name: String,
-  pub description: String,
-  pub avatar_url: String,
-  pub banner_url: String,
-  pub url: Option<String>,
-  pub role: Role,
-  pub is_verified: bool,
-  #[ts(type = "Date | null")]
-  pub verified_at: Option<DateTime<Utc>>,
-  #[ts(type = "Date")]
-  pub created_at: DateTime<Utc>,
-  #[ts(type = "Date")]
-  pub updated_at: DateTime<Utc>,
+    pub id: Uuid,
+    pub name: String,
+    pub screen_name: String,
+    pub description: String,
+    pub avatar_url: String,
+    pub banner_url: String,
+    pub url: Option<String>,
+    pub role: Role,
+    pub is_verified: bool,
+    #[ts(type = "Date | null")]
+    pub verified_at: Option<DateTime<Utc>>,
+    #[ts(type = "Date")]
+    pub created_at: DateTime<Utc>,
+    #[ts(type = "Date")]
+    pub updated_at: DateTime<Utc>,
 }
 
 // AuthUserSelect is the user select for the auth user
@@ -35,22 +35,22 @@ pub struct UserSelect {
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]
 pub struct CurrentUserSelect {
-  pub id: Uuid,
-  pub name: String,
-  pub screen_name: String,
-  pub email: String,
-  pub description: String,
-  pub avatar_url: String,
-  pub banner_url: String,
-  pub url: Option<String>,
-  pub role: Role,
-  pub is_verified: bool,
-  #[ts(type = "Date | null")]
-  pub verified_at: Option<DateTime<Utc>>,
-  #[ts(type = "Date")]
-  pub created_at: DateTime<Utc>,
-  #[ts(type = "Date")]
-  pub updated_at: DateTime<Utc>,
+    pub id: Uuid,
+    pub name: String,
+    pub screen_name: String,
+    pub email: String,
+    pub description: String,
+    pub avatar_url: String,
+    pub banner_url: String,
+    pub url: Option<String>,
+    pub role: Role,
+    pub is_verified: bool,
+    #[ts(type = "Date | null")]
+    pub verified_at: Option<DateTime<Utc>>,
+    #[ts(type = "Date")]
+    pub created_at: DateTime<Utc>,
+    #[ts(type = "Date")]
+    pub updated_at: DateTime<Utc>,
 }
 
 // NewUser is the new user insert for the auth user
@@ -101,10 +101,9 @@ impl Default for NewUser {
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]
 #[ts(export, export_to = "../../frontend/src/types/user.ts")]
-pub struct BaseUser
-{
-  #[serde(flatten)]
-  pub user: UserSelect,
+pub struct BaseUser {
+    #[serde(flatten)]
+    pub user: UserSelect,
 }
 
 // PublicUser is the public user for the public user
@@ -113,15 +112,14 @@ pub struct BaseUser
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]
 #[ts(export, export_to = "../../frontend/src/types/user.ts")]
-pub struct PublicUser
-{
-  #[serde(flatten)]
-  pub user: UserSelect,
-  pub is_following: bool,
-  #[ts(type = "Number")]
-  pub followers_count: i64,
-  #[ts(type = "Number")]
-  pub following_count: i64,
+pub struct PublicUser {
+    #[serde(flatten)]
+    pub user: UserSelect,
+    pub is_following: bool,
+    #[ts(type = "Number")]
+    pub followers_count: i64,
+    #[ts(type = "Number")]
+    pub following_count: i64,
 }
 
 // AuthUser is the auth user for the auth user
@@ -131,11 +129,11 @@ pub struct PublicUser
 #[serde(rename_all = "camelCase")]
 #[ts(export, export_to = "../../frontend/src/types/user.ts")]
 pub struct CurrentUser {
-  #[serde(flatten)]
-  pub user: CurrentUserSelect,
-  pub is_following: bool,
-  #[ts(type = "Number")]
-  pub followers_count: i64,
-  #[ts(type = "Number")]
-  pub following_count: i64,
+    #[serde(flatten)]
+    pub user: CurrentUserSelect,
+    pub is_following: bool,
+    #[ts(type = "Number")]
+    pub followers_count: i64,
+    #[ts(type = "Number")]
+    pub following_count: i64,
 }

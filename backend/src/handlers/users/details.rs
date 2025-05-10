@@ -1,4 +1,4 @@
-use actix_web::{get, web, HttpRequest, HttpResponse};
+use actix_web::{HttpRequest, HttpResponse, get, web};
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 // use diesel::dsl::count_star;
 use diesel::prelude::*;
@@ -9,17 +9,16 @@ use crate::{
     db_service::DbService,
     handlers::middleware::try_get_session,
 
-    schema::users::dsl as users,
     // schema::posts::dsl as posts;
-
     models::user::{PublicUser, UserSelect},
+    schema::users::dsl as users,
 };
 
 #[derive(Serialize, TS)]
 #[serde(rename_all = "camelCase")]
 #[ts(export, export_to = "../../frontend/src/types/user.ts")]
 pub struct GetProfileDetailsParams {
-    pub screen_name: String
+    pub screen_name: String,
 }
 
 #[derive(Serialize, TS)]
@@ -27,9 +26,8 @@ pub struct GetProfileDetailsParams {
 #[ts(export, export_to = "../../frontend/src/types/user.ts")]
 pub struct GetProfileDetailsResponse {
     #[serde(flatten)]
-    pub user: PublicUser
+    pub user: PublicUser,
 }
-
 
 #[get("/details/{screen_name}")]
 async fn profile_details(
@@ -91,11 +89,7 @@ async fn profile_details(
         following_count: 0,
     };
 
-    let response = GetProfileDetailsResponse {
-        user: public_user,
-    };
-
+    let response = GetProfileDetailsResponse { user: public_user };
 
     HttpResponse::Ok().json(response)
 }
-

@@ -1,12 +1,12 @@
-pub mod global_timeline;
+pub mod create;
 pub mod delete;
 pub mod details;
-pub mod create;
-pub mod track_timeline;
+pub mod global_timeline;
 pub mod like;
+pub mod likes;
+pub mod track_timeline;
 pub mod unlike;
 pub mod update;
-pub mod likes;
 pub mod user;
 
 use actix_web::web;
@@ -20,9 +20,8 @@ pub fn config(cfg: &mut web::ServiceConfig) {
             .service(details::post_details)
             .service(create::create_post)
             // .service(delete::delete_post)
-            .service(update::update_post)
-            // .service(like::like_post)
-            // .service(unlike::unlike_post)
-            // .service(track_timeline::track_timeline)
+            .service(update::update_post), // .service(like::like_post)
+                                           // .service(unlike::unlike_post)
+                                           // .service(track_timeline::track_timeline)
     );
 }

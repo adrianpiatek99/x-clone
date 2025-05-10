@@ -1,8 +1,8 @@
-use actix_web::{get, web, HttpRequest, HttpResponse};
-use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
+use actix_web::{HttpRequest, HttpResponse, get, web};
+use chrono::{DateTime, Utc};
 use diesel::dsl::{count_star, exists, select};
 use diesel::prelude::*;
-use chrono::{DateTime, Utc};
+use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use serde::Serialize;
 use ts_rs::TS;
 use uuid::Uuid;
@@ -10,23 +10,21 @@ use uuid::Uuid;
 use crate::{
     db_service::DbService,
     handlers::middleware::try_get_session,
-
-    schema::posts::dsl as posts,
-    schema::post_media::dsl as post_media,
-    schema::users::dsl as users,
-    schema::post_likes::dsl as post_likes,
-    schema::post_edit_history::dsl as post_edit_history,
-
-    models::post::{PostSchema, Post, PostMedia},
-    models::user::{UserSelect, BaseUser},
+    models::{
+        post::{Post, PostMedia, PostSchema},
+        user::{BaseUser, UserSelect},
+    },
+    schema::{
+        post_edit_history::dsl as post_edit_history, post_likes::dsl as post_likes,
+        post_media::dsl as post_media, posts::dsl as posts, users::dsl as users,
+    },
 };
-
 
 #[derive(Serialize, TS)]
 #[serde(rename_all = "camelCase")]
 #[ts(export, export_to = "../../frontend/src/types/post.ts")]
 pub struct GetPostDetailsParams {
-    pub post_id: String
+    pub post_id: String,
 }
 
 #[derive(Serialize, TS)]
@@ -34,9 +32,8 @@ pub struct GetPostDetailsParams {
 #[ts(export, export_to = "../../frontend/src/types/post.ts")]
 pub struct GetPostDetailsResponse {
     #[serde(flatten)]
-    pub post: Post
+    pub post: Post,
 }
-
 
 #[get("/details/{post_id}")]
 async fn post_details(

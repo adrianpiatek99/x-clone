@@ -1,14 +1,16 @@
-use diesel::pg::Pg;
-use diesel::deserialize::{self, FromSql};
-use diesel::serialize::{self, ToSql, Output, IsNull};
-use diesel::expression::AsExpression;
-use diesel::FromSqlRow;
-use std::io::Write;
 use crate::schema::sql_types::PostMediaType as PostMediaTypeSql;
-use serde::{Serialize, Deserialize};
+use diesel::FromSqlRow;
+use diesel::deserialize::{self, FromSql};
+use diesel::expression::AsExpression;
+use diesel::pg::Pg;
+use diesel::serialize::{self, IsNull, Output, ToSql};
+use serde::{Deserialize, Serialize};
+use std::io::Write;
 use ts_rs::TS;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, AsExpression, FromSqlRow, TS)]
+#[derive(
+    Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, AsExpression, FromSqlRow, TS,
+)]
 #[ts(export, export_to = "../../frontend/src/types/enums.ts")]
 #[diesel(sql_type = PostMediaTypeSql)]
 pub enum PostMediaType {

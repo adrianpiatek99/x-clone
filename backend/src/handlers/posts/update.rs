@@ -1,29 +1,30 @@
 use actix_multipart::Multipart;
-use actix_web::{patch, web, HttpRequest, HttpResponse};
+use actix_web::{HttpRequest, HttpResponse, patch, web};
 use chrono::{DateTime, Utc};
 use diesel::prelude::*;
-use serde::{Deserialize, Serialize};
 use futures::{StreamExt, TryStreamExt};
-use ts_rs::TS;
+use serde::{Deserialize, Serialize};
 use serde_json::json;
-use validator::Validate;
+use ts_rs::TS;
 use uuid::Uuid;
+use validator::Validate;
 
 use crate::{
-  db_service::DbService,
-  handlers::middleware::require_session,
-  helpers::{
-    file::{read_file_data, validate_file, FILE_VALIDATION_CONFIGS, upload_file},
-    validation::validate_post_text,
-  },
-  models::{
-    post::{Post, PostMedia, PostSchema},
-    user::{BaseUser, UserSelect},
-  },
-  schema::{
-    post_edit_history::dsl as post_edit_history_dsl, post_likes::dsl as post_likes_dsl, post_media::dsl as post_media_dsl, posts::dsl as posts_dsl, users::dsl as users_dsl
-  },
-  enums::post_media_type::PostMediaType,
+    db_service::DbService,
+    enums::post_media_type::PostMediaType,
+    handlers::middleware::require_session,
+    helpers::{
+        file::{FILE_VALIDATION_CONFIGS, read_file_data, upload_file, validate_file},
+        validation::validate_post_text,
+    },
+    models::{
+        post::{Post, PostMedia, PostSchema},
+        user::{BaseUser, UserSelect},
+    },
+    schema::{
+        post_edit_history::dsl as post_edit_history, post_likes::dsl as post_likes,
+        post_media::dsl as post_media, posts::dsl as posts, users::dsl as users,
+    },
 };
 
 #[derive(Deserialize, Validate, TS)]
@@ -78,13 +79,14 @@ async fn update_post(
 
     let path_inner = path.into_inner();
 
-    let path_post_id = match Uuid::parse_str(&path_inner) {
-        Ok(uuid) => uuid,
-        Err(e) => return HttpResponse::BadRequest().json(json!({
-            "error": "Invalid post ID format",
-            "details": format!("The provided ID '{}' is not a valid UUID: {}", path_inner, e)
-        })),
-    };
+    let path_post_id =
+        match Uuid::parse_str(&path_inner) {
+            Ok(uuid) => uuid,
+            Err(e) => return HttpResponse::BadRequest().json(json!({
+                "error": "Invalid post ID format",
+                "details": format!("The provided ID '{}' is not a valid UUID: {}", path_inner, e)
+            })),
+        };
 
     let mut text = String::new();
     let mut media_files = Vec::new();
@@ -137,10 +139,10 @@ async fn update_post(
     let mut conn = db.get_conn();
 
     // Check if post exists and get current media
-    let (post_schema, _author) = match posts_dsl::posts
-        .inner_join(users_dsl::users)
+    let (post_schema, _author) = match posts::posts
+        .inner_join(users::users)
         .select((PostSchema::as_select(), UserSelect::as_select()))
-        .filter(posts_dsl::id.eq(path_post_id))
+        .filter(posts::id.eq(path_post_id))
         .first::<(PostSchema, UserSelect)>(&mut conn)
     {
         Ok(data) => data,
@@ -153,8 +155,8 @@ async fn update_post(
     }
 
     // Get current media count
-    let current_media: Vec<PostMedia> = post_media_dsl::post_media
-        .filter(post_media_dsl::post_id.eq(&post_schema.id))
+    let current_media: Vec<PostMedia> = post_media::post_media
+        .filter(post_media::post_id.eq(&post_schema.id))
         .load(&mut conn)
         .unwrap_or_default();
 
@@ -184,12 +186,12 @@ async fn update_post(
     // Start transaction
     let result = conn.transaction::<_, diesel::result::Error, _>(|conn| {
         // Save edit history
-        diesel::insert_into(post_edit_history_dsl::post_edit_history)
+        diesel::insert_into(post_edit_history::post_edit_history)
             .values((
-                post_edit_history_dsl::id.eq(Uuid::new_v4()),
-                post_edit_history_dsl::post_id.eq(&post_schema.id),
-                post_edit_history_dsl::previous_text.eq(&post_schema.text),
-                post_edit_history_dsl::edited_at.eq(Utc::now()),
+                post_edit_history::id.eq(Uuid::new_v4()),
+                post_edit_history::post_id.eq(&post_schema.id),
+                post_edit_history::previous_text.eq(&post_schema.text),
+                post_edit_history::edited_at.eq(Utc::now()),
             ))
             .execute(conn)?;
 
@@ -199,7 +201,7 @@ async fn update_post(
             updated_at: Some(Utc::now()),
         };
 
-        diesel::update(posts_dsl::posts.filter(posts_dsl::id.eq(&post_schema.id)))
+        diesel::update(posts::posts.filter(posts::id.eq(&post_schema.id)))
             .set(changeset)
             .execute(conn)?;
 
@@ -210,7 +212,7 @@ async fn update_post(
                 .filter_map(|id| Uuid::parse_str(id).ok())
                 .collect();
 
-            diesel::delete(post_media_dsl::post_media.filter(post_media_dsl::id.eq_any(&removed_ids)))
+            diesel::delete(post_media::post_media.filter(post_media::id.eq_any(&removed_ids)))
                 .execute(conn)?;
         }
 
@@ -224,16 +226,16 @@ async fn update_post(
                 for (data, mime) in media_files {
                     match upload_file(&data, &mime).await {
                         Ok(file) => {
-                            if let Err(e) = diesel::insert_into(post_media_dsl::post_media)
+                            if let Err(e) = diesel::insert_into(post_media::post_media)
                                 .values((
-                                    post_media_dsl::id.eq(Uuid::new_v4()),
-                                    post_media_dsl::url.eq(file.url),
-                                    post_media_dsl::width.eq(file.width),
-                                    post_media_dsl::height.eq(file.height),
-                                    post_media_dsl::type_.eq(PostMediaType::Photo),
-                                    post_media_dsl::post_id.eq(&post_schema.id),
-                                    post_media_dsl::user_id.eq(session_user_id),
-                                    post_media_dsl::created_at.eq(Utc::now()),
+                                    post_media::id.eq(Uuid::new_v4()),
+                                    post_media::url.eq(file.url),
+                                    post_media::width.eq(file.width),
+                                    post_media::height.eq(file.height),
+                                    post_media::type_.eq(PostMediaType::Photo),
+                                    post_media::post_id.eq(&post_schema.id),
+                                    post_media::user_id.eq(session_user_id),
+                                    post_media::created_at.eq(Utc::now()),
                                 ))
                                 .execute(&mut conn)
                             {
@@ -252,35 +254,36 @@ async fn update_post(
             }
 
             // Fetch updated post with all related data
-            let (updated_post_schema, author) = posts_dsl::posts
-                .inner_join(users_dsl::users)
+            let (updated_post_schema, author) = posts::posts
+                .inner_join(users::users)
                 .select((PostSchema::as_select(), UserSelect::as_select()))
-                .filter(posts_dsl::id.eq(&post_schema.id))
+                .filter(posts::id.eq(&post_schema.id))
                 .first::<(PostSchema, UserSelect)>(&mut conn)
                 .unwrap();
 
-            let media = post_media_dsl::post_media
-                .filter(post_media_dsl::post_id.eq(&updated_post_schema.id))
+            let media = post_media::post_media
+                .filter(post_media::post_id.eq(&updated_post_schema.id))
                 .load::<PostMedia>(&mut conn)
                 .unwrap();
 
-            let likes_count = post_likes_dsl::post_likes
-                .filter(post_likes_dsl::post_id.eq(&updated_post_schema.id))
+            let likes_count = post_likes::post_likes
+                .filter(post_likes::post_id.eq(&updated_post_schema.id))
                 .count()
                 .get_result::<i64>(&mut conn)
                 .unwrap_or(0);
 
-            let is_liked = post_likes_dsl::post_likes
-                .filter(post_likes_dsl::post_id.eq(&updated_post_schema.id))
-                .filter(post_likes_dsl::user_id.eq(&session_user_id))
+            let is_liked = post_likes::post_likes
+                .filter(post_likes::post_id.eq(&updated_post_schema.id))
+                .filter(post_likes::user_id.eq(&session_user_id))
                 .count()
                 .get_result::<i64>(&mut conn)
-                .unwrap_or(0) > 0;
+                .unwrap_or(0)
+                > 0;
 
-            let edited_at = post_edit_history_dsl::post_edit_history
-                .filter(post_edit_history_dsl::post_id.eq(&updated_post_schema.id))
-                .order_by(post_edit_history_dsl::edited_at.desc())
-                .select(post_edit_history_dsl::edited_at)
+            let edited_at = post_edit_history::post_edit_history
+                .filter(post_edit_history::post_id.eq(&updated_post_schema.id))
+                .order_by(post_edit_history::edited_at.desc())
+                .select(post_edit_history::edited_at)
                 .first::<DateTime<Utc>>(&mut conn)
                 .ok();
 

@@ -1,16 +1,14 @@
 mod db_service;
-mod schema;
-mod models;
 mod enums;
 mod handlers;
 mod helpers;
+mod models;
+mod schema;
 
 use actix_cors::Cors;
-use actix_web::{web, App, HttpServer};
+use actix_web::{App, HttpServer, web};
 use db_service::DbService;
 use env_logger::Env;
-
-
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {

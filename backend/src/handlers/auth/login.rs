@@ -1,32 +1,35 @@
-use actix_web::{post, web, HttpResponse};
 use actix_web::cookie::{Cookie, SameSite};
+use actix_web::{HttpResponse, post, web};
+use diesel::prelude::*;
+use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use serde::{Deserialize, Serialize};
-use time::Duration;
-use diesel::{RunQueryDsl, QueryDsl, ExpressionMethods};
 use serde_json::json;
+use std::env;
+use time::Duration;
 use ts_rs::TS;
 use validator::Validate;
-use diesel::prelude::*;
-use std::env;
 
 use crate::{
     db_service::DbService,
-    helpers::token::{generate_token, hash_password},
-    helpers::validation::validate_password,
-
-    schema::users::dsl as users,
-
+    helpers::{
+        token::{generate_token, hash_password},
+        validation::validate_password,
+    },
     models::user::{CurrentUser, CurrentUserSelect},
+    schema::users::dsl as users,
 };
 
 #[derive(Deserialize, Validate, TS)]
 #[serde(rename_all = "camelCase")]
 #[ts(export, export_to = "../../frontend/src/types/auth.ts")]
 pub struct LoginRequest {
-  #[validate(length(max = 100, message = "Email or screen name must be less than 100 characters"))]
-  pub email_or_screen_name: String,
-  #[validate(custom(function = "validate_password"))]
-  pub password: String,
+    #[validate(length(
+        max = 100,
+        message = "Email or screen name must be less than 100 characters"
+    ))]
+    pub email_or_screen_name: String,
+    #[validate(custom(function = "validate_password"))]
+    pub password: String,
 }
 
 #[derive(Serialize, TS)]
@@ -34,9 +37,8 @@ pub struct LoginRequest {
 #[ts(export, export_to = "../../frontend/src/types/auth.ts")]
 pub struct LoginResponse {
     #[serde(flatten)]
-    pub user: CurrentUser
+    pub user: CurrentUser,
 }
-
 
 #[post("/login")]
 async fn login(db: web::Data<DbService>, form: web::Json<LoginRequest>) -> HttpResponse {
@@ -83,17 +85,13 @@ async fn login(db: web::Data<DbService>, form: web::Json<LoginRequest>) -> HttpR
                 following_count: 0,
             };
 
-            let response = LoginResponse {
-                user: current_user,
-            };
+            let response = LoginResponse { user: current_user };
 
             HttpResponse::Ok().cookie(cookie).json(response)
         }
-        Err(e) => {
-            HttpResponse::Unauthorized().json(json!({
-                "error": "Invalid credentials",
-                "details": e.to_string()
-            }))
-        }
+        Err(e) => HttpResponse::Unauthorized().json(json!({
+            "error": "Invalid credentials",
+            "details": e.to_string()
+        })),
     }
 }

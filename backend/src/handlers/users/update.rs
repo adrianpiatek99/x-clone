@@ -1,22 +1,23 @@
-use actix_web::{patch, web, HttpRequest, HttpResponse};
 use actix_multipart::Multipart;
+use actix_web::{HttpRequest, HttpResponse, patch, web};
+use chrono::{DateTime, Utc};
 use diesel::prelude::AsChangeset;
-use diesel::{RunQueryDsl, QueryDsl, ExpressionMethods, SelectableHelper};
+use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl, SelectableHelper};
+use futures::{StreamExt, TryStreamExt};
 use serde::Deserialize;
 use serde_json::json;
 use ts_rs::TS;
 use validator::Validate;
-use chrono::{DateTime, Utc};
-use futures::{StreamExt, TryStreamExt};
 
 use crate::{
     db_service::DbService,
     handlers::middleware::require_session,
-    helpers::file::{validate_file, upload_file, read_file_data, FILE_VALIDATION_CONFIGS},
-    helpers::validation::{validate_name, validate_description},
-
+    helpers::{
+        file::{FILE_VALIDATION_CONFIGS, read_file_data, upload_file, validate_file},
+        validation::{validate_description, validate_name},
+    },
     models::user::CurrentUserSelect,
-    schema::users,
+    schema::users::dsl as users,
 };
 
 #[derive(Deserialize, Validate, TS)]
@@ -42,9 +43,8 @@ pub struct UpdateProfileRequest {
     pub banner_file: Option<String>,
 }
 
-
 #[derive(AsChangeset, Default)]
-#[diesel(table_name = users)]
+#[diesel(table_name = crate::schema::users)]
 struct UserChangeset {
     name: String,
     description: String,
@@ -74,7 +74,6 @@ async fn update_profile(
     let mut avatar_file_type = None;
     let mut banner_file_data = None;
     let mut banner_file_type = None;
-
 
     // Read multipart fields
     while let Ok(Some(mut field)) = payload.try_next().await {
@@ -149,9 +148,11 @@ async fn update_profile(
         }
         match upload_file(&data, &mime).await {
             Ok(file) => avatar_url = Some(file.url),
-            Err(e) => return HttpResponse::InternalServerError().json(json!({
-                "error": format!("Failed to upload avatar: {}", e)
-            })),
+            Err(e) => {
+                return HttpResponse::InternalServerError().json(json!({
+                    "error": format!("Failed to upload avatar: {}", e)
+                }));
+            }
         }
     }
 
@@ -163,9 +164,11 @@ async fn update_profile(
         }
         match upload_file(&data, &mime).await {
             Ok(file) => banner_url = Some(file.url),
-            Err(e) => return HttpResponse::InternalServerError().json(json!({
-                "error": format!("Failed to upload banner: {}", e)
-            })),
+            Err(e) => {
+                return HttpResponse::InternalServerError().json(json!({
+                    "error": format!("Failed to upload banner: {}", e)
+                }));
+            }
         }
     }
 
@@ -185,7 +188,7 @@ async fn update_profile(
 
     let mut conn = db.get_conn();
 
-    match diesel::update(users::table.filter(users::id.eq(session_user_id)))
+    match diesel::update(users::users.filter(users::id.eq(session_user_id)))
         .set(changeset)
         .returning(CurrentUserSelect::as_returning())
         .get_result::<CurrentUserSelect>(&mut conn)

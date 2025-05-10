@@ -1,6 +1,6 @@
 use actix_web::{HttpRequest, HttpResponse};
-use uuid::Uuid;
 use std::env;
+use uuid::Uuid;
 
 use crate::helpers::token::{decode_token, is_token_valid};
 

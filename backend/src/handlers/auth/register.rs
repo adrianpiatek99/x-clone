@@ -1,5 +1,5 @@
-use actix_web::{post, web, HttpResponse, Responder};
-use diesel::{RunQueryDsl, QueryDsl, ExpressionMethods};
+use actix_web::{HttpResponse, Responder, post, web};
+use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use serde::Deserialize;
 use serde_json::json;
 use ts_rs::TS;
@@ -7,31 +7,33 @@ use validator::Validate;
 
 use crate::{
     db_service::DbService,
-    helpers::token::hash_password,
-    helpers::validation::{validate_screen_name, validate_name, validate_email, validate_password},
-
-    schema::users::dsl as users,
-
+    helpers::{
+        token::hash_password,
+        validation::{validate_email, validate_name, validate_password, validate_screen_name},
+    },
     models::user::NewUser,
+    schema::users::dsl as users,
 };
 
 #[derive(Deserialize, Validate, TS)]
 #[serde(rename_all = "camelCase")]
 #[ts(export, export_to = "../../frontend/src/types/auth.ts")]
 pub struct RegisterRequest {
-  #[validate(custom(function = "validate_name"))]
-  pub name: String,
+    #[validate(custom(function = "validate_name"))]
+    pub name: String,
 
-  #[validate(custom(function = "validate_screen_name"))]
-  pub screen_name: String,
+    #[validate(custom(function = "validate_screen_name"))]
+    pub screen_name: String,
 
-  #[validate(email(message = "Invalid email format"), custom(function = "validate_email"))]
-  pub email: String,
+    #[validate(
+        email(message = "Invalid email format"),
+        custom(function = "validate_email")
+    )]
+    pub email: String,
 
-  #[validate(custom(function = "validate_password"))]
-  pub password: String,
+    #[validate(custom(function = "validate_password"))]
+    pub password: String,
 }
-
 
 #[post("/register")]
 async fn register(db: web::Data<DbService>, form: web::Json<RegisterRequest>) -> impl Responder {
@@ -50,7 +52,8 @@ async fn register(db: web::Data<DbService>, form: web::Json<RegisterRequest>) ->
         .filter(users::email.eq(&form.email))
         .count()
         .get_result::<i64>(&mut conn)
-        .unwrap_or(0) > 0;
+        .unwrap_or(0)
+        > 0;
 
     if email_exists {
         return HttpResponse::BadRequest().json(json!({
@@ -63,7 +66,8 @@ async fn register(db: web::Data<DbService>, form: web::Json<RegisterRequest>) ->
         .filter(users::screen_name.eq(&form.screen_name))
         .count()
         .get_result::<i64>(&mut conn)
-        .unwrap_or(0) > 0;
+        .unwrap_or(0)
+        > 0;
 
     if screen_name_exists {
         return HttpResponse::BadRequest().json(json!({
@@ -90,7 +94,6 @@ async fn register(db: web::Data<DbService>, form: web::Json<RegisterRequest>) ->
         })),
         Err(e) => HttpResponse::InternalServerError().json(json!({
             "error": format!("Failed to register user: {}", e)
-        }))
+        })),
     }
 }
-

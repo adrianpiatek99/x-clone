@@ -1,6 +1,6 @@
-use diesel::{r2d2::ConnectionManager, PgConnection};
-use r2d2::Pool;
+use diesel::{PgConnection, r2d2::ConnectionManager};
 use dotenv::dotenv;
+use r2d2::Pool;
 use std::env;
 
 pub type DBPool = Pool<ConnectionManager<PgConnection>>;
@@ -24,8 +24,7 @@ impl DbService {
 pub fn create_db_pool() -> DBPool {
     dotenv().ok();
 
-    let database_url = env::var("DATABASE_URL")
-        .expect("DATABASE_URL must be set in .env file");
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set in .env file");
 
     let manager = ConnectionManager::<PgConnection>::new(database_url);
 
@@ -37,8 +36,8 @@ pub fn create_db_pool() -> DBPool {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use diesel::sql_query;
     use diesel::RunQueryDsl;
+    use diesel::sql_query;
 
     #[test]
     fn test_db_connection() {
@@ -53,5 +52,3 @@ mod tests {
         assert_eq!(result, 1, "Database connection test failed");
     }
 }
-
-

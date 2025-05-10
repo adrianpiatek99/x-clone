@@ -1,5 +1,5 @@
-use actix_web::{post, HttpResponse};
 use actix_web::cookie::{Cookie, SameSite};
+use actix_web::{HttpResponse, post};
 use time::Duration;
 
 #[post("/logout")]

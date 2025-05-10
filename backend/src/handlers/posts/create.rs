@@ -1,28 +1,31 @@
 use actix_multipart::Multipart;
-use actix_web::{post, web, HttpRequest, HttpResponse};
-use diesel::{RunQueryDsl, QueryDsl, ExpressionMethods};
+use actix_web::{HttpRequest, HttpResponse, post, web};
+use chrono::Utc;
 use diesel::prelude::*;
+use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use futures::{StreamExt, TryStreamExt};
 use serde::{Deserialize, Serialize};
 use serde_json::json;
 use ts_rs::TS;
 use uuid::Uuid;
-use chrono::Utc;
 use validator::Validate;
 
 use crate::{
     db_service::DbService,
-    handlers::middleware::require_session,
-    helpers::file::{validate_file, upload_file, read_file_data, FILE_VALIDATION_CONFIGS, validate_files_count},
     enums::post_media_type::PostMediaType,
-    helpers::validation::validate_post_text,
-
-    schema::users::dsl as users,
-    schema::posts::dsl as posts,
-    schema::post_media::dsl as post_media,
-
-    models::post::{Post, PostSchema, PostMedia},
-    models::user::{BaseUser, UserSelect},
+    handlers::middleware::require_session,
+    helpers::{
+        file::{
+            FILE_VALIDATION_CONFIGS, read_file_data, upload_file, validate_file,
+            validate_files_count,
+        },
+        validation::validate_post_text,
+    },
+    models::{
+        post::{Post, PostMedia, PostSchema},
+        user::{BaseUser, UserSelect},
+    },
+    schema::{post_media::dsl as post_media, posts::dsl as posts, users::dsl as users},
 };
 
 #[derive(Deserialize, Validate, TS)]
@@ -44,7 +47,6 @@ pub struct CreatePostResponse {
     #[serde(flatten)]
     pub post: Post,
 }
-
 
 #[post("/create")]
 async fn create_post(
@@ -195,7 +197,7 @@ async fn create_post(
             likes_count: 0,
             replies_count: 0,
             edited_at: None,
-        }
+        },
     };
 
     HttpResponse::Created().json(response)

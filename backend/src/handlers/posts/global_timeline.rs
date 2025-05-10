@@ -1,27 +1,26 @@
-use actix_web::{get, web, HttpResponse, HttpRequest};
-use diesel::{QueryDsl, RunQueryDsl, ExpressionMethods};
-use diesel::prelude::*;
-use diesel::dsl::count;
+use actix_web::{HttpRequest, HttpResponse, get, web};
 use chrono::{DateTime, Utc};
+use diesel::dsl::count;
+use diesel::prelude::*;
+use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use serde::{Deserialize, Serialize};
+use std::collections::{HashMap, HashSet};
 use ts_rs::TS;
 use uuid::Uuid;
-use std::collections::{HashMap, HashSet};
 
 use crate::{
     db_service::DbService,
     handlers::middleware::try_get_session,
-
-    schema::posts::dsl as posts,
-    schema::post_media::dsl as post_media,
-    schema::users::dsl as users,
-    schema::post_likes::dsl as post_likes,
-    schema::post_edit_history::dsl as post_edit_history,
-    schema::post_reply::dsl as post_replies,
-
-    models::post::*,
-    models::global::Cursor,
-    models::user::{BaseUser, UserSelect},
+    models::{
+        global::Cursor,
+        post::{Post, PostMedia, PostSchema},
+        user::{BaseUser, UserSelect},
+    },
+    schema::{
+        post_edit_history::dsl as post_edit_history, post_likes::dsl as post_likes,
+        post_media::dsl as post_media, post_reply::dsl as post_replies, posts::dsl as posts,
+        users::dsl as users,
+    },
 };
 
 #[derive(Deserialize, TS)]
@@ -42,7 +41,6 @@ pub struct GetGlobalTimelineResponse {
     pub next_cursor: Option<Cursor>,
 }
 
-
 #[get("/globalTimeline")]
 async fn global_timeline(
     db: web::Data<DbService>,
@@ -54,18 +52,18 @@ async fn global_timeline(
 
     let limit = query.limit.unwrap_or(20);
     let take = limit + 1;
-    let cursor = query.cursor.as_ref().and_then(|cursor_str| {
-        serde_json::from_str::<Cursor>(cursor_str).ok()
-    });
+    let cursor = query
+        .cursor
+        .as_ref()
+        .and_then(|cursor_str| serde_json::from_str::<Cursor>(cursor_str).ok());
 
     // Query posts with join on author
-    let mut query = posts::posts
-        .inner_join(users::users)
-        .into_boxed();
+    let mut query = posts::posts.inner_join(users::users).into_boxed();
 
     if let Some(c) = cursor {
         query = query.filter(
-            posts::created_at.lt(c.created_at)
+            posts::created_at
+                .lt(c.created_at)
                 .or(posts::created_at.eq(c.created_at).and(posts::id.lt(c.id))),
         );
     }
@@ -96,7 +94,10 @@ async fn global_timeline(
     };
 
     // Take only the requested number of posts
-    let posts_list = posts_list.into_iter().take(limit as usize).collect::<Vec<_>>();
+    let posts_list = posts_list
+        .into_iter()
+        .take(limit as usize)
+        .collect::<Vec<_>>();
     let post_ids: Vec<Uuid> = posts_list.iter().map(|(post, _)| post.id).collect();
 
     // Execute all related queries in a single transaction
@@ -144,7 +145,10 @@ async fn global_timeline(
             .filter(post_edit_history::post_id.eq_any(&post_ids))
             .distinct_on(post_edit_history::post_id)
             .select((post_edit_history::post_id, post_edit_history::edited_at))
-            .order_by((post_edit_history::post_id, post_edit_history::edited_at.desc()))
+            .order_by((
+                post_edit_history::post_id,
+                post_edit_history::edited_at.desc(),
+            ))
             .load::<(Uuid, DateTime<Utc>)>(conn)?;
 
         Result::<_, diesel::result::Error>::Ok((
@@ -152,7 +156,7 @@ async fn global_timeline(
             likes_counts,
             replies_counts,
             user_likes,
-            edit_history
+            edit_history,
         ))
     }) {
         Ok(data) => data,
@@ -170,26 +174,29 @@ async fn global_timeline(
     let edit_by_post: HashMap<_, _> = edit_history.into_iter().collect();
 
     // Final response
-    let response_posts = posts_list.into_iter().map(|(post, author)| {
-        let post_id = post.id;
-        let all_media = media_by_post.get(&post_id).cloned().unwrap_or_default();
-        let is_author = session_user_id.map_or(false, |id| id == author.id);
-        let is_liked = user_likes_set.contains(&post_id);
-        let likes_count = *likes_count_map.get(&post_id).unwrap_or(&0);
-        let replies_count = *replies_count_map.get(&post_id).unwrap_or(&0);
-        let edited_at = edit_by_post.get(&post_id).copied();
+    let response_posts = posts_list
+        .into_iter()
+        .map(|(post, author)| {
+            let post_id = post.id;
+            let all_media = media_by_post.get(&post_id).cloned().unwrap_or_default();
+            let is_author = session_user_id.map_or(false, |id| id == author.id);
+            let is_liked = user_likes_set.contains(&post_id);
+            let likes_count = *likes_count_map.get(&post_id).unwrap_or(&0);
+            let replies_count = *replies_count_map.get(&post_id).unwrap_or(&0);
+            let edited_at = edit_by_post.get(&post_id).copied();
 
-        Post {
-            post,
-            author: BaseUser { user: author },
-            media: all_media,
-            is_author,
-            is_liked,
-            likes_count,
-            replies_count,
-            edited_at,
-        }
-    }).collect();
+            Post {
+                post,
+                author: BaseUser { user: author },
+                media: all_media,
+                is_author,
+                is_liked,
+                likes_count,
+                replies_count,
+                edited_at,
+            }
+        })
+        .collect();
 
     let response = GetGlobalTimelineResponse {
         posts: response_posts,
@@ -198,4 +205,3 @@ async fn global_timeline(
 
     HttpResponse::Ok().json(response)
 }
-

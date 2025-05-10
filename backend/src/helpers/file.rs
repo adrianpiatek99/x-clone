@@ -1,4 +1,4 @@
-use futures::{StreamExt};
+use futures::StreamExt;
 use reqwest::multipart::{Form, Part};
 use serde::Serialize;
 
@@ -8,7 +8,13 @@ const UPLOAD_PRESET: &str = "maf4fhgi";
 
 const IMAGE_FILE_TYPES: [&str; 4] = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
 // const GIF_FILE_TYPES: [&str; 1] = ["image/gif"];
-const BANNER_FILE_TYPES: [&str; 5] = ["image/jpeg", "image/png", "image/webp", "image/jpg", "image/gif"];
+const BANNER_FILE_TYPES: [&str; 5] = [
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+    "image/jpg",
+    "image/gif",
+];
 
 #[derive(Debug, Serialize)]
 pub struct UploadFileOutput {
@@ -54,7 +60,11 @@ pub const FILE_VALIDATION_CONFIGS: [(&str, FileValidationConfig); 3] = [
     ),
 ];
 
-pub fn validate_file(file_data: &[u8], file_type: &str, config: &FileValidationConfig) -> Result<(), String> {
+pub fn validate_file(
+    file_data: &[u8],
+    file_type: &str,
+    config: &FileValidationConfig,
+) -> Result<(), String> {
     let max_size = config.max_size_mb * 1024 * 1024;
 
     if !config.accept.contains(&file_type) {
@@ -68,20 +78,21 @@ pub fn validate_file(file_data: &[u8], file_type: &str, config: &FileValidationC
     if file_data.len() > max_size as usize {
         return Err(format!(
             "Invalid {} size. File must be under {}MB",
-            config.field_name,
-            config.max_size_mb
+            config.field_name, config.max_size_mb
         ));
     }
 
     Ok(())
 }
 
-pub fn validate_files_count(files_count: usize, config: &FileValidationConfig) -> Result<(), String> {
+pub fn validate_files_count(
+    files_count: usize,
+    config: &FileValidationConfig,
+) -> Result<(), String> {
     if files_count > config.limit as usize {
         return Err(format!(
             "Maximum {} {} files allowed",
-            config.limit,
-            config.field_name
+            config.limit, config.field_name
         ));
     }
 
@@ -118,7 +129,9 @@ pub async fn upload_file(file_data: &[u8], file_type: &str) -> Result<UploadFile
     })
 }
 
-pub async fn read_file_data(mut field: actix_multipart::Field) -> Result<(Vec<u8>, String), String> {
+pub async fn read_file_data(
+    mut field: actix_multipart::Field,
+) -> Result<(Vec<u8>, String), String> {
     let mut file_data = Vec::new();
     let file_type = field.content_type().unwrap().to_string();
 
