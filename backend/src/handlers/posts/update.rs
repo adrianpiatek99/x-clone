@@ -4,7 +4,6 @@ use chrono::{DateTime, Utc};
 use diesel::prelude::*;
 use futures::{StreamExt, TryStreamExt};
 use serde::{Deserialize, Serialize};
-use serde_json::json;
 use ts_rs::TS;
 use uuid::Uuid;
 use validator::Validate;
@@ -79,14 +78,10 @@ async fn update_post(
 
     let path_inner = path.into_inner();
 
-    let path_post_id =
-        match Uuid::parse_str(&path_inner) {
-            Ok(uuid) => uuid,
-            Err(e) => return HttpResponse::BadRequest().json(json!({
-                "error": "Invalid post ID format",
-                "details": format!("The provided ID '{}' is not a valid UUID: {}", path_inner, e)
-            })),
-        };
+    let path_post_id = match Uuid::parse_str(&path_inner) {
+        Ok(uuid) => uuid,
+        Err(_e) => return HttpResponse::BadRequest().json("Invalid post ID format"),
+    };
 
     let mut text = String::new();
     let mut media_files = Vec::new();
@@ -130,10 +125,7 @@ async fn update_post(
     };
 
     if let Err(errors) = form.validate() {
-        return HttpResponse::BadRequest().json(json!({
-            "error": "Validation failed",
-            "details": errors
-        }));
+        return HttpResponse::BadRequest().json(format!("Validation failed: {}", errors));
     }
 
     let mut conn = db.get_conn();
@@ -145,12 +137,12 @@ async fn update_post(
         .first::<PostSchema>(&mut conn)
     {
         Ok(data) => data,
-        Err(_) => return HttpResponse::NotFound().json(json!({ "error": "Post not found" })),
+        Err(_) => return HttpResponse::NotFound().json("Post not found"),
     };
 
     // Check authorization
     if post_schema.author_id != session_user_id {
-        return HttpResponse::Forbidden().json(json!({ "error": "Unauthorized" }));
+        return HttpResponse::Forbidden().json("Unauthorized");
     }
 
     // Get current media count
@@ -164,21 +156,19 @@ async fn update_post(
     let total_media_count = remaining_media_count + media_files.len();
 
     if total_media_count > FILE_VALIDATION_CONFIGS[2].1.limit as usize {
-        return HttpResponse::BadRequest().json(json!({
-            "error": format!(
-                "Maximum {} media files allowed per post. You currently have {} files, removing {} and adding {} would exceed the limit.",
-                FILE_VALIDATION_CONFIGS[2].1.limit,
-                current_media.len(),
-                removed_media_ids.len(),
-                media_files.len()
-            )
-        }));
+        return HttpResponse::BadRequest().json(format!(
+            "Maximum {} media files allowed per post. You currently have {} files, removing {} and adding {} would exceed the limit.",
+            FILE_VALIDATION_CONFIGS[2].1.limit,
+            current_media.len(),
+            removed_media_ids.len(),
+            media_files.len()
+        ));
     }
 
     // Validate media files
     for (data, mime) in &media_files {
         if let Err(e) = validate_file(data, mime, &FILE_VALIDATION_CONFIGS[2].1) {
-            return HttpResponse::BadRequest().json(json!({ "error": e }));
+            return HttpResponse::BadRequest().json(e);
         }
     }
 
@@ -238,15 +228,13 @@ async fn update_post(
                                 ))
                                 .execute(&mut conn)
                             {
-                                return HttpResponse::InternalServerError().json(json!({
-                                    "error": format!("Failed to save media: {}", e)
-                                }));
+                                return HttpResponse::InternalServerError()
+                                    .json(format!("Failed to save media: {}", e));
                             }
                         }
                         Err(e) => {
-                            return HttpResponse::InternalServerError().json(json!({
-                                "error": format!("Failed to upload media: {}", e)
-                            }));
+                            return HttpResponse::InternalServerError()
+                                .json(format!("Failed to upload media: {}", e));
                         }
                     }
                 }
@@ -301,8 +289,6 @@ async fn update_post(
 
             HttpResponse::Ok().json(response)
         }
-        Err(e) => HttpResponse::InternalServerError().json(json!({
-            "error": format!("Failed to update post: {}", e)
-        })),
+        Err(e) => HttpResponse::InternalServerError().json(format!("Failed to update post: {}", e)),
     }
 }

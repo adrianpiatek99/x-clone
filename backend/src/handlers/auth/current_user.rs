@@ -3,7 +3,6 @@ use actix_web::{HttpRequest, HttpResponse, get, web};
 use diesel::prelude::*;
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use serde::Serialize;
-use serde_json::json;
 use std::env;
 use time::Duration;
 use ts_rs::TS;
@@ -29,9 +28,7 @@ async fn current_user(db: web::Data<DbService>, req: HttpRequest) -> HttpRespons
     let token = match req.cookie("AUTH_TOKEN") {
         Some(cookie) => cookie.value().to_string(),
         None => {
-            return HttpResponse::Unauthorized().json(json!({
-                "error": "No authentication token provided"
-            }));
+            return HttpResponse::Unauthorized().json("No authentication token provided");
         }
     };
 
@@ -41,16 +38,12 @@ async fn current_user(db: web::Data<DbService>, req: HttpRequest) -> HttpRespons
     let mut token_data = match decode_token(&token, &jwt_secret) {
         Ok(data) => data,
         Err(_) => {
-            return HttpResponse::Unauthorized().json(json!({
-                "error": "Invalid token"
-            }));
+            return HttpResponse::Unauthorized().json("Invalid token");
         }
     };
 
     if !is_token_valid(&token_data.claims) {
-        return HttpResponse::Unauthorized().json(json!({
-            "error": "Token expired"
-        }));
+        return HttpResponse::Unauthorized().json("Token expired");
     }
 
     // Extend token expiration time
@@ -83,8 +76,6 @@ async fn current_user(db: web::Data<DbService>, req: HttpRequest) -> HttpRespons
 
             HttpResponse::Ok().cookie(cookie).json(response)
         }
-        Err(_) => HttpResponse::NotFound().json(json!({
-            "error": "User not found"
-        })),
+        Err(_) => HttpResponse::NotFound().json("User not found"),
     }
 }

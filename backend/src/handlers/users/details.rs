@@ -50,10 +50,7 @@ async fn profile_details(
         Err(diesel::result::Error::NotFound) => {
             return HttpResponse::NotFound().body("User not found");
         }
-        Err(e) => {
-            eprintln!("Database error: {:?}", e);
-            return HttpResponse::InternalServerError().body("Internal server error");
-        }
+        Err(_e) => return HttpResponse::InternalServerError().body("Internal server error"),
     };
 
     // Get followers count

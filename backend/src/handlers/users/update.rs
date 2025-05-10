@@ -5,7 +5,6 @@ use diesel::prelude::AsChangeset;
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl, SelectableHelper};
 use futures::{StreamExt, TryStreamExt};
 use serde::Deserialize;
-use serde_json::json;
 use ts_rs::TS;
 use validator::Validate;
 
@@ -134,24 +133,20 @@ async fn update_profile(
     };
 
     if let Err(errors) = form.validate() {
-        return HttpResponse::BadRequest().json(json!({
-            "error": "Validation failed",
-            "details": errors
-        }));
+        return HttpResponse::BadRequest().json(format!("Validation failed: {}", errors));
     }
 
     // Upload avatar
     let mut avatar_url = None;
     if let (Some(data), Some(mime)) = (avatar_file_data, avatar_file_type) {
         if let Err(e) = validate_file(&data, &mime, &FILE_VALIDATION_CONFIGS[0].1) {
-            return HttpResponse::BadRequest().json(json!({ "error": e }));
+            return HttpResponse::BadRequest().json(e);
         }
         match upload_file(&data, &mime).await {
             Ok(file) => avatar_url = Some(file.url),
             Err(e) => {
-                return HttpResponse::InternalServerError().json(json!({
-                    "error": format!("Failed to upload avatar: {}", e)
-                }));
+                return HttpResponse::InternalServerError()
+                    .json(format!("Failed to upload avatar: {}", e));
             }
         }
     }
@@ -160,14 +155,13 @@ async fn update_profile(
     let mut banner_url = None;
     if let (Some(data), Some(mime)) = (banner_file_data, banner_file_type) {
         if let Err(e) = validate_file(&data, &mime, &FILE_VALIDATION_CONFIGS[1].1) {
-            return HttpResponse::BadRequest().json(json!({ "error": e }));
+            return HttpResponse::BadRequest().json(e);
         }
         match upload_file(&data, &mime).await {
             Ok(file) => banner_url = Some(file.url),
             Err(e) => {
-                return HttpResponse::InternalServerError().json(json!({
-                    "error": format!("Failed to upload banner: {}", e)
-                }));
+                return HttpResponse::InternalServerError()
+                    .json(format!("Failed to upload banner: {}", e));
             }
         }
     }
@@ -194,8 +188,8 @@ async fn update_profile(
         .get_result::<CurrentUserSelect>(&mut conn)
     {
         Ok(user) => HttpResponse::Ok().json(user),
-        Err(e) => HttpResponse::InternalServerError().json(json!({
-            "error": format!("Failed to update profile: {}", e)
-        })),
+        Err(e) => {
+            HttpResponse::InternalServerError().json(format!("Failed to update profile: {}", e))
+        }
     }
 }

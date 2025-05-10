@@ -3,7 +3,6 @@ use actix_web::{HttpResponse, post, web};
 use diesel::prelude::*;
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use serde::{Deserialize, Serialize};
-use serde_json::json;
 use std::env;
 use time::Duration;
 use ts_rs::TS;
@@ -44,10 +43,7 @@ pub struct LoginResponse {
 async fn login(db: web::Data<DbService>, form: web::Json<LoginRequest>) -> HttpResponse {
     // Validate the form
     if let Err(errors) = form.validate() {
-        return HttpResponse::BadRequest().json(json!({
-            "error": "Validation failed",
-            "details": errors
-        }));
+        return HttpResponse::BadRequest().json(format!("Validation failed: {}", errors));
     }
 
     let mut conn = db.get_conn();
@@ -63,10 +59,7 @@ async fn login(db: web::Data<DbService>, form: web::Json<LoginRequest>) -> HttpR
             let hashed_password = hash_password(form.password.clone());
 
             if hashed_password != stored_password {
-                return HttpResponse::Unauthorized().json(json!({
-                    "error": "Invalid credentials",
-                    "details": "Incorrect password"
-                }));
+                return HttpResponse::Unauthorized().json("Incorrect password");
             }
 
             let jwt_secret = env::var("JWT_SECRET").expect("JWT_SECRET must be set in .env file");
@@ -89,9 +82,6 @@ async fn login(db: web::Data<DbService>, form: web::Json<LoginRequest>) -> HttpR
 
             HttpResponse::Ok().cookie(cookie).json(response)
         }
-        Err(e) => HttpResponse::Unauthorized().json(json!({
-            "error": "Invalid credentials",
-            "details": e.to_string()
-        })),
+        Err(_e) => HttpResponse::Unauthorized().json("Invalid credentials"),
     }
 }

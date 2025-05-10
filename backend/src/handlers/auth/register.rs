@@ -1,7 +1,6 @@
 use actix_web::{HttpResponse, Responder, post, web};
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use serde::Deserialize;
-use serde_json::json;
 use ts_rs::TS;
 use validator::Validate;
 
@@ -39,10 +38,7 @@ pub struct RegisterRequest {
 async fn register(db: web::Data<DbService>, form: web::Json<RegisterRequest>) -> impl Responder {
     // Validate the form
     if let Err(errors) = form.validate() {
-        return HttpResponse::BadRequest().json(json!({
-            "error": "Validation failed",
-            "details": errors
-        }));
+        return HttpResponse::BadRequest().json(format!("Validation failed: {}", errors));
     }
 
     let mut conn = db.get_conn();
@@ -56,9 +52,7 @@ async fn register(db: web::Data<DbService>, form: web::Json<RegisterRequest>) ->
         > 0;
 
     if email_exists {
-        return HttpResponse::BadRequest().json(json!({
-            "error": "We cannot create account"
-        }));
+        return HttpResponse::BadRequest().json("We cannot create account");
     }
 
     // Check if screen name already exists
@@ -70,9 +64,7 @@ async fn register(db: web::Data<DbService>, form: web::Json<RegisterRequest>) ->
         > 0;
 
     if screen_name_exists {
-        return HttpResponse::BadRequest().json(json!({
-            "error": "Screen name already taken"
-        }));
+        return HttpResponse::BadRequest().json("Screen name already taken");
     }
 
     let hashed_password = hash_password(form.password.clone());
@@ -89,11 +81,9 @@ async fn register(db: web::Data<DbService>, form: web::Json<RegisterRequest>) ->
         .values(&new_user)
         .execute(&mut conn)
     {
-        Ok(_) => HttpResponse::Ok().json(json!({
-            "message": "User registered successfully"
-        })),
-        Err(e) => HttpResponse::InternalServerError().json(json!({
-            "error": format!("Failed to register user: {}", e)
-        })),
+        Ok(_) => HttpResponse::Ok().json("User registered successfully"),
+        Err(e) => {
+            HttpResponse::InternalServerError().json(format!("Failed to register user: {}", e))
+        }
     }
 }

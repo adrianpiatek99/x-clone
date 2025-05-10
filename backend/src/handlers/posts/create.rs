@@ -5,7 +5,6 @@ use diesel::prelude::*;
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use futures::{StreamExt, TryStreamExt};
 use serde::{Deserialize, Serialize};
-use serde_json::json;
 use ts_rs::TS;
 use uuid::Uuid;
 use validator::Validate;
@@ -93,21 +92,18 @@ async fn create_post(
     };
 
     if let Err(errors) = form.validate() {
-        return HttpResponse::BadRequest().json(json!({
-            "error": "Validation failed",
-            "details": errors
-        }));
+        return HttpResponse::BadRequest().json(format!("Validation failed: {}", errors));
     }
 
     // Validate media files count
     if let Err(e) = validate_files_count(media_files.len(), &FILE_VALIDATION_CONFIGS[2].1) {
-        return HttpResponse::BadRequest().json(json!({ "error": e }));
+        return HttpResponse::BadRequest().json(e);
     }
 
     // Validate media files
     for (data, mime) in &media_files {
         if let Err(e) = validate_file(data, mime, &FILE_VALIDATION_CONFIGS[2].1) {
-            return HttpResponse::BadRequest().json(json!({ "error": e }));
+            return HttpResponse::BadRequest().json(e);
         }
     }
 
@@ -128,9 +124,7 @@ async fn create_post(
     {
         Ok(post) => post,
         Err(e) => {
-            return HttpResponse::InternalServerError().json(json!({
-                "error": format!("Failed to create post: {}", e)
-            }));
+            return HttpResponse::InternalServerError().json("Failed to create post");
         }
     };
 
@@ -152,15 +146,11 @@ async fn create_post(
                         ))
                         .execute(&mut conn)
                     {
-                        return HttpResponse::InternalServerError().json(json!({
-                            "error": format!("Failed to save media: {}", e)
-                        }));
+                        return HttpResponse::InternalServerError().json("Failed to save media");
                     }
                 }
                 Err(e) => {
-                    return HttpResponse::InternalServerError().json(json!({
-                        "error": format!("Failed to upload media: {}", e)
-                    }));
+                    return HttpResponse::InternalServerError().json("Failed to upload media");
                 }
             }
         }
@@ -174,10 +164,8 @@ async fn create_post(
         .first::<(PostSchema, UserSelect)>(&mut conn)
     {
         Ok(data) => data,
-        Err(e) => {
-            return HttpResponse::InternalServerError().json(json!({
-                "error": format!("Failed to fetch created post: {}", e)
-            }));
+        Err(_e) => {
+            return HttpResponse::InternalServerError().json("Failed to fetch created post");
         }
     };
 
