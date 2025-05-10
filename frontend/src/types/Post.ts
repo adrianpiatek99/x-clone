@@ -73,3 +73,24 @@ export type PostMedia = {
   userId: string;
   createdAt: Date;
 };
+
+export type UpdatePostParams = { id: string };
+
+export type UpdatePostRequest = { text: string; removedMediaIds: string[] | null; media: File[] };
+
+export type UpdatePostResponse = {
+  author: BaseUser;
+  media: Array<PostMedia>;
+  isAuthor: boolean;
+  isLiked: boolean;
+  likesCount: number;
+  repliesCount: number;
+  editedAt: Date | null;
+  id: string;
+  text: string;
+  authorId: string;
+  hashtags: Array<string | null> | null;
+  conversationControl: ConversationControl;
+  createdAt: Date;
+  updatedAt: Date;
+};
