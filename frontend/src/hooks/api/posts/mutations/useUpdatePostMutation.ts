@@ -1,5 +1,3 @@
-import type { GetUserLikesResponse } from '@/app/api/[screenName]/userLikes/route';
-import type { GetUserPostsResponse } from '@/app/api/[screenName]/userPosts/route';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
@@ -7,6 +5,8 @@ import { useToasts } from '@/hooks/useToasts';
 import type {
   GetGlobalTimelineResponse,
   GetPostDetailsResponse,
+  GetUserLikesResponse,
+  GetUserPostsResponse,
   UpdatePostParams,
   UpdatePostRequest,
   UpdatePostResponse,

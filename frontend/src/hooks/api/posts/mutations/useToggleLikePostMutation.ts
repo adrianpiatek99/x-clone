@@ -1,5 +1,3 @@
-import type { GetUserLikesResponse } from '@/app/api/[screenName]/userLikes/route';
-import type { GetUserPostsResponse } from '@/app/api/[screenName]/userPosts/route';
 import type { LikePostParams, LikePostResponse } from '@/app/api/posts/[id]/like/route';
 import type { UnlikePostParams, UnlikePostResponse } from '@/app/api/posts/[id]/unlike/route';
 import { useAuth } from '@/components/context/AuthContext';
@@ -8,7 +6,12 @@ import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
 import { useToasts } from '@/hooks/useToasts';
 import { useGlobalStore } from '@/stores/global';
-import type { GetGlobalTimelineResponse, GetPostDetailsResponse } from '@/types/post';
+import type {
+  GetGlobalTimelineResponse,
+  GetPostDetailsResponse,
+  GetUserLikesResponse,
+  GetUserPostsResponse,
+} from '@/types/post';
 import { updateItemInCache, updateItemInInfiniteQueryCache } from '@/utils/queryCache';
 import { useMutation } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';

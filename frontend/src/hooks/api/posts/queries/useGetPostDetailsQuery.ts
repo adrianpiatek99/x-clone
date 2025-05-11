@@ -1,8 +1,11 @@
-import type { GetUserPostsResponse } from '@/app/api/[screenName]/userPosts/route';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
-import type { GetGlobalTimelineResponse, GetPostDetailsResponse } from '@/types/post';
+import type {
+  GetGlobalTimelineResponse,
+  GetPostDetailsResponse,
+  GetUserPostsResponse,
+} from '@/types/post';
 import type { InfiniteQueryData } from '@/utils/queryCache';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';

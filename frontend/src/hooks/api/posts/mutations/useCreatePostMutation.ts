@@ -1,4 +1,3 @@
-import type { GetUserPostsResponse } from '@/app/api/[screenName]/userPosts/route';
 import { useAuth } from '@/components/context/AuthContext';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
@@ -8,6 +7,7 @@ import type {
   CreatePostRequest,
   CreatePostResponse,
   GetGlobalTimelineResponse,
+  GetUserPostsResponse,
 } from '@/types/post';
 import { createFormData } from '@/utils/formData';
 import {
