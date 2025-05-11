@@ -1,9 +1,9 @@
 import React from 'react';
 
 import Avatar from '@/components/atoms/Avatar';
-import type { UserPublic } from '@/db/schema';
+import type { PublicUser } from '@/types/user';
 
-type Props = Pick<UserPublic, 'avatarUrl'> & {
+type Props = Pick<PublicUser, 'avatarUrl'> & {
   isLoading: boolean;
 };
 

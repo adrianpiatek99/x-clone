@@ -2,9 +2,9 @@ import React, { memo } from 'react';
 
 import ShimmerImage from '@/components/atoms/ShimmerImage';
 import Skeleton from '@/components/atoms/Skeleton';
-import type { UserPublic } from '@/db/schema';
+import type { PublicUser } from '@/types/user';
 
-type Props = Pick<UserPublic, 'bannerUrl'> & {
+type Props = Pick<PublicUser, 'bannerUrl'> & {
   isLoading: boolean;
 };
 

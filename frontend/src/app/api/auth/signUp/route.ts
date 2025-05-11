@@ -1,45 +1,50 @@
-import { db } from '@/db/db';
-import { usersTable } from '@/db/schema';
-import { ApiError, handleApiError } from '@/db/utils/api';
-import type { SignUpValues } from '@/schema/auth';
-import { signUpSchema } from '@/schema/auth';
-import { hashSync } from 'bcryptjs';
-import { eq, ilike, or } from 'drizzle-orm';
-import { type NextRequest, NextResponse } from 'next/server';
+/**
+ * Backend has been rewritten to Rust.
+ * See: https://github.com/adrianpiatek99/x-clone/issues/67
+ */
 
-export type SignUpRequest = SignUpValues;
+// import { db } from '@/db/db';
+// import { usersTable } from '@/db/schema';
+// import { ApiError, handleApiError } from '@/db/utils/api';
+// import type { SignUpValues } from '@/schema/auth';
+// import { signUpSchema } from '@/schema/auth';
+// import { hashSync } from 'bcryptjs';
+// import { eq, ilike, or } from 'drizzle-orm';
+// import { type NextRequest, NextResponse } from 'next/server';
 
-export const POST = async (request: NextRequest): Promise<NextResponse<object>> => {
-  try {
-    const body: SignUpRequest = await request.json();
+// export type SignUpRequest = SignUpValues;
 
-    const { screenName, name, email, password } = signUpSchema().parse(body);
+// export const POST = async (request: NextRequest): Promise<NextResponse<object>> => {
+//   try {
+//     const body: SignUpRequest = await request.json();
 
-    const existingUser = await db
-      .select()
-      .from(usersTable)
-      .where(or(ilike(usersTable.screenName, screenName), eq(usersTable.email, email)))
-      .then((res) => res[0]);
+//     const { screenName, name, email, password } = signUpSchema().parse(body);
 
-    if (existingUser) {
-      if (existingUser.screenName.toLowerCase() === screenName.toLowerCase()) {
-        throw new ApiError('Username is already in use', 409);
-      }
+//     const existingUser = await db
+//       .select()
+//       .from(usersTable)
+//       .where(or(ilike(usersTable.screenName, screenName), eq(usersTable.email, email)))
+//       .then((res) => res[0]);
 
-      throw new ApiError('We cannot create account', 409);
-    }
+//     if (existingUser) {
+//       if (existingUser.screenName.toLowerCase() === screenName.toLowerCase()) {
+//         throw new ApiError('Username is already in use', 409);
+//       }
 
-    const hashedPassword = hashSync(password, 12);
+//       throw new ApiError('We cannot create account', 409);
+//     }
 
-    await db.insert(usersTable).values({
-      screenName,
-      name,
-      email,
-      password: hashedPassword,
-    });
+//     const hashedPassword = hashSync(password, 12);
 
-    return NextResponse.json({});
-  } catch (error) {
-    return handleApiError(error);
-  }
-};
+//     await db.insert(usersTable).values({
+//       screenName,
+//       name,
+//       email,
+//       password: hashedPassword,
+//     });
+
+//     return NextResponse.json({});
+//   } catch (error) {
+//     return handleApiError(error);
+//   }
+// };

@@ -5,7 +5,7 @@ import Dropdown, { DropdownItem } from '@/components/atoms/Dropdown';
 import Icon from '@/components/atoms/Icon';
 import IconButton from '@/components/atoms/IconButton';
 import ShimmerImage from '@/components/atoms/ShimmerImage';
-import { fileValidationConfigs } from '@/db/utils/validateFile';
+import { FILE_VALIDATION_CONFIGS } from '@/constants/validation';
 import { useFileImagePicker } from '@/hooks/useFileImagePicker';
 import { useToasts } from '@/hooks/useToasts';
 import { useEditProfileStore } from '@/stores/editProfile';
@@ -28,7 +28,7 @@ export const EditProfileModalBanner = memo(() => {
     onError: (error) => {
       addToast('error', error, { duration: 6000 });
     },
-    options: fileValidationConfigs.banner,
+    options: FILE_VALIDATION_CONFIGS.BANNER,
   });
 
   const handleRemoveBanner = () => updateBannerFile(null);
@@ -58,7 +58,7 @@ export const EditProfileModalBanner = memo(() => {
       <input
         ref={filePickerRef}
         onChange={handleFileChange}
-        accept={fileValidationConfigs.banner.accept.toString()}
+        accept={FILE_VALIDATION_CONFIGS.BANNER.ACCEPT.toString()}
         aria-label={t('actions.addPhoto')}
         type='file'
         hidden

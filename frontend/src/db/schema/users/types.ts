@@ -1,46 +1,51 @@
-import { pgEnum } from 'drizzle-orm/pg-core';
+/**
+ * Backend has been rewritten to Rust.
+ * See: https://github.com/adrianpiatek99/x-clone/issues/67
+ */
 
-import { enumToPgEnum } from '../helpers';
-import type { usersTable } from './table';
+// import { pgEnum } from 'drizzle-orm/pg-core';
 
-// Enums
-export enum UserRole {
-  ADMIN = 'ADMIN',
-  MODERATOR = 'MODERATOR',
-  USER = 'USER',
-}
+// import { enumToPgEnum } from '../helpers';
+// import type { usersTable } from './table';
 
-export const UserRoleEnum = pgEnum('role', enumToPgEnum(UserRole));
+// // Enums
+// export enum UserRole {
+//   ADMIN = 'ADMIN',
+//   MODERATOR = 'MODERATOR',
+//   USER = 'USER',
+// }
 
-// Types
-type InterUser = typeof usersTable.$inferSelect;
+// export const UserRoleEnum = pgEnum('role', enumToPgEnum(UserRole));
 
-export type User = Omit<InterUser, 'password'> & {
-  isFollowing: boolean;
-  followersCount: number;
-  followingCount: number;
-  postsCount: number;
-};
+// // Types
+// type InterUser = typeof usersTable.$inferSelect;
 
-export type UserPublic = Pick<
-  User,
-  | 'id'
-  | 'name'
-  | 'screenName'
-  | 'description'
-  | 'avatarUrl'
-  | 'bannerUrl'
-  | 'url'
-  | 'role'
-  | 'isVerified'
-  | 'verifiedAt'
-  | 'createdAt'
-  | 'updatedAt'
->;
+// export type User = Omit<InterUser, 'password'> & {
+//   isFollowing: boolean;
+//   followersCount: number;
+//   followingCount: number;
+//   postsCount: number;
+// };
 
-export type UserProfile = UserPublic & {
-  isFollowing: boolean;
-  followersCount: number;
-  followingCount: number;
-  postsCount: number;
-};
+// export type UserPublic = Pick<
+//   User,
+//   | 'id'
+//   | 'name'
+//   | 'screenName'
+//   | 'description'
+//   | 'avatarUrl'
+//   | 'bannerUrl'
+//   | 'url'
+//   | 'role'
+//   | 'isVerified'
+//   | 'verifiedAt'
+//   | 'createdAt'
+//   | 'updatedAt'
+// >;
+
+// export type UserProfile = UserPublic & {
+//   isFollowing: boolean;
+//   followersCount: number;
+//   followingCount: number;
+//   postsCount: number;
+// };

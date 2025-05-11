@@ -1,7 +1,6 @@
 import { useAuth } from '@/components/context/AuthContext';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { apiRequest } from '@/db/utils/api';
 import { useToasts } from '@/hooks/useToasts';
 import { useGlobalStore } from '@/stores/global';
 import type {
@@ -14,6 +13,7 @@ import type {
   UnlikePostParams,
   UnlikePostResponse,
 } from '@/types/post';
+import { apiRequest } from '@/utils/api';
 import { updateItemInCache, updateItemInInfiniteQueryCache } from '@/utils/queryCache';
 import { useMutation } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';

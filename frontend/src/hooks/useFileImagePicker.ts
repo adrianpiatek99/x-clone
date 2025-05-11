@@ -1,15 +1,14 @@
 import type { RefObject } from 'react';
 import { type ChangeEvent, useCallback, useRef, useState } from 'react';
 
+import type { FileValidationOptions } from '@/constants/validation';
 import { useTranslations } from 'next-intl';
-
-type Options = { maxSizeMb: number; limit?: number; accept: readonly string[] };
 
 type Props = {
   onSuccess?: (validFiles: File[]) => void;
   onError?: (error: string) => void;
   resetOnSuccess?: boolean;
-  options: Options;
+  options: Omit<FileValidationOptions, 'FILE_NAME'>;
 };
 
 type FileImagePickerResult = {
@@ -27,7 +26,7 @@ export const useFileImagePicker = ({
   resetOnSuccess = true,
   options,
 }: Props): FileImagePickerResult => {
-  const { maxSizeMb, limit = 1, accept } = options;
+  const { MAX_SIZE_MB, LIMIT = 1, ACCEPT } = options;
   const t = useTranslations();
   const [files, setFiles] = useState<File[]>([]);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -59,22 +58,24 @@ export const useFileImagePicker = ({
         const validFiles: File[] = [];
         let currentError: string | undefined;
 
-        if (filesArray.length > limit) {
+        if (filesArray.length > LIMIT) {
           currentError =
-            limit > 1 ? t('errors.file.image.limit', { limit }) : t('errors.file.image.onePhoto');
+            LIMIT > 1
+              ? t('errors.file.image.limit', { limit: LIMIT })
+              : t('errors.file.image.onePhoto');
         } else {
           for (const file of filesArray) {
             if (file) {
               const { type, size } = file;
               const sizeInMB = Number((size / (1024 * 1024)).toFixed(2));
 
-              if (!accept.some((fileType) => fileType === type)) {
+              if (!ACCEPT.some((fileType) => fileType === type)) {
                 currentError = t('errors.file.invalidType');
                 break;
               }
 
-              if (sizeInMB >= maxSizeMb) {
-                currentError = t('errors.file.image.maxSize', { maxSize: maxSizeMb });
+              if (sizeInMB >= MAX_SIZE_MB) {
+                currentError = t('errors.file.image.maxSize', { maxSize: MAX_SIZE_MB });
                 break;
               }
 
@@ -101,7 +102,7 @@ export const useFileImagePicker = ({
         onError?.(errorMessage);
       }
     },
-    [t, limit, maxSizeMb, accept, resetInput, reset, onSuccess, onError, resetOnSuccess]
+    [t, LIMIT, MAX_SIZE_MB, ACCEPT, resetInput, reset, onSuccess, onError, resetOnSuccess]
   );
 
   return {

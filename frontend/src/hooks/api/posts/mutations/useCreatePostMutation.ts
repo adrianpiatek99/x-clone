@@ -1,7 +1,6 @@
 import { useAuth } from '@/components/context/AuthContext';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { apiRequest } from '@/db/utils/api';
 import { useToasts } from '@/hooks/useToasts';
 import type {
   CreatePostRequest,
@@ -9,6 +8,7 @@ import type {
   GetGlobalTimelineResponse,
   GetUserPostsResponse,
 } from '@/types/post';
+import { apiRequest } from '@/utils/api';
 import { createFormData } from '@/utils/formData';
 import {
   addItemToInfiniteQueryCache,

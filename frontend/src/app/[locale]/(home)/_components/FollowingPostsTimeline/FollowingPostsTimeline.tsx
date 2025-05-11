@@ -2,8 +2,8 @@ import React from 'react';
 
 import FlatList from '@/components/molecules/FlatList';
 import PostCard from '@/components/molecules/PostCard';
-import type { Post } from '@/db/schema';
 import { VirtualScrollKeys } from '@/stores/virtualScroll';
+import type { Post } from '@/types/post';
 import { useTranslations } from 'next-intl';
 
 const FollowingPostsTimeline = () => {

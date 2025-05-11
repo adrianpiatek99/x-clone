@@ -1,7 +1,7 @@
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { apiRequest } from '@/db/utils/api';
 import type { GetUserMediaParams, GetUserMediaResponse } from '@/types/post';
+import { apiRequest } from '@/utils/api';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 type Props = {

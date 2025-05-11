@@ -4,8 +4,8 @@ import Icon from '@/components/atoms/Icon';
 import Tooltip from '@/components/atoms/Tooltip';
 import Typography from '@/components/atoms/Typography';
 import { MID_DOT } from '@/constants/strings';
-import type { Post } from '@/db/schema';
 import { useTime } from '@/hooks/useTime';
+import type { Post } from '@/types/post';
 import { useTranslations } from 'next-intl';
 
 type Props = Pick<Post, 'editedAt'>;

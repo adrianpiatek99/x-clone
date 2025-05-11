@@ -1,3 +1,5 @@
+import { gifFileTypes, imageFileTypes } from './fileTypes';
+
 type Validation = Record<
   string,
   Partial<{
@@ -11,7 +13,7 @@ type Validation = Record<
 const postValidation = {
   MEDIA: {
     LIMIT: 4,
-    MAX_SIZE_MB: 2.5,
+    MAX_SIZE_MB: 3,
   },
   TEXT: {
     MAX: 500,
@@ -52,3 +54,30 @@ export const VALIDATION = {
   POST: postValidation,
   ACCOUNT: accountValidation,
 } as const;
+
+// File validation options
+export type FileValidationOptions = {
+  FILE_NAME: string;
+  MAX_SIZE_MB: number;
+  ACCEPT: readonly string[];
+  LIMIT?: number;
+};
+
+export const FILE_VALIDATION_CONFIGS = {
+  AVATAR: {
+    FILE_NAME: 'avatar',
+    MAX_SIZE_MB: VALIDATION.ACCOUNT.AVATAR.MAX_SIZE_MB,
+    ACCEPT: imageFileTypes,
+  },
+  BANNER: {
+    FILE_NAME: 'banner',
+    MAX_SIZE_MB: VALIDATION.ACCOUNT.BANNER.MAX_SIZE_MB,
+    ACCEPT: [...imageFileTypes, ...gifFileTypes],
+  },
+  MEDIA: {
+    FILE_NAME: 'media',
+    MAX_SIZE_MB: VALIDATION.POST.MEDIA.MAX_SIZE_MB,
+    ACCEPT: imageFileTypes,
+    LIMIT: VALIDATION.POST.MEDIA.LIMIT,
+  },
+} satisfies Record<string, FileValidationOptions>;

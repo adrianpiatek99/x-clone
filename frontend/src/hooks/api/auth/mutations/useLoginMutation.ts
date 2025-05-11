@@ -1,8 +1,8 @@
 import { useAuth } from '@/components/context/AuthContext';
 import { API_ENDPOINTS } from '@/constants/api';
-import { apiRequest } from '@/db/utils/api';
 import { useToasts } from '@/hooks/useToasts';
 import type { LoginRequest, LoginResponse } from '@/types/auth';
+import { apiRequest } from '@/utils/api';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 

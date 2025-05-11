@@ -1,6 +1,5 @@
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { apiRequest } from '@/db/utils/api';
 import { useToasts } from '@/hooks/useToasts';
 import type {
   GetGlobalTimelineResponse,
@@ -11,6 +10,7 @@ import type {
   UpdatePostRequest,
   UpdatePostResponse,
 } from '@/types/post';
+import { apiRequest } from '@/utils/api';
 import { createFormData } from '@/utils/formData';
 import { updateItemInCache, updateItemInInfiniteQueryCache } from '@/utils/queryCache';
 import { useMutation, useQueryClient } from '@tanstack/react-query';

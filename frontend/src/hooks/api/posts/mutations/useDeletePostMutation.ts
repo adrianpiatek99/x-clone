@@ -1,6 +1,5 @@
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { apiRequest } from '@/db/utils/api';
 import { useToasts } from '@/hooks/useToasts';
 import type {
   DeletePostParams,
@@ -9,6 +8,7 @@ import type {
   GetUserLikesResponse,
   GetUserPostsResponse,
 } from '@/types/post';
+import { apiRequest } from '@/utils/api';
 import {
   deleteItemFromInfiniteQueryCache,
   updateTotalCountInInfiniteQueryCache,

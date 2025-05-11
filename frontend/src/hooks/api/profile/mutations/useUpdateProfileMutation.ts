@@ -1,9 +1,9 @@
 import { useAuth } from '@/components/context/AuthContext';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
-import { apiRequest } from '@/db/utils/api';
 import { useToasts } from '@/hooks/useToasts';
 import type { UpdateProfileRequest } from '@/types/user';
+import { apiRequest } from '@/utils/api';
 import { createFormData } from '@/utils/formData';
 import { reloadSession } from '@/utils/session';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
