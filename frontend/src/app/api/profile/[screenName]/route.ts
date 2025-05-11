@@ -1,43 +1,48 @@
-import { db } from '@/db/db';
-import type { UserProfile } from '@/db/schema';
-import { userPublicColumns, usersTable } from '@/db/schema';
-import { postsTable } from '@/db/schema';
-import { handleApiError } from '@/db/utils/api';
-import { eq } from 'drizzle-orm';
-import { type NextRequest, NextResponse } from 'next/server';
+/**
+ * Backend has been rewritten to Rust.
+ * See: https://github.com/adrianpiatek99/x-clone/issues/67
+ */
 
-export type GetUserByScreenNameParams = {
-  screenName: string;
-};
+// import { db } from '@/db/db';
+// import type { UserProfile } from '@/db/schema';
+// import { userPublicColumns, usersTable } from '@/db/schema';
+// import { postsTable } from '@/db/schema';
+// import { handleApiError } from '@/db/utils/api';
+// import { eq } from 'drizzle-orm';
+// import { type NextRequest, NextResponse } from 'next/server';
 
-export type GetUserByScreenNameResponse = UserProfile;
+// export type GetUserByScreenNameParams = {
+//   screenName: string;
+// };
 
-export const GET = async (
-  _request: NextRequest,
-  { params }: { params: Promise<GetUserByScreenNameParams> }
-) => {
-  try {
-    const { screenName } = await params;
+// export type GetUserByScreenNameResponse = UserProfile;
 
-    const user = await db.query.usersTable.findFirst({
-      where: eq(usersTable.screenName, screenName),
-      columns: userPublicColumns,
-    });
+// export const GET = async (
+//   _request: NextRequest,
+//   { params }: { params: Promise<GetUserByScreenNameParams> }
+// ) => {
+//   try {
+//     const { screenName } = await params;
 
-    if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
-    }
+//     const user = await db.query.usersTable.findFirst({
+//       where: eq(usersTable.screenName, screenName),
+//       columns: userPublicColumns,
+//     });
 
-    const postsCount = await db.$count(postsTable, eq(postsTable.authorId, user.id));
+//     if (!user) {
+//       return NextResponse.json({ error: 'User not found' }, { status: 404 });
+//     }
 
-    return NextResponse.json<GetUserByScreenNameResponse>({
-      ...user,
-      isFollowing: false,
-      followersCount: 0,
-      followingCount: 0,
-      postsCount,
-    });
-  } catch (error) {
-    return handleApiError(error);
-  }
-};
+//     const postsCount = await db.$count(postsTable, eq(postsTable.authorId, user.id));
+
+//     return NextResponse.json<GetUserByScreenNameResponse>({
+//       ...user,
+//       isFollowing: false,
+//       followersCount: 0,
+//       followingCount: 0,
+//       postsCount,
+//     });
+//   } catch (error) {
+//     return handleApiError(error);
+//   }
+// };

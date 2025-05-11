@@ -39,7 +39,7 @@ const PostMediaGridCard = memo(({ post, className, ...props }: PostMediaGridCard
     >
       <ShimmerImage src={media[0].url} alt={media[0].url} fill className='object-cover' />
       {media.length > 1 && (
-        <div className='bg-accent-1/80 absolute right-2 top-2 -mr-0.5 -mt-0.5 flex items-center gap-1 rounded-full px-2 py-0.5 shadow-lg'>
+        <div className='absolute right-2 top-2 -mr-0.5 -mt-0.5 flex items-center gap-1 rounded-full bg-accent-1/80 px-2 py-0.5 shadow-lg'>
           <Icon name='CarouselIcon' className='size-[20px]' />
           <Typography size='s'>{media.length}</Typography>
         </div>
