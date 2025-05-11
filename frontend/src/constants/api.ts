@@ -1,9 +1,9 @@
 import type { GetPostLikesParams } from '@/app/api/posts/[id]/likes/route';
-import type { GetTrackTimelineParams } from '@/app/api/posts/trackTimeline/route';
 import type {
   DeletePostParams,
   GetGlobalTimelineParams,
   GetPostDetailsParams,
+  GetTrackTimelineParams,
   GetUserLikesParams,
   GetUserMediaParams,
   GetUserPostsParams,
@@ -22,7 +22,6 @@ export const API_ENDPOINTS = {
     REGISTER: 'http://localhost:8080/api/auth/register',
   },
   POSTS: {
-    LIST: '/api/posts',
     DETAILS: ({ postId }: GetPostDetailsParams) =>
       `http://localhost:8080/api/posts/details/${postId}` as const,
     CREATE: 'http://localhost:8080/api/posts/create',
@@ -36,7 +35,7 @@ export const API_ENDPOINTS = {
     UNLIKE: ({ postId }: UnlikePostParams) =>
       `http://localhost:8080/api/posts/unlike/${postId}` as const,
     TRACK_TIMELINE: ({ latestPostId }: GetTrackTimelineParams) =>
-      createUrlWithParams('/api/posts/trackTimeline', { latestPostId }),
+      createUrlWithParams('http://localhost:8080/api/posts/trackTimeline', { latestPostId }),
     USER_POSTS: ({ screenName, ...params }: GetUserPostsParams) =>
       createUrlWithParams(`http://localhost:8080/api/posts/userPosts/${screenName}`, params),
     USER_LIKES: ({ screenName, ...params }: GetUserLikesParams) =>

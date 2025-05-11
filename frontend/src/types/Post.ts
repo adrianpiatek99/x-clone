@@ -50,6 +50,10 @@ export type GetPostDetailsResponse = {
   updatedAt: Date;
 };
 
+export type GetTrackTimelineParams = { latestPostId: string };
+
+export type GetTrackTimelineResponse = { newPostsCount: number };
+
 export type GetUserLikesParams = {
   screenName: string;
   cursor: Cursor | null;

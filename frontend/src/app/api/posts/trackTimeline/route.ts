@@ -1,52 +1,57 @@
-import { db } from '@/db/db';
-import { postsTable } from '@/db/schema/posts/table';
-import { ApiError, handleApiError } from '@/db/utils/api';
-import { eq, gt } from 'drizzle-orm';
-import type { NextRequest } from 'next/server';
-import { NextResponse } from 'next/server';
-import { z } from 'zod';
+/**
+ * Backend has been rewritten to Rust.
+ * See: https://github.com/adrianpiatek99/x-clone/issues/67
+ */
 
-const schema = z.object({
-  latestPostId: z.string().uuid('Invalid post ID format'),
-});
+// import { db } from '@/db/db';
+// import { postsTable } from '@/db/schema/posts/table';
+// import { ApiError, handleApiError } from '@/db/utils/api';
+// import { eq, gt } from 'drizzle-orm';
+// import type { NextRequest } from 'next/server';
+// import { NextResponse } from 'next/server';
+// import { z } from 'zod';
 
-export type GetTrackTimelineParams = z.infer<typeof schema>;
+// const schema = z.object({
+//   latestPostId: z.string().uuid('Invalid post ID format'),
+// });
 
-export type GetTrackTimelineResponse = {
-  newPostsCount: number;
-};
+// export type GetTrackTimelineParams = z.infer<typeof schema>;
 
-export const GET = async (request: NextRequest) => {
-  try {
-    const { searchParams } = new URL(request.url);
-    const params = Object.fromEntries(searchParams.entries());
+// export type GetTrackTimelineResponse = {
+//   newPostsCount: number;
+// };
 
-    const { latestPostId } = schema.parse(params);
+// export const GET = async (request: NextRequest) => {
+//   try {
+//     const { searchParams } = new URL(request.url);
+//     const params = Object.fromEntries(searchParams.entries());
 
-    const referencePost = await db.query.postsTable.findFirst({
-      where: eq(postsTable.id, latestPostId),
-      columns: {
-        createdAt: true,
-      },
-    });
+//     const { latestPostId } = schema.parse(params);
 
-    if (!referencePost) {
-      throw new ApiError('Post not found', 404);
-    }
+//     const referencePost = await db.query.postsTable.findFirst({
+//       where: eq(postsTable.id, latestPostId),
+//       columns: {
+//         createdAt: true,
+//       },
+//     });
 
-    const newPosts = await db.query.postsTable.findMany({
-      where: gt(postsTable.createdAt, referencePost.createdAt),
-      columns: {
-        id: true,
-      },
-    });
+//     if (!referencePost) {
+//       throw new ApiError('Post not found', 404);
+//     }
 
-    const filteredNewPosts = newPosts.filter((post) => post.id !== latestPostId);
+//     const newPosts = await db.query.postsTable.findMany({
+//       where: gt(postsTable.createdAt, referencePost.createdAt),
+//       columns: {
+//         id: true,
+//       },
+//     });
 
-    return NextResponse.json<GetTrackTimelineResponse>({
-      newPostsCount: filteredNewPosts.length,
-    });
-  } catch (error) {
-    return handleApiError(error);
-  }
-};
+//     const filteredNewPosts = newPosts.filter((post) => post.id !== latestPostId);
+
+//     return NextResponse.json<GetTrackTimelineResponse>({
+//       newPostsCount: filteredNewPosts.length,
+//     });
+//   } catch (error) {
+//     return handleApiError(error);
+//   }
+// };
