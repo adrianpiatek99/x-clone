@@ -50,6 +50,18 @@ export type GetPostDetailsResponse = {
   updatedAt: Date;
 };
 
+export type GetUserMediaParams = {
+  screenName: string;
+  cursor: Cursor | null;
+  limit: number | null;
+};
+
+export type GetUserMediaResponse = {
+  posts: Array<Post>;
+  nextCursor: Cursor | null;
+  totalCount: number;
+};
+
 export type GetUserPostsParams = {
   screenName: string;
   cursor: Cursor | null;
