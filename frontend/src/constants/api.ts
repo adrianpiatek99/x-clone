@@ -1,4 +1,3 @@
-import type { GetUserLikesParams } from '@/app/api/[screenName]/userLikes/route';
 import type { LikePostParams } from '@/app/api/posts/[id]/like/route';
 import type { GetPostLikesParams } from '@/app/api/posts/[id]/likes/route';
 import type { UnlikePostParams } from '@/app/api/posts/[id]/unlike/route';
@@ -7,6 +6,7 @@ import type {
   DeletePostParams,
   GetGlobalTimelineParams,
   GetPostDetailsParams,
+  GetUserLikesParams,
   GetUserMediaParams,
   GetUserPostsParams,
   UpdatePostParams,
@@ -39,7 +39,7 @@ export const API_ENDPOINTS = {
     USER_POSTS: ({ screenName, ...params }: GetUserPostsParams) =>
       createUrlWithParams(`http://localhost:8080/api/posts/userPosts/${screenName}`, params),
     USER_LIKES: ({ screenName, ...params }: GetUserLikesParams) =>
-      createUrlWithParams(`/api/${screenName}/userLikes`, params),
+      createUrlWithParams(`http://localhost:8080/api/posts/userLikes/${screenName}`, params),
     USER_MEDIA: ({ screenName, ...params }: GetUserMediaParams) =>
       createUrlWithParams(`http://localhost:8080/api/posts/userMedia/${screenName}`, params),
   },

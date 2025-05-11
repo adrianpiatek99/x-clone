@@ -1,10 +1,7 @@
-import type {
-  GetUserLikesParams,
-  GetUserLikesResponse,
-} from '@/app/api/[screenName]/userLikes/route';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
+import type { GetUserLikesParams, GetUserLikesResponse } from '@/types/post';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 type Props = {

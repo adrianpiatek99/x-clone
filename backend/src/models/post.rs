@@ -45,6 +45,20 @@ pub struct PostMedia {
     pub created_at: DateTime<Utc>,
 }
 
+#[derive(Queryable, Selectable, Identifiable, Serialize, Clone, TS, Debug)]
+#[diesel(table_name = crate::schema::post_likes)]
+#[diesel(belongs_to(Post))]
+#[diesel(check_for_backend(diesel::pg::Pg))]
+#[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/post.ts")]
+pub struct PostLike {
+    pub id: Uuid,
+    pub post_id: Uuid,
+    pub user_id: Uuid,
+    #[ts(type = "Date")]
+    pub created_at: DateTime<Utc>,
+}
+
 #[derive(Queryable, Serialize, TS, Debug)]
 #[diesel(table_name = crate::schema::posts)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
