@@ -1,23 +1,22 @@
-import type { GetPostLikesParams, GetPostLikesResponse } from '@/app/api/posts/[id]/likes/route';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
+import type { GetPostLikesParams, GetPostLikesResponse } from '@/types/post';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 type Props = {
-  id: string;
   limit?: number;
   enabled?: boolean;
-};
+} & Pick<GetPostLikesParams, 'postId'>;
 
-export const useGetPostLikesQuery = ({ id, limit = 20, enabled = true }: Props) => {
+export const useGetPostLikesQuery = ({ postId, limit = 20, enabled = true }: Props) => {
   const result = useInfiniteQuery<GetPostLikesResponse>({
-    queryKey: QUERY_KEYS.POSTS.POST_LIKES(id, limit),
+    queryKey: QUERY_KEYS.POSTS.POST_LIKES(postId, limit),
     queryFn: async ({ pageParam }) =>
       apiRequest(
         'GET',
         API_ENDPOINTS.POSTS.POST_LIKES({
-          id,
+          postId,
           cursor: pageParam as GetPostLikesParams['cursor'],
           limit,
         })

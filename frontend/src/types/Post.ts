@@ -50,6 +50,13 @@ export type GetPostDetailsResponse = {
   updatedAt: Date;
 };
 
+export type GetPostLikesParams = { postId: string; cursor: Cursor | null; limit: number | null };
+
+export type GetPostLikesResponse = {
+  postLikes: Array<PostLikeWithUser>;
+  nextCursor: Cursor | null;
+};
+
 export type GetTrackTimelineParams = { latestPostId: string };
 
 export type GetTrackTimelineResponse = { newPostsCount: number };
@@ -112,6 +119,14 @@ export type Post = {
 };
 
 export type PostLike = { id: string; postId: string; userId: string; createdAt: Date };
+
+export type PostLikeWithUser = {
+  user: BaseUser;
+  id: string;
+  postId: string;
+  userId: string;
+  createdAt: Date;
+};
 
 export type PostMedia = {
   id: string;

@@ -5,13 +5,13 @@ import Avatar from '@/components/atoms/Avatar';
 import Box from '@/components/atoms/Box';
 import Typography from '@/components/atoms/Typography';
 import { ROUTES } from '@/constants/routes';
-import type { UserPublic } from '@/db/schema';
+import type { BaseUser } from '@/types/user';
 
 import ArticleCard from '../ArticleCard';
 import UserDisplayName from '../UserDisplayName';
 
 type Props = ComponentPropsWithRef<'div'> & {
-  user: UserPublic;
+  user: BaseUser;
   ref?: RefCallback<HTMLDivElement>;
 };
 

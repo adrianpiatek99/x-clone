@@ -14,7 +14,7 @@ import type { PostParams } from '../../(post)/layout';
 export default function PostLikesPage() {
   const { id } = useParams<PostParams>();
   const t = useTranslations();
-  const { flatData, ...restResult } = useGetPostLikesQuery({ id });
+  const { flatData, ...restResult } = useGetPostLikesQuery({ postId: id });
 
   return (
     <FlatList

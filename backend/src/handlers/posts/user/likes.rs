@@ -56,7 +56,7 @@ pub struct GetUserLikesResponse {
 }
 
 #[get("/userLikes/{screen_name}")]
-async fn user_likes(
+async fn get_user_likes(
     db: web::Data<DbService>,
     req: HttpRequest,
     path: web::Path<String>,

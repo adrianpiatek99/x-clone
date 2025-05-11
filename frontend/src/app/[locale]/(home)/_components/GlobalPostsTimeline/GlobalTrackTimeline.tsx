@@ -1,14 +1,11 @@
 import { useCallback, useEffect } from 'react';
 
-import type {
-  GetTrackTimelineParams,
-  GetTrackTimelineResponse,
-} from '@/app/api/posts/trackTimeline/route';
 import Icon from '@/components/atoms/Icon';
 import PillNotify from '@/components/molecules/PillNotify';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { useGetTrackTimelineQuery } from '@/hooks/api/posts/queries';
 import { useHomeStore } from '@/stores/home';
+import type { GetTrackTimelineParams, GetTrackTimelineResponse } from '@/types/post';
 import { formatNumber } from '@/utils/formatNumber';
 import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';

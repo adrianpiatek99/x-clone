@@ -2,7 +2,6 @@ use actix_web::{HttpRequest, HttpResponse, get, web};
 use chrono::{DateTime, Utc};
 use diesel::dsl::count;
 use diesel::prelude::*;
-use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use serde::{Deserialize, Serialize};
 use std::collections::{HashMap, HashSet};
 use ts_rs::TS;

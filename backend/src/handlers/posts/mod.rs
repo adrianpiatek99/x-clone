@@ -25,7 +25,8 @@ pub fn config(cfg: &mut web::ServiceConfig) {
             .service(unlike::unlike_post)
             .service(user::posts::user_posts)
             .service(user::media::user_media)
-            .service(user::likes::user_likes)
+            .service(user::likes::get_user_likes)
+            .service(likes::get_post_likes)
             .service(track_timeline::track_timeline),
     );
 }
