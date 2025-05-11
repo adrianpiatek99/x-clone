@@ -1,10 +1,7 @@
-import type {
-  GetUserPostsParams,
-  GetUserPostsResponse,
-} from '@/app/api/[screenName]/userPosts/route';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { apiRequest } from '@/db/utils/api';
+import type { GetUserPostsParams, GetUserPostsResponse } from '@/types/post';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 type Props = {

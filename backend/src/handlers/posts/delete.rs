@@ -41,7 +41,7 @@ async fn delete_post(
 
     let path_post_id = match Uuid::parse_str(&path_inner) {
         Ok(uuid) => uuid,
-        Err(e) => return HttpResponse::BadRequest().json("Invalid post ID format"),
+        Err(_e) => return HttpResponse::BadRequest().json("Invalid post ID format"),
     };
 
     let mut conn = db.get_conn();
