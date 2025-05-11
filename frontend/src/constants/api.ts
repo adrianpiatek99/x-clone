@@ -1,6 +1,4 @@
-import type { LikePostParams } from '@/app/api/posts/[id]/like/route';
 import type { GetPostLikesParams } from '@/app/api/posts/[id]/likes/route';
-import type { UnlikePostParams } from '@/app/api/posts/[id]/unlike/route';
 import type { GetTrackTimelineParams } from '@/app/api/posts/trackTimeline/route';
 import type {
   DeletePostParams,
@@ -9,6 +7,8 @@ import type {
   GetUserLikesParams,
   GetUserMediaParams,
   GetUserPostsParams,
+  LikePostParams,
+  UnlikePostParams,
   UpdatePostParams,
 } from '@/types/post';
 import type { GetProfileDetailsParams } from '@/types/user';
@@ -32,8 +32,9 @@ export const API_ENDPOINTS = {
       createUrlWithParams('http://localhost:8080/api/posts/globalTimeline', params),
     POST_LIKES: ({ id, ...params }: GetPostLikesParams) =>
       createUrlWithParams(`/api/posts/${id}/likes`, params),
-    LIKE: ({ id }: LikePostParams) => `/api/posts/${id}/like` as const,
-    UNLIKE: ({ id }: UnlikePostParams) => `/api/posts/${id}/unlike` as const,
+    LIKE: ({ postId }: LikePostParams) => `http://localhost:8080/api/posts/like/${postId}` as const,
+    UNLIKE: ({ postId }: UnlikePostParams) =>
+      `http://localhost:8080/api/posts/unlike/${postId}` as const,
     TRACK_TIMELINE: ({ latestPostId }: GetTrackTimelineParams) =>
       createUrlWithParams('/api/posts/trackTimeline', { latestPostId }),
     USER_POSTS: ({ screenName, ...params }: GetUserPostsParams) =>

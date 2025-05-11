@@ -21,11 +21,11 @@ pub fn config(cfg: &mut web::ServiceConfig) {
             .service(create::create_post)
             .service(delete::delete_post)
             .service(update::update_post)
+            .service(like::like_post)
+            .service(unlike::unlike_post)
             .service(user::posts::user_posts)
             .service(user::media::user_media)
             .service(user::likes::user_likes),
-        // .service(like::like_post)
-        // .service(unlike::unlike_post)
         // .service(track_timeline::track_timeline)
     );
 }

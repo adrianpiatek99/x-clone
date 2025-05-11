@@ -86,6 +86,10 @@ export type GetUserPostsResponse = {
   totalCount: number;
 };
 
+export type LikePostParams = { postId: string };
+
+export type LikePostResponse = { id: string; message: string };
+
 export type Post = {
   author: BaseUser;
   media: Array<PostMedia>;
@@ -116,7 +120,17 @@ export type PostMedia = {
   createdAt: Date;
 };
 
-export type PostWithLike = { like: PostLike; post: Post };
+export type PostWithLike = {
+  post: Post;
+  id: string;
+  postId: string;
+  userId: string;
+  createdAt: Date;
+};
+
+export type UnlikePostParams = { postId: string };
+
+export type UnlikePostResponse = { id: string; message: string };
 
 export type UpdatePostParams = { id: string };
 

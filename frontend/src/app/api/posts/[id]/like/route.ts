@@ -1,31 +1,36 @@
-import { db } from '@/db/db';
-import { postLikesTable } from '@/db/schema';
-import { handleApiError } from '@/db/utils/api';
-import { withAuth } from '@/db/utils/auth';
-import { NextResponse } from 'next/server';
+/**
+ * Backend has been rewritten to Rust.
+ * See: https://github.com/adrianpiatek99/x-clone/issues/67
+ */
 
-export type LikePostParams = {
-  id: string;
-};
+// import { db } from '@/db/db';
+// import { postLikesTable } from '@/db/schema';
+// import { handleApiError } from '@/db/utils/api';
+// import { withAuth } from '@/db/utils/auth';
+// import { NextResponse } from 'next/server';
 
-export type LikePostResponse = {
-  id: string;
-  message: string;
-};
+// export type LikePostParams = {
+//   id: string;
+// };
 
-export const POST = withAuth(
-  async (_request, userId: string, { params }: { params: Promise<LikePostParams> }) => {
-    try {
-      const { id } = await params;
+// export type LikePostResponse = {
+//   id: string;
+//   message: string;
+// };
 
-      await db.insert(postLikesTable).values({
-        postId: id,
-        userId,
-      });
+// export const POST = withAuth(
+//   async (_request, userId: string, { params }: { params: Promise<LikePostParams> }) => {
+//     try {
+//       const { id } = await params;
 
-      return NextResponse.json<LikePostResponse>({ id, message: 'Post liked successfully' });
-    } catch (error) {
-      return handleApiError(error);
-    }
-  }
-);
+//       await db.insert(postLikesTable).values({
+//         postId: id,
+//         userId,
+//       });
+
+//       return NextResponse.json<LikePostResponse>({ id, message: 'Post liked successfully' });
+//     } catch (error) {
+//       return handleApiError(error);
+//     }
+//   }
+// );

@@ -40,6 +40,7 @@ pub struct GetUserLikesParams {
 #[serde(rename_all = "camelCase")]
 #[ts(export, export_to = "../../frontend/src/types/post.ts")]
 pub struct PostWithLike {
+    #[serde(flatten)]
     like: PostLike,
     post: Post,
 }
@@ -105,12 +106,7 @@ async fn user_likes(
         .order(post_likes::created_at.desc())
         .then_order_by(post_likes::id.desc())
         .select((
-            (
-                post_likes::id,
-                post_likes::user_id,
-                post_likes::post_id,
-                post_likes::created_at,
-            ),
+            PostLike::as_select(),
             PostSchema::as_select(),
             UserSelect::as_select(),
         ))

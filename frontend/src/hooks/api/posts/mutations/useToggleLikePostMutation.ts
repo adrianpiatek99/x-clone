@@ -1,5 +1,3 @@
-import type { LikePostParams, LikePostResponse } from '@/app/api/posts/[id]/like/route';
-import type { UnlikePostParams, UnlikePostResponse } from '@/app/api/posts/[id]/unlike/route';
 import { useAuth } from '@/components/context/AuthContext';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
@@ -11,10 +9,15 @@ import type {
   GetPostDetailsResponse,
   GetUserLikesResponse,
   GetUserPostsResponse,
+  LikePostParams,
+  LikePostResponse,
+  UnlikePostParams,
+  UnlikePostResponse,
 } from '@/types/post';
 import { updateItemInCache, updateItemInInfiniteQueryCache } from '@/utils/queryCache';
 import { useMutation } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
+import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 type Props = {
@@ -26,6 +29,7 @@ type Props = {
 
 export const useToggleLikePostMutation = ({ screenName, onSuccess, onError, onSettled }: Props) => {
   const t = useTranslations();
+  const params = useParams<{ screenName: string }>();
   const queryClient = useQueryClient();
   const { addToast } = useToasts();
   const { user } = useAuth();
@@ -36,7 +40,7 @@ export const useToggleLikePostMutation = ({ screenName, onSuccess, onError, onSe
     ApiAxiosError,
     LikePostParams
   >({
-    mutationFn: ({ id }) => apiRequest('POST', API_ENDPOINTS.POSTS.LIKE({ id })),
+    mutationFn: ({ postId }) => apiRequest('POST', API_ENDPOINTS.POSTS.LIKE({ postId })),
     onSuccess: ({ id }) => {
       addToast('success', t('post.api.likePost.success'));
 
@@ -63,16 +67,29 @@ export const useToggleLikePostMutation = ({ screenName, onSuccess, onError, onSe
         { itemsKey: 'posts' }
       );
 
-      updateItemInInfiniteQueryCache<GetUserLikesResponse>(
-        queryClient,
-        QUERY_KEYS.POSTS.USER_LIKES(screenName),
-        id,
-        (like) => {
-          like.post.isLiked = true;
-          like.post.likesCount++;
-        },
-        { itemsKey: 'likes', findByKey: 'postId' }
-      );
+      if (params.screenName) {
+        updateItemInInfiniteQueryCache<GetUserLikesResponse>(
+          queryClient,
+          QUERY_KEYS.POSTS.USER_LIKES(params.screenName),
+          id,
+          (like) => {
+            like.post.isLiked = true;
+            like.post.likesCount++;
+          },
+          { itemsKey: 'likes', findByKey: 'postId' }
+        );
+      } else {
+        updateItemInInfiniteQueryCache<GetUserLikesResponse>(
+          queryClient,
+          QUERY_KEYS.POSTS.USER_LIKES(screenName),
+          id,
+          (like) => {
+            like.post.isLiked = true;
+            like.post.likesCount++;
+          },
+          { itemsKey: 'likes', findByKey: 'postId' }
+        );
+      }
 
       // Update the total count of likes
       // updateTotalCountInInfiniteQueryCache<GetUserLikesResponse>(
@@ -107,7 +124,7 @@ export const useToggleLikePostMutation = ({ screenName, onSuccess, onError, onSe
     ApiAxiosError,
     UnlikePostParams
   >({
-    mutationFn: ({ id }) => apiRequest('DELETE', API_ENDPOINTS.POSTS.UNLIKE({ id })),
+    mutationFn: ({ postId }) => apiRequest('DELETE', API_ENDPOINTS.POSTS.UNLIKE({ postId })),
     onSuccess: ({ id }) => {
       addToast('success', t('post.api.unlikePost.success'));
 
@@ -134,16 +151,29 @@ export const useToggleLikePostMutation = ({ screenName, onSuccess, onError, onSe
         { itemsKey: 'posts' }
       );
 
-      updateItemInInfiniteQueryCache<GetUserLikesResponse>(
-        queryClient,
-        QUERY_KEYS.POSTS.USER_LIKES(screenName),
-        id,
-        (like) => {
-          like.post.isLiked = false;
-          like.post.likesCount--;
-        },
-        { itemsKey: 'likes', findByKey: 'postId' }
-      );
+      if (params.screenName) {
+        updateItemInInfiniteQueryCache<GetUserLikesResponse>(
+          queryClient,
+          QUERY_KEYS.POSTS.USER_LIKES(params.screenName),
+          id,
+          (like) => {
+            like.post.isLiked = false;
+            like.post.likesCount--;
+          },
+          { itemsKey: 'likes', findByKey: 'postId' }
+        );
+      } else {
+        updateItemInInfiniteQueryCache<GetUserLikesResponse>(
+          queryClient,
+          QUERY_KEYS.POSTS.USER_LIKES(screenName),
+          id,
+          (like) => {
+            like.post.isLiked = false;
+            like.post.likesCount--;
+          },
+          { itemsKey: 'likes', findByKey: 'postId' }
+        );
+      }
 
       // Update the total count of likes
       // updateTotalCountInInfiniteQueryCache<GetUserLikesResponse>(
@@ -185,12 +215,12 @@ export const useToggleLikePostMutation = ({ screenName, onSuccess, onError, onSe
     }
 
     if (isLiked) {
-      unlikeMutate({ id });
+      unlikeMutate({ postId: id });
 
       return;
     }
 
-    likeMutate({ id });
+    likeMutate({ postId: id });
   };
 
   return { toggleLikePost, isToggleLikePending };
