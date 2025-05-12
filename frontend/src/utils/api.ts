@@ -9,6 +9,7 @@ export const apiRequest = async <T, D = unknown>(
 ): Promise<T> => {
   try {
     const response: AxiosResponse<T> = await axios({
+      baseURL: process.env.NEXT_PUBLIC_API_URL ?? '',
       method,
       url,
       data,

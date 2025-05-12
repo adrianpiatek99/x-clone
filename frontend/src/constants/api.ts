@@ -16,36 +16,34 @@ import { createUrlWithParams } from '@/utils/urlParams';
 
 export const API_ENDPOINTS = {
   AUTH: {
-    CURRENT_USER: 'http://localhost:8080/api/auth/currentUser',
-    LOGIN: 'http://localhost:8080/api/auth/login',
-    LOGOUT: 'http://localhost:8080/api/auth/logout',
-    REGISTER: 'http://localhost:8080/api/auth/register',
+    CURRENT_USER: '/api/auth/currentUser',
+    LOGIN: '/api/auth/login',
+    LOGOUT: '/api/auth/logout',
+    REGISTER: '/api/auth/register',
   },
   POSTS: {
-    DETAILS: ({ postId }: GetPostDetailsParams) =>
-      `http://localhost:8080/api/posts/details/${postId}` as const,
-    CREATE: 'http://localhost:8080/api/posts/create',
-    UPDATE: ({ id }: UpdatePostParams) => `http://localhost:8080/api/posts/update/${id}` as const,
-    DELETE: ({ id }: DeletePostParams) => `http://localhost:8080/api/posts/delete/${id}` as const,
+    DETAILS: ({ postId }: GetPostDetailsParams) => `/api/posts/details/${postId}` as const,
+    CREATE: '/api/posts/create',
+    UPDATE: ({ id }: UpdatePostParams) => `/api/posts/update/${id}` as const,
+    DELETE: ({ id }: DeletePostParams) => `/api/posts/delete/${id}` as const,
     GLOBAL_TIMELINE: (params: GetGlobalTimelineParams) =>
-      createUrlWithParams('http://localhost:8080/api/posts/globalTimeline', params),
+      createUrlWithParams('/api/posts/globalTimeline', params),
     POST_LIKES: ({ postId, ...params }: GetPostLikesParams) =>
-      createUrlWithParams(`http://localhost:8080/api/posts/postLikes/${postId}`, params),
-    LIKE: ({ postId }: LikePostParams) => `http://localhost:8080/api/posts/like/${postId}` as const,
-    UNLIKE: ({ postId }: UnlikePostParams) =>
-      `http://localhost:8080/api/posts/unlike/${postId}` as const,
+      createUrlWithParams(`/api/posts/postLikes/${postId}`, params),
+    LIKE: ({ postId }: LikePostParams) => `/api/posts/like/${postId}` as const,
+    UNLIKE: ({ postId }: UnlikePostParams) => `/api/posts/unlike/${postId}` as const,
     TRACK_TIMELINE: ({ latestPostId }: GetTrackTimelineParams) =>
-      createUrlWithParams('http://localhost:8080/api/posts/trackTimeline', { latestPostId }),
+      createUrlWithParams('/api/posts/trackTimeline', { latestPostId }),
     USER_POSTS: ({ screenName, ...params }: GetUserPostsParams) =>
-      createUrlWithParams(`http://localhost:8080/api/posts/userPosts/${screenName}`, params),
+      createUrlWithParams(`/api/posts/userPosts/${screenName}`, params),
     USER_LIKES: ({ screenName, ...params }: GetUserLikesParams) =>
-      createUrlWithParams(`http://localhost:8080/api/posts/userLikes/${screenName}`, params),
+      createUrlWithParams(`/api/posts/userLikes/${screenName}`, params),
     USER_MEDIA: ({ screenName, ...params }: GetUserMediaParams) =>
-      createUrlWithParams(`http://localhost:8080/api/posts/userMedia/${screenName}`, params),
+      createUrlWithParams(`/api/posts/userMedia/${screenName}`, params),
   },
   PROFILE: {
-    UPDATE: 'http://localhost:8080/api/profile/update',
+    UPDATE: '/api/profile/update',
     DETAILS: ({ screenName }: GetProfileDetailsParams) =>
-      `http://localhost:8080/api/profile/details/${screenName}` as const,
+      `/api/profile/details/${screenName}` as const,
   },
 } as const;

@@ -5,9 +5,12 @@ mod helpers;
 mod models;
 mod schema;
 
+use std::env;
+
 use actix_cors::Cors;
 use actix_web::{App, HttpServer, web};
 use db_service::DbService;
+use dotenv::dotenv;
 use env_logger::Env;
 
 #[actix_web::main]
@@ -17,6 +20,11 @@ async fn main() -> std::io::Result<()> {
 
     // Create database connection pool
     let db = web::Data::new(DbService::new());
+
+    dotenv().ok();
+
+    let host = env::var("SERVER_HOST").expect("SERVER_HOST must be set in .env file");
+    let port = env::var("SERVER_PORT").expect("SERVER_PORT must be set in .env file");
 
     // Start HTTP server
     HttpServer::new(move || {
@@ -32,7 +40,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(db.clone())
             .configure(handlers::config)
     })
-    .bind("127.0.0.1:8080")?
+    .bind(format!("{}:{}", host, port))?
     .run()
     .await
 }
