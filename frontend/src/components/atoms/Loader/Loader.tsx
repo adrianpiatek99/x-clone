@@ -21,8 +21,8 @@ const classes: LoaderClassesReturn = {
   },
   size: {
     small: 'size-[22px]',
-    medium: 'size-[32px]',
-    large: 'size-[48px]',
+    medium: 'size-[28px]',
+    large: 'size-[34px]',
   },
 };
 
@@ -54,7 +54,7 @@ const Loader: FC<LoaderProps> = ({
             strokeLinecap='round'
             style={{
               stroke: 'currentColor',
-              strokeWidth: 4.5,
+              strokeWidth: 4,
               animation: 'spinner-fade 800ms linear infinite',
               animationDelay: `${-800 + number * 100}ms`,
             }}
