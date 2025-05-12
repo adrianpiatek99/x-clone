@@ -57,7 +57,8 @@ pub fn validate_password(password: &str) -> Result<(), ValidationError> {
 }
 
 pub fn validate_description(desc: &str) -> Result<(), ValidationError> {
-    if desc.len() > 160 {
+    let char_count = desc.chars().count();
+    if char_count > 160 {
         let mut err = ValidationError::new("length");
         err.message = Some("Description must be less than 160 characters".into());
         return Err(err);

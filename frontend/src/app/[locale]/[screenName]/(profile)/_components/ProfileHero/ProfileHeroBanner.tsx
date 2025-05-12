@@ -2,15 +2,15 @@ import React, { memo } from 'react';
 
 import ShimmerImage from '@/components/atoms/ShimmerImage';
 import Skeleton from '@/components/atoms/Skeleton';
-import type { PublicUser } from '@/types/user';
+import type { ProfileUser } from '@/types/user';
 
-type Props = Pick<PublicUser, 'bannerUrl'> & {
+type Props = Pick<ProfileUser, 'bannerUrl'> & {
   isLoading: boolean;
 };
 
 export const ProfileHeroBanner = memo(({ bannerUrl, isLoading }: Props) => {
   return (
-    <div className='block overflow-hidden bg-foreground'>
+    <div className='bg-foreground block overflow-hidden'>
       <div className='relative block w-full pb-[33.333%]'>
         {isLoading ? (
           <Skeleton absolute withoutRadius />

@@ -55,7 +55,7 @@ export type GetProfileDetailsResponse = {
   updatedAt: Date;
 };
 
-export type PublicUser = {
+export type ProfileUser = {
   isFollowing: boolean;
   followersCount: number;
   followingCount: number;

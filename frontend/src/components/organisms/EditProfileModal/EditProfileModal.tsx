@@ -4,7 +4,7 @@ import Box from '@/components/atoms/Box';
 import Modal from '@/components/atoms/Modal';
 import DiscardChangesModal from '@/components/molecules/DiscardChangesModal';
 import { VALIDATION } from '@/constants/validation';
-import type { PublicUser } from '@/types/user';
+import type { ProfileUser } from '@/types/user';
 import { useTranslations } from 'next-intl';
 import { twMerge } from 'tailwind-merge';
 
@@ -17,7 +17,7 @@ const FORM_ID = 'edit-profile-modal-form';
 type Props = {
   isOpen: boolean;
   onClose: () => void;
-  user: PublicUser;
+  user: ProfileUser;
 };
 
 const EditProfileModal = ({ isOpen, onClose, user }: Props) => {

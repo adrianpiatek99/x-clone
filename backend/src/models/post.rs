@@ -34,9 +34,9 @@ pub struct PostSchema {
 pub struct PostMedia {
     pub id: Uuid,
     pub url: String,
-    #[ts(type = "Number")]
+    #[ts(type = "number")]
     pub width: i32,
-    #[ts(type = "Number")]
+    #[ts(type = "number")]
     pub height: i32,
     pub type_: PostMediaType,
     pub post_id: Uuid,
@@ -51,7 +51,7 @@ pub struct PostMedia {
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]
 #[ts(export, export_to = "../../frontend/src/types/post.ts")]
-pub struct PostLike {
+pub struct PostLikeSchema {
     pub id: Uuid,
     pub post_id: Uuid,
     pub user_id: Uuid,
@@ -71,9 +71,9 @@ pub struct Post {
     pub media: Vec<PostMedia>,
     pub is_author: bool,
     pub is_liked: bool,
-    #[ts(type = "Number")]
+    #[ts(type = "number")]
     pub likes_count: i64,
-    #[ts(type = "Number")]
+    #[ts(type = "number")]
     pub replies_count: i64,
     #[ts(type = "Date | null")]
     pub edited_at: Option<DateTime<Utc>>,
@@ -88,4 +88,15 @@ pub struct PostEditHistory {
     pub previous_text: String,
     #[ts(type = "Date | null")]
     pub edited_at: Option<DateTime<Utc>>,
+}
+
+#[derive(Queryable, Serialize, TS, Debug)]
+#[diesel(table_name = crate::schema::posts)]
+#[diesel(check_for_backend(diesel::pg::Pg))]
+#[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/post.ts")]
+pub struct PostLike {
+    #[serde(flatten)]
+    pub post: PostLikeSchema,
+    pub user: BaseUser,
 }

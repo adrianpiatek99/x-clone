@@ -6,7 +6,7 @@ use ts_rs::TS;
 use uuid::Uuid;
 
 use crate::{
-    db_service::DbService, handlers::middleware::require_session, models::post::PostLike,
+    db_service::DbService, handlers::middleware::require_session, models::post::PostLikeSchema,
     schema::post_likes::dsl as post_likes,
 };
 
@@ -49,7 +49,7 @@ async fn like_post(
     let existing_like = post_likes::post_likes
         .filter(post_likes::post_id.eq(post_id))
         .filter(post_likes::user_id.eq(session_user_id))
-        .first::<PostLike>(&mut conn);
+        .first::<PostLikeSchema>(&mut conn);
 
     match existing_like {
         Ok(_) => HttpResponse::BadRequest().json(LikePostResponse {

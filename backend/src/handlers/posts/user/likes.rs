@@ -13,7 +13,7 @@ use crate::{
     handlers::middleware::try_get_session,
     models::{
         global::Cursor,
-        post::{Post, PostLike, PostMedia, PostSchema},
+        post::{Post, PostLikeSchema, PostMedia, PostSchema},
         user::{BaseUser, UserSelect},
     },
     schema::{
@@ -32,26 +32,17 @@ pub struct GetUserLikesParams {
     pub screen_name: String,
     #[ts(type = "Cursor | null")]
     pub cursor: Option<String>,
-    #[ts(type = "Number | null")]
+    #[ts(type = "number | null")]
     pub limit: Option<i64>,
 }
 
 #[derive(Serialize, TS)]
 #[serde(rename_all = "camelCase")]
 #[ts(export, export_to = "../../frontend/src/types/post.ts")]
-pub struct PostWithLike {
-    #[serde(flatten)]
-    like: PostLike,
-    post: Post,
-}
-
-#[derive(Serialize, TS)]
-#[serde(rename_all = "camelCase")]
-#[ts(export, export_to = "../../frontend/src/types/post.ts")]
 pub struct GetUserLikesResponse {
-    pub likes: Vec<PostWithLike>,
+    pub posts: Vec<Post>,
     pub next_cursor: Option<Cursor>,
-    #[ts(type = "Number")]
+    #[ts(type = "number")]
     pub total_count: i64,
 }
 
@@ -106,12 +97,12 @@ async fn get_user_likes(
         .order(post_likes::created_at.desc())
         .then_order_by(post_likes::id.desc())
         .select((
-            PostLike::as_select(),
+            PostLikeSchema::as_select(),
             PostSchema::as_select(),
             UserSelect::as_select(),
         ))
         .limit(take)
-        .load::<(PostLike, PostSchema, UserSelect)>(&mut conn)
+        .load::<(PostLikeSchema, PostSchema, UserSelect)>(&mut conn)
     {
         Ok(likes) => likes,
         Err(_) => {
@@ -197,8 +188,7 @@ async fn get_user_likes(
         ))
     }) {
         Ok(data) => data,
-        Err(e) => {
-            eprintln!("Transaction error: {:?}", e);
+        Err(_) => {
             return HttpResponse::InternalServerError().body("Error processing likes data");
         }
     };
@@ -212,8 +202,7 @@ async fn get_user_likes(
         .get_result::<i64>(&mut conn)
     {
         Ok(count) => count,
-        Err(e) => {
-            eprintln!("Error getting total count: {:?}", e);
+        Err(_) => {
             return HttpResponse::InternalServerError().body("Error getting total count");
         }
     };
@@ -226,7 +215,7 @@ async fn get_user_likes(
     // Final response
     let response_likes = likes_list
         .into_iter()
-        .map(|(like, post, author)| {
+        .map(|(_, post, author)| {
             let post_id = post.id;
             let all_media = media_by_post.get(&post_id).cloned().unwrap_or_default();
             let is_author = session_user_id.map_or(false, |id| id == author.id);
@@ -235,24 +224,21 @@ async fn get_user_likes(
             let replies_count = *replies_count_map.get(&post_id).unwrap_or(&0);
             let edited_at = edit_by_post.get(&post_id).copied();
 
-            PostWithLike {
-                like,
-                post: Post {
-                    post,
-                    author: BaseUser { user: author },
-                    media: all_media,
-                    is_author,
-                    is_liked,
-                    likes_count,
-                    replies_count,
-                    edited_at,
-                },
+            Post {
+                post,
+                author: BaseUser { user: author },
+                media: all_media,
+                is_author,
+                is_liked,
+                likes_count,
+                replies_count,
+                edited_at,
             }
         })
         .collect();
 
     let response = GetUserLikesResponse {
-        likes: response_likes,
+        posts: response_likes,
         next_cursor,
         total_count,
     };

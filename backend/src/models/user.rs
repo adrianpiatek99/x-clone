@@ -6,7 +6,6 @@ use uuid::Uuid;
 
 use crate::enums::user_role::Role;
 
-// UserSelect is the user select for the public user
 #[derive(Queryable, Selectable, Identifiable, Serialize, TS, Debug)]
 #[diesel(table_name = crate::schema::users)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
@@ -29,7 +28,6 @@ pub struct UserSelect {
     pub updated_at: DateTime<Utc>,
 }
 
-// AuthUserSelect is the user select for the auth user
 #[derive(Queryable, Selectable, Serialize, TS, Debug)]
 #[diesel(table_name = crate::schema::users)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
@@ -53,7 +51,6 @@ pub struct CurrentUserSelect {
     pub updated_at: DateTime<Utc>,
 }
 
-// NewUser is the new user insert for the auth user
 #[derive(Insertable)]
 #[diesel(table_name = crate::schema::users)]
 pub struct NewUser {
@@ -95,7 +92,6 @@ impl Default for NewUser {
     }
 }
 
-// BaseUser is the base user for the public user
 #[derive(Queryable, Serialize, TS, Debug)]
 #[diesel(table_name = crate::schema::users)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
@@ -106,23 +102,21 @@ pub struct BaseUser {
     pub user: UserSelect,
 }
 
-// PublicUser is the public user for the public user
 #[derive(Queryable, Serialize, TS, Debug)]
 #[diesel(table_name = crate::schema::users)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]
 #[ts(export, export_to = "../../frontend/src/types/user.ts")]
-pub struct PublicUser {
+pub struct ProfileUser {
     #[serde(flatten)]
     pub user: UserSelect,
     pub is_following: bool,
-    #[ts(type = "Number")]
+    #[ts(type = "number")]
     pub followers_count: i64,
-    #[ts(type = "Number")]
+    #[ts(type = "number")]
     pub following_count: i64,
 }
 
-// AuthUser is the auth user for the auth user
 #[derive(Queryable, Serialize, TS, Debug)]
 #[diesel(table_name = crate::schema::users)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
@@ -132,8 +126,8 @@ pub struct CurrentUser {
     #[serde(flatten)]
     pub user: CurrentUserSelect,
     pub is_following: bool,
-    #[ts(type = "Number")]
+    #[ts(type = "number")]
     pub followers_count: i64,
-    #[ts(type = "Number")]
+    #[ts(type = "number")]
     pub following_count: i64,
 }

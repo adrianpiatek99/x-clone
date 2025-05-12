@@ -65,8 +65,8 @@ export const useUpdatePostMutation = ({ onSuccess, onError, onSettled }: Props =
         queryClient,
         QUERY_KEYS.POSTS.USER_LIKES(updatedPost.author.screenName),
         updatedPost.id,
-        (like) => Object.assign(like.post, updatedPost),
-        { itemsKey: 'likes', findByKey: 'postId' }
+        (post) => Object.assign(post, updatedPost),
+        { itemsKey: 'posts', findByKey: 'id' }
       );
 
       updateItemInCache<GetPostDetailsResponse>(

@@ -32,7 +32,7 @@ pub struct GetUserPostsParams {
     pub screen_name: String,
     #[ts(type = "Cursor | null")]
     pub cursor: Option<String>,
-    #[ts(type = "Number | null")]
+    #[ts(type = "number | null")]
     pub limit: Option<i64>,
 }
 
@@ -42,7 +42,7 @@ pub struct GetUserPostsParams {
 pub struct GetUserPostsResponse {
     pub posts: Vec<Post>,
     pub next_cursor: Option<Cursor>,
-    #[ts(type = "Number")]
+    #[ts(type = "number")]
     pub total_count: i64,
 }
 
@@ -71,7 +71,7 @@ async fn user_posts(
         .first::<UserSelect>(&mut conn)
     {
         Ok(user) => user,
-        Err(_e) => {
+        Err(_) => {
             return HttpResponse::NotFound().body("User not found");
         }
     };
@@ -98,8 +98,7 @@ async fn user_posts(
         .load::<(PostSchema, UserSelect)>(&mut conn)
     {
         Ok(posts) => posts,
-        Err(e) => {
-            eprintln!("Database error: {:?}", e);
+        Err(_) => {
             return HttpResponse::InternalServerError().body("Error loading posts");
         }
     };
@@ -182,8 +181,7 @@ async fn user_posts(
         ))
     }) {
         Ok(data) => data,
-        Err(e) => {
-            eprintln!("Transaction error: {:?}", e);
+        Err(_) => {
             return HttpResponse::InternalServerError().body("Error processing posts data");
         }
     };
@@ -197,8 +195,7 @@ async fn user_posts(
         .get_result::<i64>(&mut conn)
     {
         Ok(count) => count,
-        Err(e) => {
-            eprintln!("Error getting total count: {:?}", e);
+        Err(_) => {
             return HttpResponse::InternalServerError().body("Error getting total count");
         }
     };

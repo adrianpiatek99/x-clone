@@ -83,7 +83,7 @@ export const useDeletePostMutation = ({ screenName, onSuccess, onError, onSettle
         queryClient,
         QUERY_KEYS.POSTS.USER_LIKES(screenName),
         id,
-        { itemsKey: 'likes', deleteByKey: 'postId' }
+        { itemsKey: 'posts', deleteByKey: 'id' }
       );
 
       queryClient.removeQueries({

@@ -123,7 +123,7 @@ async fn create_post(
         .get_result::<PostSchema>(&mut conn)
     {
         Ok(post) => post,
-        Err(e) => {
+        Err(_) => {
             return HttpResponse::InternalServerError().json("Failed to create post");
         }
     };
@@ -133,7 +133,7 @@ async fn create_post(
         for (data, mime) in media_files {
             match upload_file(&data, &mime).await {
                 Ok(file) => {
-                    if let Err(e) = diesel::insert_into(post_media::post_media)
+                    if let Err(_) = diesel::insert_into(post_media::post_media)
                         .values((
                             post_media::id.eq(Uuid::new_v4()),
                             post_media::url.eq(file.url),
@@ -164,7 +164,7 @@ async fn create_post(
         .first::<(PostSchema, UserSelect)>(&mut conn)
     {
         Ok(data) => data,
-        Err(_e) => {
+        Err(_) => {
             return HttpResponse::InternalServerError().json("Failed to fetch created post");
         }
     };

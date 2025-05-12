@@ -52,10 +52,7 @@ export type GetPostDetailsResponse = {
 
 export type GetPostLikesParams = { postId: string; cursor: Cursor | null; limit: number | null };
 
-export type GetPostLikesResponse = {
-  postLikes: Array<PostLikeWithUser>;
-  nextCursor: Cursor | null;
-};
+export type GetPostLikesResponse = { postLikes: Array<PostLike>; nextCursor: Cursor | null };
 
 export type GetTrackTimelineParams = { latestPostId: string };
 
@@ -68,7 +65,7 @@ export type GetUserLikesParams = {
 };
 
 export type GetUserLikesResponse = {
-  likes: Array<PostWithLike>;
+  posts: Array<Post>;
   nextCursor: Cursor | null;
   totalCount: number;
 };
@@ -118,9 +115,7 @@ export type Post = {
   updatedAt: Date;
 };
 
-export type PostLike = { id: string; postId: string; userId: string; createdAt: Date };
-
-export type PostLikeWithUser = {
+export type PostLike = {
   user: BaseUser;
   id: string;
   postId: string;
@@ -128,20 +123,14 @@ export type PostLikeWithUser = {
   createdAt: Date;
 };
 
+export type PostLikeSchema = { id: string; postId: string; userId: string; createdAt: Date };
+
 export type PostMedia = {
   id: string;
   url: string;
   width: number;
   height: number;
   type: PostMediaType;
-  postId: string;
-  userId: string;
-  createdAt: Date;
-};
-
-export type PostWithLike = {
-  post: Post;
-  id: string;
   postId: string;
   userId: string;
   createdAt: Date;

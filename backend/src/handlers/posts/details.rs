@@ -62,8 +62,7 @@ async fn post_details(
         Err(diesel::result::Error::NotFound) => {
             return HttpResponse::NotFound().body("Post not found");
         }
-        Err(e) => {
-            eprintln!("Database error: {:?}", e);
+        Err(_) => {
             return HttpResponse::InternalServerError().body("Internal server error");
         }
     };
@@ -110,8 +109,7 @@ async fn post_details(
         Result::<_, diesel::result::Error>::Ok((media, likes_count, is_liked, edited_at))
     }) {
         Ok(data) => data,
-        Err(e) => {
-            eprintln!("Transaction error: {:?}", e);
+        Err(_) => {
             return HttpResponse::InternalServerError().body("Internal server error");
         }
     };

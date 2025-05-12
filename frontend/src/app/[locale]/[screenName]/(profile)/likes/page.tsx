@@ -22,7 +22,7 @@ export default function LikesPage() {
       <ScrollToTop />
       <FlatList
         data={flatData}
-        renderItem={(item) => <PostCard post={item.post} />}
+        renderItem={(item) => <PostCard post={item} />}
         empty={{
           title: t('profilePage.subpages.likes.empty.title'),
           description: t('profilePage.subpages.likes.empty.description'),

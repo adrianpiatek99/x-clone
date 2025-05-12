@@ -8,7 +8,7 @@ use crate::{
     db_service::DbService,
     models::{
         global::Cursor,
-        post::PostLike,
+        post::{PostLike, PostLikeSchema},
         user::{BaseUser, UserSelect},
     },
     schema::{post_likes::dsl as post_likes, users::dsl as users},
@@ -23,24 +23,15 @@ pub struct GetPostLikesParams {
     pub post_id: String,
     #[ts(type = "Cursor | null")]
     pub cursor: Option<String>,
-    #[ts(type = "Number | null")]
+    #[ts(type = "number | null")]
     pub limit: Option<i64>,
 }
 
 #[derive(Serialize, TS)]
 #[serde(rename_all = "camelCase")]
 #[ts(export, export_to = "../../frontend/src/types/post.ts")]
-pub struct PostLikeWithUser {
-    #[serde(flatten)]
-    pub like: PostLike,
-    pub user: BaseUser,
-}
-
-#[derive(Serialize, TS)]
-#[serde(rename_all = "camelCase")]
-#[ts(export, export_to = "../../frontend/src/types/post.ts")]
 pub struct GetPostLikesResponse {
-    pub post_likes: Vec<PostLikeWithUser>,
+    pub post_likes: Vec<PostLike>,
     pub next_cursor: Option<Cursor>,
 }
 
@@ -82,9 +73,9 @@ async fn get_post_likes(
     let likes_list = match query
         .order(post_likes::created_at.desc())
         .then_order_by(post_likes::id.desc())
-        .select((PostLike::as_select(), UserSelect::as_select()))
+        .select((PostLikeSchema::as_select(), UserSelect::as_select()))
         .limit(take)
-        .load::<(PostLike, UserSelect)>(&mut conn)
+        .load::<(PostLikeSchema, UserSelect)>(&mut conn)
     {
         Ok(likes) => likes,
         Err(_) => {
@@ -107,11 +98,11 @@ async fn get_post_likes(
     let post_likes = likes_list
         .into_iter()
         .take(limit as usize)
-        .map(|(like, user)| PostLikeWithUser {
-            like,
+        .map(|(like, user)| PostLike {
+            post: like,
             user: BaseUser { user },
         })
-        .collect();
+        .collect::<Vec<PostLike>>();
 
     let response = GetPostLikesResponse {
         post_likes,

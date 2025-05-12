@@ -28,7 +28,7 @@ use crate::{
 pub struct GetGlobalTimelineParams {
     #[ts(type = "Cursor | null")]
     pub cursor: Option<String>,
-    #[ts(type = "Number | null")]
+    #[ts(type = "number | null")]
     pub limit: Option<i64>,
 }
 
@@ -75,8 +75,7 @@ async fn global_timeline(
         .load::<(PostSchema, UserSelect)>(&mut conn)
     {
         Ok(posts) => posts,
-        Err(e) => {
-            eprintln!("Database error: {:?}", e);
+        Err(_) => {
             return HttpResponse::InternalServerError().body("Error loading posts");
         }
     };
@@ -159,8 +158,7 @@ async fn global_timeline(
         ))
     }) {
         Ok(data) => data,
-        Err(e) => {
-            eprintln!("Transaction error: {:?}", e);
+        Err(_) => {
             return HttpResponse::InternalServerError().body("Error processing posts data");
         }
     };

@@ -10,7 +10,7 @@ use crate::{
     handlers::middleware::try_get_session,
 
     // schema::posts::dsl as posts;
-    models::user::{PublicUser, UserSelect},
+    models::user::{ProfileUser, UserSelect},
     schema::users::dsl as users,
 };
 
@@ -26,7 +26,7 @@ pub struct GetProfileDetailsParams {
 #[ts(export, export_to = "../../frontend/src/types/user.ts")]
 pub struct GetProfileDetailsResponse {
     #[serde(flatten)]
-    pub user: PublicUser,
+    pub user: ProfileUser,
 }
 
 #[get("/details/{screen_name}")]
@@ -50,7 +50,7 @@ async fn profile_details(
         Err(diesel::result::Error::NotFound) => {
             return HttpResponse::NotFound().body("User not found");
         }
-        Err(_e) => return HttpResponse::InternalServerError().body("Internal server error"),
+        Err(_) => return HttpResponse::InternalServerError().body("Internal server error"),
     };
 
     // Get followers count
@@ -79,14 +79,14 @@ async fn profile_details(
     //     false
     // };
 
-    let public_user = PublicUser {
+    let profile_user = ProfileUser {
         user,
         is_following: false,
         followers_count: 0,
         following_count: 0,
     };
 
-    let response = GetProfileDetailsResponse { user: public_user };
+    let response = GetProfileDetailsResponse { user: profile_user };
 
     HttpResponse::Ok().json(response)
 }

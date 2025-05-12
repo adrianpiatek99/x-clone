@@ -29,7 +29,7 @@ export const useGetUserLikesQuery = ({ screenName, enabled = true, limit = 30 }:
     enabled,
   });
 
-  const flatData = result.data?.pages.flatMap((page) => page.likes) ?? [];
+  const flatData = result.data?.pages.flatMap((page) => page.posts) ?? [];
 
   return {
     ...result,

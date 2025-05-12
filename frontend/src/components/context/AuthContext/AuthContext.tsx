@@ -41,6 +41,18 @@ export const AuthProvider = ({ children, currentUser }: PropsWithChildren<AuthPr
     [user, setUser]
   );
 
+  useEffect(() => {
+    const handleSessionUpdate = (event: CustomEvent<CurrentUser | null>) => {
+      setUserState(event.detail || undefined);
+    };
+
+    document.addEventListener('sessionUpdate', handleSessionUpdate as EventListener);
+
+    return () => {
+      document.removeEventListener('sessionUpdate', handleSessionUpdate as EventListener);
+    };
+  }, []);
+
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 

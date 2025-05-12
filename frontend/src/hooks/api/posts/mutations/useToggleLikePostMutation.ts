@@ -72,22 +72,22 @@ export const useToggleLikePostMutation = ({ screenName, onSuccess, onError, onSe
           queryClient,
           QUERY_KEYS.POSTS.USER_LIKES(params.screenName),
           id,
-          (like) => {
-            like.post.isLiked = true;
-            like.post.likesCount++;
+          (post) => {
+            post.isLiked = true;
+            post.likesCount++;
           },
-          { itemsKey: 'likes', findByKey: 'postId' }
+          { itemsKey: 'posts', findByKey: 'id' }
         );
       } else {
         updateItemInInfiniteQueryCache<GetUserLikesResponse>(
           queryClient,
           QUERY_KEYS.POSTS.USER_LIKES(screenName),
           id,
-          (like) => {
-            like.post.isLiked = true;
-            like.post.likesCount++;
+          (post) => {
+            post.isLiked = true;
+            post.likesCount++;
           },
-          { itemsKey: 'likes', findByKey: 'postId' }
+          { itemsKey: 'posts', findByKey: 'id' }
         );
       }
 
@@ -156,22 +156,22 @@ export const useToggleLikePostMutation = ({ screenName, onSuccess, onError, onSe
           queryClient,
           QUERY_KEYS.POSTS.USER_LIKES(params.screenName),
           id,
-          (like) => {
-            like.post.isLiked = false;
-            like.post.likesCount--;
+          (post) => {
+            post.isLiked = false;
+            post.likesCount--;
           },
-          { itemsKey: 'likes', findByKey: 'postId' }
+          { itemsKey: 'posts', findByKey: 'id' }
         );
       } else {
         updateItemInInfiniteQueryCache<GetUserLikesResponse>(
           queryClient,
           QUERY_KEYS.POSTS.USER_LIKES(screenName),
           id,
-          (like) => {
-            like.post.isLiked = false;
-            like.post.likesCount--;
+          (post) => {
+            post.isLiked = false;
+            post.likesCount--;
           },
-          { itemsKey: 'likes', findByKey: 'postId' }
+          { itemsKey: 'posts', findByKey: 'id' }
         );
       }
 

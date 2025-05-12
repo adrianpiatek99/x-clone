@@ -32,7 +32,7 @@ pub struct GetUserMediaParams {
     pub screen_name: String,
     #[ts(type = "Cursor | null")]
     pub cursor: Option<String>,
-    #[ts(type = "Number | null")]
+    #[ts(type = "number | null")]
     pub limit: Option<i64>,
 }
 
@@ -42,7 +42,7 @@ pub struct GetUserMediaParams {
 pub struct GetUserMediaResponse {
     pub posts: Vec<Post>,
     pub next_cursor: Option<Cursor>,
-    #[ts(type = "Number")]
+    #[ts(type = "number")]
     pub total_count: i64,
 }
 
@@ -71,7 +71,7 @@ async fn user_media(
         .first::<UserSelect>(&mut conn)
     {
         Ok(user) => user,
-        Err(_e) => {
+        Err(_) => {
             return HttpResponse::NotFound().body("User not found");
         }
     };
@@ -103,8 +103,7 @@ async fn user_media(
         .load::<(PostSchema, UserSelect)>(&mut conn)
     {
         Ok(posts) => posts,
-        Err(e) => {
-            eprintln!("Database error: {:?}", e);
+        Err(_) => {
             return HttpResponse::InternalServerError().body("Error loading posts");
         }
     };

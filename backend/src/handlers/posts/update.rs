@@ -80,7 +80,7 @@ async fn update_post(
 
     let path_post_id = match Uuid::parse_str(&path_inner) {
         Ok(uuid) => uuid,
-        Err(_e) => return HttpResponse::BadRequest().json("Invalid post ID format"),
+        Err(_) => return HttpResponse::BadRequest().json("Invalid post ID format"),
     };
 
     let mut text = String::new();

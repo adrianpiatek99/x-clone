@@ -82,6 +82,6 @@ async fn login(db: web::Data<DbService>, form: web::Json<LoginRequest>) -> HttpR
 
             HttpResponse::Ok().cookie(cookie).json(response)
         }
-        Err(_e) => HttpResponse::Unauthorized().json("Invalid credentials"),
+        Err(_) => HttpResponse::Unauthorized().json("Invalid credentials"),
     }
 }
