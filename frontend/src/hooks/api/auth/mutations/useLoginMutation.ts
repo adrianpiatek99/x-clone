@@ -3,7 +3,7 @@ import { API_ENDPOINTS } from '@/constants/api';
 import { useToasts } from '@/hooks/useToasts';
 import type { LoginRequest, LoginResponse } from '@/types/auth';
 import { apiRequest } from '@/utils/api';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 
 type Props = {
@@ -14,17 +14,18 @@ type Props = {
 
 export const useLoginMutation = ({ onSuccess, onError, onSettled }: Props = {}) => {
   const t = useTranslations();
+  const queryClient = useQueryClient();
   const { setUser } = useAuth();
   const { addToast } = useToasts();
   const { mutate, isPending } = useMutation<LoginResponse, ApiAxiosError, LoginRequest>({
     mutationFn: (data) => apiRequest('post', API_ENDPOINTS.AUTH.LOGIN, data),
     onSuccess: (data) => {
       setUser(data);
-
+      queryClient.invalidateQueries();
       onSuccess?.();
     },
     onError: () => {
-      addToast('error', t('errors.auth.signIn'));
+      addToast('error', t('errors.auth.login'));
       onError?.();
     },
     onSettled: () => {

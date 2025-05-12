@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import type { AuthState, AuthStore } from './types';
 
 export const initialState = {
-  currentTab: 'signIn',
+  currentTab: 'login',
   isModalOpen: false,
 } satisfies AuthState;
 

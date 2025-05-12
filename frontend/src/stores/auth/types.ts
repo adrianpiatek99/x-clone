@@ -1,4 +1,4 @@
-export type AuthTab = 'signIn' | 'signUp';
+export type AuthTab = 'login' | 'register';
 
 export type AuthState = {
   currentTab: AuthTab;

@@ -1,10 +1,11 @@
 import { VALIDATION } from '@/constants/validation';
+import type { LoginRequest, RegisterRequest } from '@/types/auth';
 import { z } from 'zod';
 
-export type SignInValues = z.infer<ReturnType<typeof signInSchema>>;
-export type SignUpValues = z.infer<ReturnType<typeof signUpSchema>>;
+export type LoginValues = z.infer<ReturnType<typeof loginSchema>>;
+export type RegisterValues = z.infer<ReturnType<typeof registerSchema>>;
 
-export const signInSchema = (t: Translation | undefined = undefined) =>
+export const loginSchema = (t: Translation | undefined = undefined) =>
   z.object({
     emailOrScreenName: z
       .string({ required_error: t && t('errors.validation.emailOrScreenName.required') })
@@ -19,9 +20,9 @@ export const signInSchema = (t: Translation | undefined = undefined) =>
         VALIDATION.ACCOUNT.PASSWORD.MAX,
         t && t('errors.validation.password.max', { max: VALIDATION.ACCOUNT.PASSWORD.MAX })
       ),
-  });
+  }) satisfies z.ZodType<LoginRequest>;
 
-export const signUpSchema = (t: Translation | undefined = undefined) =>
+export const registerSchema = (t: Translation | undefined = undefined) =>
   z
     .object({
       screenName: z
@@ -93,4 +94,4 @@ export const signUpSchema = (t: Translation | undefined = undefined) =>
     .refine(({ password, confirmPassword }) => password === confirmPassword, {
       message: t && t('errors.validation.password.notMatch'),
       path: ['confirmPassword'],
-    });
+    }) satisfies z.ZodType<RegisterRequest>;

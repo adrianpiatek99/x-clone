@@ -1,11 +1,11 @@
 import { useLoginMutation, useRegisterMutation } from '@/hooks/api/auth/mutations';
 import { useAppForm } from '@/hooks/useFormHook';
-import type { SignUpValues } from '@/schema/auth';
-import { signUpSchema } from '@/schema/auth';
+import type { RegisterValues } from '@/schema/auth';
+import { registerSchema } from '@/schema/auth';
 import { useAuthStore } from '@/stores/auth';
 import { useTranslations } from 'next-intl';
 
-export const useAuthModalSignUpForm = () => {
+export const useAuthModalRegisterForm = () => {
   const t = useTranslations();
   const resetStore = useAuthStore((state) => state.resetStore);
 
@@ -16,8 +16,8 @@ export const useAuthModalSignUpForm = () => {
       email: '',
       password: '',
       confirmPassword: '',
-    } satisfies SignUpValues,
-    validators: { onChange: signUpSchema(t) },
+    } satisfies RegisterValues,
+    validators: { onChange: registerSchema(t) },
     onSubmit: ({ value }) => {
       if (isPending) return;
 

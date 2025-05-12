@@ -1,11 +1,11 @@
 import { useLoginMutation } from '@/hooks/api/auth/mutations';
 import { useAppForm } from '@/hooks/useFormHook';
-import type { SignInValues } from '@/schema/auth';
-import { signInSchema } from '@/schema/auth';
+import type { LoginValues } from '@/schema/auth';
+import { loginSchema } from '@/schema/auth';
 import { useAuthStore } from '@/stores/auth';
 import { useTranslations } from 'next-intl';
 
-export const useAuthModalSignInForm = () => {
+export const useAuthModalLoginForm = () => {
   const t = useTranslations();
   const resetStore = useAuthStore((state) => state.resetStore);
 
@@ -13,8 +13,8 @@ export const useAuthModalSignInForm = () => {
     defaultValues: {
       emailOrScreenName: '',
       password: '',
-    } satisfies SignInValues,
-    validators: { onChange: signInSchema(t) },
+    } satisfies LoginValues,
+    validators: { onChange: loginSchema(t) },
     onSubmit: ({ value }) => {
       if (isPending) return;
 

@@ -1,8 +1,8 @@
 import type { InputRecord } from '@/components/atoms/Input';
 import { VALIDATION } from '@/constants/validation';
-import type { SignUpValues } from '@/schema/auth';
+import type { RegisterValues } from '@/schema/auth';
 
-export const signUpInputs = (t: Translation): InputRecord<SignUpValues>[] => [
+export const registerInputs = (t: Translation): InputRecord<RegisterValues>[] => [
   {
     name: 'name',
     label: t('name'),

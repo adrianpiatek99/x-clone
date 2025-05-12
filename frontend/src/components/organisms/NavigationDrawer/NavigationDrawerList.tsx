@@ -59,7 +59,7 @@ const NavigationDrawerList = () => {
       </Box>
       {!user && (
         <Button className='mx-6 mt-6 rounded-full' onClick={handleOpenAuthModal} size='large'>
-          {t('auth.signIn')}
+          {t('auth.login')}
         </Button>
       )}
     </Box>

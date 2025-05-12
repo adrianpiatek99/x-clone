@@ -13,6 +13,7 @@ export const useLogoutMutation = () => {
     mutationFn: () => apiRequest('post', API_ENDPOINTS.AUTH.LOGOUT),
     onSuccess: () => {
       setUser(undefined);
+      window.location.reload();
     },
     onError: () => {
       addToast('error', t('errors.auth.logout'));

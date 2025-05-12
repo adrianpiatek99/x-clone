@@ -26,20 +26,20 @@ const AuthRequiredModal = () => {
 
   const handleClose = () => updateAuthRequiredModal({ isOpen: false });
 
-  const handleOpenSignInModal = () => {
+  const handleOpenLoginModal = () => {
     handleClose();
-    update({ isModalOpen: true, currentTab: 'signIn' });
+    update({ isModalOpen: true, currentTab: 'login' });
   };
 
-  const handleOpenSignUpModal = () => {
+  const handleOpenRegisterModal = () => {
     handleClose();
-    update({ isModalOpen: true, currentTab: 'signUp' });
+    update({ isModalOpen: true, currentTab: 'register' });
   };
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>
       <Box className='items-center justify-center gap-6'>
-        <Icon name='PeopleIcon' className='size-[54px] text-primary' />
+        <Icon name='PeopleIcon' className='text-primary size-[54px]' />
         <Box className='max-w-[400px] gap-6 px-6'>
           <Box>
             <Typography as='h2' size='2xl' weight='bold' center>
@@ -50,16 +50,16 @@ const AuthRequiredModal = () => {
             </Typography>
           </Box>
           <Box>
-            <Button className='rounded-full' onClick={handleOpenSignInModal} size='large'>
-              {t('auth.signIn')}
+            <Button className='rounded-full' onClick={handleOpenLoginModal} size='large'>
+              {t('auth.login')}
             </Button>
             <Button
               className='rounded-full'
-              onClick={handleOpenSignUpModal}
+              onClick={handleOpenRegisterModal}
               variant='plain'
               size='large'
             >
-              {t('auth.signUp')}
+              {t('auth.register')}
             </Button>
           </Box>
         </Box>

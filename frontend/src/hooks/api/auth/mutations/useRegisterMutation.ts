@@ -1,6 +1,5 @@
 import { API_ENDPOINTS } from '@/constants/api';
 import { useToasts } from '@/hooks/useToasts';
-import type { SignUpValues } from '@/schema/auth';
 import type { RegisterRequest } from '@/types/auth';
 import { apiRequest } from '@/utils/api';
 import { useMutation } from '@tanstack/react-query';
@@ -20,14 +19,14 @@ export const useRegisterMutation = ({ onSuccess, onSettled }: Props = {}) => {
       onSuccess?.();
     },
     onError: () => {
-      addToast('error', t('errors.auth.signUp'));
+      addToast('error', t('errors.auth.register'));
     },
     onSettled: () => {
       onSettled?.();
     },
   });
 
-  const register = (data: SignUpValues) => {
+  const register = (data: RegisterRequest) => {
     if (isPending) return;
 
     mutate(data);

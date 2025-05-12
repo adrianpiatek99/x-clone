@@ -36,10 +36,10 @@
   },
 
   "auth": {
-    "signIn": "Sign in",
-    "signUp": "Sign up",
+    "loginIn": "Sign in",
+    "register": "Sign up",
     "createAccount": "Create account",
-    "signInTo": "Sign in to X",
+    "loginTo": "Sign in to X",
     "dontHaveAccount": "Don't have an account?",
     "haveAccount": "Have an account already?",
     "requiredModal": {
@@ -286,8 +286,8 @@
       "somethingWentWrong": "Failed to upload file"
     },
     "auth": {
-      "signIn": "Sign-in failed. Please check your credentials and try again.",
-      "signUp": "Sign-up failed.",
+      "login": "Sign-in failed. Please check your credentials and try again.",
+      "register": "Sign-up failed.",
       "logout": "Failed to sign out. Please try again."
     },
     "api": {

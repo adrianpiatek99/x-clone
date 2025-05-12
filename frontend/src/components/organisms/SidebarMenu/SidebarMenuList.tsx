@@ -63,12 +63,12 @@ const SidebarMenuList = () => {
               onClick={handleOpenAuthModal}
               size='large'
             >
-              {t('auth.signIn')}
+              {t('auth.login')}
             </Button>
             <Button
               className='mx-auto mt-2 flex p-3 xl:hidden'
               onClick={handleOpenAuthModal}
-              aria-label={t('auth.signIn')}
+              aria-label={t('auth.login')}
             >
               <Icon name='LoginIcon' className='size-[26px]' />
             </Button>

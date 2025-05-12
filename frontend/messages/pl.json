@@ -36,10 +36,10 @@
   },
 
   "auth": {
-    "signIn": "Zaloguj się",
-    "signUp": "Zarejestruj się",
+    "login": "Zaloguj się",
+    "register": "Zarejestruj się",
     "createAccount": "Utwórz konto",
-    "signInTo": "Zaloguj się do serwisu X",
+    "loginTo": "Zaloguj się do serwisu X",
     "dontHaveAccount": "Nie masz jeszcze konta?",
     "haveAccount": "Masz już konto?",
     "requiredModal": {
@@ -287,8 +287,8 @@
       "somethingWentWrong": "Nie udało się wrzucić pliku"
     },
     "auth": {
-      "signIn": "Nie udało się zalogować. Sprawdź swoje dane i spróbuj ponownie.",
-      "signUp": "Nie udało się zarejestrować.",
+      "login": "Nie udało się zalogować. Sprawdź swoje dane i spróbuj ponownie.",
+      "register": "Nie udało się zarejestrować.",
       "logout": "Nie udało się wylogować. Spróbuj ponownie."
     },
     "api": {
