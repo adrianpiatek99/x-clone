@@ -28,7 +28,7 @@ const AuthModal = () => {
       isOpen={isModalOpen}
       onClose={handleClose}
       title={
-        <Box className='items-center justify-center'>
+        <Box className='-ml-6 items-center justify-center'>
           <Logo size='l' />
         </Box>
       }

@@ -32,8 +32,13 @@ const NavigationTabs = () => {
     >
       <div className='relative mx-auto flex h-[52px] w-full max-w-[580px] shrink-0 items-center px-4'>
         <nav className='flex size-full items-center' role='navigation'>
-          {navigationTabsItems({ t, pathname, isAuth: !!user }).map(
-            ({ href, text, active, activeIcon, icon }) => (
+          {navigationTabsItems({ t, pathname, isAuth: !!user }).map((item) => {
+            if ('children' in item)
+              return <React.Fragment key={item.key}>{item.children}</React.Fragment>;
+
+            const { href, text, active, activeIcon, icon } = item;
+
+            return (
               <IconButton
                 linkClassName='flex items-center justify-center w-full'
                 key={href}
@@ -44,8 +49,8 @@ const NavigationTabs = () => {
               >
                 {active ? activeIcon : icon}
               </IconButton>
-            )
-          )}
+            );
+          })}
           <NavigationTabsDrawerButton />
         </nav>
       </div>

@@ -3,14 +3,18 @@ import type { ReactElement } from 'react';
 import Icon from '@/components/atoms/Icon';
 import { ROUTES } from '@/constants/routes';
 
-export type NavigationTabItem = {
-  text: string;
-  href: string;
-  active: boolean;
-  icon: ReactElement;
-  activeIcon: ReactElement;
-  visible: boolean;
-};
+import { NavigationTabsCreatePost } from './NavigationTabsCreatePost';
+
+export type NavigationTabItem =
+  | { key: string; children: ReactElement; visible: boolean }
+  | {
+      text: string;
+      href: string;
+      active: boolean;
+      icon: ReactElement;
+      activeIcon: ReactElement;
+      visible: boolean;
+    };
 
 type NavigationTabItemsProps = {
   t: Translation;
@@ -40,20 +44,13 @@ export const navigationTabsItems = ({
       activeIcon: <Icon name='SearchFilledIcon' />,
       visible: true,
     },
+    { key: 'create-post', children: <NavigationTabsCreatePost />, visible: isAuth },
     {
       text: t('navigation.notifications'),
       href: ROUTES.NOTIFICATIONS,
       active: pathname.includes(ROUTES.NOTIFICATIONS),
       icon: <Icon name='NotificationOutlinedIcon' />,
       activeIcon: <Icon name='NotificationIcon' />,
-      visible: isAuth,
-    },
-    {
-      text: t('navigation.messages'),
-      href: ROUTES.MESSAGES,
-      active: pathname.includes(ROUTES.MESSAGES),
-      icon: <Icon name='MailOutlinedIcon' />,
-      activeIcon: <Icon name='MailIcon' />,
       visible: isAuth,
     },
   ].filter((item) => item.visible);

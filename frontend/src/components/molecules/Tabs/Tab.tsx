@@ -22,7 +22,7 @@ export const Tab = <TValue,>({
 }: TabProps<TValue>) => {
   const handleClick = () => !selected && onClick?.();
 
-  if (href) {
+  if (href && !disabled) {
     return (
       <Link
         className={twMerge(
@@ -35,7 +35,7 @@ export const Tab = <TValue,>({
         aria-selected={selected}
         tabIndex={selected ? 0 : -1}
         onClick={handleClick}
-        href={disabled ? {} : href}
+        href={href}
         scroll={selected ? true : false}
       >
         <span>{children}</span>

@@ -36,7 +36,7 @@
   },
 
   "auth": {
-    "loginIn": "Sign in",
+    "login": "Sign in",
     "register": "Sign up",
     "createAccount": "Create account",
     "loginTo": "Sign in to X",
