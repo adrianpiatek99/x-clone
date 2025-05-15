@@ -4,8 +4,7 @@ use serde::Serialize;
 use ts_rs::TS;
 use uuid::Uuid;
 
-use crate::enums::conversation_control::ConversationControl;
-use crate::enums::post_media_type::PostMediaType;
+use crate::enums::{conversation_control::ConversationControl, post_media_type::PostMediaType};
 
 use super::user::BaseUser;
 
@@ -18,7 +17,7 @@ pub struct PostSchema {
     pub text: String,
     pub author_id: Uuid,
     pub hashtags: Option<Vec<Option<String>>>,
-    pub conversationControl: ConversationControl,
+    pub conversation_control: ConversationControl,
     #[ts(type = "Date")]
     pub created_at: DateTime<Utc>,
     #[ts(type = "Date")]
@@ -34,7 +33,7 @@ impl Default for PostSchema {
             text: String::new(),
             author_id: Uuid::new_v4(),
             hashtags: None,
-            conversationControl: ConversationControl::All,
+            conversation_control: ConversationControl::ALL,
             created_at: now,
             updated_at: now,
         }
@@ -70,7 +69,7 @@ impl Default for PostMedia {
             url: String::new(),
             width: 0,
             height: 0,
-            type_: PostMediaType::Photo,
+            type_: PostMediaType::PHOTO,
             post_id: Uuid::new_v4(),
             user_id: Uuid::new_v4(),
             created_at: now,

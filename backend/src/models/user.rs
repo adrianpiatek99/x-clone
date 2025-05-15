@@ -83,7 +83,7 @@ impl Default for NewUser {
             banner_url: String::new(),
             description: String::new(),
             url: None,
-            role: Role::User,
+            role: Role::USER,
             is_verified: false,
             verified_at: None,
             created_at: now,

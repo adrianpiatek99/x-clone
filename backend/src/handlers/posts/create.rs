@@ -1,12 +1,10 @@
 use actix_multipart::Multipart;
 use actix_web::{HttpRequest, HttpResponse, post, web};
-use chrono::Utc;
 use diesel::prelude::*;
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use futures::{StreamExt, TryStreamExt};
 use serde::{Deserialize, Serialize};
 use ts_rs::TS;
-use uuid::Uuid;
 use validator::Validate;
 
 use crate::{
@@ -109,22 +107,15 @@ async fn create_post(
     let mut conn = db.get_conn();
 
     // Create post
-    // let new_post = PostSchema {
-    //     text,
-    //     author_id: session_user_id,
-    //     hashtags: None,
-    //     ..PostSchema::default()
-    // };
+    let new_post = PostSchema {
+        text,
+        author_id: session_user_id,
+        hashtags: None,
+        ..PostSchema::default()
+    };
 
     let post = match diesel::insert_into(posts::posts)
-        .values((
-            posts::id.eq(Uuid::new_v4()),
-            posts::text.eq(text),
-            posts::author_id.eq(session_user_id),
-            posts::hashtags.eq(None::<Vec<Option<String>>>),
-            posts::created_at.eq(Utc::now()),
-            posts::updated_at.eq(Utc::now()),
-        ))
+        .values(&new_post)
         .returning(PostSchema::as_returning())
         .get_result::<PostSchema>(&mut conn)
     {

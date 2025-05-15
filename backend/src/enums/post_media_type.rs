@@ -14,17 +14,15 @@ use ts_rs::TS;
 #[ts(export, export_to = "../../frontend/src/types/enums.ts")]
 #[diesel(sql_type = PostMediaTypeSql)]
 pub enum PostMediaType {
-    #[serde(rename = "PHOTO")]
-    Photo,
-    #[serde(rename = "VIDEO")]
-    Video,
+    PHOTO,
+    VIDEO,
 }
 
 impl ToSql<PostMediaTypeSql, Pg> for PostMediaType {
     fn to_sql<'b>(&'b self, out: &mut Output<'b, '_, Pg>) -> serialize::Result {
         let val = match self {
-            PostMediaType::Photo => "PHOTO",
-            PostMediaType::Video => "VIDEO",
+            PostMediaType::PHOTO => "PHOTO",
+            PostMediaType::VIDEO => "VIDEO",
         };
         out.write_all(val.as_bytes())?;
         Ok(IsNull::No)
@@ -34,8 +32,8 @@ impl ToSql<PostMediaTypeSql, Pg> for PostMediaType {
 impl FromSql<PostMediaTypeSql, Pg> for PostMediaType {
     fn from_sql(bytes: diesel::pg::PgValue<'_>) -> deserialize::Result<Self> {
         match bytes.as_bytes() {
-            b"PHOTO" => Ok(PostMediaType::Photo),
-            b"VIDEO" => Ok(PostMediaType::Video),
+            b"PHOTO" => Ok(PostMediaType::PHOTO),
+            b"VIDEO" => Ok(PostMediaType::VIDEO),
             _ => Err("Unrecognized enum variant for PostMediaType".into()),
         }
     }

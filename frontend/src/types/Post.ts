@@ -115,6 +115,8 @@ export type Post = {
   updatedAt: Date;
 };
 
+export type PostEditHistory = { id: string; postId: string; previousText: string; editedAt: Date };
+
 export type PostLike = {
   user: BaseUser;
   id: string;

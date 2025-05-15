@@ -1,17 +1,26 @@
 // @generated automatically by Diesel CLI.
 
 pub mod sql_types {
-    #[derive(diesel::query_builder::QueryId, diesel::sql_types::SqlType)]
+    #[derive(diesel::query_builder::QueryId, Clone, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "conversationControl"))]
     pub struct ConversationControl;
 
     #[derive(diesel::query_builder::QueryId, Clone, diesel::sql_types::SqlType)]
-    #[diesel(postgres_type(name = "post_media_type"))]
+    #[diesel(postgres_type(name = "postMediaType"))]
     pub struct PostMediaType;
 
     #[derive(diesel::query_builder::QueryId, Clone, diesel::sql_types::SqlType)]
     #[diesel(postgres_type(name = "role"))]
     pub struct Role;
+}
+
+diesel::table! {
+    follows (id) {
+        id -> Uuid,
+        follower_id -> Uuid,
+        following_id -> Uuid,
+        created_at -> Timestamptz,
+    }
 }
 
 diesel::table! {
@@ -69,7 +78,7 @@ diesel::table! {
         text -> Text,
         author_id -> Uuid,
         hashtags -> Nullable<Array<Nullable<Text>>>,
-        conversationControl -> ConversationControl,
+        conversation_control -> ConversationControl,
         created_at -> Timestamptz,
         updated_at -> Timestamptz,
     }
@@ -107,6 +116,7 @@ diesel::joinable!(post_reply -> users (author_id));
 diesel::joinable!(posts -> users (author_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
+    follows,
     post_edit_history,
     post_likes,
     post_media,

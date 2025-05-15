@@ -14,20 +14,17 @@ use ts_rs::TS;
 #[ts(export, export_to = "../../frontend/src/types/enums.ts")]
 #[diesel(sql_type = RoleSql)]
 pub enum Role {
-    #[serde(rename = "ADMIN")]
-    Admin,
-    #[serde(rename = "MODERATOR")]
-    Moderator,
-    #[serde(rename = "USER")]
-    User,
+    ADMIN,
+    MODERATOR,
+    USER,
 }
 
 impl ToSql<RoleSql, Pg> for Role {
     fn to_sql<'b>(&'b self, out: &mut Output<'b, '_, Pg>) -> serialize::Result {
         let val = match self {
-            Role::Admin => "ADMIN",
-            Role::Moderator => "MODERATOR",
-            Role::User => "USER",
+            Role::ADMIN => "ADMIN",
+            Role::MODERATOR => "MODERATOR",
+            Role::USER => "USER",
         };
         out.write_all(val.as_bytes())?;
         Ok(IsNull::No)
@@ -37,9 +34,9 @@ impl ToSql<RoleSql, Pg> for Role {
 impl FromSql<RoleSql, Pg> for Role {
     fn from_sql(bytes: diesel::pg::PgValue<'_>) -> deserialize::Result<Self> {
         match bytes.as_bytes() {
-            b"ADMIN" => Ok(Role::Admin),
-            b"MODERATOR" => Ok(Role::Moderator),
-            b"USER" => Ok(Role::User),
+            b"ADMIN" => Ok(Role::ADMIN),
+            b"MODERATOR" => Ok(Role::MODERATOR),
+            b"USER" => Ok(Role::USER),
             _ => Err("Unrecognized enum variant for Role".into()),
         }
     }
