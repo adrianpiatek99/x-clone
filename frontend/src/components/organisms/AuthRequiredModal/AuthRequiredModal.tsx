@@ -39,7 +39,7 @@ const AuthRequiredModal = () => {
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>
       <Box className='items-center justify-center gap-6'>
-        <Icon name='PeopleIcon' className='text-primary size-[54px]' />
+        <Icon name='PeopleIcon' className='size-[54px] text-primary' />
         <Box className='max-w-[400px] gap-6 px-6'>
           <Box>
             <Typography as='h2' size='2xl' weight='bold' center>

@@ -10,7 +10,7 @@ type Props = Pick<ProfileUser, 'bannerUrl'> & {
 
 export const ProfileHeroBanner = memo(({ bannerUrl, isLoading }: Props) => {
   return (
-    <div className='bg-foreground block overflow-hidden'>
+    <div className='block overflow-hidden bg-foreground'>
       <div className='relative block w-full pb-[33.333%]'>
         {isLoading ? (
           <Skeleton absolute withoutRadius />

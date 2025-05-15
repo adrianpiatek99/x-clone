@@ -11,7 +11,7 @@ export const NavigationTabsCreatePost = () => {
 
   return (
     <IconButton
-      className='bg-accent-1/80 mx-1 flex min-h-[38px] px-4 [&>svg]:size-[32px]'
+      className='mx-1 flex min-h-[38px] bg-accent-1/80 px-4 [&>svg]:size-[32px]'
       onClick={handleOpenCreatePostModal}
       color='white'
     >

@@ -36,7 +36,7 @@ const Modal: FC<ModalProps> = ({
   preventClosingOnOutside,
   panel,
 }) => {
-  const handleClose = () => !preventClosingOnOutside && onClose();
+  const handleClose = () => !preventClosingOnOutside && !isLoading && onClose();
 
   useEscape(isOpen && preventClosingOnOutside, () => {
     if (
@@ -58,7 +58,7 @@ const Modal: FC<ModalProps> = ({
       onClose={handleClose}
     >
       <DialogBackdrop
-        className='fixed inset-0 bg-backdrop duration-200 data-[closed]:opacity-0'
+        className='bg-backdrop fixed inset-0 duration-200 data-[closed]:opacity-0'
         transition
       />
       <div className='fixed inset-0 z-10 w-screen'>

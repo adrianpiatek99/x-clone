@@ -25,10 +25,17 @@ export const ModalHeader: FC<ModalHeaderProps> = ({
 }) => {
   const t = useTranslations();
 
+  const handleClose = () => !isLoading && onClose();
+
   return (
-    <div className='sticky left-0  top-0 z-10 flex h-[53px] shrink-0 flex-row items-center justify-between gap-x-4 gap-y-2 overflow-hidden bg-background/65 px-4 backdrop-blur-md'>
+    <div className='bg-background/65 sticky  left-0 top-0 z-10 flex h-[53px] shrink-0 flex-row items-center justify-between gap-x-4 gap-y-2 overflow-hidden px-4 backdrop-blur-md'>
       <div className='flex'>
-        <IconButton title={t('actions.close')} color='white' onClick={onClose}>
+        <IconButton
+          title={t('actions.close')}
+          color='white'
+          disabled={isLoading}
+          onClick={handleClose}
+        >
           <Icon name='CloseIcon' />
         </IconButton>
       </div>
