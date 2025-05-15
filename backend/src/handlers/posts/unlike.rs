@@ -53,14 +53,13 @@ async fn unlike_post(
     match existing_like {
         Ok(_) => {
             // User has liked this post, proceed with removing the like
-            let delete_result = diesel::delete(
+            match diesel::delete(
                 post_likes::post_likes
                     .filter(post_likes::post_id.eq(post_id))
                     .filter(post_likes::user_id.eq(session_user_id)),
             )
-            .execute(&mut conn);
-
-            match delete_result {
+            .execute(&mut conn)
+            {
                 Ok(_) => HttpResponse::Ok().json(UnlikePostResponse {
                     id: post_id,
                     message: "Post unliked successfully".to_string(),

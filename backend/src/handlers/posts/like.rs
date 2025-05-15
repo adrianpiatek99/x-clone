@@ -51,26 +51,20 @@ async fn like_post(
         .first::<PostLikeSchema>(&mut conn);
 
     match existing_like {
-        Ok(_) => HttpResponse::BadRequest().json(LikePostResponse {
-            id: post_id,
-            message: "You have already liked this post".to_string(),
-        }),
+        Ok(_) => HttpResponse::BadRequest().json("You have already liked this post"),
         Err(NotFound) => {
-            // User hasn't liked this post yet, proceed with inserting new like
-
-            let new_like: PostLikeSchema = PostLikeSchema {
+            let new_like = PostLikeSchema {
                 post_id,
                 user_id: session_user_id,
                 ..PostLikeSchema::default()
             };
 
-            let insert_result = diesel::insert_into(post_likes::post_likes)
+            match diesel::insert_into(post_likes::post_likes)
                 .values(&new_like)
-                .execute(&mut conn);
-
-            match insert_result {
+                .execute(&mut conn)
+            {
                 Ok(_) => HttpResponse::Ok().json(LikePostResponse {
-                    id: post_id,
+                    id: new_like.id,
                     message: "Post liked successfully".to_string(),
                 }),
                 Err(_) => HttpResponse::InternalServerError().body("Failed to like post"),
