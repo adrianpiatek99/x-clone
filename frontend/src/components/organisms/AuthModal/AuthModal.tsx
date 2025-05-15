@@ -1,0 +1,45 @@
+import React from 'react';
+
+import Box from '@/components/atoms/Box';
+import Logo from '@/components/atoms/Logo';
+import Modal from '@/components/atoms/Modal';
+import AutoHeight from '@/components/molecules/AutoHeight';
+import { useAuthStore } from '@/stores/auth';
+import { useShallow } from 'zustand/shallow';
+
+import { AuthModalCurrentTab } from './AuthModalCurrentTab';
+
+const AuthModal = () => {
+  const { isModalOpen, update, resetStore } = useAuthStore(
+    useShallow((state) => ({
+      isModalOpen: state.isModalOpen,
+      update: state.update,
+      resetStore: state.resetStore,
+    }))
+  );
+
+  const handleClose = () => {
+    update({ isModalOpen: false });
+    setTimeout(() => resetStore(), 150);
+  };
+
+  return (
+    <Modal
+      isOpen={isModalOpen}
+      onClose={handleClose}
+      title={
+        <Box className='-ml-6 items-center justify-center'>
+          <Logo size='l' />
+        </Box>
+      }
+    >
+      <Box className='mx-auto w-full max-w-[364px] gap-4 px-[30px] pt-[30px]'>
+        <AutoHeight>
+          <AuthModalCurrentTab />
+        </AutoHeight>
+      </Box>
+    </Modal>
+  );
+};
+
+export default AuthModal;

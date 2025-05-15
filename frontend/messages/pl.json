@@ -1,0 +1,298 @@
+{
+  "loading": "Ładowanie",
+  "emailOrScreenName": "E-mail / Nazwa użytkownika",
+  "email": "E-mail",
+  "username": "Nazwa użytkownika",
+  "name": "Imię",
+  "password": "Hasło",
+  "confirmPassword": "Potwierdź hasło",
+  "description": "O mnie",
+  "website": "Strona internetowa",
+  "profileImage": "Zdjęcie profilowe",
+  "search": "Szukaj",
+  "noData": "Brak danych",
+  "lostConnection": "Wygląda na to, że straciłeś połączenie. Sprawdź je i spróbuj ponownie.",
+  "trending": "Trendujące",
+
+  "actions": {
+    "cancel": "Anuluj",
+    "close": "Zamknij",
+    "save": "Zapisz",
+    "clear": "Wyczyść",
+    "discard": "Odrzuć",
+    "remove": "Usuń",
+    "showPassword": "Pokaż hasło",
+    "hidePassword": "Ukryj hasło",
+    "next": "Dalej",
+    "showMore": "Pokaż więcej",
+    "back": "Wróć",
+    "follow": "Obserwuj",
+    "addPhoto": "Dodaj zdjęcie",
+    "removePhoto": "Usuń zdjęcie",
+    "retry": "Spróbuj ponownie",
+    "showPosts": "{count, plural, one {Pokaż # wpis} few {Pokaż # wpisy} other {Pokaż # wpisów}}",
+    "refreshing": "Odświeżanie...",
+    "editBanner": "Edytuj baner"
+  },
+
+  "auth": {
+    "login": "Zaloguj się",
+    "register": "Zarejestruj się",
+    "createAccount": "Utwórz konto",
+    "loginTo": "Zaloguj się do serwisu X",
+    "dontHaveAccount": "Nie masz jeszcze konta?",
+    "haveAccount": "Masz już konto?",
+    "requiredModal": {
+      "title": "Wymagana jest autoryzacja.",
+      "description": "Musisz zalogować się na swoje konto."
+    },
+    "logout": {
+      "text": "Wyloguj się",
+      "confirmModal": {
+        "title": "Wylogować się z serwisu?",
+        "description": "W każdej chwili możesz się ponownie zalogować."
+      }
+    }
+  },
+
+  "language": {
+    "displayLanguage": {
+      "title": "Wyświetlany język",
+      "description": "Wybierz preferowany język nagłówków, przycisków i innych elementów interfejsu. Nie wpłynie to na język treści na osi czasu."
+    },
+    "polish": "Polski",
+    "english": "English"
+  },
+
+  "navigation": {
+    "home": "Główna",
+    "explore": "Przeglądaj",
+    "notifications": "Powiadomienia",
+    "messages": "Wiadomości",
+    "bookmarks": "Zakładki",
+    "profile": "Profil",
+    "settings": "Ustawienia"
+  },
+
+  "homePage": {
+    "welcome": {
+      "title": "Witamy na X!",
+      "description": "Tutaj najszybciej dowiesz się, co słychać na świecie. Znajdź osoby i tematy warte obserwowania."
+    },
+    "tabs": {
+      "global": "Dla wszystkich",
+      "following": "Obserwujesz"
+    },
+    "globalPosts": {
+      "empty": {
+        "title": "Nie znaleziono wpisów",
+        "description": "Kiedy ktoś opublikuje wpis, pojawi się tutaj."
+      }
+    },
+    "followingPosts": {
+      "empty": {
+        "title": "Nie znaleziono wpisów",
+        "description": "Kiedy ktoś opublikuje wpis, pojawi się tutaj."
+      }
+    }
+  },
+
+  "postPage": {
+    "title": "Wpis",
+    "likes": {
+      "empty": {
+        "title": "Nie masz jeszcze żadnych polubień",
+        "description": "Kiedy ktoś polubi wpis, pojawi się tutaj."
+      }
+    },
+    "reposts": {
+      "empty": {
+        "title": "Nie ma jeszcze podanych dalej wpisów",
+        "description": "Udostępnij wpis innej osoby na swojej osi czasu, podając go dalej. Wpisy podane przez Ciebie dalej będą widoczne w tym miejscu"
+      }
+    },
+    "subpages": {
+      "engagements": {
+        "title": "Interakcje z wpisem",
+        "tabs": {
+          "likes": "Polubienia",
+          "reposts": "Wpisy podane dalej"
+        }
+      }
+    }
+  },
+
+  "profilePage": {
+    "actions": {
+      "edit": "Edytuj profil"
+    },
+    "notFound": {
+      "title": "To konto nie istnieje",
+      "description": "Spróbuj wyszukać coś innego."
+    },
+    "joined": "Dołączył(a)",
+    "tabs": {
+      "posts": "Wpisy",
+      "replies": "Odpowiedzi",
+      "media": "Multimedia",
+      "likes": "Polubienia"
+    },
+    "photosAndVideos": "Zdjęcia i filmy",
+    "following": "Obserwujesz",
+    "followers": "Obserwujących",
+    "posts": "Wpisy",
+    "media": {
+      "empty": {
+        "title": "Światła, kamera... załączniki!",
+        "description": "Twoje wpisy zawierające zdjęcia lub filmy będą widoczne tutaj."
+      }
+    },
+    "subpages": {
+      "posts": {
+        "empty": {
+          "title": "Nie masz jeszcze żadnych wpisów",
+          "description": "Twoje wpisy będą widoczne tutaj."
+        }
+      },
+      "media": {
+        "empty": {
+          "title": "Nie masz jeszcze żadnych mediów",
+          "description": "Kiedy opublikujesz zdjęcia lub filmy, pojawią się tutaj."
+        }
+      },
+      "likes": {
+        "empty": {
+          "title": "Nie masz jeszcze żadnych polubień",
+          "description": "Naciśnij serce w dowolnym wpisie, aby wyrazić uznanie. Twoje polubienia pojawią się tutaj."
+        }
+      }
+    }
+  },
+
+  "modal": {
+    "discardChanges": {
+      "title": "Odrzucić zmiany?",
+      "description": "Tej czynności nie można cofnąć, a zmiany nie zostaną zapisane."
+    }
+  },
+
+  "notFoundPage": {
+    "title": "Wygląda na to, że taka strona nie istnieje. Spróbuj wyszukać coś innego.",
+    "returnButton": "Wróć do strony głównej"
+  },
+
+  "post": {
+    "noData": "Brak danych",
+    "textarea": {
+      "label": "Co się dzieje?!"
+    },
+    "actions": {
+      "send": "Opublikuj wpis",
+      "delete": "Usuń",
+      "reply": "Odpowiedz",
+      "like": "Polub",
+      "unlike": "Przestań lubić",
+      "repost": "Podaj dalej",
+      "media": "Media",
+      "more": "Więcej",
+      "edit": "Edytuj wpis",
+      "viewPostEngagements": "Wyświetl interakcje wpisu",
+      "edited": "Edytowano"
+    },
+    "confirmDeleteModal": {
+      "title": "Usunąć wpis?",
+      "description": "Tej czynności nie można cofnąć. Wpis zostanie usunięty z Twojego profilu, z osi czasu osób obserwujących oraz z wyników wyszukiwania."
+    },
+    "count": {
+      "posts": "{count, plural, one {{count} wpis} few {{count} wpisy} other {{count} wpisów}}",
+      "replies": "{count, plural, one {{count} odpowiedź} few {{count} odpowiedzi} other {{count} odpowiedzi}}",
+      "media": "{count, plural, one {{count} zdjęcie} few {{count} zdjęcia} other {{count} zdjęć}}",
+      "likes": "{count, plural, one {{count} polubienie} few {{count} polubienia} other {{count} polubień}}"
+    },
+    "api": {
+      "createPost": {
+        "success": "Wpis został opublikowany.",
+        "error": "Nie udało się opublikować wpisu."
+      },
+      "updatePost": {
+        "success": "Wpis został zaktualizowany.",
+        "error": "Nie udało się zaktualizować wpisu."
+      },
+      "deletePost": {
+        "success": "Wpis został usunięty.",
+        "error": "Nie udało się usunąć wpisu."
+      },
+      "likePost": {
+        "success": "Wpis został polubiony.",
+        "error": "Nie udało się polubić wpisu."
+      },
+      "unlikePost": {
+        "success": "Wpis został odpolubiony.",
+        "error": "Nie udało się odpolubić wpisu."
+      }
+    }
+  },
+
+  "theme": {
+    "dark": "Ciemny",
+    "light": "Jasny",
+    "midnightBlue": "Północny granat",
+    "tokyoNight": "Tokio nocą"
+  },
+
+  "errors": {
+    "validation": {
+      "emailOrScreenName": {
+        "required": "Pola e-mail lub nazwa użytkownika jest wymagane."
+      },
+      "email": {
+        "incorrect": "Wpisz poprawny adres e-mail.",
+        "required": "E-mail jest wymagany.",
+        "max": "E-mail nie może mieć więcej niż {max} znaków."
+      },
+      "password": {
+        "incorrect": "Wpisz poprawne hasło.",
+        "min": "Hasło musi zawierać co najmniej {min} znaków.",
+        "max": "Hasło nie może mieć więcej niż {max} znaków.",
+        "notMatch": "Hasła się nie zgadzają.",
+        "required": "Hasło jest wymagane."
+      },
+      "screenName": {
+        "min": "Nazwa użytkownika musi mieć co najmniej {min} znaków.",
+        "max": "Nazwa użytkownika nie może mieć więcej niż {max} znaków.",
+        "required": "Nazwa użytkownika jest wymagana.",
+        "invalid": "Nieprawidłowe znaki lub za dużo spacji."
+      },
+      "name": {
+        "min": "Imię musi mieć co najmniej {min} znaków.",
+        "max": "Imię nie może mieć więcej niż {max} znaków.",
+        "required": "Imię jest wymagane.",
+        "invalid": "Nieprawidłowe znaki lub zbyt wiele spacji."
+      },
+      "description": {
+        "max": "Opis nie może mieć więcej niż {max} znaków."
+      },
+      "website": {
+        "max": "Strona internetowa nie może mieć więcej niż {max} znaków.",
+        "invalid": "Nieprawidłowy adres URL."
+      }
+    },
+    "file": {
+      "image": {
+        "onePhoto": "Proszę wybrać tylko jedno zdjęcie.",
+        "limit": "Możesz wybrać maksymalnie {limit} zdjęcia.",
+        "maxSize": "Przekroczono maksymalny rozmiar obrazu. Wybierz obraz mniejszy niż {maxSize} MB."
+      },
+      "invalidType": "Nieprawidłowy typ pliku.",
+      "somethingWentWrong": "Nie udało się wrzucić pliku"
+    },
+    "auth": {
+      "login": "Nie udało się zalogować. Sprawdź swoje dane i spróbuj ponownie.",
+      "register": "Nie udało się zarejestrować.",
+      "logout": "Nie udało się wylogować. Spróbuj ponownie."
+    },
+    "api": {
+      "somethingWentWrong": "Coś poszło nie tak. Spróbuj ponownie później."
+    }
+  }
+}
