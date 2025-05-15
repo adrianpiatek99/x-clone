@@ -10,14 +10,13 @@ use validator::Validate;
 
 use crate::{
     db_service::DbService,
-    enums::post_media_type::PostMediaType,
     handlers::middleware::require_session,
     helpers::{
         file::{FILE_VALIDATION_CONFIGS, read_file_data, upload_file, validate_file},
         validation::validate_post_text,
     },
     models::{
-        post::{Post, PostMedia, PostSchema},
+        post::{Post, PostEditHistory, PostMedia, PostSchema},
         user::{BaseUser, UserSelect},
     },
     schema::{
@@ -175,13 +174,14 @@ async fn update_post(
     // Start transaction
     let result = conn.transaction::<_, diesel::result::Error, _>(|conn| {
         // Save edit history
+        let post_edit_history: PostEditHistory = PostEditHistory {
+            post_id: post_schema.id,
+            previous_text: post_schema.text,
+            ..PostEditHistory::default()
+        };
+
         diesel::insert_into(post_edit_history::post_edit_history)
-            .values((
-                post_edit_history::id.eq(Uuid::new_v4()),
-                post_edit_history::post_id.eq(&post_schema.id),
-                post_edit_history::previous_text.eq(&post_schema.text),
-                post_edit_history::edited_at.eq(Utc::now()),
-            ))
+            .values(&post_edit_history)
             .execute(conn)?;
 
         // Update post
@@ -215,17 +215,17 @@ async fn update_post(
                 for (data, mime) in media_files {
                     match upload_file(&data, &mime).await {
                         Ok(file) => {
+                            let new_media = PostMedia {
+                                url: file.url,
+                                width: file.width,
+                                height: file.height,
+                                post_id: post_schema.id,
+                                user_id: session_user_id,
+                                ..PostMedia::default()
+                            };
+
                             if let Err(e) = diesel::insert_into(post_media::post_media)
-                                .values((
-                                    post_media::id.eq(Uuid::new_v4()),
-                                    post_media::url.eq(file.url),
-                                    post_media::width.eq(file.width),
-                                    post_media::height.eq(file.height),
-                                    post_media::type_.eq(PostMediaType::Photo),
-                                    post_media::post_id.eq(&post_schema.id),
-                                    post_media::user_id.eq(session_user_id),
-                                    post_media::created_at.eq(Utc::now()),
-                                ))
+                                .values(&new_media)
                                 .execute(&mut conn)
                             {
                                 return HttpResponse::InternalServerError()

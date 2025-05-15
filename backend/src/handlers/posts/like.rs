@@ -1,5 +1,4 @@
 use actix_web::{HttpRequest, HttpResponse, post, web};
-use chrono::Utc;
 use diesel::{prelude::*, result::Error::NotFound};
 use serde::{Deserialize, Serialize};
 use ts_rs::TS;
@@ -58,13 +57,15 @@ async fn like_post(
         }),
         Err(NotFound) => {
             // User hasn't liked this post yet, proceed with inserting new like
+
+            let new_like: PostLikeSchema = PostLikeSchema {
+                post_id,
+                user_id: session_user_id,
+                ..PostLikeSchema::default()
+            };
+
             let insert_result = diesel::insert_into(post_likes::post_likes)
-                .values((
-                    post_likes::id.eq(Uuid::new_v4()),
-                    post_likes::post_id.eq(post_id),
-                    post_likes::user_id.eq(session_user_id),
-                    post_likes::created_at.eq(Utc::now()),
-                ))
+                .values(&new_like)
                 .execute(&mut conn);
 
             match insert_result {

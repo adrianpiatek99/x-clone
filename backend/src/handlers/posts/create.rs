@@ -11,7 +11,6 @@ use validator::Validate;
 
 use crate::{
     db_service::DbService,
-    enums::post_media_type::PostMediaType,
     handlers::middleware::require_session,
     helpers::{
         file::{
@@ -110,6 +109,13 @@ async fn create_post(
     let mut conn = db.get_conn();
 
     // Create post
+    // let new_post = PostSchema {
+    //     text,
+    //     author_id: session_user_id,
+    //     hashtags: None,
+    //     ..PostSchema::default()
+    // };
+
     let post = match diesel::insert_into(posts::posts)
         .values((
             posts::id.eq(Uuid::new_v4()),
@@ -133,23 +139,23 @@ async fn create_post(
         for (data, mime) in media_files {
             match upload_file(&data, &mime).await {
                 Ok(file) => {
+                    let new_media = PostMedia {
+                        url: file.url,
+                        width: file.width,
+                        height: file.height,
+                        post_id: post.id,
+                        user_id: session_user_id,
+                        ..PostMedia::default()
+                    };
+
                     if let Err(_) = diesel::insert_into(post_media::post_media)
-                        .values((
-                            post_media::id.eq(Uuid::new_v4()),
-                            post_media::url.eq(file.url),
-                            post_media::width.eq(file.width),
-                            post_media::height.eq(file.height),
-                            post_media::type_.eq(PostMediaType::Photo),
-                            post_media::post_id.eq(post.id),
-                            post_media::user_id.eq(session_user_id),
-                            post_media::created_at.eq(Utc::now()),
-                        ))
+                        .values(&new_media)
                         .execute(&mut conn)
                     {
                         return HttpResponse::InternalServerError().json("Failed to save media");
                     }
                 }
-                Err(e) => {
+                Err(_) => {
                     return HttpResponse::InternalServerError().json("Failed to upload media");
                 }
             }
