@@ -8,6 +8,7 @@ import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 import type { ProfileParams } from '../../layout';
+import { ProfileHeroFollowButton } from './ProfileHeroFollowButton';
 
 const LazyEditProfileModal = dynamic(() => import('@/components/organisms/EditProfileModal'), {
   ssr: false,
@@ -35,7 +36,7 @@ export const ProfileHeroActions = () => {
           {t('profilePage.actions.edit')}
         </Button>
       ) : (
-        <Button variant='tinted'>{t('actions.follow')}</Button>
+        <ProfileHeroFollowButton />
       )}
       {isMe && (
         <LazyEditProfileModal

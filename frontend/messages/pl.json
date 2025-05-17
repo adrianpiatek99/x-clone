@@ -27,6 +27,7 @@
     "showMore": "Pokaż więcej",
     "back": "Wróć",
     "follow": "Obserwuj",
+    "unfollow": "Nie obserwuj",
     "addPhoto": "Dodaj zdjęcie",
     "removePhoto": "Usuń zdjęcie",
     "retry": "Spróbuj ponownie",
@@ -229,6 +230,23 @@
       "unlikePost": {
         "success": "Wpis został odpolubiony.",
         "error": "Nie udało się odpolubić wpisu."
+      }
+    }
+  },
+
+  "user": {
+    "confirmUnfollowModal": {
+      "title": "Odobserwować {name}?",
+      "description": "Nie będziesz widzieć wpisów od {name} na swojej osi czasu. Zawsze możesz zacząć obserwować ponownie."
+    },
+    "api": {
+      "follow": {
+        "success": "Użytkownik został obserwowany.",
+        "error": "Nie udało się obserwować użytkownika."
+      },
+      "unfollow": {
+        "success": "Użytkownik został odobserwowany.",
+        "error": "Nie udało się odobserwować użytkownika."
       }
     }
   },

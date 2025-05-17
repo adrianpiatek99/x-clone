@@ -11,7 +11,7 @@ import type {
   UnlikePostParams,
   UpdatePostParams,
 } from '@/types/post';
-import type { GetProfileDetailsParams } from '@/types/user';
+import type { FollowUserParams, GetProfileDetailsParams, UnfollowUserParams } from '@/types/user';
 import { createUrlWithParams } from '@/utils/urlParams';
 
 export const API_ENDPOINTS = {
@@ -45,5 +45,9 @@ export const API_ENDPOINTS = {
     UPDATE: '/api/profile/update',
     DETAILS: ({ screenName }: GetProfileDetailsParams) =>
       `/api/profile/details/${screenName}` as const,
+  },
+  USERS: {
+    FOLLOW: ({ userId }: FollowUserParams) => `/api/users/follow/${userId}` as const,
+    UNFOLLOW: ({ userId }: UnfollowUserParams) => `/api/users/unfollow/${userId}` as const,
   },
 } as const;

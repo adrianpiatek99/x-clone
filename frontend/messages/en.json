@@ -27,6 +27,7 @@
     "showMore": "Show more",
     "back": "Back",
     "follow": "Follow",
+    "unfollow": "Unfollow",
     "addPhoto": "Add photo",
     "removePhoto": "Remove photo",
     "retry": "Retry",
@@ -228,6 +229,23 @@
       "unlikePost": {
         "success": "Post unliked successfully.",
         "error": "Failed to unlike post."
+      }
+    }
+  },
+
+  "user": {
+    "confirmUnfollowModal": {
+      "title": "Unfollow {name}?",
+      "description": "You won't see {name}'s posts in your timeline. You can always follow them again."
+    },
+    "api": {
+      "follow": {
+        "success": "User followed successfully.",
+        "error": "Failed to follow user."
+      },
+      "unfollow": {
+        "success": "User unfollowed successfully.",
+        "error": "Failed to unfollow user."
       }
     }
   },

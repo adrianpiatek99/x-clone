@@ -131,3 +131,29 @@ pub struct CurrentUser {
     #[ts(type = "number")]
     pub following_count: i64,
 }
+
+#[derive(Queryable, Serialize, Selectable, Insertable, TS, Debug)]
+#[diesel(table_name = crate::schema::follows)]
+#[diesel(check_for_backend(diesel::pg::Pg))]
+#[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/user.ts")]
+pub struct Follow {
+    pub id: Uuid,
+    pub follower_id: Uuid,
+    pub following_id: Uuid,
+    #[ts(type = "Date")]
+    pub created_at: DateTime<Utc>,
+}
+
+impl Default for Follow {
+    fn default() -> Self {
+        let now = Utc::now();
+
+        Self {
+            id: Uuid::new_v4(),
+            follower_id: Uuid::new_v4(),
+            following_id: Uuid::new_v4(),
+            created_at: now,
+        }
+    }
+}

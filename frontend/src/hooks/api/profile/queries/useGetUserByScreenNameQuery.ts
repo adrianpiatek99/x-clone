@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { useAuth } from '@/components/context/AuthContext';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
@@ -15,36 +17,28 @@ export const useGetUserByScreenNameQuery = ({ screenName, enabled = true }: Prop
   const { data, isLoading, isRefetching, isError } = useQuery<GetProfileDetailsResponse>({
     queryKey: QUERY_KEYS.PROFILE.USER_BY_SCREEN_NAME(screenName),
     queryFn: () => apiRequest('GET', API_ENDPOINTS.PROFILE.DETAILS({ screenName })),
-    enabled,
-    initialData: () => {
-      if (user?.screenName === screenName) {
-        return {
-          id: user.id,
-          screenName,
-          name: user.name,
-          avatarUrl: user.avatarUrl,
-          bannerUrl: user.bannerUrl,
-          description: user.description,
-          isVerified: user.isVerified,
-          url: user.url,
-          role: user.role,
-          isFollowing: false,
-          followersCount: user.followersCount,
-          followingCount: user.followingCount,
-          verifiedAt: user.verifiedAt,
-          createdAt: user.createdAt,
-          updatedAt: user.updatedAt,
-        };
-      }
-
-      return undefined;
-    },
+    enabled: enabled && user?.screenName !== screenName,
+    // initialData: () => {
+    //   if (user?.screenName === screenName) {
+    //     return user;
+    //   }
+    // },
+    refetchOnMount: false,
     refetchOnWindowFocus: user?.screenName !== screenName,
-    staleTime: 30 * 1000, // 30 seconds
-    gcTime: user?.screenName === screenName ? 0 : 300 * 1000, // 0 if it's the current user, 5 minutes otherwise
+    // staleTime: 30 * 1000, // 30 seconds
+    // gcTime: user?.screenName === screenName ? 0 : 300 * 1000, // 0 if it's the current user, 5 minutes otherwise
   });
-  const isEmpty = !data && !isLoading;
   const isMe = user?.screenName === data?.screenName;
 
-  return { data, isLoading, isRefetching, isError, isEmpty, isMe };
+  const userData = useMemo(() => {
+    if (user?.screenName === screenName) {
+      return user;
+    }
+
+    return data;
+  }, [data, user, screenName]);
+
+  const isEmpty = !userData && !isLoading;
+
+  return { data: userData, isLoading, isRefetching, isError, isEmpty, isMe };
 };

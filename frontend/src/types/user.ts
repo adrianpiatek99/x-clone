@@ -35,6 +35,12 @@ export type CurrentUser = {
   updatedAt: Date;
 };
 
+export type Follow = { id: string; followerId: string; followingId: string; createdAt: Date };
+
+export type FollowUserParams = { userId: string };
+
+export type FollowUserResponse = { id: string; message: string };
+
 export type GetProfileDetailsParams = { screenName: string };
 
 export type GetProfileDetailsResponse = {
@@ -72,6 +78,10 @@ export type ProfileUser = {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type UnfollowUserParams = { userId: string };
+
+export type UnfollowUserResponse = { id: string; message: string };
 
 export type UpdateProfileRequest = {
   name: string;
