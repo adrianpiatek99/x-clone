@@ -1,5 +1,7 @@
 pub mod details;
 pub mod follow;
+pub mod get_followers;
+pub mod get_following;
 pub mod unfollow;
 pub mod update;
 
@@ -11,7 +13,9 @@ pub fn config(cfg: &mut web::ServiceConfig) {
     cfg.service(
         web::scope("/api/users")
             .service(follow::follow_user)
-            .service(unfollow::unfollow_user),
+            .service(unfollow::unfollow_user)
+            .service(get_following::get_following)
+            .service(get_followers::get_followers),
     );
 
     cfg.service(

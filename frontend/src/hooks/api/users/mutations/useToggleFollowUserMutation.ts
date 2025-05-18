@@ -6,17 +6,21 @@ import { useGlobalStore } from '@/stores/global';
 import type {
   FollowUserParams,
   FollowUserResponse,
+  GetFollowersResponse,
+  GetFollowingResponse,
   GetProfileDetailsResponse,
   UnfollowUserParams,
   UnfollowUserResponse,
 } from '@/types/user';
 import { apiRequest } from '@/utils/api';
-import { updateItemInCache } from '@/utils/queryCache';
+import type { InfiniteQueryData } from '@/utils/queryCache';
+import { updateInfiniteQueryWithUpdatedItem, updateItemInCache } from '@/utils/queryCache';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 
 type Props = {
   screenName: string;
+  userId: string;
   onSuccess?: () => void;
   onError?: () => void;
   onSettled?: () => void;
@@ -24,6 +28,7 @@ type Props = {
 
 export const useToggleFollowUserMutation = ({
   screenName,
+  userId,
   onSuccess,
   onError,
   onSettled,
@@ -49,6 +54,30 @@ export const useToggleFollowUserMutation = ({
           user.isFollowing = true;
           user.followersCount++;
         }
+      );
+
+      queryClient.setQueriesData<InfiniteQueryData<GetFollowersResponse | GetFollowingResponse>>(
+        {
+          predicate: (query) => {
+            const queryKey = query.queryKey as unknown[];
+
+            return (
+              (queryKey.includes('followers') || queryKey.includes('following')) &&
+              queryKey.includes('infinite')
+            );
+          },
+        },
+        (oldData) =>
+          updateInfiniteQueryWithUpdatedItem(
+            oldData,
+            userId,
+            (item) => {
+              item.isFollowing = true;
+            },
+            {
+              itemsKey: 'users',
+            }
+          )
       );
 
       if (user) {
@@ -86,6 +115,30 @@ export const useToggleFollowUserMutation = ({
         }
       );
 
+      queryClient.setQueriesData<InfiniteQueryData<GetFollowersResponse | GetFollowingResponse>>(
+        {
+          predicate: (query) => {
+            const queryKey = query.queryKey as unknown[];
+
+            return (
+              (queryKey.includes('followers') || queryKey.includes('following')) &&
+              queryKey.includes('infinite')
+            );
+          },
+        },
+        (oldData) =>
+          updateInfiniteQueryWithUpdatedItem(
+            oldData,
+            userId,
+            (item) => {
+              item.isFollowing = false;
+            },
+            {
+              itemsKey: 'users',
+            }
+          )
+      );
+
       if (user) {
         setUser({ ...user, followingCount: user.followingCount - 1 });
       }
@@ -106,7 +159,7 @@ export const useToggleFollowUserMutation = ({
 
   const isToggleFollowPending = isFollowPending || isUnfollowPending;
 
-  const toggleFollowUser = (userId: string, isFollowing: boolean) => {
+  const toggleFollowUser = (isFollowing: boolean) => {
     if (isToggleFollowPending) return;
 
     if (!user) {

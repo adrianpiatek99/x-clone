@@ -12,7 +12,7 @@ type Props = {
 export const useGetUserLikesQuery = ({ screenName, enabled = true, limit = 30 }: Props) => {
   const result = useInfiniteQuery<GetUserLikesResponse>({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: QUERY_KEYS.POSTS.USER_LIKES(screenName),
+    queryKey: QUERY_KEYS.POSTS.USER_LIKES.WITH_PARAMS(screenName),
     queryFn: async ({ pageParam }) =>
       apiRequest(
         'GET',

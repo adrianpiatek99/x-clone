@@ -8,8 +8,6 @@ use ts_rs::TS;
 use crate::{
     db_service::DbService,
     handlers::middleware::try_get_session,
-
-    // schema::posts::dsl as posts;
     models::user::{ProfileUser, UserSelect},
     schema::follows::dsl as follows,
     schema::users::dsl as users,

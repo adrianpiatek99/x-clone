@@ -10,11 +10,11 @@ import { VirtualScrollKeys } from '@/stores/virtualScroll';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-import type { ProfileParams } from './layout';
+import type { ProfilePageParams } from '../layout';
 
 export default function ProfilePage() {
   const t = useTranslations();
-  const { screenName } = useParams<ProfileParams>();
+  const { screenName } = useParams<ProfilePageParams>();
   const { flatData, ...restResult } = useGetUserPostsQuery({ screenName });
 
   return (

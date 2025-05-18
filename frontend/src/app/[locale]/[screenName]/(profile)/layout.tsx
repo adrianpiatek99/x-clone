@@ -15,16 +15,13 @@ import { usePathname } from '@/i18n/routing';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
+import type { ProfilePageParams } from '../layout';
 import ProfileHero from './_components/ProfileHero';
 import ProfileTabs from './_components/ProfileTabs';
 
-export type ProfileParams = {
-  screenName: string;
-};
-
 export default function Layout({ children }: PropsWithChildren) {
   const t = useTranslations();
-  const { screenName } = useParams<ProfileParams>();
+  const { screenName } = useParams<ProfilePageParams>();
   const pathname = usePathname();
   const { data, isRefetching } = useGetUserByScreenNameQuery({
     screenName,

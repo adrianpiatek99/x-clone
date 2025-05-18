@@ -55,7 +55,7 @@ export const useUpdatePostMutation = ({ onSuccess, onError, onSettled }: Props =
 
       updateItemInInfiniteQueryCache<GetUserPostsResponse>(
         queryClient,
-        QUERY_KEYS.POSTS.USER_POSTS(updatedPost.author.screenName),
+        QUERY_KEYS.POSTS.USER_POSTS.WITH_PARAMS(updatedPost.author.screenName),
         updatedPost.id,
         (post) => Object.assign(post, updatedPost),
         { itemsKey: 'posts' }
@@ -63,7 +63,7 @@ export const useUpdatePostMutation = ({ onSuccess, onError, onSettled }: Props =
 
       updateItemInInfiniteQueryCache<GetUserLikesResponse>(
         queryClient,
-        QUERY_KEYS.POSTS.USER_LIKES(updatedPost.author.screenName),
+        QUERY_KEYS.POSTS.USER_LIKES.WITH_PARAMS(updatedPost.author.screenName),
         updatedPost.id,
         (post) => Object.assign(post, updatedPost),
         { itemsKey: 'posts', findByKey: 'id' }

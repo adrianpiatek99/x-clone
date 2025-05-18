@@ -66,7 +66,7 @@ const updateInfiniteQueryWithDeletedItem = <
   });
 };
 
-const updateInfiniteQueryWithUpdatedItem = <
+export const updateInfiniteQueryWithUpdatedItem = <
   TResponse extends { nextCursor: unknown },
   TItemsKey extends keyof Omit<TResponse, 'nextCursor' | 'totalCount'> & string,
   TItem extends TResponse[TItemsKey] extends (infer U)[] ? U & { id: string } : never,
@@ -275,3 +275,6 @@ export const updateTotalCountInInfiniteQueryCache = <TResponse extends { totalCo
     });
   });
 };
+
+export const compareQueryKeys = (queryKey: readonly unknown[], targetKey: readonly string[]) =>
+  queryKey.join('').includes(targetKey.join(''));

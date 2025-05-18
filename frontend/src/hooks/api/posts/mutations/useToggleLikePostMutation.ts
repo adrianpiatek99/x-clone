@@ -14,10 +14,14 @@ import type {
   UnlikePostResponse,
 } from '@/types/post';
 import { apiRequest } from '@/utils/api';
-import { updateItemInCache, updateItemInInfiniteQueryCache } from '@/utils/queryCache';
+import type { InfiniteQueryData } from '@/utils/queryCache';
+import {
+  compareQueryKeys,
+  updateInfiniteQueryWithUpdatedItem,
+  updateItemInCache,
+} from '@/utils/queryCache';
 import { useMutation } from '@tanstack/react-query';
 import { useQueryClient } from '@tanstack/react-query';
-import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 type Props = {
@@ -27,9 +31,8 @@ type Props = {
   onSettled?: () => void;
 };
 
-export const useToggleLikePostMutation = ({ screenName, onSuccess, onError, onSettled }: Props) => {
+export const useToggleLikePostMutation = ({ onSuccess, onError, onSettled }: Props) => {
   const t = useTranslations();
-  const params = useParams<{ screenName: string }>();
   const queryClient = useQueryClient();
   const { addToast } = useToasts();
   const { user } = useAuth();
@@ -45,51 +48,33 @@ export const useToggleLikePostMutation = ({ screenName, onSuccess, onError, onSe
       addToast('success', t('post.api.likePost.success'));
 
       // Update the cache with the updated post
-      updateItemInInfiniteQueryCache<GetGlobalTimelineResponse>(
-        queryClient,
-        QUERY_KEYS.POSTS.GLOBAL_TIMELINE,
-        id,
-        (post) => {
-          post.isLiked = true;
-          post.likesCount++;
-        },
-        { itemsKey: 'posts' }
-      );
+      queryClient.setQueriesData<
+        InfiniteQueryData<GetGlobalTimelineResponse | GetUserPostsResponse | GetUserLikesResponse>
+      >(
+        {
+          predicate: (query) => {
+            const queryKey = query.queryKey;
 
-      updateItemInInfiniteQueryCache<GetUserPostsResponse>(
-        queryClient,
-        QUERY_KEYS.POSTS.USER_POSTS(screenName),
-        id,
-        (post) => {
-          post.isLiked = true;
-          post.likesCount++;
+            return (
+              compareQueryKeys(queryKey, QUERY_KEYS.POSTS.GLOBAL_TIMELINE) ||
+              compareQueryKeys(queryKey, QUERY_KEYS.POSTS.USER_POSTS.BASE) ||
+              compareQueryKeys(queryKey, QUERY_KEYS.POSTS.USER_LIKES.BASE)
+            );
+          },
         },
-        { itemsKey: 'posts' }
+        (oldData) =>
+          updateInfiniteQueryWithUpdatedItem(
+            oldData,
+            id,
+            (post) => {
+              post.isLiked = true;
+              post.likesCount++;
+            },
+            {
+              itemsKey: 'posts',
+            }
+          )
       );
-
-      if (params.screenName) {
-        updateItemInInfiniteQueryCache<GetUserLikesResponse>(
-          queryClient,
-          QUERY_KEYS.POSTS.USER_LIKES(params.screenName),
-          id,
-          (post) => {
-            post.isLiked = true;
-            post.likesCount++;
-          },
-          { itemsKey: 'posts', findByKey: 'id' }
-        );
-      } else {
-        updateItemInInfiniteQueryCache<GetUserLikesResponse>(
-          queryClient,
-          QUERY_KEYS.POSTS.USER_LIKES(screenName),
-          id,
-          (post) => {
-            post.isLiked = true;
-            post.likesCount++;
-          },
-          { itemsKey: 'posts', findByKey: 'id' }
-        );
-      }
 
       // Update the total count of likes
       // updateTotalCountInInfiniteQueryCache<GetUserLikesResponse>(
@@ -129,51 +114,33 @@ export const useToggleLikePostMutation = ({ screenName, onSuccess, onError, onSe
       addToast('success', t('post.api.unlikePost.success'));
 
       // Update the cache with the updated post
-      updateItemInInfiniteQueryCache<GetGlobalTimelineResponse>(
-        queryClient,
-        QUERY_KEYS.POSTS.GLOBAL_TIMELINE,
-        id,
-        (post) => {
-          post.isLiked = false;
-          post.likesCount--;
-        },
-        { itemsKey: 'posts' }
-      );
+      queryClient.setQueriesData<
+        InfiniteQueryData<GetGlobalTimelineResponse | GetUserPostsResponse | GetUserLikesResponse>
+      >(
+        {
+          predicate: (query) => {
+            const queryKey = query.queryKey;
 
-      updateItemInInfiniteQueryCache<GetUserPostsResponse>(
-        queryClient,
-        QUERY_KEYS.POSTS.USER_POSTS(screenName),
-        id,
-        (post) => {
-          post.isLiked = false;
-          post.likesCount--;
+            return (
+              compareQueryKeys(queryKey, QUERY_KEYS.POSTS.GLOBAL_TIMELINE) ||
+              compareQueryKeys(queryKey, QUERY_KEYS.POSTS.USER_POSTS.BASE) ||
+              compareQueryKeys(queryKey, QUERY_KEYS.POSTS.USER_LIKES.BASE)
+            );
+          },
         },
-        { itemsKey: 'posts' }
+        (oldData) =>
+          updateInfiniteQueryWithUpdatedItem(
+            oldData,
+            id,
+            (post) => {
+              post.isLiked = false;
+              post.likesCount--;
+            },
+            {
+              itemsKey: 'posts',
+            }
+          )
       );
-
-      if (params.screenName) {
-        updateItemInInfiniteQueryCache<GetUserLikesResponse>(
-          queryClient,
-          QUERY_KEYS.POSTS.USER_LIKES(params.screenName),
-          id,
-          (post) => {
-            post.isLiked = false;
-            post.likesCount--;
-          },
-          { itemsKey: 'posts', findByKey: 'id' }
-        );
-      } else {
-        updateItemInInfiniteQueryCache<GetUserLikesResponse>(
-          queryClient,
-          QUERY_KEYS.POSTS.USER_LIKES(screenName),
-          id,
-          (post) => {
-            post.isLiked = false;
-            post.likesCount--;
-          },
-          { itemsKey: 'posts', findByKey: 'id' }
-        );
-      }
 
       // Update the total count of likes
       // updateTotalCountInInfiniteQueryCache<GetUserLikesResponse>(

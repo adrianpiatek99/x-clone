@@ -136,7 +136,9 @@
       "posts": "Posts",
       "replies": "Replies",
       "media": "Media",
-      "likes": "Likes"
+      "likes": "Likes",
+      "following": "Following",
+      "followers": "Followers"
     },
     "photosAndVideos": "Photos & Videos",
     "following": "Following",
@@ -165,6 +167,18 @@
         "empty": {
           "title": "You don't have any likes yet",
           "description": "Tap the heart on any post to show it some love. When you do, it'll show up here."
+        }
+      },
+      "followers": {
+        "empty": {
+          "title": "You don't have any followers yet",
+          "description": "When someone follows you, it'll show up here."
+        }
+      },
+      "following": {
+        "empty": {
+          "title": "You don't have any following yet",
+          "description": "When you follow someone, it'll show up here."
         }
       }
     }

@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 
 import Button from '@/components/atoms/Button';
-import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/queries';
 import { useToggleFollowUserMutation } from '@/hooks/api/users/mutations';
+import type { ProfileUser } from '@/types/user';
 import dynamic from 'next/dynamic';
-import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-
-import type { ProfileParams } from '../../layout';
 
 const LazyConfirmModal = dynamic(
   () => import('@/components/atoms/ConfirmModal').then((mod) => mod.ConfirmModal),
@@ -16,29 +13,31 @@ const LazyConfirmModal = dynamic(
   }
 );
 
-export const ProfileHeroFollowButton = () => {
+type Props = {
+  isMe: boolean;
+  profileUserData: Pick<ProfileUser, 'id' | 'name' | 'screenName' | 'isFollowing'>;
+};
+
+export const FollowButton = ({
+  isMe,
+  profileUserData: { id, name, screenName, isFollowing },
+}: Props) => {
   const t = useTranslations();
-  const { screenName } = useParams<ProfileParams>();
-  const { data, isMe } = useGetUserByScreenNameQuery({
-    screenName,
-    enabled: false,
-  });
   const [isUnfollowModalOpen, setIsUnfollowModalOpen] = useState(false);
   const { toggleFollowUser, isToggleFollowPending } = useToggleFollowUserMutation({
     screenName,
+    userId: id,
   });
 
-  if (!data || isMe) return null;
-
-  const { isFollowing } = data;
+  if (isMe) return null;
 
   const handleUnfollow = () => {
     setIsUnfollowModalOpen(false);
-    toggleFollowUser(data.id, data.isFollowing);
+    toggleFollowUser(isFollowing);
   };
 
   const handleToggleFollow = () =>
-    isFollowing ? setIsUnfollowModalOpen(true) : toggleFollowUser(data.id, data.isFollowing);
+    isFollowing ? setIsUnfollowModalOpen(true) : toggleFollowUser(isFollowing);
 
   return (
     <>
@@ -51,8 +50,8 @@ export const ProfileHeroFollowButton = () => {
         {isFollowing ? t('actions.unfollow') : t('actions.follow')}
       </Button>
       <LazyConfirmModal
-        title={t('user.confirmUnfollowModal.title', { name: data.name })}
-        description={t('user.confirmUnfollowModal.description', { name: data.name })}
+        title={t('user.confirmUnfollowModal.title', { name })}
+        description={t('user.confirmUnfollowModal.description', { name })}
         acceptButtonText={t('actions.unfollow')}
         isOpen={isUnfollowModalOpen}
         onClose={() => setIsUnfollowModalOpen(false)}

@@ -13,22 +13,22 @@ type Props = GetProfileDetailsParams & {
 
 export const useGetUserByScreenNameQuery = ({ screenName, enabled = true }: Props) => {
   const { user } = useAuth();
+  const isMe = user?.screenName === screenName;
 
   const { data, isLoading, isRefetching, isError } = useQuery<GetProfileDetailsResponse>({
     queryKey: QUERY_KEYS.PROFILE.USER_BY_SCREEN_NAME(screenName),
     queryFn: () => apiRequest('GET', API_ENDPOINTS.PROFILE.DETAILS({ screenName })),
-    enabled: enabled && user?.screenName !== screenName,
+    enabled: enabled && !isMe,
     // initialData: () => {
     //   if (user?.screenName === screenName) {
     //     return user;
     //   }
     // },
     refetchOnMount: false,
-    refetchOnWindowFocus: user?.screenName !== screenName,
+    refetchOnWindowFocus: !isMe,
     // staleTime: 30 * 1000, // 30 seconds
     // gcTime: user?.screenName === screenName ? 0 : 300 * 1000, // 0 if it's the current user, 5 minutes otherwise
   });
-  const isMe = user?.screenName === data?.screenName;
 
   const userData = useMemo(() => {
     if (user?.screenName === screenName) {
