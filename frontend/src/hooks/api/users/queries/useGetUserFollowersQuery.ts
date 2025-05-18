@@ -12,7 +12,7 @@ type Props = {
 export const useGetUserFollowersQuery = ({ limit = 30, enabled = true, screenName }: Props) => {
   const result = useInfiniteQuery<GetFollowersResponse>({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: QUERY_KEYS.PROFILE.FOLLOWERS(screenName),
+    queryKey: QUERY_KEYS.PROFILE.FOLLOWERS.WITH_PARAMS(screenName),
     queryFn: async ({ pageParam }) =>
       apiRequest(
         'GET',

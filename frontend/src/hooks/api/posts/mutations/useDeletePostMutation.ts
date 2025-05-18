@@ -10,6 +10,7 @@ import type {
 } from '@/types/post';
 import { apiRequest } from '@/utils/api';
 import {
+  compareQueryKeys,
   deleteItemFromInfiniteQueryCache,
   updateTotalCountInInfiniteQueryCache,
 } from '@/utils/queryCache';
@@ -44,46 +45,36 @@ export const useDeletePostMutation = ({ screenName, onSuccess, onError, onSettle
     mutationFn: ({ id }) => apiRequest('DELETE', API_ENDPOINTS.POSTS.DELETE({ id })),
     onMutate: async ({ id }) => {
       // Cancel any outgoing refetches
-      await queryClient.cancelQueries({ queryKey: QUERY_KEYS.POSTS.GLOBAL_TIMELINE });
+      await queryClient.cancelQueries({ queryKey: QUERY_KEYS.POSTS.GLOBAL_TIMELINE.BASE });
+      await queryClient.cancelQueries({ queryKey: QUERY_KEYS.POSTS.USER_POSTS.BASE });
+      await queryClient.cancelQueries({ queryKey: QUERY_KEYS.POSTS.USER_LIKES.BASE });
       await queryClient.cancelQueries({ queryKey: QUERY_KEYS.POSTS.DETAILS(id) });
 
       // Snapshot the previous value
       const previousTimeline = queryClient.getQueryData<GetGlobalTimelineResponse>(
-        QUERY_KEYS.POSTS.GLOBAL_TIMELINE
+        QUERY_KEYS.POSTS.GLOBAL_TIMELINE.BASE
       );
       const previousUserPosts = queryClient.getQueryData<GetUserPostsResponse>(
-        QUERY_KEYS.POSTS.USER_POSTS(screenName)
+        QUERY_KEYS.POSTS.USER_POSTS.WITH_PARAMS(screenName)
       );
       const previousUserLikes = queryClient.getQueryData<GetUserLikesResponse>(
-        QUERY_KEYS.POSTS.USER_LIKES(screenName)
+        QUERY_KEYS.POSTS.USER_LIKES.WITH_PARAMS(screenName)
       );
       const previousPost = queryClient.getQueryData(QUERY_KEYS.POSTS.DETAILS(id));
 
       // Optimistically update the cache
-      deleteItemFromInfiniteQueryCache<GetGlobalTimelineResponse>(
+      deleteItemFromInfiniteQueryCache<
+        GetGlobalTimelineResponse | GetUserPostsResponse | GetUserLikesResponse
+      >(
         queryClient,
-        QUERY_KEYS.POSTS.GLOBAL_TIMELINE,
+        (queryKey) =>
+          compareQueryKeys(queryKey, QUERY_KEYS.POSTS.GLOBAL_TIMELINE.BASE) ||
+          compareQueryKeys(queryKey, QUERY_KEYS.POSTS.USER_POSTS.BASE) ||
+          compareQueryKeys(queryKey, QUERY_KEYS.POSTS.USER_LIKES.BASE),
         id,
-        { itemsKey: 'posts' }
-      );
-
-      deleteItemFromInfiniteQueryCache<GetUserPostsResponse>(
-        queryClient,
-        QUERY_KEYS.POSTS.USER_POSTS(screenName),
-        id,
-        { itemsKey: 'posts' }
-      );
-      updateTotalCountInInfiniteQueryCache<GetUserPostsResponse>(
-        queryClient,
-        QUERY_KEYS.POSTS.USER_POSTS(screenName),
-        (count) => count - 1
-      );
-
-      deleteItemFromInfiniteQueryCache<GetUserLikesResponse>(
-        queryClient,
-        QUERY_KEYS.POSTS.USER_LIKES(screenName),
-        id,
-        { itemsKey: 'posts', deleteByKey: 'id' }
+        {
+          itemsKey: 'posts',
+        }
       );
 
       queryClient.removeQueries({
@@ -93,22 +84,34 @@ export const useDeletePostMutation = ({ screenName, onSuccess, onError, onSettle
       return { previousTimeline, previousUserPosts, previousUserLikes, previousPost };
     },
     onSuccess: () => {
+      updateTotalCountInInfiniteQueryCache<GetUserPostsResponse>(
+        queryClient,
+        QUERY_KEYS.POSTS.USER_POSTS.WITH_PARAMS(screenName),
+        (count) => count - 1
+      );
+
       addToast('success', t('post.api.deletePost.success'));
       onSuccess?.();
     },
     onError: (_err, { id }, context) => {
       // Rollback to the previous state on error
       if (context?.previousTimeline) {
-        queryClient.setQueryData(QUERY_KEYS.POSTS.GLOBAL_TIMELINE, context.previousTimeline);
+        queryClient.setQueryData(QUERY_KEYS.POSTS.GLOBAL_TIMELINE.BASE, context.previousTimeline);
       }
 
-      // if (context?.previousUserPosts) {
-      //   queryClient.setQueryData(QUERY_KEYS.POSTS.USER_POSTS(), context.previousUserPosts);
-      // }
+      if (context?.previousUserPosts) {
+        queryClient.setQueryData(
+          QUERY_KEYS.POSTS.USER_POSTS.WITH_PARAMS(screenName),
+          context.previousUserPosts
+        );
+      }
 
-      // if (context?.previousUserLikes) {
-      //   queryClient.setQueryData(QUERY_KEYS.POSTS.USER_LIKES(), context.previousUserLikes);
-      // }
+      if (context?.previousUserLikes) {
+        queryClient.setQueryData(
+          QUERY_KEYS.POSTS.USER_LIKES.WITH_PARAMS(screenName),
+          context.previousUserLikes
+        );
+      }
 
       if (context?.previousPost) {
         queryClient.setQueryData(QUERY_KEYS.POSTS.DETAILS(id), context.previousPost);

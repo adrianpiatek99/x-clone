@@ -13,8 +13,11 @@ import type {
   UnfollowUserResponse,
 } from '@/types/user';
 import { apiRequest } from '@/utils/api';
-import type { InfiniteQueryData } from '@/utils/queryCache';
-import { updateInfiniteQueryWithUpdatedItem, updateItemInCache } from '@/utils/queryCache';
+import {
+  compareQueryKeys,
+  updateItemInCache,
+  updateItemInInfiniteQueryCache,
+} from '@/utils/queryCache';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 
@@ -56,28 +59,19 @@ export const useToggleFollowUserMutation = ({
         }
       );
 
-      queryClient.setQueriesData<InfiniteQueryData<GetFollowersResponse | GetFollowingResponse>>(
-        {
-          predicate: (query) => {
-            const queryKey = query.queryKey as unknown[];
-
-            return (
-              (queryKey.includes('followers') || queryKey.includes('following')) &&
-              queryKey.includes('infinite')
-            );
-          },
+      updateItemInInfiniteQueryCache<GetFollowersResponse | GetFollowingResponse>(
+        queryClient,
+        (queryKey) =>
+          compareQueryKeys(queryKey, QUERY_KEYS.PROFILE.FOLLOWERS.BASE) ||
+          compareQueryKeys(queryKey, QUERY_KEYS.PROFILE.FOLLOWING.BASE),
+        userId,
+        (item) => {
+          item.isFollowing = true;
+          item.followersCount++;
         },
-        (oldData) =>
-          updateInfiniteQueryWithUpdatedItem(
-            oldData,
-            userId,
-            (item) => {
-              item.isFollowing = true;
-            },
-            {
-              itemsKey: 'users',
-            }
-          )
+        {
+          itemsKey: 'users',
+        }
       );
 
       if (user) {
@@ -115,28 +109,19 @@ export const useToggleFollowUserMutation = ({
         }
       );
 
-      queryClient.setQueriesData<InfiniteQueryData<GetFollowersResponse | GetFollowingResponse>>(
-        {
-          predicate: (query) => {
-            const queryKey = query.queryKey as unknown[];
-
-            return (
-              (queryKey.includes('followers') || queryKey.includes('following')) &&
-              queryKey.includes('infinite')
-            );
-          },
+      updateItemInInfiniteQueryCache<GetFollowersResponse | GetFollowingResponse>(
+        queryClient,
+        (queryKey) =>
+          compareQueryKeys(queryKey, QUERY_KEYS.PROFILE.FOLLOWERS.BASE) ||
+          compareQueryKeys(queryKey, QUERY_KEYS.PROFILE.FOLLOWING.BASE),
+        userId,
+        (item) => {
+          item.isFollowing = false;
+          item.followersCount--;
         },
-        (oldData) =>
-          updateInfiniteQueryWithUpdatedItem(
-            oldData,
-            userId,
-            (item) => {
-              item.isFollowing = false;
-            },
-            {
-              itemsKey: 'users',
-            }
-          )
+        {
+          itemsKey: 'users',
+        }
       );
 
       if (user) {

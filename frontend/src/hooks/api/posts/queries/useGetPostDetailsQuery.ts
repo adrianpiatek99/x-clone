@@ -23,7 +23,7 @@ export const useGetPostDetailsQuery = ({ id, enabled = true }: Props) => {
     queryFn: () => apiRequest('GET', API_ENDPOINTS.POSTS.DETAILS({ postId: id })),
     enabled: enabled && !!id,
     initialData: () => {
-      const globalTimelineState = queryClient.getQueryState(QUERY_KEYS.POSTS.GLOBAL_TIMELINE);
+      const globalTimelineState = queryClient.getQueryState(QUERY_KEYS.POSTS.GLOBAL_TIMELINE.BASE);
 
       if (globalTimelineState && Date.now() - globalTimelineState.dataUpdatedAt <= 60 * 1000) {
         const timelineData =

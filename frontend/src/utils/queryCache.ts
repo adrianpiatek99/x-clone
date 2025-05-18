@@ -66,7 +66,7 @@ const updateInfiniteQueryWithDeletedItem = <
   });
 };
 
-export const updateInfiniteQueryWithUpdatedItem = <
+const updateInfiniteQueryWithUpdatedItem = <
   TResponse extends { nextCursor: unknown },
   TItemsKey extends keyof Omit<TResponse, 'nextCursor' | 'totalCount'> & string,
   TItem extends TResponse[TItemsKey] extends (infer U)[] ? U & { id: string } : never,
@@ -101,7 +101,7 @@ export const updateInfiniteQueryWithUpdatedItem = <
 
 export const addItemToInfiniteQueryCache = <TResponse extends { nextCursor: unknown }>(
   queryClient: QueryClient,
-  queryKey: QueryKey,
+  compareQueryKeys: (queryKey: readonly unknown[]) => boolean,
   newItem: TResponse[keyof Omit<TResponse, 'nextCursor' | 'totalCount'> &
     string] extends (infer U)[]
     ? U & { id: string }
@@ -111,10 +111,11 @@ export const addItemToInfiniteQueryCache = <TResponse extends { nextCursor: unkn
     position?: 'start' | 'end';
   }
 ) => {
-  const { itemsKey, position = 'start' } = options;
-
-  queryClient.setQueryData<InfiniteQueryData<TResponse>>(queryKey, (oldData) =>
-    updateInfiniteQueryWithNewItem(oldData, newItem, { itemsKey, position })
+  queryClient.setQueriesData<InfiniteQueryData<TResponse>>(
+    {
+      predicate: (query) => compareQueryKeys(query.queryKey),
+    },
+    (oldData) => updateInfiniteQueryWithNewItem(oldData, newItem, options)
   );
 };
 
@@ -152,15 +153,18 @@ export const addItemToSimpleArrayCache = <TItem extends { id: string }>(
 
 export const deleteItemFromInfiniteQueryCache = <TResponse extends { nextCursor: unknown }>(
   queryClient: QueryClient,
-  queryKey: QueryKey,
+  compareQueryKeys: (queryKey: readonly unknown[]) => boolean,
   itemId: string,
   options: {
     deleteByKey?: string;
     itemsKey: keyof Omit<TResponse, 'nextCursor' | 'totalCount'> & string;
   }
 ) => {
-  queryClient.setQueryData<InfiniteQueryData<TResponse>>(queryKey, (oldData) =>
-    updateInfiniteQueryWithDeletedItem(oldData, itemId, options)
+  queryClient.setQueriesData<InfiniteQueryData<TResponse>>(
+    {
+      predicate: (query) => compareQueryKeys(query.queryKey),
+    },
+    (oldData) => updateInfiniteQueryWithDeletedItem(oldData, itemId, options)
   );
 };
 
@@ -205,7 +209,7 @@ export const deleteItemFromCache = <TItem extends { id: string }>(
 
 export const updateItemInInfiniteQueryCache = <TResponse extends { nextCursor: unknown }>(
   queryClient: QueryClient,
-  queryKey: QueryKey,
+  compareQueryKeys: (queryKey: readonly unknown[]) => boolean,
   itemId: string,
   updateFn: (
     item: Draft<
@@ -219,8 +223,11 @@ export const updateItemInInfiniteQueryCache = <TResponse extends { nextCursor: u
     itemsKey: keyof Omit<TResponse, 'nextCursor' | 'totalCount'> & string;
   }
 ) => {
-  queryClient.setQueryData<InfiniteQueryData<TResponse>>(queryKey, (oldData) =>
-    updateInfiniteQueryWithUpdatedItem(oldData, itemId, updateFn, options)
+  queryClient.setQueriesData<InfiniteQueryData<TResponse>>(
+    {
+      predicate: (query) => compareQueryKeys(query.queryKey),
+    },
+    (oldData) => updateInfiniteQueryWithUpdatedItem(oldData, itemId, updateFn, options)
   );
 };
 

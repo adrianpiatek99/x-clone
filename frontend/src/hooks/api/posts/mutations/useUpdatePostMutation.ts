@@ -12,7 +12,11 @@ import type {
 } from '@/types/post';
 import { apiRequest } from '@/utils/api';
 import { createFormData } from '@/utils/formData';
-import { updateItemInCache, updateItemInInfiniteQueryCache } from '@/utils/queryCache';
+import {
+  compareQueryKeys,
+  updateItemInCache,
+  updateItemInInfiniteQueryCache,
+} from '@/utils/queryCache';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 
@@ -45,28 +49,17 @@ export const useUpdatePostMutation = ({ onSuccess, onError, onSettled }: Props =
       addToast('success', t('post.api.updatePost.success'));
 
       // Update the cache with the updated post
-      updateItemInInfiniteQueryCache<GetGlobalTimelineResponse>(
+      updateItemInInfiniteQueryCache<
+        GetGlobalTimelineResponse | GetUserPostsResponse | GetUserLikesResponse
+      >(
         queryClient,
-        QUERY_KEYS.POSTS.GLOBAL_TIMELINE,
+        (queryKey) =>
+          compareQueryKeys(queryKey, QUERY_KEYS.POSTS.GLOBAL_TIMELINE.BASE) ||
+          compareQueryKeys(queryKey, QUERY_KEYS.POSTS.USER_POSTS.BASE) ||
+          compareQueryKeys(queryKey, QUERY_KEYS.POSTS.USER_LIKES.BASE),
         updatedPost.id,
         (post) => Object.assign(post, updatedPost),
         { itemsKey: 'posts' }
-      );
-
-      updateItemInInfiniteQueryCache<GetUserPostsResponse>(
-        queryClient,
-        QUERY_KEYS.POSTS.USER_POSTS.WITH_PARAMS(updatedPost.author.screenName),
-        updatedPost.id,
-        (post) => Object.assign(post, updatedPost),
-        { itemsKey: 'posts' }
-      );
-
-      updateItemInInfiniteQueryCache<GetUserLikesResponse>(
-        queryClient,
-        QUERY_KEYS.POSTS.USER_LIKES.WITH_PARAMS(updatedPost.author.screenName),
-        updatedPost.id,
-        (post) => Object.assign(post, updatedPost),
-        { itemsKey: 'posts', findByKey: 'id' }
       );
 
       updateItemInCache<GetPostDetailsResponse>(

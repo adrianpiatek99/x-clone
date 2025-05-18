@@ -11,7 +11,7 @@ type Props = {
 
 export const useGetPostLikesQuery = ({ postId, limit = 20, enabled = true }: Props) => {
   const result = useInfiniteQuery<GetPostLikesResponse>({
-    queryKey: QUERY_KEYS.POSTS.POST_LIKES(postId, limit),
+    queryKey: QUERY_KEYS.POSTS.POST_LIKES.WITH_PARAMS(postId, limit),
     queryFn: async ({ pageParam }) =>
       apiRequest(
         'GET',

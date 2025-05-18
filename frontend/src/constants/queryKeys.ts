@@ -3,7 +3,9 @@ export const QUERY_KEYS = {
     CURRENT_USER: ['currentUser'],
   },
   POSTS: {
-    GLOBAL_TIMELINE: ['globalTimeline', 'infinite'],
+    GLOBAL_TIMELINE: {
+      BASE: ['globalTimeline', 'infinite'],
+    },
     POST_LIKES: {
       BASE: ['postLikes', 'infinite'],
       WITH_PARAMS: (id: string, limit: number) => [...QUERY_KEYS.POSTS.POST_LIKES.BASE, id, limit],
@@ -25,7 +27,13 @@ export const QUERY_KEYS = {
   },
   PROFILE: {
     USER_BY_SCREEN_NAME: (screenName: string) => ['userByScreenName', screenName] as const,
-    FOLLOWERS: (screenName: string) => ['followers', screenName, 'infinite'] as const,
-    FOLLOWING: (screenName: string) => ['following', screenName, 'infinite'] as const,
+    FOLLOWERS: {
+      BASE: ['followers', 'infinite'],
+      WITH_PARAMS: (screenName: string) => [...QUERY_KEYS.PROFILE.FOLLOWERS.BASE, screenName],
+    },
+    FOLLOWING: {
+      BASE: ['following', 'infinite'],
+      WITH_PARAMS: (screenName: string) => [...QUERY_KEYS.PROFILE.FOLLOWING.BASE, screenName],
+    },
   },
 } as const;
