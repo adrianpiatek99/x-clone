@@ -9,10 +9,10 @@ import { useGetPostLikesQuery } from '@/hooks/api/posts/queries';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-import type { PostParams } from '../../(post)/layout';
+import type { PostPageParams } from '../../(post)/layout';
 
 export default function PostLikesPage() {
-  const { id } = useParams<PostParams>();
+  const { id } = useParams<PostPageParams>();
   const t = useTranslations();
   const { flatData, ...restResult } = useGetPostLikesQuery({ postId: id });
 

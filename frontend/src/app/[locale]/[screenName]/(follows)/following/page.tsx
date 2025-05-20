@@ -9,11 +9,11 @@ import { useGetUserFollowingQuery } from '@/hooks/api/users/queries';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-import type { ProfileFollowsParams } from '../layout';
+import type { ProfilePageParams } from '../../layout';
 
 export default function Page() {
   const t = useTranslations();
-  const { screenName } = useParams<ProfileFollowsParams>();
+  const { screenName } = useParams<ProfilePageParams>();
   const { flatData, ...restResult } = useGetUserFollowingQuery({ screenName });
 
   return (

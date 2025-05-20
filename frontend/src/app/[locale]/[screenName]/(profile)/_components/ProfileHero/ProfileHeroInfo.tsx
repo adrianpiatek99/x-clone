@@ -11,18 +11,13 @@ import { useTime } from '@/hooks/useTime';
 import { formatNumber } from '@/utils/formatNumber';
 import { removeHttp } from '@/utils/url';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-
-import type { ProfilePageParams } from '../../../layout';
 
 export const ProfileHeroInfo = () => {
   const t = useTranslations();
-  const { screenName } = useParams<ProfilePageParams>();
   const [animationParent] = useAutoAnimate({ duration: 100 });
   const { getFullDate } = useTime();
   const { data, isLoading } = useGetUserByScreenNameQuery({
-    screenName,
     enabled: false,
   });
 

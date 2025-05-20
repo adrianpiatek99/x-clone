@@ -19,7 +19,6 @@ const ProfileHero = () => {
   const t = useTranslations();
   const { screenName } = useParams<ProfilePageParams>();
   const { data, isLoading, isEmpty } = useGetUserByScreenNameQuery({
-    screenName,
     enabled: false,
   });
 

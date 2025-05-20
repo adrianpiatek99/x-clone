@@ -46,7 +46,6 @@ export const useCreatePostMutation = ({ onSuccess, onSettled }: Props = {}) => {
       const hasMedia = newPost.media.length > 0;
 
       // Update the cache with the new post
-
       if (user) {
         addItemToInfiniteQueryCache<
           GetGlobalTimelineResponse | GetUserPostsResponse | GetUserMediaResponse

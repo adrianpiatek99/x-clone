@@ -23,9 +23,7 @@ export default function Layout({ children }: PropsWithChildren) {
   const t = useTranslations();
   const { screenName } = useParams<ProfilePageParams>();
   const pathname = usePathname();
-  const { data, isRefetching } = useGetUserByScreenNameQuery({
-    screenName,
-  });
+  const { data, isRefetching } = useGetUserByScreenNameQuery();
   const { data: postsData } = useGetUserPostsQuery({ screenName, enabled: false });
   const { data: mediaData } = useGetUserMediaQuery({ screenName, enabled: false });
   const { data: likesData } = useGetUserLikesQuery({ screenName, enabled: false });

@@ -6,13 +6,16 @@ import { QUERY_KEYS } from '@/constants/queryKeys';
 import type { GetProfileDetailsParams, GetProfileDetailsResponse } from '@/types/user';
 import { apiRequest } from '@/utils/api';
 import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'next/navigation';
 
-type Props = GetProfileDetailsParams & {
+type Props = Partial<GetProfileDetailsParams> & {
   enabled?: boolean;
 };
 
-export const useGetUserByScreenNameQuery = ({ screenName, enabled = true }: Props) => {
+export const useGetUserByScreenNameQuery = ({ enabled = true, ...props }: Props = {}) => {
   const { user } = useAuth();
+  const params = useParams<{ screenName: string }>();
+  const screenName = props.screenName ?? params.screenName;
   const isMe = user?.screenName === screenName;
 
   const { data, isLoading, isRefetching, isError } = useQuery<GetProfileDetailsResponse>({

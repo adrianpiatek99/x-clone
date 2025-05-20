@@ -9,14 +9,15 @@ import { useGetPostDetailsQuery } from '@/hooks/api/posts/queries';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-export type PostParams = {
+import type { ProfilePageParams } from '../../../layout';
+
+export type PostPageParams = {
   id: string;
-  screenName: string;
-};
+} & ProfilePageParams;
 
 const Layout = ({ children }: PropsWithChildren) => {
   const t = useTranslations();
-  const { id } = useParams<PostParams>();
+  const { id } = useParams<PostPageParams>();
   const { isRefetching } = useGetPostDetailsQuery({ id });
 
   return (

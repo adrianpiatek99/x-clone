@@ -10,12 +10,12 @@ import { usePathname } from '@/i18n/routing';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-import type { ProfileFollowsParams } from '../../layout';
+import type { ProfilePageParams } from '../../../layout';
 
 const ProfileFollowsHeader = () => {
   const t = useTranslations();
-  const { screenName } = useParams<ProfileFollowsParams>();
-  const { data } = useGetUserByScreenNameQuery({ screenName });
+  const { screenName } = useParams<ProfilePageParams>();
+  const { data } = useGetUserByScreenNameQuery();
   const pathname = usePathname();
   const followersPath = ROUTES.PROFILE.FOLLOWERS(screenName);
   const followingPath = ROUTES.PROFILE.FOLLOWING(screenName);

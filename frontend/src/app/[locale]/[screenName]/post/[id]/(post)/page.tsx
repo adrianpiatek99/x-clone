@@ -7,10 +7,10 @@ import PostDetail, { PostDetailSkeleton } from '@/components/molecules/PostDetai
 import { useGetPostDetailsQuery } from '@/hooks/api/posts/queries';
 import { useParams } from 'next/navigation';
 
-import type { PostParams } from './layout';
+import type { PostPageParams } from './layout';
 
 const PostPage = () => {
-  const { id } = useParams<PostParams>();
+  const { id } = useParams<PostPageParams>();
   const { data, isLoading, isError } = useGetPostDetailsQuery({ id, enabled: false });
 
   return (
