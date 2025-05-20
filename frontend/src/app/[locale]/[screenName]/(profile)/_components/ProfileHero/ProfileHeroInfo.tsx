@@ -59,7 +59,7 @@ export const ProfileHeroInfo = () => {
             </Box>
             {data.description && (
               <Box className='gap-1'>
-                <Typography>{data.description}</Typography>
+                <Typography className='whitespace-pre-line'>{data.description}</Typography>
               </Box>
             )}
             <div className='ml-[-3px]'>

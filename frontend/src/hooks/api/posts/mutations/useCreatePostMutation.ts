@@ -65,14 +65,6 @@ export const useCreatePostMutation = ({ onSuccess, onSettled }: Props = {}) => {
           QUERY_KEYS.POSTS.USER_POSTS.WITH_PARAMS(user.screenName),
           (count) => count + 1
         );
-
-        if (hasMedia) {
-          updateTotalCountInInfiniteQueryCache<GetUserMediaResponse>(
-            queryClient,
-            QUERY_KEYS.POSTS.USER_MEDIA.WITH_PARAMS(user.screenName),
-            (count) => count + 1
-          );
-        }
       }
 
       onSuccess?.();

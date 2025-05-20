@@ -25,13 +25,12 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 
 type Props = {
-  screenName: string;
   onSuccess?: () => void;
   onError?: () => void;
   onSettled?: () => void;
 };
 
-export const useToggleLikePostMutation = ({ screenName, onSuccess, onError, onSettled }: Props) => {
+export const useToggleLikePostMutation = ({ onSuccess, onError, onSettled }: Props = {}) => {
   const t = useTranslations();
   const queryClient = useQueryClient();
   const { addToast } = useToasts();
@@ -74,11 +73,13 @@ export const useToggleLikePostMutation = ({ screenName, onSuccess, onError, onSe
       );
 
       // Update the total count of likes
-      updateTotalCountInInfiniteQueryCache<GetUserLikesResponse>(
-        queryClient,
-        QUERY_KEYS.POSTS.USER_LIKES.WITH_PARAMS(screenName),
-        (count) => count + 1
-      );
+      if (user) {
+        updateTotalCountInInfiniteQueryCache<GetUserLikesResponse>(
+          queryClient,
+          QUERY_KEYS.POSTS.USER_LIKES.WITH_PARAMS(user.screenName),
+          (count) => count + 1
+        );
+      }
 
       onSuccess?.();
     },
@@ -128,11 +129,13 @@ export const useToggleLikePostMutation = ({ screenName, onSuccess, onError, onSe
       );
 
       // Update the total count of likes
-      updateTotalCountInInfiniteQueryCache<GetUserLikesResponse>(
-        queryClient,
-        QUERY_KEYS.POSTS.USER_LIKES.WITH_PARAMS(screenName),
-        (count) => count - 1
-      );
+      if (user) {
+        updateTotalCountInInfiniteQueryCache<GetUserLikesResponse>(
+          queryClient,
+          QUERY_KEYS.POSTS.USER_LIKES.WITH_PARAMS(user.screenName),
+          (count) => count - 1
+        );
+      }
 
       onSuccess?.();
     },
