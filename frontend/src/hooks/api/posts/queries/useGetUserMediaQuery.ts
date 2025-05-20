@@ -12,7 +12,7 @@ type Props = {
 export const useGetUserMediaQuery = ({ screenName, enabled = true, limit = 30 }: Props) => {
   const result = useInfiniteQuery<GetUserMediaResponse>({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: QUERY_KEYS.POSTS.USER_MEDIA(screenName),
+    queryKey: QUERY_KEYS.POSTS.USER_MEDIA.WITH_PARAMS(screenName),
     queryFn: async ({ pageParam }) =>
       apiRequest(
         'GET',

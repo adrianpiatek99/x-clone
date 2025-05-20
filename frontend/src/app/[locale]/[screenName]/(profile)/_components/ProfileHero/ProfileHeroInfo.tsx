@@ -11,18 +11,13 @@ import { useTime } from '@/hooks/useTime';
 import { formatNumber } from '@/utils/formatNumber';
 import { removeHttp } from '@/utils/url';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
-import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-
-import type { ProfileParams } from '../../layout';
 
 export const ProfileHeroInfo = () => {
   const t = useTranslations();
-  const { screenName } = useParams<ProfileParams>();
   const [animationParent] = useAutoAnimate({ duration: 100 });
   const { getFullDate } = useTime();
   const { data, isLoading } = useGetUserByScreenNameQuery({
-    screenName,
     enabled: false,
   });
 
@@ -64,11 +59,11 @@ export const ProfileHeroInfo = () => {
             </Box>
             {data.description && (
               <Box className='gap-1'>
-                <Typography>{data.description}</Typography>
+                <Typography className='whitespace-pre-line'>{data.description}</Typography>
               </Box>
             )}
             <div className='ml-[-3px]'>
-              <div className='inline min-w-0 whitespace-pre-wrap break-words [&>a>span>svg]:[color:theme("colors.text-2")] [&>a>span]:mr-3 [&>a>span]:inline-flex [&>a>span]:items-center [&>a>span]:break-words [&>a>span]:align-middle [&>a>span]:leading-[18px] [&>a]:text-primary [&>a]:hover:underline [&>div]:mr-3 [&>div]:inline-flex [&>div]:items-center [&>div]:break-words [&>div]:align-middle [&>div]:leading-[18px] [&>div]:[color:inherit] [&>span]:mr-3 [&>span]:inline-flex [&>span]:items-center [&>span]:break-words [&>span]:align-middle [&>span]:leading-[18px]'>
+              <div className='[&>a]:text-primary inline min-w-0 whitespace-pre-wrap break-words [&>a>span>svg]:[color:theme("colors.text-2")] [&>a>span]:mr-3 [&>a>span]:inline-flex [&>a>span]:items-center [&>a>span]:break-words [&>a>span]:align-middle [&>a>span]:leading-[18px] [&>a]:hover:underline [&>div]:mr-3 [&>div]:inline-flex [&>div]:items-center [&>div]:break-words [&>div]:align-middle [&>div]:leading-[18px] [&>div]:[color:inherit] [&>span]:mr-3 [&>span]:inline-flex [&>span]:items-center [&>span]:break-words [&>span]:align-middle [&>span]:leading-[18px]'>
                 {data.url && (
                   <Typography
                     href={data.url}

@@ -34,12 +34,7 @@ const PostDetail = ({
       <PostCardText id={id} text={text} author={author} truncate={false} />
       {media.length > 0 && <PostCardMedia media={media} />}
       <PostDetailAdditionalInfo createdAt={createdAt} editedAt={editedAt} />
-      <PostCardActions
-        id={id}
-        isLiked={isLiked}
-        likesCount={likesCount}
-        screenName={author.screenName}
-      />
+      <PostCardActions id={id} isLiked={isLiked} likesCount={likesCount} />
     </Box>
   );
 };

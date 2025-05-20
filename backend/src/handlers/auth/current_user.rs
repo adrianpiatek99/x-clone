@@ -1,5 +1,6 @@
 use actix_web::cookie::{Cookie, SameSite};
 use actix_web::{HttpRequest, HttpResponse, get, web};
+use diesel::dsl::count_star;
 use diesel::prelude::*;
 use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use serde::Serialize;
@@ -11,6 +12,7 @@ use crate::{
     db_service::DbService,
     helpers::token::{decode_token, extend_token_expiration, generate_token, is_token_valid},
     models::user::{CurrentUser, CurrentUserSelect},
+    schema::follows::dsl as follows,
     schema::users::dsl as users,
 };
 
@@ -65,11 +67,25 @@ async fn current_user(db: web::Data<DbService>, req: HttpRequest) -> HttpRespons
         .first::<CurrentUserSelect>(&mut conn)
     {
         Ok(user) => {
+            // Get followers count
+            let followers_count: i64 = follows::follows
+                .filter(follows::following_id.eq(user.id))
+                .select(count_star())
+                .first::<i64>(&mut conn)
+                .unwrap_or(0);
+
+            // Get following count
+            let following_count: i64 = follows::follows
+                .filter(follows::follower_id.eq(user.id))
+                .select(count_star())
+                .first::<i64>(&mut conn)
+                .unwrap_or(0);
+
             let current_user = CurrentUser {
                 user,
                 is_following: false,
-                followers_count: 0,
-                following_count: 0,
+                followers_count,
+                following_count,
             };
 
             let response = GetCurrentUserResponse { user: current_user };

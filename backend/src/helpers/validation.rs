@@ -92,7 +92,11 @@ pub fn validate_password(password: &str) -> Result<(), ValidationError> {
 }
 
 pub fn validate_description(desc: &str) -> Result<(), ValidationError> {
-    let char_count = desc.chars().count();
+    let trimmed_desc = desc
+        .trim()
+        .replace(|c: char| c == '\n', "")
+        .replace(|c: char| c.is_whitespace(), " ");
+    let char_count = trimmed_desc.chars().count();
 
     if char_count > MAX_DESCRIPTION_LENGTH {
         let mut err = ValidationError::new("length");
@@ -110,7 +114,10 @@ pub fn validate_description(desc: &str) -> Result<(), ValidationError> {
 }
 
 pub fn validate_post_text(text: &str) -> Result<(), ValidationError> {
-    let trimmed_text = text.trim().replace(|c: char| c.is_whitespace(), " ");
+    let trimmed_text = text
+        .trim()
+        .replace(|c: char| c == '\n', "")
+        .replace(|c: char| c.is_whitespace(), " ");
     let char_count = trimmed_text.chars().count();
 
     if trimmed_text.is_empty() {
@@ -119,5 +126,6 @@ pub fn validate_post_text(text: &str) -> Result<(), ValidationError> {
     if char_count > MAX_POST_TEXT_LENGTH {
         return Err(ValidationError::new("text_too_long"));
     }
+
     Ok(())
 }

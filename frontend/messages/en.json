@@ -27,6 +27,7 @@
     "showMore": "Show more",
     "back": "Back",
     "follow": "Follow",
+    "unfollow": "Unfollow",
     "addPhoto": "Add photo",
     "removePhoto": "Remove photo",
     "retry": "Retry",
@@ -135,7 +136,9 @@
       "posts": "Posts",
       "replies": "Replies",
       "media": "Media",
-      "likes": "Likes"
+      "likes": "Likes",
+      "following": "Following",
+      "followers": "Followers"
     },
     "photosAndVideos": "Photos & Videos",
     "following": "Following",
@@ -164,6 +167,18 @@
         "empty": {
           "title": "You don't have any likes yet",
           "description": "Tap the heart on any post to show it some love. When you do, it'll show up here."
+        }
+      },
+      "followers": {
+        "empty": {
+          "title": "You don't have any followers yet",
+          "description": "When someone follows you, it'll show up here."
+        }
+      },
+      "following": {
+        "empty": {
+          "title": "You don't have any following yet",
+          "description": "When you follow someone, it'll show up here."
         }
       }
     }
@@ -228,6 +243,23 @@
       "unlikePost": {
         "success": "Post unliked successfully.",
         "error": "Failed to unlike post."
+      }
+    }
+  },
+
+  "user": {
+    "confirmUnfollowModal": {
+      "title": "Unfollow {name}?",
+      "description": "You won't see {name}'s posts in your timeline. You can always follow them again."
+    },
+    "api": {
+      "follow": {
+        "success": "User followed successfully.",
+        "error": "Failed to follow user."
+      },
+      "unfollow": {
+        "success": "User unfollowed successfully.",
+        "error": "Failed to unfollow user."
       }
     }
   },

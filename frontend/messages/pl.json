@@ -27,6 +27,7 @@
     "showMore": "Pokaż więcej",
     "back": "Wróć",
     "follow": "Obserwuj",
+    "unfollow": "Nie obserwuj",
     "addPhoto": "Dodaj zdjęcie",
     "removePhoto": "Usuń zdjęcie",
     "retry": "Spróbuj ponownie",
@@ -135,7 +136,9 @@
       "posts": "Wpisy",
       "replies": "Odpowiedzi",
       "media": "Multimedia",
-      "likes": "Polubienia"
+      "likes": "Polubienia",
+      "following": "Obserwujesz",
+      "followers": "Obserwujących"
     },
     "photosAndVideos": "Zdjęcia i filmy",
     "following": "Obserwujesz",
@@ -164,6 +167,18 @@
         "empty": {
           "title": "Nie masz jeszcze żadnych polubień",
           "description": "Naciśnij serce w dowolnym wpisie, aby wyrazić uznanie. Twoje polubienia pojawią się tutaj."
+        }
+      },
+      "followers": {
+        "empty": {
+          "title": "Nie masz jeszcze żadnych obserwujących",
+          "description": "Kiedy ktoś obserwuje Ciebie, pojawi się tutaj."
+        }
+      },
+      "following": {
+        "empty": {
+          "title": "Nie obserwujesz jeszcze żadnych osób",
+          "description": "Kiedy obserwujesz kogoś, pojawi się tutaj."
         }
       }
     }
@@ -229,6 +244,23 @@
       "unlikePost": {
         "success": "Wpis został odpolubiony.",
         "error": "Nie udało się odpolubić wpisu."
+      }
+    }
+  },
+
+  "user": {
+    "confirmUnfollowModal": {
+      "title": "Odobserwować {name}?",
+      "description": "Nie będziesz widzieć wpisów od {name} na swojej osi czasu. Zawsze możesz zacząć obserwować ponownie."
+    },
+    "api": {
+      "follow": {
+        "success": "Użytkownik został obserwowany.",
+        "error": "Nie udało się obserwować użytkownika."
+      },
+      "unfollow": {
+        "success": "Użytkownik został odobserwowany.",
+        "error": "Nie udało się odobserwować użytkownika."
       }
     }
   },

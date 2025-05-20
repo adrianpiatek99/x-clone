@@ -7,12 +7,12 @@ import { usePathname } from '@/i18n/routing';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-import type { ProfileParams } from '../../layout';
+import type { ProfilePageParams } from '../../../layout';
 import { getProfileTabs } from './config';
 
 const ProfileTabs = memo(() => {
   const t = useTranslations();
-  const { screenName } = useParams<ProfileParams>();
+  const { screenName } = useParams<ProfilePageParams>();
   const pathname = usePathname();
 
   return (

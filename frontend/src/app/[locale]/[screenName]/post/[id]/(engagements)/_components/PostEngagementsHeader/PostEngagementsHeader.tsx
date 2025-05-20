@@ -9,11 +9,11 @@ import { usePathname } from '@/i18n/routing';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-import type { PostParams } from '../../../(post)/layout';
+import type { PostPageParams } from '../../../(post)/layout';
 
 const PostEngagementsHeader = () => {
   const t = useTranslations();
-  const { id, screenName } = useParams<PostParams>();
+  const { id, screenName } = useParams<PostPageParams>();
   const pathname = usePathname();
   const repostsPath = ROUTES.POST.REPOSTS(screenName, id);
   const likesPath = ROUTES.POST.LIKES(screenName, id);

@@ -64,7 +64,7 @@ async fn like_post(
                 .execute(&mut conn)
             {
                 Ok(_) => HttpResponse::Ok().json(LikePostResponse {
-                    id: new_like.id,
+                    id: post_id,
                     message: "Post liked successfully".to_string(),
                 }),
                 Err(_) => HttpResponse::InternalServerError().body("Failed to like post"),

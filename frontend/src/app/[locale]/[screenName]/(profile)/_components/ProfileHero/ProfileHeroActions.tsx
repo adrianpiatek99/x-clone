@@ -2,12 +2,10 @@ import React, { useState } from 'react';
 
 import Button from '@/components/atoms/Button';
 import Icon from '@/components/atoms/Icon';
+import { FollowButton } from '@/components/molecules/Follow';
 import { useGetUserByScreenNameQuery } from '@/hooks/api/profile/queries';
 import dynamic from 'next/dynamic';
-import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-
-import type { ProfileParams } from '../../layout';
 
 const LazyEditProfileModal = dynamic(() => import('@/components/organisms/EditProfileModal'), {
   ssr: false,
@@ -15,10 +13,8 @@ const LazyEditProfileModal = dynamic(() => import('@/components/organisms/EditPr
 
 export const ProfileHeroActions = () => {
   const t = useTranslations();
-  const { screenName } = useParams<ProfileParams>();
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
   const { data, isMe } = useGetUserByScreenNameQuery({
-    screenName,
     enabled: false,
   });
 
@@ -35,7 +31,7 @@ export const ProfileHeroActions = () => {
           {t('profilePage.actions.edit')}
         </Button>
       ) : (
-        <Button variant='tinted'>{t('actions.follow')}</Button>
+        <FollowButton isMe={isMe} profileUserData={data} />
       )}
       {isMe && (
         <LazyEditProfileModal

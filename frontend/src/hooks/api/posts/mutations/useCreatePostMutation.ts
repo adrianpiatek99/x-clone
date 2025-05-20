@@ -6,12 +6,14 @@ import type {
   CreatePostRequest,
   CreatePostResponse,
   GetGlobalTimelineResponse,
+  GetUserMediaResponse,
   GetUserPostsResponse,
 } from '@/types/post';
 import { apiRequest } from '@/utils/api';
 import { createFormData } from '@/utils/formData';
 import {
   addItemToInfiniteQueryCache,
+  compareQueryKeys,
   updateTotalCountInInfiniteQueryCache,
 } from '@/utils/queryCache';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -41,24 +43,26 @@ export const useCreatePostMutation = ({ onSuccess, onSettled }: Props = {}) => {
     onSuccess: (newPost) => {
       addToast('success', t('post.api.createPost.success'));
 
-      // Update the cache with the new post
-      addItemToInfiniteQueryCache<GetGlobalTimelineResponse>(
-        queryClient,
-        QUERY_KEYS.POSTS.GLOBAL_TIMELINE,
-        newPost,
-        { itemsKey: 'posts' }
-      );
+      const hasMedia = newPost.media.length > 0;
 
+      // Update the cache with the new post
       if (user) {
-        addItemToInfiniteQueryCache<GetUserPostsResponse>(
+        addItemToInfiniteQueryCache<
+          GetGlobalTimelineResponse | GetUserPostsResponse | GetUserMediaResponse
+        >(
           queryClient,
-          QUERY_KEYS.POSTS.USER_POSTS(user.screenName),
+          (queryKey) =>
+            compareQueryKeys(queryKey, QUERY_KEYS.POSTS.GLOBAL_TIMELINE.BASE) ||
+            compareQueryKeys(queryKey, QUERY_KEYS.POSTS.USER_POSTS.WITH_PARAMS(user.screenName)) ||
+            (hasMedia &&
+              compareQueryKeys(queryKey, QUERY_KEYS.POSTS.USER_MEDIA.WITH_PARAMS(user.screenName))),
           newPost,
           { itemsKey: 'posts' }
         );
+
         updateTotalCountInInfiniteQueryCache<GetUserPostsResponse>(
           queryClient,
-          QUERY_KEYS.POSTS.USER_POSTS(user.screenName),
+          QUERY_KEYS.POSTS.USER_POSTS.WITH_PARAMS(user.screenName),
           (count) => count + 1
         );
       }

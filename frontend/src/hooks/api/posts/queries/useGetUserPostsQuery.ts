@@ -12,7 +12,7 @@ type Props = {
 export const useGetUserPostsQuery = ({ screenName, enabled = true, limit = 30 }: Props) => {
   const result = useInfiniteQuery<GetUserPostsResponse>({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: QUERY_KEYS.POSTS.USER_POSTS(screenName),
+    queryKey: QUERY_KEYS.POSTS.USER_POSTS.WITH_PARAMS(screenName),
     queryFn: async ({ pageParam }) =>
       apiRequest(
         'GET',

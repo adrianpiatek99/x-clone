@@ -1,16 +1,15 @@
 use actix_web::{HttpRequest, HttpResponse, get, web};
-use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
-// use diesel::dsl::count_star;
+use diesel::dsl::count_star;
 use diesel::prelude::*;
+use diesel::{ExpressionMethods, QueryDsl, RunQueryDsl};
 use serde::Serialize;
 use ts_rs::TS;
 
 use crate::{
     db_service::DbService,
     handlers::middleware::try_get_session,
-
-    // schema::posts::dsl as posts;
     models::user::{ProfileUser, UserSelect},
+    schema::follows::dsl as follows,
     schema::users::dsl as users,
 };
 
@@ -54,36 +53,37 @@ async fn profile_details(
     };
 
     // Get followers count
-    // let followers_count: i64 = follows::follows
-    //     .filter(follows::followed_id.eq(user.id))
-    //     .select(count_star())
-    //     .first::<i64>(&mut conn)
-    //     .unwrap_or(0);
+    let followers_count: i64 = follows::follows
+        .filter(follows::following_id.eq(user.id))
+        .select(count_star())
+        .first::<i64>(&mut conn)
+        .unwrap_or(0);
 
     // Get following count
-    // let following_count: i64 = follows::follows
-    //     .filter(follows::follower_id.eq(user.id))
-    //     .select(count_star())
-    //     .first::<i64>(&mut conn)
-    //     .unwrap_or(0);
+    let following_count: i64 = follows::follows
+        .filter(follows::follower_id.eq(user.id))
+        .select(count_star())
+        .first::<i64>(&mut conn)
+        .unwrap_or(0);
 
     // Check if current user is following this user
-    // let is_following = if let Some(user_id) = current_user_id {
-    //     follows::follows
-    //         .filter(follows::follower_id.eq(user_id))
-    //         .filter(follows::followed_id.eq(user.id))
-    //         .select(count_star())
-    //         .first::<i64>(&mut conn)
-    //         .unwrap_or(0) > 0
-    // } else {
-    //     false
-    // };
+    let is_following = if let Some(user_id) = session_user_id {
+        follows::follows
+            .filter(follows::follower_id.eq(user_id))
+            .filter(follows::following_id.eq(user.id))
+            .select(count_star())
+            .first::<i64>(&mut conn)
+            .unwrap_or(0)
+            > 0
+    } else {
+        false
+    };
 
     let profile_user = ProfileUser {
         user,
-        is_following: false,
-        followers_count: 0,
-        following_count: 0,
+        is_following,
+        followers_count,
+        following_count,
     };
 
     let response = GetProfileDetailsResponse { user: profile_user };

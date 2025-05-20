@@ -6,11 +6,11 @@ import FlatList from '@/components/molecules/FlatList';
 import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
-import type { PostParams } from '../../(post)/layout';
+import type { PostPageParams } from '../../(post)/layout';
 
 export default function PostRespostsPage() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { id } = useParams<PostParams>();
+  const { id } = useParams<PostPageParams>();
   const t = useTranslations();
 
   return (

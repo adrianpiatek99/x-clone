@@ -15,7 +15,7 @@ export const useGetGlobalTimelineQuery = ({
 }: UseGlobalPostsTimelineOptions = {}) => {
   const result = useInfiniteQuery<GetGlobalTimelineResponse>({
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
-    queryKey: QUERY_KEYS.POSTS.GLOBAL_TIMELINE,
+    queryKey: QUERY_KEYS.POSTS.GLOBAL_TIMELINE.BASE,
     queryFn: async ({ pageParam }) =>
       apiRequest(
         'GET',
