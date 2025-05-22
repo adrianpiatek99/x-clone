@@ -3,6 +3,7 @@ use validator::ValidationError;
 use super::regex::{NAME_REGEX, SCREEN_NAME_REGEX};
 
 pub const MAX_POST_TEXT_LENGTH: usize = 500;
+pub const MAX_POST_REPLY_TEXT_LENGTH: usize = 400;
 pub const MIN_NAME_LENGTH: usize = 4;
 pub const MAX_NAME_LENGTH: usize = 50;
 pub const MIN_SCREEN_NAME_LENGTH: usize = 4;
@@ -124,6 +125,23 @@ pub fn validate_post_text(text: &str) -> Result<(), ValidationError> {
         return Err(ValidationError::new("empty_text"));
     }
     if char_count > MAX_POST_TEXT_LENGTH {
+        return Err(ValidationError::new("text_too_long"));
+    }
+
+    Ok(())
+}
+
+pub fn validate_post_reply_text(text: &str) -> Result<(), ValidationError> {
+    let trimmed_text = text
+        .trim()
+        .replace(|c: char| c == '\n', "")
+        .replace(|c: char| c.is_whitespace(), " ");
+    let char_count = trimmed_text.chars().count();
+
+    if trimmed_text.is_empty() {
+        return Err(ValidationError::new("empty_text"));
+    }
+    if char_count > MAX_POST_REPLY_TEXT_LENGTH {
         return Err(ValidationError::new("text_too_long"));
     }
 

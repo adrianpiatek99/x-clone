@@ -4,6 +4,10 @@ import type { PostMediaType } from './enums';
 import type { Cursor } from './global';
 import type { BaseUser } from './user';
 
+export type CreatePostReplyRequest = { text: string; postId: string };
+
+export type CreatePostReplyResponse = { postReply: PostReply };
+
 export type CreatePostRequest = { text: string; media: File[] };
 
 export type CreatePostResponse = {
@@ -136,6 +140,16 @@ export type PostMedia = {
   postId: string;
   userId: string;
   createdAt: Date;
+};
+
+export type PostReply = {
+  author: BaseUser;
+  id: string;
+  authorId: string;
+  postId: string;
+  text: string;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 export type UnlikePostParams = { postId: string };

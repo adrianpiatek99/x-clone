@@ -4,6 +4,7 @@ pub mod details;
 pub mod global_timeline;
 pub mod like;
 pub mod likes;
+pub mod reply;
 pub mod track_timeline;
 pub mod unlike;
 pub mod update;
@@ -27,6 +28,7 @@ pub fn config(cfg: &mut web::ServiceConfig) {
             .service(user::media::user_media)
             .service(user::likes::get_user_likes)
             .service(likes::get_post_likes)
-            .service(track_timeline::track_timeline),
+            .service(track_timeline::track_timeline)
+            .service(reply::create_post_reply::create_post_reply),
     );
 }

@@ -46,6 +46,7 @@ export const API_ENDPOINTS = {
       createUrlWithParams(`/api/posts/userLikes/${screenName}`, params),
     USER_MEDIA: ({ screenName, ...params }: GetUserMediaParams) =>
       createUrlWithParams(`/api/posts/userMedia/${screenName}`, params),
+    CREATE_POST_REPLY: '/api/posts/create/reply',
   },
   PROFILE: {
     UPDATE: '/api/profile/update',

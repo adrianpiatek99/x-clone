@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { useReplyPostMutation } from '@/hooks/api/posts/mutations';
+import { useCreatePostReplyMutation } from '@/hooks/api/posts/mutations';
 import type { Post } from '@/types/post';
 
 type Props = {
@@ -10,7 +10,7 @@ type Props = {
 
 export const useReplayPostModal = ({ isOpen, onClose, id }: Props) => {
   const [text, setText] = useState('');
-  const { replyPost, isPending } = useReplyPostMutation();
+  const { createPostReply, isPending } = useCreatePostReplyMutation();
   const disabled = !text;
   const isChanged = text !== '';
 
@@ -19,8 +19,8 @@ export const useReplayPostModal = ({ isOpen, onClose, id }: Props) => {
   const handleReply = () => {
     if (disabled || isPending) return;
 
-    replyPost({
-      id,
+    createPostReply({
+      postId: id,
       text,
     });
 

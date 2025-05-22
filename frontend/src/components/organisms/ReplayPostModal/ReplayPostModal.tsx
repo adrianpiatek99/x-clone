@@ -21,6 +21,7 @@ const ReplayPostModal = ({ isOpen, onClose, post }: Props) => {
   const t = useTranslations();
   const { text, handleChangeText, handleReply, isPending, isChanged, disabled } =
     useReplayPostModal({
+      id: post.id,
       isOpen,
       onClose,
     });

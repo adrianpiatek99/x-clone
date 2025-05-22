@@ -1,5 +1,7 @@
+import { API_ENDPOINTS } from '@/constants/api';
 import { useToasts } from '@/hooks/useToasts';
-import type { Post } from '@/types/post';
+import type { CreatePostReplyRequest, CreatePostReplyResponse } from '@/types/post';
+import { apiRequest } from '@/utils/api';
 import { createFormData } from '@/utils/formData';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
@@ -10,21 +12,23 @@ export type Props = {
   onSettled?: () => void;
 };
 
-export const useReplyPostMutation = ({ onSuccess, onError, onSettled }: Props = {}) => {
+export const useCreatePostReplyMutation = ({ onSuccess, onError, onSettled }: Props = {}) => {
   const t = useTranslations();
   const { addToast } = useToasts();
 
-  const { mutate, isPending } = useMutation<void, ApiAxiosError, Record<string, unknown>>({
+  const { mutate, isPending } = useMutation<
+    CreatePostReplyResponse,
+    ApiAxiosError,
+    CreatePostReplyRequest
+  >({
     mutationFn: (data) => {
-      createFormData(data);
+      const formData = createFormData(data);
 
-      return undefined;
-
-      // return apiRequest('POST', API_ENDPOINTS.POSTS.CREATE, formData, {
-      //   headers: {
-      //     'Content-Type': 'multipart/form-data',
-      //   },
-      // });
+      return apiRequest('POST', API_ENDPOINTS.POSTS.CREATE_POST_REPLY, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
     },
     onSuccess: () => {
       addToast('success', t('post.api.replyPost.success'));
@@ -41,11 +45,11 @@ export const useReplyPostMutation = ({ onSuccess, onError, onSettled }: Props = 
     },
   });
 
-  const replyPost = (data: object) => {
+  const createPostReply = (data: CreatePostReplyRequest) => {
     if (isPending) return;
 
     mutate(data);
   };
 
-  return { replyPost, isPending };
+  return { createPostReply, isPending };
 };
