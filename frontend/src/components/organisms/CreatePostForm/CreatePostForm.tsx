@@ -62,7 +62,7 @@ const CreatePostForm = () => {
       <Box className='grow'>
         <Textarea
           name='createPostText'
-          label={t('post.textarea.label')}
+          label={t('post.createPostLabel')}
           value={text}
           onValueChange={handleChangeText}
           maxLength={VALIDATION.POST.TEXT.MAX}

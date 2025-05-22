@@ -18,6 +18,9 @@ const postValidation = {
   TEXT: {
     MAX: 500,
   },
+  REPLY: {
+    MAX: 400,
+  },
 } satisfies Validation;
 
 const accountValidation = {

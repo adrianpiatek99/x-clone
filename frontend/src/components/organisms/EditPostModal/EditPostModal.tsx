@@ -1,11 +1,10 @@
-import React, { memo, useState } from 'react';
+import React, { memo } from 'react';
 
 import Avatar from '@/components/atoms/Avatar';
 import Box from '@/components/atoms/Box';
 import Loader from '@/components/atoms/Loader';
 import Modal from '@/components/atoms/Modal';
 import AutoHeight from '@/components/molecules/AutoHeight';
-import DiscardChangesModal from '@/components/molecules/DiscardChangesModal';
 import { VALIDATION } from '@/constants/validation';
 import { useEditPostStore } from '@/stores/editPost';
 import type { Post } from '@/types/post';
@@ -47,9 +46,6 @@ const EditPostModal = memo(({ post, isOpen, onClose, onSuccess }: Props) => {
       onClose,
       onSuccess,
     });
-  const [isDiscardChangesModalOpen, setIsDiscardChangesModalOpen] = useState(false);
-
-  const handleClose = () => (isChanged ? setIsDiscardChangesModalOpen(true) : onClose());
 
   const onSubmit = () => {
     if (disabled || !isChanged) return;
@@ -58,56 +54,50 @@ const EditPostModal = memo(({ post, isOpen, onClose, onSuccess }: Props) => {
   };
 
   return (
-    <>
-      <Modal
-        isOpen={isOpen}
-        onClose={handleClose}
-        title={t('post.actions.edit')}
-        acceptButtonText={t('post.actions.edit')}
-        acceptButtonProps={{
-          disabled: disabled || !isChanged,
-        }}
-        panel={{ className: 'min-h-auto' }}
-        isLoading={isPending}
-        onAccept={onSubmit}
-      >
-        <Box className='flex-row px-4 py-3'>
-          <Avatar src={avatarUrl} screenName={screenName} />
-          <Box className='grow'>
-            <form>
-              <Box className='gap-4'>
-                <AppField name='text'>
-                  {(field) => (
-                    <field.TextareaField
-                      label={t('description')}
-                      isLoading={isPending}
-                      rows={3}
-                      maxLength={VALIDATION.POST.TEXT.MAX}
-                      disabled={isPending}
-                    />
-                  )}
-                </AppField>
-              </Box>
-            </form>
-            <Box className='gap-0'>
-              <AutoHeight>
-                {showMedia && <LazyEditPostModalMedia isPending={isPending} />}
-              </AutoHeight>
-              <CreatePostFormToolbar
-                isPending={isPending}
-                filesCount={filesCount}
-                addFiles={addFiles}
-              />
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={t('post.actions.edit')}
+      acceptButtonText={t('post.actions.edit')}
+      acceptButtonProps={{
+        disabled: disabled || !isChanged,
+      }}
+      panel={{ className: 'min-h-auto' }}
+      isLoading={isPending}
+      onAccept={onSubmit}
+      discardChanges={{
+        isChanged,
+      }}
+    >
+      <Box className='flex-row px-4 py-3'>
+        <Avatar src={avatarUrl} screenName={screenName} />
+        <Box className='grow'>
+          <form>
+            <Box className='gap-4'>
+              <AppField name='text'>
+                {(field) => (
+                  <field.TextareaField
+                    label={t('description')}
+                    isLoading={isPending}
+                    rows={3}
+                    maxLength={VALIDATION.POST.TEXT.MAX}
+                    disabled={isPending}
+                  />
+                )}
+              </AppField>
             </Box>
+          </form>
+          <Box className='gap-0'>
+            <AutoHeight>{showMedia && <LazyEditPostModalMedia isPending={isPending} />}</AutoHeight>
+            <CreatePostFormToolbar
+              isPending={isPending}
+              filesCount={filesCount}
+              addFiles={addFiles}
+            />
           </Box>
         </Box>
-      </Modal>
-      <DiscardChangesModal
-        isOpen={isDiscardChangesModalOpen}
-        onDiscardClose={() => setIsDiscardChangesModalOpen(false)}
-        onClose={onClose}
-      />
-    </>
+      </Box>
+    </Modal>
   );
 });
 

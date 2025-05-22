@@ -72,19 +72,19 @@ const CreatePostFormModal = () => {
       isLoading={isPending}
       acceptButtonText={t('post.actions.send')}
       acceptButtonProps={{
-        disabled: disabled,
+        disabled,
       }}
       onAccept={onSubmit}
       panel={{ className: 'min-h-auto' }}
     >
-      <div className='flex gap-3 border-border-1 px-4'>
+      <div className='flex gap-3 px-4'>
         <Box className='shrink-0 pt-2'>
           <UserAvatar withLink={false} />
         </Box>
         <Box className='grow'>
           <Textarea
             name='createPostText'
-            label={t('post.textarea.label')}
+            label={t('post.createPostLabel')}
             value={text}
             onValueChange={handleChangeText}
             maxLength={VALIDATION.POST.TEXT.MAX}

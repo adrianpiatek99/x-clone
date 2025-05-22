@@ -15,9 +15,8 @@ type Props = {
   post: Post;
 };
 
-const PostDetail = ({
-  post: { id, text, media, createdAt, isLiked, likesCount, author, isAuthor, editedAt },
-}: Props) => {
+const PostDetail = ({ post }: Props) => {
+  const { id, text, media, createdAt, author, isAuthor, editedAt } = post;
   const router = useRouter();
   const [isGlobalLoading] = useState(false);
 
@@ -31,10 +30,10 @@ const PostDetail = ({
           onDeleteSuccess={() => router.back()}
         />
       </Box>
-      <PostCardText id={id} text={text} author={author} truncate={false} />
+      <PostCardText text={text} truncate={false} />
       {media.length > 0 && <PostCardMedia media={media} />}
       <PostDetailAdditionalInfo createdAt={createdAt} editedAt={editedAt} />
-      <PostCardActions id={id} isLiked={isLiked} likesCount={likesCount} />
+      <PostCardActions post={post} />
     </Box>
   );
 };

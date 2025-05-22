@@ -21,7 +21,7 @@ type Props = ComponentPropsWithRef<'div'> & {
 };
 
 const PostCard = memo(({ post, className, ...props }: Props) => {
-  const { id, text, author, media, createdAt, isAuthor, isLiked, likesCount, editedAt } = post;
+  const { id, text, author, media, createdAt, isAuthor, editedAt } = post;
   const { avatarUrl, screenName } = author;
 
   return (
@@ -40,10 +40,10 @@ const PostCard = memo(({ post, className, ...props }: Props) => {
           <Box>
             <Box className='gap-1.5'>
               <PostCardStatuses editedAt={editedAt} />
-              <PostCardText id={id} text={text} author={author} />
+              <PostCardText text={text} />
             </Box>
             {!!media.length && <PostCardMedia media={media} />}
-            <PostCardActions id={id} isLiked={isLiked} likesCount={likesCount} />
+            <PostCardActions post={post} />
           </Box>
         </Box>
       </Box>

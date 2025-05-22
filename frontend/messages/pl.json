@@ -197,10 +197,8 @@
   },
 
   "post": {
-    "noData": "Brak danych",
-    "textarea": {
-      "label": "Co się dzieje?!"
-    },
+    "createPostLabel": "Co się dzieje?!",
+    "replyPostLabel": "Opublikuj swoją odpowiedź",
     "actions": {
       "send": "Opublikuj wpis",
       "delete": "Usuń",
@@ -244,6 +242,10 @@
       "unlikePost": {
         "success": "Wpis został odpolubiony.",
         "error": "Nie udało się odpolubić wpisu."
+      },
+      "replyPost": {
+        "success": "Odpowiedź została opublikowana.",
+        "error": "Nie udało się opublikować odpowiedzi."
       }
     }
   },

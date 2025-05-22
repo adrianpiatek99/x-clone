@@ -5,3 +5,4 @@ export * from './PostCardDropdown';
 export * from './PostCardMedia';
 export * from './PostCardText';
 export * from './PostCardActions';
+export * from './PostCardStatuses';

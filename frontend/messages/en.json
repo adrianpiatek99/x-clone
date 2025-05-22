@@ -197,9 +197,8 @@
   },
 
   "post": {
-    "textarea": {
-      "label": "What's happening?!"
-    },
+    "createPostLabel": "What's happening?!",
+    "replyPostLabel": "Post your reply",
     "actions": {
       "send": "Post",
       "delete": "Delete",
@@ -243,6 +242,10 @@
       "unlikePost": {
         "success": "Post unliked successfully.",
         "error": "Failed to unlike post."
+      },
+      "replyPost": {
+        "success": "Reply posted successfully.",
+        "error": "Failed to reply to post."
       }
     }
   },
