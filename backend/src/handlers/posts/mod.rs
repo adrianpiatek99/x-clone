@@ -29,6 +29,7 @@ pub fn config(cfg: &mut web::ServiceConfig) {
             .service(user::likes::get_user_likes)
             .service(likes::get_post_likes)
             .service(track_timeline::track_timeline)
-            .service(reply::create_post_reply::create_post_reply),
+            .service(reply::create_post_reply::create_post_reply)
+            .service(reply::get_post_replies::get_post_replies),
     );
 }

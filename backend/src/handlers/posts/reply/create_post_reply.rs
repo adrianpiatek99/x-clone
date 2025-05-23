@@ -170,6 +170,10 @@ async fn create_post_reply(
         post_reply: PostReply {
             post_reply,
             author: BaseUser { user: author },
+            is_author: true,
+            is_liked: false,
+            likes_count: 0,
+            replies_count: 0,
         },
     };
 

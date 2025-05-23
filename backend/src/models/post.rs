@@ -210,4 +210,10 @@ pub struct PostReply {
     #[serde(flatten)]
     pub post_reply: PostReplySelect,
     pub author: BaseUser,
+    pub is_author: bool,
+    pub is_liked: bool,
+    #[ts(type = "number")]
+    pub likes_count: i64,
+    #[ts(type = "number")]
+    pub replies_count: i64,
 }
