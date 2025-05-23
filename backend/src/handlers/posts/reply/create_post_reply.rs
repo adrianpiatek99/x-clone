@@ -16,7 +16,7 @@ use crate::{
         post::{PostReply, PostReplySelect},
         user::{BaseUser, UserSelect},
     },
-    schema::{post_reply::dsl as post_reply, users::dsl as users},
+    schema::{post_replies::dsl as post_replies, users::dsl as users},
 };
 
 #[derive(Deserialize, Validate, TS)]
@@ -108,7 +108,7 @@ async fn create_post_reply(
         ..PostReplySelect::default()
     };
 
-    let reply = match diesel::insert_into(post_reply::post_reply)
+    let reply = match diesel::insert_into(post_replies::post_replies)
         .values(&new_reply)
         .returning(PostReplySelect::as_returning())
         .get_result::<PostReplySelect>(&mut conn)
@@ -148,10 +148,10 @@ async fn create_post_reply(
     // }
 
     // Fetch created reply with author data
-    let (post_reply, author) = match post_reply::post_reply
+    let (post_reply, author) = match post_replies::post_replies
         .inner_join(users::users)
         .select((PostReplySelect::as_select(), UserSelect::as_select()))
-        .filter(post_reply::id.eq(reply.id))
+        .filter(post_replies::id.eq(reply.id))
         .first::<(PostReplySelect, UserSelect)>(&mut conn)
     {
         Ok(data) => data,

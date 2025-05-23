@@ -18,7 +18,7 @@ use crate::{
     },
     schema::{
         post_edit_history::dsl as post_edit_history, post_likes::dsl as post_likes,
-        post_media::dsl as post_media, post_reply::dsl as post_replies, posts::dsl as posts,
+        post_media::dsl as post_media, post_replies::dsl as post_replies, posts::dsl as posts,
         users::dsl as users,
     },
 };
@@ -148,7 +148,7 @@ async fn get_user_likes(
                 .select((post_likes::post_id, count(post_likes::id)))
                 .load::<(Uuid, i64)>(conn)?;
 
-            let replies = post_replies::post_reply
+            let replies = post_replies::post_replies
                 .filter(post_replies::post_id.eq_any(&post_ids))
                 .group_by(post_replies::post_id)
                 .select((post_replies::post_id, count(post_replies::id)))

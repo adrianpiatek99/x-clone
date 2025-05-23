@@ -16,7 +16,8 @@ use crate::{
     },
     schema::{
         post_edit_history::dsl as post_edit_history, post_likes::dsl as post_likes,
-        post_media::dsl as post_media, posts::dsl as posts, users::dsl as users,
+        post_media::dsl as post_media, post_replies::dsl as post_replies, posts::dsl as posts,
+        users::dsl as users,
     },
 };
 
@@ -97,6 +98,12 @@ async fn post_details(
             (likes_count, is_liked)
         };
 
+        let replies_count = post_replies::post_replies
+            .filter(post_replies::post_id.eq(post.id))
+            .count()
+            .get_result::<i64>(conn)
+            .unwrap_or(0);
+
         // Last edit query
         let edited_at = post_edit_history::post_edit_history
             .filter(post_edit_history::post_id.eq(post.id))
@@ -106,7 +113,13 @@ async fn post_details(
             .first::<DateTime<Utc>>(conn)
             .ok();
 
-        Result::<_, diesel::result::Error>::Ok((media, likes_count, is_liked, edited_at))
+        Result::<_, diesel::result::Error>::Ok((
+            media,
+            likes_count,
+            is_liked,
+            replies_count,
+            edited_at,
+        ))
     }) {
         Ok(data) => data,
         Err(_) => {
@@ -114,7 +127,7 @@ async fn post_details(
         }
     };
 
-    let (media, likes_count, is_liked, edited_at) = result;
+    let (media, likes_count, is_liked, replies_count, edited_at) = result;
 
     // Determine if current user is author
     let is_author = session_user_id.map_or(false, |id| id == author.id);
@@ -127,7 +140,7 @@ async fn post_details(
             is_author,
             is_liked,
             likes_count,
-            replies_count: 0,
+            replies_count,
             edited_at,
         },
     };

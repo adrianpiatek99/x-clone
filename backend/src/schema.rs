@@ -59,7 +59,7 @@ diesel::table! {
 }
 
 diesel::table! {
-    post_reply (id) {
+    post_replies (id) {
         id -> Uuid,
         author_id -> Uuid,
         post_id -> Uuid,
@@ -111,8 +111,8 @@ diesel::joinable!(post_likes -> posts (post_id));
 diesel::joinable!(post_likes -> users (user_id));
 diesel::joinable!(post_media -> posts (post_id));
 diesel::joinable!(post_media -> users (user_id));
-diesel::joinable!(post_reply -> posts (post_id));
-diesel::joinable!(post_reply -> users (author_id));
+diesel::joinable!(post_replies -> posts (post_id));
+diesel::joinable!(post_replies -> users (author_id));
 diesel::joinable!(posts -> users (author_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
@@ -120,7 +120,7 @@ diesel::allow_tables_to_appear_in_same_query!(
     post_edit_history,
     post_likes,
     post_media,
-    post_reply,
+    post_replies,
     posts,
     users,
 );

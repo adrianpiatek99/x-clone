@@ -60,7 +60,7 @@ CREATE TABLE post_likes (
     CONSTRAINT unique_post_like UNIQUE (post_id, user_id)
 );
 
-CREATE TABLE post_reply (
+CREATE TABLE post_replies (
     id UUID PRIMARY KEY,
     author_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     post_id UUID NOT NULL REFERENCES posts(id) ON DELETE CASCADE,

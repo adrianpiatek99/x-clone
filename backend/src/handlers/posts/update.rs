@@ -21,7 +21,8 @@ use crate::{
     },
     schema::{
         post_edit_history::dsl as post_edit_history, post_likes::dsl as post_likes,
-        post_media::dsl as post_media, posts::dsl as posts, users::dsl as users,
+        post_media::dsl as post_media, post_replies::dsl as post_replies, posts::dsl as posts,
+        users::dsl as users,
     },
 };
 
@@ -259,6 +260,12 @@ async fn update_post(
                 .get_result::<i64>(&mut conn)
                 .unwrap_or(0);
 
+            let replies_count = post_replies::post_replies
+                .filter(post_replies::post_id.eq(&updated_post_schema.id))
+                .count()
+                .get_result::<i64>(&mut conn)
+                .unwrap_or(0);
+
             let is_liked = post_likes::post_likes
                 .filter(post_likes::post_id.eq(&updated_post_schema.id))
                 .filter(post_likes::user_id.eq(&session_user_id))
@@ -282,7 +289,7 @@ async fn update_post(
                     is_author: true,
                     is_liked,
                     likes_count,
-                    replies_count: 0, // TODO: Implement replies count
+                    replies_count,
                     edited_at,
                 },
             };

@@ -8,6 +8,8 @@ use crate::enums::{conversation_control::ConversationControl, post_media_type::P
 
 use super::user::BaseUser;
 
+// Post
+
 #[derive(Queryable, Selectable, Insertable, Identifiable, Serialize, TS, Debug)]
 #[diesel(table_name = crate::schema::posts)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
@@ -39,6 +41,28 @@ impl Default for PostSchema {
         }
     }
 }
+
+#[derive(Queryable, Serialize, TS, Debug)]
+#[diesel(table_name = crate::schema::posts)]
+#[diesel(check_for_backend(diesel::pg::Pg))]
+#[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/post.ts")]
+pub struct Post {
+    #[serde(flatten)]
+    pub post: PostSchema,
+    pub author: BaseUser,
+    pub media: Vec<PostMedia>,
+    pub is_author: bool,
+    pub is_liked: bool,
+    #[ts(type = "number")]
+    pub likes_count: i64,
+    #[ts(type = "number")]
+    pub replies_count: i64,
+    #[ts(type = "Date | null")]
+    pub edited_at: Option<DateTime<Utc>>,
+}
+
+// PostMedia
 
 #[derive(Queryable, Selectable, Identifiable, Insertable, Serialize, Clone, TS, Debug)]
 #[diesel(table_name = crate::schema::post_media)]
@@ -77,6 +101,8 @@ impl Default for PostMedia {
     }
 }
 
+// PostLike
+
 #[derive(Queryable, Selectable, Insertable, Identifiable, Serialize, Clone, TS, Debug)]
 #[diesel(table_name = crate::schema::post_likes)]
 #[diesel(belongs_to(Post))]
@@ -109,20 +135,13 @@ impl Default for PostLikeSchema {
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]
 #[ts(export, export_to = "../../frontend/src/types/post.ts")]
-pub struct Post {
+pub struct PostLike {
     #[serde(flatten)]
-    pub post: PostSchema,
-    pub author: BaseUser,
-    pub media: Vec<PostMedia>,
-    pub is_author: bool,
-    pub is_liked: bool,
-    #[ts(type = "number")]
-    pub likes_count: i64,
-    #[ts(type = "number")]
-    pub replies_count: i64,
-    #[ts(type = "Date | null")]
-    pub edited_at: Option<DateTime<Utc>>,
+    pub post: PostLikeSchema,
+    pub user: BaseUser,
 }
+
+// PostEditHistory
 
 #[derive(Serialize, Selectable, Insertable, TS, Debug)]
 #[diesel(table_name = crate::schema::post_edit_history)]
@@ -150,21 +169,10 @@ impl Default for PostEditHistory {
     }
 }
 
-#[derive(Queryable, Serialize, TS, Debug)]
-#[diesel(table_name = crate::schema::posts)]
-#[diesel(check_for_backend(diesel::pg::Pg))]
-#[serde(rename_all = "camelCase")]
-#[ts(export, export_to = "../../frontend/src/types/post.ts")]
-pub struct PostLike {
-    #[serde(flatten)]
-    pub post: PostLikeSchema,
-    pub user: BaseUser,
-}
-
 // PostReply
 
 #[derive(Queryable, Selectable, Insertable, Serialize, TS, Debug)]
-#[diesel(table_name = crate::schema::post_reply)]
+#[diesel(table_name = crate::schema::post_replies)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]
 pub struct PostReplySelect {
@@ -194,7 +202,7 @@ impl Default for PostReplySelect {
 }
 
 #[derive(Queryable, Serialize, TS, Debug)]
-#[diesel(table_name = crate::schema::post_reply)]
+#[diesel(table_name = crate::schema::post_replies)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]
 #[ts(export, export_to = "../../frontend/src/types/post.ts")]
