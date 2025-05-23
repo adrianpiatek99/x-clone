@@ -17,7 +17,7 @@ type Props = {
 };
 
 export const PostCardActions = memo(({ post }: Props) => {
-  const { id, isLiked, likesCount } = post;
+  const { id, isLiked, repliesCount, likesCount } = post;
   const t = useTranslations();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -31,7 +31,7 @@ export const PostCardActions = memo(({ post }: Props) => {
       <IconButton
         onClick={() => setIsOpen(true)}
         title={t('post.actions.reply')}
-        label={formatNumber(0)}
+        label={formatNumber(repliesCount)}
         color='secondary'
       >
         <Icon name='MessageIcon' />

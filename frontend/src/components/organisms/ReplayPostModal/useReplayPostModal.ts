@@ -10,7 +10,11 @@ type Props = {
 
 export const useReplayPostModal = ({ isOpen, onClose, id }: Props) => {
   const [text, setText] = useState('');
-  const { createPostReply, isPending } = useCreatePostReplyMutation();
+  const { createPostReply, isPending } = useCreatePostReplyMutation({
+    onSuccess: () => {
+      onClose();
+    },
+  });
   const disabled = !text;
   const isChanged = text !== '';
 
@@ -23,8 +27,6 @@ export const useReplayPostModal = ({ isOpen, onClose, id }: Props) => {
       postId: id,
       text,
     });
-
-    onClose();
   };
 
   useEffect(() => {

@@ -1,9 +1,22 @@
 import { API_ENDPOINTS } from '@/constants/api';
+import { QUERY_KEYS } from '@/constants/queryKeys';
 import { useToasts } from '@/hooks/useToasts';
-import type { CreatePostReplyRequest, CreatePostReplyResponse } from '@/types/post';
+import type {
+  CreatePostReplyRequest,
+  CreatePostReplyResponse,
+  GetGlobalTimelineResponse,
+  GetPostDetailsResponse,
+  GetUserLikesResponse,
+  GetUserPostsResponse,
+} from '@/types/post';
 import { apiRequest } from '@/utils/api';
 import { createFormData } from '@/utils/formData';
-import { useMutation } from '@tanstack/react-query';
+import {
+  compareQueryKeys,
+  updateItemInCache,
+  updateItemInInfiniteQueryCache,
+} from '@/utils/queryCache';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
 
 export type Props = {
@@ -14,6 +27,7 @@ export type Props = {
 
 export const useCreatePostReplyMutation = ({ onSuccess, onError, onSettled }: Props = {}) => {
   const t = useTranslations();
+  const queryClient = useQueryClient();
   const { addToast } = useToasts();
 
   const { mutate, isPending } = useMutation<
@@ -30,8 +44,33 @@ export const useCreatePostReplyMutation = ({ onSuccess, onError, onSettled }: Pr
         },
       });
     },
-    onSuccess: () => {
+    onSuccess: ({ postReply: { postId } }) => {
       addToast('success', t('post.api.replyPost.success'));
+
+      // Update the cache
+      updateItemInInfiniteQueryCache<
+        GetGlobalTimelineResponse | GetUserPostsResponse | GetUserLikesResponse
+      >(
+        queryClient,
+        (queryKey) =>
+          compareQueryKeys(queryKey, QUERY_KEYS.POSTS.GLOBAL_TIMELINE.BASE) ||
+          compareQueryKeys(queryKey, QUERY_KEYS.POSTS.USER_POSTS.BASE) ||
+          compareQueryKeys(queryKey, QUERY_KEYS.POSTS.USER_MEDIA.BASE) ||
+          compareQueryKeys(queryKey, QUERY_KEYS.POSTS.USER_LIKES.BASE),
+        postId,
+        (post) => {
+          post.repliesCount++;
+        },
+        { itemsKey: 'posts' }
+      );
+
+      updateItemInCache<GetPostDetailsResponse>(
+        queryClient,
+        QUERY_KEYS.POSTS.DETAILS(postId),
+        (post) => {
+          post.repliesCount++;
+        }
+      );
 
       onSuccess?.();
     },

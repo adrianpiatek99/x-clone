@@ -15,7 +15,7 @@ export const PostCardMedia = memo(({ media }: Props) => {
 
   return (
     <div
-      className='border-border-1 relative flex w-full overflow-hidden rounded-2xl border'
+      className='relative flex w-full overflow-hidden rounded-2xl border border-border-1'
       style={{
         maxWidth: aspectRatio > 110 && mediaCount === 1 ? `${ratioWidth}px` : '100%',
         maxHeight: aspectRatio > 110 && mediaCount === 1 ? `${ratioHeight}px` : '100%',
