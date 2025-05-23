@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 
 import Box from '@/components/atoms/Box';
 import Icon from '@/components/atoms/Icon';
@@ -16,7 +16,7 @@ type Props = {
   post: Post;
 };
 
-export const PostCardActions = ({ post }: Props) => {
+export const PostCardActions = memo(({ post }: Props) => {
   const { id, isLiked, likesCount } = post;
   const t = useTranslations();
   const [isOpen, setIsOpen] = useState(false);
@@ -52,4 +52,4 @@ export const PostCardActions = ({ post }: Props) => {
       <LazyReplayPostModal isOpen={isOpen} onClose={() => setIsOpen(false)} post={post} />
     </Box>
   );
-};
+});

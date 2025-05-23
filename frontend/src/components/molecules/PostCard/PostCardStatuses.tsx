@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import Icon from '@/components/atoms/Icon';
 import Tooltip from '@/components/atoms/Tooltip';
@@ -10,7 +10,7 @@ import { useTranslations } from 'next-intl';
 
 type Props = Pick<Post, 'editedAt'>;
 
-export const PostCardStatuses = ({ editedAt }: Props) => {
+export const PostCardStatuses = memo(({ editedAt }: Props) => {
   const t = useTranslations();
   const { getLocalTime, getFullDate } = useTime();
 
@@ -29,4 +29,4 @@ export const PostCardStatuses = ({ editedAt }: Props) => {
       )}
     </>
   );
-};
+});

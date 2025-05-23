@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import ShimmerImage from '@/components/atoms/ShimmerImage';
 import type { Post } from '@/types/post';
@@ -7,7 +7,7 @@ import { twMerge } from 'tailwind-merge';
 
 type Props = Pick<Post, 'media'>;
 
-export const PostCardMedia = ({ media }: Props) => {
+export const PostCardMedia = memo(({ media }: Props) => {
   const mediaCount = media.length;
   const width = media[0]?.width ?? 0;
   const height = media[0]?.height ?? 0;
@@ -15,7 +15,7 @@ export const PostCardMedia = ({ media }: Props) => {
 
   return (
     <div
-      className='relative flex w-full overflow-hidden rounded-2xl border border-border-1'
+      className='border-border-1 relative flex w-full overflow-hidden rounded-2xl border'
       style={{
         maxWidth: aspectRatio > 110 && mediaCount === 1 ? `${ratioWidth}px` : '100%',
         maxHeight: aspectRatio > 110 && mediaCount === 1 ? `${ratioHeight}px` : '100%',
@@ -46,4 +46,4 @@ export const PostCardMedia = ({ media }: Props) => {
       </div>
     </div>
   );
-};
+});

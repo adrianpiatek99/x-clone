@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import Box from '@/components/atoms/Box';
 import Tooltip from '@/components/atoms/Tooltip';
@@ -12,7 +12,7 @@ import UserDisplayName from '../UserDisplayName';
 
 type Props = Pick<Post, 'id' | 'author' | 'createdAt'>;
 
-export const PostCardAuthor = ({ author, createdAt }: Props) => {
+export const PostCardAuthor = memo(({ author, createdAt }: Props) => {
   const { name, screenName, isVerified } = author;
   const { getLocalTime, getFullDate, getRelativeTime } = useTime();
   const profilePageHref = ROUTES.PROFILE.DETAILS(screenName);
@@ -35,4 +35,4 @@ export const PostCardAuthor = ({ author, createdAt }: Props) => {
       </div>
     </Box>
   );
-};
+});

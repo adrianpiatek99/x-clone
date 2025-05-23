@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 
 import Typography from '@/components/atoms/Typography';
 import type { Post } from '@/types/post';
@@ -10,7 +10,7 @@ type Props = Pick<Post, 'text'> & {
   truncate?: boolean;
 };
 
-export const PostCardText = ({ text, truncate = true }: Props) => {
+export const PostCardText = memo(({ text, truncate = true }: Props) => {
   const t = useTranslations();
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -39,4 +39,4 @@ export const PostCardText = ({ text, truncate = true }: Props) => {
       </Typography>
     </div>
   );
-};
+});
