@@ -9,10 +9,10 @@ use crate::{
     handlers::middleware::try_get_session,
     models::{
         global::Cursor,
-        post::{PostReply, PostReplySelect},
+        post::{Post, PostSchema},
         user::{BaseUser, UserSelect},
     },
-    schema::{post_replies::dsl as post_replies, users::dsl as users},
+    schema::{posts::dsl as posts, users::dsl as users},
 };
 
 #[derive(Deserialize, TS)]
@@ -20,6 +20,7 @@ use crate::{
 #[ts(export, export_to = "../../frontend/src/types/post.ts")]
 #[allow(dead_code)]
 pub struct GetPostRepliesParams {
+    #[serde(skip_deserializing)]
     pub post_id: String,
     #[ts(type = "Cursor | null")]
     pub cursor: Option<String>,
@@ -31,7 +32,7 @@ pub struct GetPostRepliesParams {
 #[serde(rename_all = "camelCase")]
 #[ts(export, export_to = "../../frontend/src/types/post.ts")]
 pub struct GetPostRepliesResponse {
-    pub post_replies: Vec<PostReply>,
+    pub post_replies: Vec<Post>,
     pub next_cursor: Option<Cursor>,
 }
 
@@ -57,27 +58,25 @@ async fn get_post_replies(
         .and_then(|cursor_str| serde_json::from_str::<Cursor>(cursor_str).ok());
 
     // Query post replies with join on author
-    let mut query = post_replies::post_replies
+    let mut query = posts::posts
         .inner_join(users::users)
-        .filter(post_replies::post_id.eq(post_id))
+        .filter(posts::reply_to_post_id.eq(post_id))
         .into_boxed();
 
     if let Some(c) = cursor {
         query = query.filter(
-            post_replies::created_at
+            posts::created_at
                 .lt(c.created_at)
-                .or(post_replies::created_at
-                    .eq(c.created_at)
-                    .and(post_replies::id.lt(c.id))),
+                .or(posts::created_at.eq(c.created_at).and(posts::id.lt(c.id))),
         );
     }
 
     let replies_list = match query
-        .order(post_replies::created_at.desc())
-        .then_order_by(post_replies::id.desc())
-        .select((PostReplySelect::as_select(), UserSelect::as_select()))
+        .order(posts::created_at.desc())
+        .then_order_by(posts::id.desc())
+        .select((PostSchema::as_select(), UserSelect::as_select()))
         .limit(take)
-        .load::<(PostReplySelect, UserSelect)>(&mut conn)
+        .load::<(PostSchema, UserSelect)>(&mut conn)
     {
         Ok(replies) => replies,
         Err(_) => {
@@ -108,13 +107,15 @@ async fn get_post_replies(
         .map(|(reply, author)| {
             let is_author = session_user_id.map_or(false, |id| id == author.id);
 
-            PostReply {
-                post_reply: reply,
+            Post {
+                post: reply,
                 author: BaseUser { user: author },
+                media: vec![],
                 is_author,
                 is_liked: false,
                 likes_count: 0,
                 replies_count: 0,
+                edited_at: None,
             }
         })
         .collect();

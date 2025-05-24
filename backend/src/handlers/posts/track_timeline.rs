@@ -49,6 +49,7 @@ async fn track_timeline(
     // Count new posts created after the reference post
     let new_posts_count = match posts::posts
         .filter(posts::created_at.gt(reference_post))
+        .filter(posts::reply_to_post_id.is_null())
         .filter(posts::id.ne(pid))
         .count()
         .get_result::<i64>(&mut conn)

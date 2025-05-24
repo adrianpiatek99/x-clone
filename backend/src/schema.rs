@@ -59,17 +59,6 @@ diesel::table! {
 }
 
 diesel::table! {
-    post_replies (id) {
-        id -> Uuid,
-        author_id -> Uuid,
-        post_id -> Uuid,
-        text -> Text,
-        created_at -> Timestamptz,
-        updated_at -> Timestamptz,
-    }
-}
-
-diesel::table! {
     use diesel::sql_types::*;
     use super::sql_types::ConversationControl;
 
@@ -77,6 +66,7 @@ diesel::table! {
         id -> Uuid,
         text -> Text,
         author_id -> Uuid,
+        reply_to_post_id -> Nullable<Uuid>,
         hashtags -> Nullable<Array<Nullable<Text>>>,
         conversation_control -> ConversationControl,
         created_at -> Timestamptz,
@@ -111,8 +101,6 @@ diesel::joinable!(post_likes -> posts (post_id));
 diesel::joinable!(post_likes -> users (user_id));
 diesel::joinable!(post_media -> posts (post_id));
 diesel::joinable!(post_media -> users (user_id));
-diesel::joinable!(post_replies -> posts (post_id));
-diesel::joinable!(post_replies -> users (author_id));
 diesel::joinable!(posts -> users (author_id));
 
 diesel::allow_tables_to_appear_in_same_query!(
@@ -120,7 +108,6 @@ diesel::allow_tables_to_appear_in_same_query!(
     post_edit_history,
     post_likes,
     post_media,
-    post_replies,
     posts,
     users,
 );

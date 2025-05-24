@@ -13,10 +13,10 @@ use crate::{
     handlers::middleware::require_session,
     helpers::validation::validate_post_reply_text,
     models::{
-        post::{PostReply, PostReplySelect},
+        post::{Post, PostSchema},
         user::{BaseUser, UserSelect},
     },
-    schema::{post_replies::dsl as post_replies, users::dsl as users},
+    schema::{posts::dsl as posts, users::dsl as users},
 };
 
 #[derive(Deserialize, Validate, TS)]
@@ -35,7 +35,7 @@ pub struct CreatePostReplyRequest {
 #[serde(rename_all = "camelCase")]
 #[ts(export, export_to = "../../frontend/src/types/post.ts")]
 pub struct CreatePostReplyResponse {
-    pub post_reply: PostReply,
+    pub post_reply: Post,
 }
 
 #[post("/create/reply")]
@@ -101,17 +101,17 @@ async fn create_post_reply(
     let mut conn = db.get_conn();
 
     // Create reply
-    let new_reply = PostReplySelect {
+    let new_reply = PostSchema {
         text,
         author_id: session_user_id,
-        post_id: Uuid::parse_str(&post_id).unwrap_or_default(),
-        ..PostReplySelect::default()
+        reply_to_post_id: Some(Uuid::parse_str(&post_id).unwrap_or_default()),
+        ..PostSchema::default()
     };
 
-    let reply = match diesel::insert_into(post_replies::post_replies)
+    let reply = match diesel::insert_into(posts::posts)
         .values(&new_reply)
-        .returning(PostReplySelect::as_returning())
-        .get_result::<PostReplySelect>(&mut conn)
+        .returning(PostSchema::as_returning())
+        .get_result::<PostSchema>(&mut conn)
     {
         Ok(reply) => reply,
         Err(_) => {
@@ -148,11 +148,11 @@ async fn create_post_reply(
     // }
 
     // Fetch created reply with author data
-    let (post_reply, author) = match post_replies::post_replies
+    let (post_reply, author) = match posts::posts
         .inner_join(users::users)
-        .select((PostReplySelect::as_select(), UserSelect::as_select()))
-        .filter(post_replies::id.eq(reply.id))
-        .first::<(PostReplySelect, UserSelect)>(&mut conn)
+        .select((PostSchema::as_select(), UserSelect::as_select()))
+        .filter(posts::id.eq(reply.id))
+        .first::<(PostSchema, UserSelect)>(&mut conn)
     {
         Ok(data) => data,
         Err(_) => {
@@ -167,13 +167,15 @@ async fn create_post_reply(
     //     .unwrap_or_default();
 
     let response = CreatePostReplyResponse {
-        post_reply: PostReply {
-            post_reply,
+        post_reply: Post {
+            post: post_reply,
             author: BaseUser { user: author },
+            media: vec![],
             is_author: true,
             is_liked: false,
             likes_count: 0,
             replies_count: 0,
+            edited_at: None,
         },
     };
 

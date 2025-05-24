@@ -18,8 +18,7 @@ use crate::{
     },
     schema::{
         post_edit_history::dsl as post_edit_history, post_likes::dsl as post_likes,
-        post_media::dsl as post_media, post_replies::dsl as post_replies, posts::dsl as posts,
-        users::dsl as users,
+        post_media::dsl as post_media, posts::dsl as posts, users::dsl as users,
     },
 };
 
@@ -148,11 +147,11 @@ async fn get_user_likes(
                 .select((post_likes::post_id, count(post_likes::id)))
                 .load::<(Uuid, i64)>(conn)?;
 
-            let replies = post_replies::post_replies
-                .filter(post_replies::post_id.eq_any(&post_ids))
-                .group_by(post_replies::post_id)
-                .select((post_replies::post_id, count(post_replies::id)))
-                .load::<(Uuid, i64)>(conn)?;
+            let replies = posts::posts
+                .filter(posts::reply_to_post_id.eq_any(&post_ids))
+                .group_by(posts::reply_to_post_id)
+                .select((posts::reply_to_post_id, count(posts::id)))
+                .load::<(Option<Uuid>, i64)>(conn)?;
 
             (likes, replies)
         };
@@ -221,7 +220,7 @@ async fn get_user_likes(
             let is_author = session_user_id.map_or(false, |id| id == author.id);
             let is_liked = user_likes_set.contains(&post_id);
             let likes_count = *likes_count_map.get(&post_id).unwrap_or(&0);
-            let replies_count = *replies_count_map.get(&post_id).unwrap_or(&0);
+            let replies_count = *replies_count_map.get(&Some(post_id)).unwrap_or(&0);
             let edited_at = edit_by_post.get(&post_id).copied();
 
             Post {

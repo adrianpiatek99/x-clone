@@ -16,8 +16,7 @@ use crate::{
     },
     schema::{
         post_edit_history::dsl as post_edit_history, post_likes::dsl as post_likes,
-        post_media::dsl as post_media, post_replies::dsl as post_replies, posts::dsl as posts,
-        users::dsl as users,
+        post_media::dsl as post_media, posts::dsl as posts, users::dsl as users,
     },
 };
 
@@ -98,8 +97,8 @@ async fn post_details(
             (likes_count, is_liked)
         };
 
-        let replies_count = post_replies::post_replies
-            .filter(post_replies::post_id.eq(post.id))
+        let replies_count = posts::posts
+            .filter(posts::reply_to_post_id.eq(post.id))
             .count()
             .get_result::<i64>(conn)
             .unwrap_or(0);

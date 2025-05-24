@@ -18,6 +18,7 @@ pub struct PostSchema {
     pub id: Uuid,
     pub text: String,
     pub author_id: Uuid,
+    pub reply_to_post_id: Option<Uuid>,
     pub hashtags: Option<Vec<Option<String>>>,
     pub conversation_control: ConversationControl,
     #[ts(type = "Date")]
@@ -34,6 +35,7 @@ impl Default for PostSchema {
             id: Uuid::new_v4(),
             text: String::new(),
             author_id: Uuid::new_v4(),
+            reply_to_post_id: None,
             hashtags: None,
             conversation_control: ConversationControl::ALL,
             created_at: now,
@@ -167,53 +169,4 @@ impl Default for PostEditHistory {
             edited_at: now,
         }
     }
-}
-
-// PostReply
-
-#[derive(Queryable, Selectable, Insertable, Serialize, TS, Debug)]
-#[diesel(table_name = crate::schema::post_replies)]
-#[diesel(check_for_backend(diesel::pg::Pg))]
-#[serde(rename_all = "camelCase")]
-pub struct PostReplySelect {
-    pub id: Uuid,
-    pub author_id: Uuid,
-    pub post_id: Uuid,
-    pub text: String,
-    #[ts(type = "Date")]
-    pub created_at: DateTime<Utc>,
-    #[ts(type = "Date")]
-    pub updated_at: DateTime<Utc>,
-}
-
-impl Default for PostReplySelect {
-    fn default() -> Self {
-        let now = Utc::now();
-
-        Self {
-            id: Uuid::new_v4(),
-            author_id: Uuid::new_v4(),
-            post_id: Uuid::new_v4(),
-            text: String::new(),
-            created_at: now,
-            updated_at: now,
-        }
-    }
-}
-
-#[derive(Queryable, Serialize, TS, Debug)]
-#[diesel(table_name = crate::schema::post_replies)]
-#[diesel(check_for_backend(diesel::pg::Pg))]
-#[serde(rename_all = "camelCase")]
-#[ts(export, export_to = "../../frontend/src/types/post.ts")]
-pub struct PostReply {
-    #[serde(flatten)]
-    pub post_reply: PostReplySelect,
-    pub author: BaseUser,
-    pub is_author: bool,
-    pub is_liked: bool,
-    #[ts(type = "number")]
-    pub likes_count: i64,
-    #[ts(type = "number")]
-    pub replies_count: i64,
 }
