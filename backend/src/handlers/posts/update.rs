@@ -284,6 +284,7 @@ async fn update_post(
                 post: Post {
                     post: updated_post_schema,
                     author: BaseUser { user: author },
+                    reply: None,
                     media,
                     is_author: true,
                     is_liked,

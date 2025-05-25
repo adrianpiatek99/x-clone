@@ -23,7 +23,7 @@ export const useWindowVirtualScroll = (
   const { getVirtualItems, getTotalSize, measureElement, options } = useWindowVirtualizer({
     count,
     estimateSize: () => 700,
-    overscan: 3,
+    overscan: 5,
     scrollMargin: parentRef.current?.offsetTop ?? 0,
     initialOffset: offset,
     initialMeasurementsCache: cache,

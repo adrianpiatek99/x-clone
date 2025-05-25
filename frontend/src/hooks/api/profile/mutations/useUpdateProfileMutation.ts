@@ -57,11 +57,11 @@ export const useUpdateProfileMutation = ({ onSuccess, onSettled }: Props = {}) =
     },
   });
 
-  const updateProfileMutate = (data: UpdateProfileRequest) => {
+  const updateProfile = (data: UpdateProfileRequest) => {
     if (isPending) return;
 
     mutate(data);
   };
 
-  return { updateProfileMutate, isPending };
+  return { updateProfile, isPending };
 };

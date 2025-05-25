@@ -9,22 +9,24 @@ type Props = {
   post: Post;
 };
 
-export const ReplayPostContent = ({ post: { id, author, text, createdAt, editedAt } }: Props) => {
+export const ReplayPostContent = ({
+  post: { id, author, text, createdAt, editedAt, reply },
+}: Props) => {
   const { avatarUrl, screenName } = author;
 
   return (
     <Box className='flex-row'>
-      <Box className='gap-0'>
+      <Box className='shrink-0 gap-0'>
         <Avatar src={avatarUrl} screenName={screenName} />
         <div className='mx-auto mt-1 h-full w-0.5 grow bg-border-1' />
       </Box>
       <Box className='grow gap-1.5'>
         <Box className='flex-row items-center justify-between gap-1'>
-          <PostCardAuthor id={id} author={author} createdAt={createdAt} />
+          <PostCardAuthor id={id} author={author} createdAt={createdAt} preview />
         </Box>
         <Box>
           <Box className='gap-1.5'>
-            <PostCardStatuses editedAt={editedAt} />
+            <PostCardStatuses reply={reply} editedAt={editedAt} />
             <div className='pb-3'>
               <PostCardText text={text} />
             </div>

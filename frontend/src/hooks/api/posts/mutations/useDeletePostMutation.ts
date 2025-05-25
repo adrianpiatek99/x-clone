@@ -1,3 +1,4 @@
+import type { PostPageParams } from '@/app/[locale]/[screenName]/post/[id]/(post)/layout';
 import { API_ENDPOINTS } from '@/constants/api';
 import { QUERY_KEYS } from '@/constants/queryKeys';
 import { useToasts } from '@/hooks/useToasts';
@@ -15,6 +16,7 @@ import {
   updateTotalCountInInfiniteQueryCache,
 } from '@/utils/queryCache';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 
 type Props = {
@@ -33,6 +35,7 @@ type Context = {
 
 export const useDeletePostMutation = ({ screenName, onSuccess, onError, onSettled }: Props) => {
   const t = useTranslations();
+  const params = useParams<PostPageParams>();
   const { addToast } = useToasts();
   const queryClient = useQueryClient();
 
@@ -44,11 +47,11 @@ export const useDeletePostMutation = ({ screenName, onSuccess, onError, onSettle
   >({
     mutationFn: ({ id }) => apiRequest('DELETE', API_ENDPOINTS.POSTS.DELETE({ id })),
     onMutate: async ({ id }) => {
-      // Cancel any outgoing refetches
+      // Cancel any outgoing queries
       await queryClient.cancelQueries({ queryKey: QUERY_KEYS.POSTS.GLOBAL_TIMELINE.BASE });
       await queryClient.cancelQueries({ queryKey: QUERY_KEYS.POSTS.USER_POSTS.BASE });
       await queryClient.cancelQueries({ queryKey: QUERY_KEYS.POSTS.USER_LIKES.BASE });
-      await queryClient.cancelQueries({ queryKey: QUERY_KEYS.POSTS.DETAILS(id) });
+      await queryClient.cancelQueries({ queryKey: QUERY_KEYS.POSTS.DETAILS.WITH_PARAMS(id) });
 
       // Snapshot the previous value
       const previousTimeline = queryClient.getQueryData<GetGlobalTimelineResponse>(
@@ -60,9 +63,9 @@ export const useDeletePostMutation = ({ screenName, onSuccess, onError, onSettle
       const previousUserLikes = queryClient.getQueryData<GetUserLikesResponse>(
         QUERY_KEYS.POSTS.USER_LIKES.WITH_PARAMS(screenName)
       );
-      const previousPost = queryClient.getQueryData(QUERY_KEYS.POSTS.DETAILS(id));
+      const previousPost = queryClient.getQueryData(QUERY_KEYS.POSTS.DETAILS.WITH_PARAMS(id));
 
-      // Optimistically update the cache
+      // Optimistically remove the post from all relevant infinite query caches
       deleteItemFromInfiniteQueryCache<
         GetGlobalTimelineResponse | GetUserPostsResponse | GetUserLikesResponse
       >(
@@ -77,13 +80,22 @@ export const useDeletePostMutation = ({ screenName, onSuccess, onError, onSettle
         }
       );
 
+      // Remove the post details from the cache to reflect deletion immediately
       queryClient.removeQueries({
-        queryKey: QUERY_KEYS.POSTS.DETAILS(id),
+        queryKey: QUERY_KEYS.POSTS.DETAILS.WITH_PARAMS(id),
       });
 
+      if (params.id) {
+        queryClient.removeQueries({
+          queryKey: QUERY_KEYS.POSTS.DETAILS.WITH_PARAMS(params.id),
+        });
+      }
+
+      // Return snapshot of previous data for potential rollback on error
       return { previousTimeline, previousUserPosts, previousUserLikes, previousPost };
     },
     onSuccess: () => {
+      // Decrease the total count of user's posts in cache to reflect the deletion
       updateTotalCountInInfiniteQueryCache<GetUserPostsResponse>(
         queryClient,
         QUERY_KEYS.POSTS.USER_POSTS.WITH_PARAMS(screenName),
@@ -94,7 +106,7 @@ export const useDeletePostMutation = ({ screenName, onSuccess, onError, onSettle
       onSuccess?.();
     },
     onError: (_err, { id }, context) => {
-      // Rollback to the previous state on error
+      // Rollback to the previous data on error
       if (context?.previousTimeline) {
         queryClient.setQueryData(QUERY_KEYS.POSTS.GLOBAL_TIMELINE.BASE, context.previousTimeline);
       }
@@ -114,7 +126,7 @@ export const useDeletePostMutation = ({ screenName, onSuccess, onError, onSettle
       }
 
       if (context?.previousPost) {
-        queryClient.setQueryData(QUERY_KEYS.POSTS.DETAILS(id), context.previousPost);
+        queryClient.setQueryData(QUERY_KEYS.POSTS.DETAILS.WITH_PARAMS(id), context.previousPost);
       }
 
       addToast('error', t('post.api.deletePost.error'), { duration: 6000 });

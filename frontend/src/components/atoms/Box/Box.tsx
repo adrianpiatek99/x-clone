@@ -1,4 +1,4 @@
-import type { ComponentPropsWithRef, FC, RefCallback } from 'react';
+import type { ComponentPropsWithRef, FC, Ref } from 'react';
 import { createElement } from 'react';
 
 import { twMerge } from 'tailwind-merge';
@@ -7,7 +7,7 @@ import type { BoxAs } from './types';
 
 export type BoxProps = ComponentPropsWithRef<'div'> & {
   as?: BoxAs;
-  ref?: RefCallback<HTMLDivElement>;
+  ref?: Ref<HTMLDivElement | null>;
 };
 
 const Box: FC<BoxProps> = ({ as = 'div', className, ...props }) =>

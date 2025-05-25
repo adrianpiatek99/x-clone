@@ -176,6 +176,7 @@ async fn create_post(
         post: Post {
             post,
             author: BaseUser { user: author },
+            reply: None,
             media,
             is_author: true,
             is_liked: false,

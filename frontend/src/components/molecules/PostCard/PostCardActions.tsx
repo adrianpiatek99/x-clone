@@ -20,9 +20,9 @@ export const PostCardActions = memo(({ post }: Props) => {
   const { id, isLiked, repliesCount, likesCount } = post;
   const t = useTranslations();
   const [isOpen, setIsOpen] = useState(false);
+  const likeTitle = isLiked ? t('post.actions.unlike') : t('post.actions.like');
 
   const { toggleLikePost, isToggleLikePending } = useToggleLikePostMutation();
-  const likeTitle = isLiked ? t('post.actions.unlike') : t('post.actions.like');
 
   const handleToggleLike = () => toggleLikePost(id, isLiked);
 

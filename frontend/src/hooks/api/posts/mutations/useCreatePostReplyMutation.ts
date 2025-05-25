@@ -6,15 +6,17 @@ import type {
   CreatePostReplyResponse,
   GetGlobalTimelineResponse,
   GetPostDetailsResponse,
+  GetPostRepliesResponse,
   GetUserLikesResponse,
   GetUserPostsResponse,
 } from '@/types/post';
 import { apiRequest } from '@/utils/api';
 import { createFormData } from '@/utils/formData';
 import {
+  addItemToInfiniteQueryCache,
   compareQueryKeys,
-  updateItemInCache,
   updateItemInInfiniteQueryCache,
+  updateItemInSimpleArrayCache,
 } from '@/utils/queryCache';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
@@ -44,10 +46,24 @@ export const useCreatePostReplyMutation = ({ onSuccess, onError, onSettled }: Pr
         },
       });
     },
-    onSuccess: ({ postReply: { postId } }) => {
+    onSuccess: ({ postReply }) => {
       addToast('success', t('post.api.replyPost.success'));
+      onSuccess?.();
 
-      // Update the cache
+      const { replyToPostId } = postReply;
+
+      if (!replyToPostId) return;
+
+      // Update the relevant infinite query caches with the new post reply
+      addItemToInfiniteQueryCache<GetPostRepliesResponse>(
+        queryClient,
+        (queryKey) =>
+          compareQueryKeys(queryKey, QUERY_KEYS.POSTS.POST_REPLIES.WITH_PARAMS(replyToPostId)),
+        postReply,
+        { itemsKey: 'postReplies' }
+      );
+
+      // Increment the repliesCount in all relevant infinite query caches
       updateItemInInfiniteQueryCache<
         GetGlobalTimelineResponse | GetUserPostsResponse | GetUserLikesResponse
       >(
@@ -57,26 +73,41 @@ export const useCreatePostReplyMutation = ({ onSuccess, onError, onSettled }: Pr
           compareQueryKeys(queryKey, QUERY_KEYS.POSTS.USER_POSTS.BASE) ||
           compareQueryKeys(queryKey, QUERY_KEYS.POSTS.USER_MEDIA.BASE) ||
           compareQueryKeys(queryKey, QUERY_KEYS.POSTS.USER_LIKES.BASE),
-        postId,
+        replyToPostId,
         (post) => {
           post.repliesCount++;
         },
         { itemsKey: 'posts' }
       );
 
-      updateItemInCache<GetPostDetailsResponse>(
+      // Increment repliesCount in post details cache
+      updateItemInInfiniteQueryCache<GetPostRepliesResponse>(
         queryClient,
-        QUERY_KEYS.POSTS.DETAILS(postId),
+        (queryKey) => compareQueryKeys(queryKey, QUERY_KEYS.POSTS.POST_REPLIES.BASE),
+        replyToPostId,
         (post) => {
           post.repliesCount++;
+        },
+        {
+          itemsKey: 'postReplies',
         }
       );
 
-      onSuccess?.();
+      // Increment repliesCount in post details cache
+      updateItemInSimpleArrayCache<GetPostDetailsResponse>(
+        queryClient,
+        (queryKey) => compareQueryKeys(queryKey, QUERY_KEYS.POSTS.DETAILS.BASE),
+        replyToPostId,
+        (post) => {
+          post.repliesCount++;
+        },
+        {
+          itemsKey: 'posts',
+        }
+      );
     },
     onError: () => {
       addToast('error', t('post.api.replyPost.error'), { duration: 6000 });
-
       onError?.();
     },
     onSettled: () => {

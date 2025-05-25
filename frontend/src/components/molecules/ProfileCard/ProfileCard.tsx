@@ -1,4 +1,4 @@
-import type { ComponentPropsWithRef, RefCallback } from 'react';
+import type { ComponentPropsWithRef, Ref } from 'react';
 import React, { memo } from 'react';
 
 import Avatar from '@/components/atoms/Avatar';
@@ -14,7 +14,7 @@ import UserDisplayName from '../UserDisplayName';
 
 type Props = ComponentPropsWithRef<'div'> & {
   user: BaseUser | ProfileUser;
-  ref?: RefCallback<HTMLDivElement>;
+  ref?: Ref<HTMLDivElement | null>;
 };
 
 const ProfileCard = memo(({ user, ...props }: Props) => {

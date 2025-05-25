@@ -6,12 +6,16 @@ export const QUERY_KEYS = {
     GLOBAL_TIMELINE: {
       BASE: ['globalTimeline', 'infinite'],
     },
+    TRACK_TIMELINE: ['trackTimeline'],
+    DETAILS: { BASE: ['postDetails'], WITH_PARAMS: (id: string) => ['postDetails', id] },
     POST_LIKES: {
       BASE: ['postLikes', 'infinite'],
       WITH_PARAMS: (id: string, limit: number) => [...QUERY_KEYS.POSTS.POST_LIKES.BASE, id, limit],
     },
-    DETAILS: (id: string) => ['postDetails', id],
-    TRACK_TIMELINE: ['trackTimeline'],
+    POST_REPLIES: {
+      BASE: ['postReplies', 'infinite'],
+      WITH_PARAMS: (id: string) => [...QUERY_KEYS.POSTS.POST_REPLIES.BASE, id],
+    },
     USER_POSTS: {
       BASE: ['userPosts', 'infinite'],
       WITH_PARAMS: (screenName: string) => [...QUERY_KEYS.POSTS.USER_POSTS.BASE, screenName],

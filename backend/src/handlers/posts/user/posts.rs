@@ -78,6 +78,7 @@ async fn user_posts(
     // Query posts with join on author
     let mut query = posts::posts
         .inner_join(users::users)
+        .filter(posts::reply_to_post_id.is_null())
         .filter(posts::author_id.eq(user.id))
         .into_boxed();
 
@@ -91,7 +92,6 @@ async fn user_posts(
 
     let posts_list = match query
         .order(posts::created_at.desc())
-        .filter(posts::reply_to_post_id.is_null())
         .then_order_by(posts::id.desc())
         .select((PostSchema::as_select(), UserSelect::as_select()))
         .limit(take)
@@ -220,6 +220,7 @@ async fn user_posts(
             Post {
                 post,
                 author: BaseUser { user: author },
+                reply: None,
                 media: all_media,
                 is_author,
                 is_liked,

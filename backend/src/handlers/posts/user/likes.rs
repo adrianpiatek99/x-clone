@@ -13,7 +13,7 @@ use crate::{
     handlers::middleware::try_get_session,
     models::{
         global::Cursor,
-        post::{Post, PostLikeSchema, PostMedia, PostSchema},
+        post::{Post, PostLikeSchema, PostMedia, PostReplyInfo, PostSchema},
         user::{BaseUser, UserSelect},
     },
     schema::{
@@ -127,6 +127,12 @@ async fn get_user_likes(
         .collect::<Vec<_>>();
     let post_ids: Vec<Uuid> = likes_list.iter().map(|(_, post, _)| post.id).collect();
 
+    // Collect all reply_to_post_id values that are Some
+    let reply_to_post_ids: Vec<Uuid> = likes_list
+        .iter()
+        .filter_map(|(_, post, _)| post.reply_to_post_id)
+        .collect();
+
     // Execute all related queries in a single transaction
     let result = match conn.transaction(|conn| {
         // Media with post grouping
@@ -178,12 +184,26 @@ async fn get_user_likes(
             ))
             .load::<(Uuid, DateTime<Utc>)>(conn)?;
 
+        // Fetch reply_to_user for each reply_to_post_id
+        let reply_to_users = if !reply_to_post_ids.is_empty() {
+            let users = users::users
+                .inner_join(posts::posts.on(posts::author_id.eq(users::id)))
+                .filter(posts::id.eq_any(&reply_to_post_ids))
+                .select((posts::id, UserSelect::as_select()))
+                .distinct()
+                .load::<(Uuid, UserSelect)>(conn)?;
+            users
+        } else {
+            Vec::new()
+        };
+
         Result::<_, diesel::result::Error>::Ok((
             media_by_post,
             likes_counts,
             replies_counts,
             user_likes,
             edit_history,
+            reply_to_users,
         ))
     }) {
         Ok(data) => data,
@@ -192,7 +212,8 @@ async fn get_user_likes(
         }
     };
 
-    let (media_by_post, likes_counts, replies_counts, user_likes, edit_history) = result;
+    let (media_by_post, likes_counts, replies_counts, user_likes, edit_history, reply_to_users) =
+        result;
 
     // Get total count of likes for the user
     let total_count = match post_likes::post_likes
@@ -211,6 +232,12 @@ async fn get_user_likes(
     let user_likes_set: HashSet<_> = user_likes.into_iter().collect();
     let edit_by_post: HashMap<_, _> = edit_history.into_iter().collect();
 
+    // Map reply_to_post_id to BaseUser
+    let mut reply_to_user_map: HashMap<Uuid, BaseUser> = HashMap::new();
+    for (post_id, user) in reply_to_users {
+        reply_to_user_map.insert(post_id, BaseUser { user });
+    }
+
     // Final response
     let response_likes = likes_list
         .into_iter()
@@ -222,10 +249,22 @@ async fn get_user_likes(
             let likes_count = *likes_count_map.get(&post_id).unwrap_or(&0);
             let replies_count = *replies_count_map.get(&Some(post_id)).unwrap_or(&0);
             let edited_at = edit_by_post.get(&post_id).copied();
+            let reply_to_user = post
+                .reply_to_post_id
+                .and_then(|id| reply_to_user_map.get(&id).cloned());
+            let reply = if let Some(reply_to_user) = reply_to_user {
+                Some(PostReplyInfo {
+                    id: post.reply_to_post_id.unwrap(),
+                    user: reply_to_user,
+                })
+            } else {
+                None
+            };
 
             Post {
                 post,
                 author: BaseUser { user: author },
+                reply,
                 media: all_media,
                 is_author,
                 is_liked,

@@ -10,7 +10,7 @@ use super::user::BaseUser;
 
 // Post
 
-#[derive(Queryable, Selectable, Insertable, Identifiable, Serialize, TS, Debug)]
+#[derive(Queryable, Selectable, Insertable, Identifiable, Serialize, TS, Debug, Clone)]
 #[diesel(table_name = crate::schema::posts)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]
@@ -53,6 +53,7 @@ pub struct Post {
     #[serde(flatten)]
     pub post: PostSchema,
     pub author: BaseUser,
+    pub reply: Option<PostReplyInfo>,
     pub media: Vec<PostMedia>,
     pub is_author: bool,
     pub is_liked: bool,
@@ -62,6 +63,14 @@ pub struct Post {
     pub replies_count: i64,
     #[ts(type = "Date | null")]
     pub edited_at: Option<DateTime<Utc>>,
+}
+
+#[derive(Serialize, TS, Debug)]
+#[serde(rename_all = "camelCase")]
+#[ts(export, export_to = "../../frontend/src/types/post.ts")]
+pub struct PostReplyInfo {
+    pub id: Uuid,
+    pub user: BaseUser,
 }
 
 // PostMedia

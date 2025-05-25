@@ -112,6 +112,12 @@
         "description": "Share someone else's post on your timeline by reposting it. When you do, it'll show up here."
       }
     },
+    "replies": {
+      "empty": {
+        "title": "No replies found",
+        "description": "When someone replies to your post, it'll show up here."
+      }
+    },
     "subpages": {
       "engagements": {
         "title": "Post engagements",

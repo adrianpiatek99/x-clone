@@ -17,6 +17,7 @@ export const useLoginMutation = ({ onSuccess, onError, onSettled }: Props = {}) 
   const queryClient = useQueryClient();
   const { setUser } = useAuth();
   const { addToast } = useToasts();
+
   const { mutate, isPending } = useMutation<LoginResponse, ApiAxiosError, LoginRequest>({
     mutationFn: (data) => apiRequest('post', API_ENDPOINTS.AUTH.LOGIN, data),
     onSuccess: (data) => {

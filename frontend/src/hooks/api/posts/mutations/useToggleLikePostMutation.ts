@@ -6,6 +6,7 @@ import { useGlobalStore } from '@/stores/global';
 import type {
   GetGlobalTimelineResponse,
   GetPostDetailsResponse,
+  GetPostRepliesResponse,
   GetUserLikesResponse,
   GetUserPostsResponse,
   LikePostParams,
@@ -16,8 +17,8 @@ import type {
 import { apiRequest } from '@/utils/api';
 import {
   compareQueryKeys,
-  updateItemInCache,
   updateItemInInfiniteQueryCache,
+  updateItemInSimpleArrayCache,
   updateTotalCountInInfiniteQueryCache,
 } from '@/utils/queryCache';
 import { useMutation } from '@tanstack/react-query';
@@ -44,9 +45,7 @@ export const useToggleLikePostMutation = ({ onSuccess, onError, onSettled }: Pro
   >({
     mutationFn: ({ postId }) => apiRequest('POST', API_ENDPOINTS.POSTS.LIKE({ postId })),
     onSuccess: ({ id }) => {
-      addToast('success', t('post.api.likePost.success'));
-
-      // Update the cache with the updated post
+      // Update the post in all relevant infinite query caches
       updateItemInInfiniteQueryCache<
         GetGlobalTimelineResponse | GetUserPostsResponse | GetUserLikesResponse
       >(
@@ -63,16 +62,33 @@ export const useToggleLikePostMutation = ({ onSuccess, onError, onSettled }: Pro
         { itemsKey: 'posts' }
       );
 
-      updateItemInCache<GetPostDetailsResponse>(
+      // Update the post in the post details cache
+      updateItemInSimpleArrayCache<GetPostDetailsResponse>(
         queryClient,
-        QUERY_KEYS.POSTS.DETAILS(id),
+        (queryKey) => compareQueryKeys(queryKey, QUERY_KEYS.POSTS.DETAILS.BASE),
+        id,
         (post) => {
           post.isLiked = true;
           post.likesCount++;
+        },
+        {
+          itemsKey: 'posts',
         }
       );
 
-      // Update the total count of likes
+      // Update the post in replies cache if it's visible in a thread
+      updateItemInInfiniteQueryCache<GetPostRepliesResponse>(
+        queryClient,
+        (queryKey) => compareQueryKeys(queryKey, QUERY_KEYS.POSTS.POST_REPLIES.BASE),
+        id,
+        (post) => {
+          post.isLiked = true;
+          post.likesCount++;
+        },
+        { itemsKey: 'postReplies' }
+      );
+
+      // Increment the total number of liked posts in the user likes cache
       if (user) {
         updateTotalCountInInfiniteQueryCache<GetUserLikesResponse>(
           queryClient,
@@ -81,11 +97,11 @@ export const useToggleLikePostMutation = ({ onSuccess, onError, onSettled }: Pro
         );
       }
 
+      addToast('success', t('post.api.likePost.success'));
       onSuccess?.();
     },
     onError: () => {
       addToast('error', t('post.api.likePost.error'), { duration: 6000 });
-
       onError?.();
     },
     onSettled: () => {
@@ -100,9 +116,7 @@ export const useToggleLikePostMutation = ({ onSuccess, onError, onSettled }: Pro
   >({
     mutationFn: ({ postId }) => apiRequest('DELETE', API_ENDPOINTS.POSTS.UNLIKE({ postId })),
     onSuccess: ({ id }) => {
-      addToast('success', t('post.api.unlikePost.success'));
-
-      // Update the cache with the updated post
+      // Update the post in all relevant infinite query caches
       updateItemInInfiniteQueryCache<
         GetGlobalTimelineResponse | GetUserPostsResponse | GetUserLikesResponse
       >(
@@ -119,16 +133,33 @@ export const useToggleLikePostMutation = ({ onSuccess, onError, onSettled }: Pro
         { itemsKey: 'posts' }
       );
 
-      updateItemInCache<GetPostDetailsResponse>(
+      // Update the post in the post details cache
+      updateItemInSimpleArrayCache<GetPostDetailsResponse>(
         queryClient,
-        QUERY_KEYS.POSTS.DETAILS(id),
+        (queryKey) => compareQueryKeys(queryKey, QUERY_KEYS.POSTS.DETAILS.BASE),
+        id,
         (post) => {
           post.isLiked = false;
           post.likesCount--;
+        },
+        {
+          itemsKey: 'posts',
         }
       );
 
-      // Update the total count of likes
+      // Update the post in replies cache if it's visible in a thread
+      updateItemInInfiniteQueryCache<GetPostRepliesResponse>(
+        queryClient,
+        (queryKey) => compareQueryKeys(queryKey, QUERY_KEYS.POSTS.POST_REPLIES.BASE),
+        id,
+        (post) => {
+          post.isLiked = false;
+          post.likesCount--;
+        },
+        { itemsKey: 'postReplies' }
+      );
+
+      // Decrement the total number of liked posts in the user likes cache
       if (user) {
         updateTotalCountInInfiniteQueryCache<GetUserLikesResponse>(
           queryClient,
@@ -137,11 +168,11 @@ export const useToggleLikePostMutation = ({ onSuccess, onError, onSettled }: Pro
         );
       }
 
+      addToast('success', t('post.api.unlikePost.success'));
       onSuccess?.();
     },
     onError: () => {
       addToast('error', t('post.api.unlikePost.error'), { duration: 6000 });
-
       onError?.();
     },
     onSettled: () => {

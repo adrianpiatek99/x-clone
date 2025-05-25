@@ -231,27 +231,38 @@ export const updateItemInInfiniteQueryCache = <TResponse extends { nextCursor: u
   );
 };
 
-export const updateItemInSimpleArrayCache = <TItem extends { id: string }>(
+export const updateItemInSimpleArrayCache = <TResponse>(
   queryClient: QueryClient,
-  queryKey: QueryKey,
+  compareQueryKeys: (queryKey: readonly unknown[]) => boolean,
   itemId: string,
-  updateFn: (item: Draft<TItem>) => void,
+  updateFn: (
+    item: Draft<
+      TResponse[keyof TResponse & string] extends (infer U)[] ? U & { id: string } : never
+    >
+  ) => void,
   options: {
-    itemsKey: string;
+    itemsKey: keyof TResponse & string;
   }
 ) => {
   const { itemsKey } = options;
 
-  queryClient.setQueryData<{ [key: string]: TItem[] }>(queryKey, (oldData) =>
-    produce(oldData, (draft) => {
-      if (draft && draft[itemsKey]) {
-        const item = draft[itemsKey].find((item) => item.id === itemId);
+  type TItemsKey = typeof itemsKey;
+  type TItem = TResponse[TItemsKey] extends (infer U)[] ? U & { id: string } : never;
 
-        if (item) {
-          updateFn(item as Draft<TItem>);
+  queryClient.setQueriesData<{ [key: string]: TItem[] }>(
+    {
+      predicate: (query) => compareQueryKeys(query.queryKey),
+    },
+    (oldData) =>
+      produce(oldData, (draft) => {
+        if (draft && draft[itemsKey]) {
+          const item = draft[itemsKey].find((item) => item.id === itemId);
+
+          if (item) {
+            updateFn(item as Draft<TItem>);
+          }
         }
-      }
-    })
+      })
   );
 };
 

@@ -1,4 +1,4 @@
-import type { ComponentPropsWithRef, PropsWithChildren, RefCallback } from 'react';
+import type { ComponentPropsWithRef, PropsWithChildren, Ref } from 'react';
 import React, { memo } from 'react';
 
 import Box from '@/components/atoms/Box';
@@ -8,7 +8,7 @@ import { twMerge } from 'tailwind-merge';
 type Props = ComponentPropsWithRef<'div'> & {
   isLoading?: boolean;
   href?: string;
-  ref?: RefCallback<HTMLDivElement>;
+  ref?: Ref<HTMLDivElement | null>;
 };
 
 const ArticleCard = memo(

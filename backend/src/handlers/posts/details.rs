@@ -11,7 +11,7 @@ use crate::{
     db_service::DbService,
     handlers::middleware::try_get_session,
     models::{
-        post::{Post, PostMedia, PostSchema},
+        post::{Post, PostMedia, PostReplyInfo, PostSchema},
         user::{BaseUser, UserSelect},
     },
     schema::{
@@ -31,8 +31,7 @@ pub struct GetPostDetailsParams {
 #[serde(rename_all = "camelCase")]
 #[ts(export, export_to = "../../frontend/src/types/post.ts")]
 pub struct GetPostDetailsResponse {
-    #[serde(flatten)]
-    pub post: Post,
+    pub posts: Vec<Post>,
 }
 
 #[get("/details/{post_id}")]
@@ -42,7 +41,6 @@ async fn post_details(
     req: HttpRequest,
 ) -> HttpResponse {
     let session_user_id = try_get_session(&req).await;
-
     let mut conn = db.get_conn();
     let pid_str = path.into_inner();
 
@@ -51,7 +49,6 @@ async fn post_details(
         Err(_) => return HttpResponse::BadRequest().body("Invalid UUID format"),
     };
 
-    // Fetch post and author with a single query
     let (post, author) = match posts::posts
         .inner_join(users::users.on(posts::author_id.eq(users::id)))
         .select((PostSchema::as_select(), UserSelect::as_select()))
@@ -62,39 +59,46 @@ async fn post_details(
         Err(diesel::result::Error::NotFound) => {
             return HttpResponse::NotFound().body("Post not found");
         }
-        Err(_) => {
-            return HttpResponse::InternalServerError().body("Internal server error");
-        }
+        Err(_) => return HttpResponse::InternalServerError().body("Internal server error"),
     };
 
-    // Execute multiple queries concurrently using a transaction
-    let result = match conn.transaction(|conn| {
-        // Media query
+    let posts_chain = match build_post_chain(post, author, &mut conn, session_user_id) {
+        Ok(chain) => chain,
+        Err(_) => return HttpResponse::InternalServerError().body("Failed to build post chain"),
+    };
+
+    HttpResponse::Ok().json(GetPostDetailsResponse { posts: posts_chain })
+}
+
+fn build_post_chain(
+    mut post: PostSchema,
+    mut author: UserSelect,
+    conn: &mut PgConnection,
+    session_user_id: Option<Uuid>,
+) -> Result<Vec<Post>, diesel::result::Error> {
+    let mut chain = Vec::new();
+
+    loop {
         let media = post_media::post_media
             .filter(post_media::post_id.eq(post.id))
             .load::<PostMedia>(conn)?;
 
-        // Combined likes count and is_liked query
-        let (likes_count, is_liked) = {
-            let likes_count = post_likes::post_likes
-                .filter(post_likes::post_id.eq(post.id))
-                .select(count_star())
-                .first::<i64>(conn)
-                .unwrap_or(0);
+        let likes_count = post_likes::post_likes
+            .filter(post_likes::post_id.eq(post.id))
+            .select(count_star())
+            .first::<i64>(conn)
+            .unwrap_or(0);
 
-            let is_liked = if let Some(user_id) = session_user_id {
-                select(exists(
-                    post_likes::post_likes
-                        .filter(post_likes::post_id.eq(post.id))
-                        .filter(post_likes::user_id.eq(user_id)),
-                ))
-                .get_result::<bool>(conn)
-                .unwrap_or(false)
-            } else {
-                false
-            };
-
-            (likes_count, is_liked)
+        let is_liked = if let Some(user_id) = session_user_id {
+            select(exists(
+                post_likes::post_likes
+                    .filter(post_likes::post_id.eq(post.id))
+                    .filter(post_likes::user_id.eq(user_id)),
+            ))
+            .get_result::<bool>(conn)
+            .unwrap_or(false)
+        } else {
+            false
         };
 
         let replies_count = posts::posts
@@ -103,7 +107,18 @@ async fn post_details(
             .get_result::<i64>(conn)
             .unwrap_or(0);
 
-        // Last edit query
+        let reply_to_user = if let Some(reply_to_post_id) = post.reply_to_post_id {
+            users::users
+                .inner_join(posts::posts)
+                .filter(posts::id.eq(reply_to_post_id))
+                .select(UserSelect::as_select())
+                .first::<UserSelect>(conn)
+                .ok()
+                .map(|u| BaseUser { user: u })
+        } else {
+            None
+        };
+
         let edited_at = post_edit_history::post_edit_history
             .filter(post_edit_history::post_id.eq(post.id))
             .select(post_edit_history::edited_at)
@@ -112,37 +127,41 @@ async fn post_details(
             .first::<DateTime<Utc>>(conn)
             .ok();
 
-        Result::<_, diesel::result::Error>::Ok((
-            media,
-            likes_count,
-            is_liked,
-            replies_count,
-            edited_at,
-        ))
-    }) {
-        Ok(data) => data,
-        Err(_) => {
-            return HttpResponse::InternalServerError().body("Internal server error");
-        }
-    };
+        let is_author = session_user_id.map_or(false, |id| id == author.id);
 
-    let (media, likes_count, is_liked, replies_count, edited_at) = result;
+        let reply = post
+            .reply_to_post_id
+            .zip(reply_to_user.clone())
+            .map(|(id, user)| PostReplyInfo { id, user });
 
-    // Determine if current user is author
-    let is_author = session_user_id.map_or(false, |id| id == author.id);
-
-    let response = GetPostDetailsResponse {
-        post: Post {
-            post,
-            author: BaseUser { user: author },
+        chain.push(Post {
+            post: post.clone(),
+            author: BaseUser {
+                user: author.clone(),
+            },
+            reply,
             media,
             is_author,
             is_liked,
             likes_count,
             replies_count,
             edited_at,
-        },
-    };
+        });
 
-    HttpResponse::Ok().json(response)
+        if let Some(parent_id) = post.reply_to_post_id {
+            let (parent_post, parent_author) = posts::posts
+                .inner_join(users::users.on(posts::author_id.eq(users::id)))
+                .select((PostSchema::as_select(), UserSelect::as_select()))
+                .filter(posts::id.eq(parent_id))
+                .first::<(PostSchema, UserSelect)>(conn)?;
+
+            post = parent_post;
+            author = parent_author;
+        } else {
+            break;
+        }
+    }
+
+    chain.reverse();
+    Ok(chain)
 }

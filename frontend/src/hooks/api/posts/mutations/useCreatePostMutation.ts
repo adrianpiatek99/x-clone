@@ -41,33 +41,33 @@ export const useCreatePostMutation = ({ onSuccess, onSettled }: Props = {}) => {
       });
     },
     onSuccess: (newPost) => {
-      addToast('success', t('post.api.createPost.success'));
-
       const hasMedia = newPost.media.length > 0;
 
-      // Update the cache with the new post
-      if (user) {
-        addItemToInfiniteQueryCache<
-          GetGlobalTimelineResponse | GetUserPostsResponse | GetUserMediaResponse
-        >(
-          queryClient,
-          (queryKey) =>
-            compareQueryKeys(queryKey, QUERY_KEYS.POSTS.GLOBAL_TIMELINE.BASE) ||
-            compareQueryKeys(queryKey, QUERY_KEYS.POSTS.USER_POSTS.WITH_PARAMS(user.screenName)) ||
-            (hasMedia &&
-              compareQueryKeys(queryKey, QUERY_KEYS.POSTS.USER_MEDIA.WITH_PARAMS(user.screenName))),
-          newPost,
-          { itemsKey: 'posts' }
-        );
-
-        updateTotalCountInInfiniteQueryCache<GetUserPostsResponse>(
-          queryClient,
-          QUERY_KEYS.POSTS.USER_POSTS.WITH_PARAMS(user.screenName),
-          (count) => count + 1
-        );
-      }
-
+      addToast('success', t('post.api.createPost.success'));
       onSuccess?.();
+
+      if (!user) return;
+
+      // Update the relevant infinite query caches with the new reply
+      addItemToInfiniteQueryCache<
+        GetGlobalTimelineResponse | GetUserPostsResponse | GetUserMediaResponse
+      >(
+        queryClient,
+        (queryKey) =>
+          compareQueryKeys(queryKey, QUERY_KEYS.POSTS.GLOBAL_TIMELINE.BASE) ||
+          compareQueryKeys(queryKey, QUERY_KEYS.POSTS.USER_POSTS.WITH_PARAMS(user.screenName)) ||
+          (hasMedia &&
+            compareQueryKeys(queryKey, QUERY_KEYS.POSTS.USER_MEDIA.WITH_PARAMS(user.screenName))),
+        newPost,
+        { itemsKey: 'posts' }
+      );
+
+      // Increment the post count in all relevant infinite query caches
+      updateTotalCountInInfiniteQueryCache<GetUserPostsResponse>(
+        queryClient,
+        QUERY_KEYS.POSTS.USER_POSTS.WITH_PARAMS(user.screenName),
+        (count) => count + 1
+      );
     },
     onError: () => {
       addToast('error', t('post.api.createPost.error'), { duration: 6000 });
@@ -77,11 +77,11 @@ export const useCreatePostMutation = ({ onSuccess, onSettled }: Props = {}) => {
     },
   });
 
-  const createPostMutate = (data: CreatePostRequest) => {
+  const createPost = (data: CreatePostRequest) => {
     if (isPending) return;
 
     mutate(data);
   };
 
-  return { createPostMutate, isPending };
+  return { createPost, isPending };
 };

@@ -18,8 +18,14 @@ type Props = {
 export const useGetPostDetailsQuery = ({ id, enabled = true }: Props) => {
   const queryClient = useQueryClient();
   const { screenName } = useParams<{ screenName: string }>();
-  const { data, isLoading, isFetching, isRefetching, isError } = useQuery<GetPostDetailsResponse>({
-    queryKey: QUERY_KEYS.POSTS.DETAILS(id),
+  const {
+    data = { posts: [] },
+    isLoading,
+    isFetching,
+    isRefetching,
+    isError,
+  } = useQuery<GetPostDetailsResponse>({
+    queryKey: QUERY_KEYS.POSTS.DETAILS.WITH_PARAMS(id),
     queryFn: () => apiRequest('GET', API_ENDPOINTS.POSTS.DETAILS({ postId: id })),
     enabled: enabled && !!id,
     initialData: () => {
@@ -31,7 +37,13 @@ export const useGetPostDetailsQuery = ({ id, enabled = true }: Props) => {
 
         const allPosts = timelineData.pages.flatMap((page) => page.posts);
 
-        return allPosts.find((post) => post.id === id);
+        const post = allPosts.find((post) => post.id === id);
+
+        if (post) {
+          return { posts: [post] };
+        }
+
+        return undefined;
       }
 
       if (screenName) {
@@ -44,7 +56,13 @@ export const useGetPostDetailsQuery = ({ id, enabled = true }: Props) => {
 
           const allPosts = userPostsData.pages.flatMap((page) => page.posts);
 
-          return allPosts.find((post) => post.id === id);
+          const post = allPosts.find((post) => post.id === id);
+
+          if (post) {
+            return { posts: [post] };
+          }
+
+          return undefined;
         }
       }
     },

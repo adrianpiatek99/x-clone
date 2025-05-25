@@ -230,6 +230,7 @@ async fn user_media(
             Post {
                 post,
                 author: BaseUser { user: author },
+                reply: None,
                 media: all_media,
                 is_author,
                 is_liked,

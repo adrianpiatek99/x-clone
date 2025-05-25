@@ -40,7 +40,7 @@ const CreatePostFormModal = () => {
       resetModalStore: state.resetModalStore,
     }))
   );
-  const { createPostMutate, isPending } = useCreatePostMutation({
+  const { createPost, isPending } = useCreatePostMutation({
     onSuccess: () => {
       resetModalStore();
     },
@@ -51,7 +51,7 @@ const CreatePostFormModal = () => {
   const handleClose = () => updateModal({ isOpen: false });
 
   const handleCreatePost = () =>
-    createPostMutate({
+    createPost({
       text,
       media: files.map((file) => file.file),
     });

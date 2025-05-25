@@ -13,7 +13,7 @@ use crate::{
     handlers::middleware::require_session,
     helpers::validation::validate_post_reply_text,
     models::{
-        post::{Post, PostSchema},
+        post::{Post, PostReplyInfo, PostSchema},
         user::{BaseUser, UserSelect},
     },
     schema::{posts::dsl as posts, users::dsl as users},
@@ -166,10 +166,34 @@ async fn create_post_reply(
     //     .load::<PostMedia>(&mut conn)
     //     .unwrap_or_default();
 
+    // Get reply_to_user
+    let reply_to_user = if let Some(reply_to_post_id) = post_reply.reply_to_post_id {
+        match users::users
+            .inner_join(posts::posts)
+            .filter(posts::id.eq(reply_to_post_id))
+            .select(UserSelect::as_select())
+            .first::<UserSelect>(&mut conn)
+        {
+            Ok(user) => Some(BaseUser { user }),
+            Err(_) => None,
+        }
+    } else {
+        None
+    };
+    let reply = if let Some(reply_to_user) = reply_to_user {
+        Some(PostReplyInfo {
+            id: post_reply.reply_to_post_id.unwrap(),
+            user: reply_to_user,
+        })
+    } else {
+        None
+    };
+
     let response = CreatePostReplyResponse {
         post_reply: Post {
             post: post_reply,
             author: BaseUser { user: author },
+            reply,
             media: vec![],
             is_author: true,
             is_liked: false,
