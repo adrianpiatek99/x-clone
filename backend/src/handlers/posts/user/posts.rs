@@ -190,6 +190,7 @@ async fn user_posts(
 
     // Get total count of posts for the user
     let total_count = match posts::posts
+        .filter(posts::reply_to_post_id.is_null())
         .filter(posts::author_id.eq(user.id))
         .count()
         .get_result::<i64>(&mut conn)

@@ -53,49 +53,53 @@ const FlatList = <TData,>({
 
   if (isError) return <ErrorState onRetry={() => infiniteScroll.refetch()} />;
 
-  if (isEmpty) return <Empty title={empty.title} description={empty?.description} />;
-
   return (
     <section className='relative flex w-full flex-col' ref={parentRef}>
-      <FlatListPillNotify
-        isRefetching={!!infiniteScroll?.isRefetching}
-        additionalPillNotify={additionalPillNotify}
-      />
-      {isInfiniteScroll && infiniteScroll.isLoading ? (
-        cloneElement(infiniteScroll.loader)
+      {isEmpty ? (
+        <Empty title={empty.title} description={empty?.description} />
       ) : (
-        <div style={{ height: `${totalSize}px` }} className='relative w-full'>
-          {isGrid ? (
-            <FlatListGrid
-              items={items}
-              scrollMargin={options.scrollMargin}
-              measureElement={measureElement}
-              data={data}
-              renderItem={renderItem}
-            />
+        <>
+          <FlatListPillNotify
+            isRefetching={!!infiniteScroll?.isRefetching}
+            additionalPillNotify={additionalPillNotify}
+          />
+          {isInfiniteScroll && infiniteScroll.isLoading ? (
+            cloneElement(infiniteScroll.loader)
           ) : (
-            items.map(({ key, index, start }) => (
-              <div
-                key={key}
-                ref={measureElement}
-                style={{
-                  transform: `translateY(${start - options.scrollMargin}px)`,
-                }}
-                className='absolute left-0 top-0 w-full animate-appear'
-                data-index={index}
-              >
-                {renderItem(data[index])}
-              </div>
-            ))
+            <div style={{ height: `${totalSize}px` }} className='relative w-full'>
+              {isGrid ? (
+                <FlatListGrid
+                  items={items}
+                  scrollMargin={options.scrollMargin}
+                  measureElement={measureElement}
+                  data={data}
+                  renderItem={renderItem}
+                />
+              ) : (
+                items.map(({ key, index, start }) => (
+                  <div
+                    key={key}
+                    ref={measureElement}
+                    style={{
+                      transform: `translateY(${start - options.scrollMargin}px)`,
+                    }}
+                    className='animate-appear absolute left-0 top-0 w-full'
+                    data-index={index}
+                  >
+                    {renderItem(data[index])}
+                  </div>
+                ))
+              )}
+            </div>
           )}
-        </div>
-      )}
-      {isInfiniteScroll && !infiniteScroll.isLoading && (
-        <FlatListLoadMore
-          isFetching={infiniteScroll.isFetching}
-          hasNextPage={infiniteScroll.hasNextPage}
-          fetchNextPage={infiniteScroll.fetchNextPage}
-        />
+          {isInfiniteScroll && !infiniteScroll.isLoading && (
+            <FlatListLoadMore
+              isFetching={infiniteScroll.isFetching}
+              hasNextPage={infiniteScroll.hasNextPage}
+              fetchNextPage={infiniteScroll.fetchNextPage}
+            />
+          )}
+        </>
       )}
     </section>
   );

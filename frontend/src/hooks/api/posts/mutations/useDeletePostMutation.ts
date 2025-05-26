@@ -6,6 +6,7 @@ import type {
   DeletePostParams,
   DeletePostResponse,
   GetGlobalTimelineResponse,
+  GetPostRepliesResponse,
   GetUserLikesResponse,
   GetUserPostsResponse,
 } from '@/types/post';
@@ -30,6 +31,7 @@ type Context = {
   previousTimeline: GetGlobalTimelineResponse | undefined;
   previousUserPosts: GetUserPostsResponse | undefined;
   previousUserLikes: GetUserLikesResponse | undefined;
+  previousPostReplies: GetPostRepliesResponse | undefined;
   previousPost: unknown;
 };
 
@@ -51,6 +53,7 @@ export const useDeletePostMutation = ({ screenName, onSuccess, onError, onSettle
       await queryClient.cancelQueries({ queryKey: QUERY_KEYS.POSTS.GLOBAL_TIMELINE.BASE });
       await queryClient.cancelQueries({ queryKey: QUERY_KEYS.POSTS.USER_POSTS.BASE });
       await queryClient.cancelQueries({ queryKey: QUERY_KEYS.POSTS.USER_LIKES.BASE });
+      await queryClient.cancelQueries({ queryKey: QUERY_KEYS.POSTS.POST_REPLIES.BASE });
       await queryClient.cancelQueries({ queryKey: QUERY_KEYS.POSTS.DETAILS.WITH_PARAMS(id) });
 
       // Snapshot the previous value
@@ -62,6 +65,9 @@ export const useDeletePostMutation = ({ screenName, onSuccess, onError, onSettle
       );
       const previousUserLikes = queryClient.getQueryData<GetUserLikesResponse>(
         QUERY_KEYS.POSTS.USER_LIKES.WITH_PARAMS(screenName)
+      );
+      const previousPostReplies = queryClient.getQueryData<GetPostRepliesResponse>(
+        QUERY_KEYS.POSTS.POST_REPLIES.BASE
       );
       const previousPost = queryClient.getQueryData(QUERY_KEYS.POSTS.DETAILS.WITH_PARAMS(id));
 
@@ -79,6 +85,14 @@ export const useDeletePostMutation = ({ screenName, onSuccess, onError, onSettle
           itemsKey: 'posts',
         }
       );
+      deleteItemFromInfiniteQueryCache<GetPostRepliesResponse>(
+        queryClient,
+        (queryKey) => compareQueryKeys(queryKey, QUERY_KEYS.POSTS.POST_REPLIES.BASE),
+        id,
+        {
+          itemsKey: 'postReplies',
+        }
+      );
 
       // Remove the post details from the cache to reflect deletion immediately
       queryClient.removeQueries({
@@ -92,7 +106,13 @@ export const useDeletePostMutation = ({ screenName, onSuccess, onError, onSettle
       }
 
       // Return snapshot of previous data for potential rollback on error
-      return { previousTimeline, previousUserPosts, previousUserLikes, previousPost };
+      return {
+        previousTimeline,
+        previousUserPosts,
+        previousUserLikes,
+        previousPostReplies,
+        previousPost,
+      } satisfies Context;
     },
     onSuccess: () => {
       // Decrease the total count of user's posts in cache to reflect the deletion
@@ -123,6 +143,10 @@ export const useDeletePostMutation = ({ screenName, onSuccess, onError, onSettle
           QUERY_KEYS.POSTS.USER_LIKES.WITH_PARAMS(screenName),
           context.previousUserLikes
         );
+      }
+
+      if (context?.previousPostReplies) {
+        queryClient.setQueryData(QUERY_KEYS.POSTS.POST_REPLIES.BASE, context.previousPostReplies);
       }
 
       if (context?.previousPost) {

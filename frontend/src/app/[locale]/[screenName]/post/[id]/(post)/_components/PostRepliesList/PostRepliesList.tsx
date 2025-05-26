@@ -16,10 +16,10 @@ const PostRepliesList = () => {
   const { flatData, ...restResult } = useGetPostRepliesQuery({ id });
 
   return (
-    <Box className='border-t border-border-1'>
+    <Box className='border-border-1 border-t'>
       <FlatList
         data={flatData}
-        renderItem={(item) => <PostCard post={item} />}
+        renderItem={(item) => <PostCard className='border-b-0' post={item} />}
         empty={{
           title: t('postPage.replies.empty.title'),
           description: t('postPage.replies.empty.description'),

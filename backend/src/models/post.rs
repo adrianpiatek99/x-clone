@@ -1,5 +1,5 @@
 use chrono::{DateTime, Utc};
-use diesel::{Identifiable, Insertable, Queryable, Selectable};
+use diesel::{Identifiable, Insertable, Queryable, QueryableByName, Selectable};
 use serde::Serialize;
 use ts_rs::TS;
 use uuid::Uuid;
@@ -10,7 +10,9 @@ use super::user::BaseUser;
 
 // Post
 
-#[derive(Queryable, Selectable, Insertable, Identifiable, Serialize, TS, Debug, Clone)]
+#[derive(
+    Queryable, Selectable, Insertable, Identifiable, Serialize, TS, Debug, Clone, QueryableByName,
+)]
 #[diesel(table_name = crate::schema::posts)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]

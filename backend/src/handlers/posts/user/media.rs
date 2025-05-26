@@ -128,6 +128,7 @@ async fn user_media(
 
     // Get total count of posts with media
     let total_count = match posts::posts
+        .filter(posts::reply_to_post_id.is_null())
         .filter(posts::author_id.eq(user.id))
         .filter(exists(
             post_media::post_media

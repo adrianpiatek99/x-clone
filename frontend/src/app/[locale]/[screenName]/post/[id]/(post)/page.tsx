@@ -23,12 +23,20 @@ const PostPage = () => {
 
   useEffect(() => {
     if (!isLoading && postDetailRef.current) {
-      const elementPosition = postDetailRef.current.getBoundingClientRect().top;
-      const headerBar = document.getElementById('header-bar');
-      const offsetPosition = elementPosition + window.pageYOffset - (headerBar?.offsetHeight ?? 0);
+      const scrollToElement = () => {
+        if (!postDetailRef.current) return;
 
-      window.scrollTo({
-        top: offsetPosition,
+        const elementPosition = postDetailRef.current.getBoundingClientRect().top;
+        const headerBar = document.getElementById('header-bar');
+        const offsetPosition = elementPosition + window.scrollY - (headerBar?.offsetHeight ?? 0);
+
+        window.scrollTo({
+          top: offsetPosition,
+        });
+      };
+
+      requestAnimationFrame(() => {
+        requestAnimationFrame(scrollToElement);
       });
     }
   }, [isLoading]);
@@ -52,7 +60,7 @@ const PostPage = () => {
         return (
           <PostCard
             key={post.id}
-            className='border-b-0'
+            className='animate-appear border-b-0'
             post={post}
             showThreadLineAbove={!isFirstPost && !isLastPost}
             showThreadLineBelow
