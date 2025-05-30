@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 import Box from '@/components/atoms/Box';
@@ -16,7 +18,7 @@ const PostRepliesList = () => {
   const { flatData, ...restResult } = useGetPostRepliesQuery({ id });
 
   return (
-    <Box className='border-border-1 border-t'>
+    <Box className='min-h-[65vh] border-t border-border-1'>
       <FlatList
         data={flatData}
         renderItem={(item) => <PostCard className='border-b-0' post={item} />}

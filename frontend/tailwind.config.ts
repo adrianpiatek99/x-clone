@@ -164,7 +164,7 @@ export default {
       },
       animation: {
         initAppear: 'appear .15s ease-out',
-        appear: 'appear .2s ease-out',
+        appear: 'appear .25s ease-out',
         enter: 'enter .2s ease',
         leave: 'leave .2s both ease',
         spin: 'appear .3s ease-out, spin .7s linear infinite',

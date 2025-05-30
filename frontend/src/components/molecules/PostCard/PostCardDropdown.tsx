@@ -41,6 +41,7 @@ export const PostCardDropdown = memo(({ post, onDeleteSuccess }: Props) => {
   const { deletePost, isDeleting } = useDeletePostMutation({
     screenName,
     onSuccess: () => {
+      setIsDeletePostModalOpen(false);
       onDeleteSuccess?.();
     },
   });
@@ -48,7 +49,6 @@ export const PostCardDropdown = memo(({ post, onDeleteSuccess }: Props) => {
   const handleDeletePost = () => {
     if (!isAuthor) return;
 
-    setIsDeletePostModalOpen(false);
     deletePost({ id });
   };
 
@@ -89,6 +89,7 @@ export const PostCardDropdown = memo(({ post, onDeleteSuccess }: Props) => {
         isOpen={isDeletePostModalOpen}
         onClose={() => setIsDeletePostModalOpen(false)}
         onAccept={handleDeletePost}
+        isLoading={isDeleting}
         preventClosingOnOutside={false}
       />
       {showEditAction && (

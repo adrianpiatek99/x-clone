@@ -25,13 +25,11 @@ const GlobalPostsTimeline = () => {
         }}
         infiniteScroll={{
           loader: <PostCardSkeletons />,
+          pillNotify: latestPostId && (
+            <LazyGlobalTrackTimeline latestPostId={latestPostId} refetch={restResult.refetch} />
+          ),
           ...restResult,
         }}
-        additionalPillNotify={
-          latestPostId && (
-            <LazyGlobalTrackTimeline latestPostId={latestPostId} refetch={restResult.refetch} />
-          )
-        }
         scrollKey={VirtualScrollKeys.GLOBAL_TIMELINE}
       />
     </div>

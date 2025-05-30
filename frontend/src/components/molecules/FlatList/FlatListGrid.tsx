@@ -28,10 +28,10 @@ export const FlatListGrid = <TData,>({
         width: `${COLUMN_WIDTH}%`,
         transform: `translateY(${start - scrollMargin}px)`,
       }}
-      className='absolute top-0 animate-appear p-0.5'
+      className='absolute top-0 p-0.5'
       data-index={index}
     >
-      {renderItem(data[index])}
+      {renderItem(data[index], index)}
     </div>
   ));
 };

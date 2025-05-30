@@ -25,7 +25,7 @@ const ProfileCard = memo(({ user, ...props }: Props) => {
   const showFollowButton = 'isFollowing' in user && !isMe;
 
   return (
-    <ArticleCard href={profilePageHref} {...props}>
+    <ArticleCard className='animate-appear' href={profilePageHref} {...props}>
       <Box className='relative flex-row items-start'>
         <Avatar href={profilePageHref} src={avatarUrl} screenName={screenName} />
         <Box className='grow gap-1'>

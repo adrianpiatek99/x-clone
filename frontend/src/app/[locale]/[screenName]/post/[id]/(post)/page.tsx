@@ -1,74 +1,31 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 
 import DataState from '@/components/molecules/DataState';
-import PostCard from '@/components/molecules/PostCard';
-import PostDetail, { PostDetailSkeleton } from '@/components/molecules/PostDetail';
-import { ROUTES } from '@/constants/routes';
+import { PostDetailSkeleton } from '@/components/molecules/PostDetail';
 import { useGetPostDetailsQuery } from '@/hooks/api/posts/queries';
-import { useRouter } from '@/i18n/routing';
+import dynamic from 'next/dynamic';
 import { useParams } from 'next/navigation';
 
-import PostRepliesList from './_components/PostRepliesList';
 import type { PostPageParams } from './layout';
+
+const LazyPostDetailsList = dynamic(() => import('./_components/PostDetailsList'), {
+  loading: () => <PostDetailSkeleton />,
+  ssr: false,
+});
+const LazyPostRepliesList = dynamic(() => import('./_components/PostRepliesList'), {
+  ssr: false,
+});
 
 const PostPage = () => {
   const { id } = useParams<PostPageParams>();
-  const router = useRouter();
   const { data, isLoading, isError } = useGetPostDetailsQuery({ id, enabled: false });
-  const postDetailRef = useRef<HTMLDivElement>(null);
-
-  const handleDeletePostSuccess = () => router.replace(ROUTES.HOME);
-
-  useEffect(() => {
-    if (!isLoading && postDetailRef.current) {
-      const scrollToElement = () => {
-        if (!postDetailRef.current) return;
-
-        const elementPosition = postDetailRef.current.getBoundingClientRect().top;
-        const headerBar = document.getElementById('header-bar');
-        const offsetPosition = elementPosition + window.scrollY - (headerBar?.offsetHeight ?? 0);
-
-        window.scrollTo({
-          top: offsetPosition,
-        });
-      };
-
-      requestAnimationFrame(() => {
-        requestAnimationFrame(scrollToElement);
-      });
-    }
-  }, [isLoading]);
 
   return (
     <DataState isLoading={isLoading} isError={isError} loadingComponent={<PostDetailSkeleton />}>
-      {data.posts.map((post, index) => {
-        const isFirstPost = index === 0;
-        const isLastPost = index === data.posts.length - 1;
-
-        if (isLastPost)
-          return (
-            <PostDetail
-              key={post.id}
-              ref={postDetailRef}
-              post={post}
-              showThreadLineAbove={data.posts.length > 1 && isLastPost}
-            />
-          );
-
-        return (
-          <PostCard
-            key={post.id}
-            className='animate-appear border-b-0'
-            post={post}
-            showThreadLineAbove={!isFirstPost && !isLastPost}
-            showThreadLineBelow
-            onDeleteSuccess={handleDeletePostSuccess}
-          />
-        );
-      })}
-      {!!data.posts.length && <PostRepliesList />}
+      <LazyPostDetailsList posts={data.posts} />
+      {!!data.posts.length && <LazyPostRepliesList />}
     </DataState>
   );
 };

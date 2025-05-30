@@ -1,5 +1,5 @@
 import type { Ref } from 'react';
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 
 import Avatar from '@/components/atoms/Avatar';
 import Box from '@/components/atoms/Box';
@@ -15,16 +15,17 @@ import PostDetailAuthor from './PostDetailAuthor';
 type Props = {
   post: Post;
   showThreadLineAbove?: boolean;
+  className?: string;
   ref?: Ref<HTMLDivElement | null>;
 };
 
-const PostDetail = ({ post, showThreadLineAbove = false, ...props }: Props) => {
+const PostDetail = memo(({ post, showThreadLineAbove = false, className, ...props }: Props) => {
   const { id, text, media, createdAt, author, isAuthor, reply, editedAt } = post;
   const router = useRouter();
   const [isGlobalLoading] = useState(false);
 
   return (
-    <Box className={twMerge('px-4 py-3', isGlobalLoading && 'opacity-50')} {...props}>
+    <Box className={twMerge('px-4 py-3', isGlobalLoading && 'opacity-50', className)} {...props}>
       <Box className='grow flex-row'>
         <Box className='relative shrink-0'>
           {showThreadLineAbove && (
@@ -44,6 +45,6 @@ const PostDetail = ({ post, showThreadLineAbove = false, ...props }: Props) => {
       <PostCardActions post={post} />
     </Box>
   );
-};
+});
 
 export default PostDetail;

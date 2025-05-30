@@ -27,7 +27,7 @@ const PostMediaGridCard = memo(({ post, className, ...props }: PostMediaGridCard
   return (
     <article
       className={twMerge(
-        'relative pb-[100%] cursor-pointer outline-none transition duration-200 focus-visible:bg-text-1/10 focus-visible:ring-focus focus-visible:ring-2 hover:opacity-90',
+        'relative pb-[100%] cursor-pointer outline-none transition duration-200 animate-appear focus-visible:bg-text-1/10 focus-visible:ring-focus focus-visible:ring-2 hover:opacity-90',
         className
       )}
       {...props}

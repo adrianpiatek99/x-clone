@@ -27,14 +27,6 @@ type Props = {
   onSettled?: () => void;
 };
 
-type Context = {
-  previousTimeline: GetGlobalTimelineResponse | undefined;
-  previousUserPosts: GetUserPostsResponse | undefined;
-  previousUserLikes: GetUserLikesResponse | undefined;
-  previousPostReplies: GetPostRepliesResponse | undefined;
-  previousPost: unknown;
-};
-
 export const useDeletePostMutation = ({ screenName, onSuccess, onError, onSettled }: Props) => {
   const t = useTranslations();
   const params = useParams<PostPageParams>();
@@ -44,33 +36,10 @@ export const useDeletePostMutation = ({ screenName, onSuccess, onError, onSettle
   const { mutate, isPending: isDeleting } = useMutation<
     DeletePostResponse,
     ApiAxiosError,
-    DeletePostParams,
-    Context
+    DeletePostParams
   >({
     mutationFn: ({ id }) => apiRequest('DELETE', API_ENDPOINTS.POSTS.DELETE({ id })),
-    onMutate: async ({ id }) => {
-      // Cancel any outgoing queries
-      await queryClient.cancelQueries({ queryKey: QUERY_KEYS.POSTS.GLOBAL_TIMELINE.BASE });
-      await queryClient.cancelQueries({ queryKey: QUERY_KEYS.POSTS.USER_POSTS.BASE });
-      await queryClient.cancelQueries({ queryKey: QUERY_KEYS.POSTS.USER_LIKES.BASE });
-      await queryClient.cancelQueries({ queryKey: QUERY_KEYS.POSTS.POST_REPLIES.BASE });
-      await queryClient.cancelQueries({ queryKey: QUERY_KEYS.POSTS.DETAILS.WITH_PARAMS(id) });
-
-      // Snapshot the previous value
-      const previousTimeline = queryClient.getQueryData<GetGlobalTimelineResponse>(
-        QUERY_KEYS.POSTS.GLOBAL_TIMELINE.BASE
-      );
-      const previousUserPosts = queryClient.getQueryData<GetUserPostsResponse>(
-        QUERY_KEYS.POSTS.USER_POSTS.WITH_PARAMS(screenName)
-      );
-      const previousUserLikes = queryClient.getQueryData<GetUserLikesResponse>(
-        QUERY_KEYS.POSTS.USER_LIKES.WITH_PARAMS(screenName)
-      );
-      const previousPostReplies = queryClient.getQueryData<GetPostRepliesResponse>(
-        QUERY_KEYS.POSTS.POST_REPLIES.BASE
-      );
-      const previousPost = queryClient.getQueryData(QUERY_KEYS.POSTS.DETAILS.WITH_PARAMS(id));
-
+    onSuccess: ({ id }) => {
       // Optimistically remove the post from all relevant infinite query caches
       deleteItemFromInfiniteQueryCache<
         GetGlobalTimelineResponse | GetUserPostsResponse | GetUserLikesResponse
@@ -105,16 +74,6 @@ export const useDeletePostMutation = ({ screenName, onSuccess, onError, onSettle
         });
       }
 
-      // Return snapshot of previous data for potential rollback on error
-      return {
-        previousTimeline,
-        previousUserPosts,
-        previousUserLikes,
-        previousPostReplies,
-        previousPost,
-      } satisfies Context;
-    },
-    onSuccess: () => {
       // Decrease the total count of user's posts in cache to reflect the deletion
       updateTotalCountInInfiniteQueryCache<GetUserPostsResponse>(
         queryClient,
@@ -125,34 +84,7 @@ export const useDeletePostMutation = ({ screenName, onSuccess, onError, onSettle
       addToast('success', t('post.api.deletePost.success'));
       onSuccess?.();
     },
-    onError: (_err, { id }, context) => {
-      // Rollback to the previous data on error
-      if (context?.previousTimeline) {
-        queryClient.setQueryData(QUERY_KEYS.POSTS.GLOBAL_TIMELINE.BASE, context.previousTimeline);
-      }
-
-      if (context?.previousUserPosts) {
-        queryClient.setQueryData(
-          QUERY_KEYS.POSTS.USER_POSTS.WITH_PARAMS(screenName),
-          context.previousUserPosts
-        );
-      }
-
-      if (context?.previousUserLikes) {
-        queryClient.setQueryData(
-          QUERY_KEYS.POSTS.USER_LIKES.WITH_PARAMS(screenName),
-          context.previousUserLikes
-        );
-      }
-
-      if (context?.previousPostReplies) {
-        queryClient.setQueryData(QUERY_KEYS.POSTS.POST_REPLIES.BASE, context.previousPostReplies);
-      }
-
-      if (context?.previousPost) {
-        queryClient.setQueryData(QUERY_KEYS.POSTS.DETAILS.WITH_PARAMS(id), context.previousPost);
-      }
-
+    onError: (_err) => {
       addToast('error', t('post.api.deletePost.error'), { duration: 6000 });
       onError?.();
     },

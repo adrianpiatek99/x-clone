@@ -41,7 +41,7 @@ const PostCard = memo(
 
     return (
       <ArticleCard
-        className={twMerge('border-b border-border-1', className)}
+        className={twMerge('border-b border-border-1 animate-appear', className)}
         href={ROUTES.POST.DETAILS(screenName, id)}
         {...props}
       >
