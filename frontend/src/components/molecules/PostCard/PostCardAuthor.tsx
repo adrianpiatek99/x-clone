@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import Box from '@/components/atoms/Box';
 import Tooltip from '@/components/atoms/Tooltip';
@@ -10,18 +10,24 @@ import type { Post } from '@/types/post';
 
 import UserDisplayName from '../UserDisplayName';
 
-type Props = Pick<Post, 'id' | 'author' | 'createdAt'>;
+type Props = Pick<Post, 'id' | 'author' | 'createdAt'> & {
+  preview?: boolean;
+};
 
-export const PostCardAuthor = ({ author, createdAt }: Props) => {
+export const PostCardAuthor = memo(({ author, createdAt, preview = false }: Props) => {
   const { name, screenName, isVerified } = author;
   const { getLocalTime, getFullDate, getRelativeTime } = useTime();
   const profilePageHref = ROUTES.PROFILE.DETAILS(screenName);
 
   return (
     <Box className='flex-col gap-1 min-[360px]:flex-row min-[360px]:items-center'>
-      <UserDisplayName name={name} isVerified={isVerified} href={profilePageHref} />
+      <UserDisplayName
+        name={name}
+        isVerified={isVerified}
+        href={preview ? undefined : profilePageHref}
+      />
       <div className='flex min-w-0 items-center gap-1'>
-        <Typography href={profilePageHref} color='secondary' truncate>
+        <Typography href={preview ? undefined : profilePageHref} color='secondary' truncate>
           @{screenName}
         </Typography>
         <Typography color='secondary' className='shrink-0' truncate>
@@ -35,4 +41,4 @@ export const PostCardAuthor = ({ author, createdAt }: Props) => {
       </div>
     </Box>
   );
-};
+});

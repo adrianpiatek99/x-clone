@@ -1,8 +1,9 @@
 'use client';
 
 import type { ComponentPropsWithoutRef, FC, ReactElement, ReactNode } from 'react';
-import React from 'react';
+import React, { useState } from 'react';
 
+import DiscardChangesModal from '@/components/molecules/DiscardChangesModal';
 import useEscape from '@/hooks/useEscape';
 import { Dialog, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import { twMerge } from 'tailwind-merge';
@@ -22,6 +23,9 @@ export type ModalProps = {
   panel?: {
     className?: string;
   };
+  discardChanges?: {
+    isChanged: boolean;
+  };
 };
 
 const Modal: FC<ModalProps> = ({
@@ -35,8 +39,25 @@ const Modal: FC<ModalProps> = ({
   acceptButtonText,
   preventClosingOnOutside,
   panel,
+  discardChanges,
 }) => {
-  const handleClose = () => !preventClosingOnOutside && !isLoading && onClose();
+  const [isDiscardChangesModalOpen, setIsDiscardChangesModalOpen] = useState(false);
+
+  const handleClose = () => {
+    if (discardChanges?.isChanged) {
+      setIsDiscardChangesModalOpen(true);
+
+      return;
+    }
+
+    onClose();
+  };
+
+  const handleBackdropClose = () => {
+    if (preventClosingOnOutside || isLoading) return;
+
+    handleClose();
+  };
 
   useEscape(isOpen && preventClosingOnOutside, () => {
     if (
@@ -55,10 +76,10 @@ const Modal: FC<ModalProps> = ({
       as='div'
       className='relative z-10 focus:outline-none'
       open={isOpen}
-      onClose={handleClose}
+      onClose={handleBackdropClose}
     >
       <DialogBackdrop
-        className='bg-backdrop fixed inset-0 duration-200 data-[closed]:opacity-0'
+        className='fixed inset-0 bg-backdrop duration-200 data-[closed]:opacity-0'
         transition
       />
       <div className='fixed inset-0 z-10 w-screen'>
@@ -72,7 +93,7 @@ const Modal: FC<ModalProps> = ({
           >
             <ModalHeader
               title={title}
-              onClose={onClose}
+              onClose={handleClose}
               onAccept={onAccept}
               acceptButtonText={acceptButtonText}
               acceptButtonProps={acceptButtonProps}
@@ -82,6 +103,11 @@ const Modal: FC<ModalProps> = ({
           </DialogPanel>
         </div>
       </div>
+      <DiscardChangesModal
+        isOpen={isDiscardChangesModalOpen}
+        onDiscardClose={() => setIsDiscardChangesModalOpen(false)}
+        onClose={onClose}
+      />
     </Dialog>
   );
 };

@@ -21,7 +21,7 @@ const LazyEditPostModal = dynamic(() => import('@/components/organisms/EditPostM
 });
 
 type Props = {
-  post: Pick<Post, 'id' | 'author' | 'text' | 'media' | 'isAuthor'>;
+  post: Pick<Post, 'id' | 'author' | 'text' | 'media' | 'isAuthor' | 'reply'>;
   onDeleteSuccess?: () => void;
 };
 
@@ -30,15 +30,18 @@ export const PostCardDropdown = memo(({ post, onDeleteSuccess }: Props) => {
     id,
     author: { screenName },
     isAuthor,
+    reply,
   } = post;
   const t = useTranslations();
   const router = useRouter();
   const [isDeletePostModalOpen, setIsDeletePostModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const showEditAction = isAuthor && !reply;
 
   const { deletePost, isDeleting } = useDeletePostMutation({
     screenName,
     onSuccess: () => {
+      setIsDeletePostModalOpen(false);
       onDeleteSuccess?.();
     },
   });
@@ -46,18 +49,17 @@ export const PostCardDropdown = memo(({ post, onDeleteSuccess }: Props) => {
   const handleDeletePost = () => {
     if (!isAuthor) return;
 
-    setIsDeletePostModalOpen(false);
     deletePost({ id });
   };
 
   return (
     <>
-      <div className='my-[-8px] mr-[-6px] flex items-center'>
+      <div className='my-[-8px] mr-[-6px] flex'>
         <Dropdown>
           <IconButton title={t('post.actions.more')} color='secondary'>
             <Icon name='MoreHorizontalIcon' />
           </IconButton>
-          {isAuthor && (
+          {showEditAction && (
             <DropdownItem icon={<Icon name='EditIcon' />} onClick={() => setIsEditModalOpen(true)}>
               {t('post.actions.edit')}
             </DropdownItem>
@@ -87,13 +89,16 @@ export const PostCardDropdown = memo(({ post, onDeleteSuccess }: Props) => {
         isOpen={isDeletePostModalOpen}
         onClose={() => setIsDeletePostModalOpen(false)}
         onAccept={handleDeletePost}
+        isLoading={isDeleting}
         preventClosingOnOutside={false}
       />
-      <LazyEditPostModal
-        post={post}
-        isOpen={isEditModalOpen}
-        onClose={() => setIsEditModalOpen(false)}
-      />
+      {showEditAction && (
+        <LazyEditPostModal
+          post={post}
+          isOpen={isEditModalOpen}
+          onClose={() => setIsEditModalOpen(false)}
+        />
+      )}
     </>
   );
 });

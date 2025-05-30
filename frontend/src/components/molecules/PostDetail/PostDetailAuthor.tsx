@@ -14,7 +14,7 @@ const PostDetailAuthor = ({ children, author }: Props) => {
   const profilePageHref = ROUTES.PROFILE.DETAILS(screenName);
 
   return (
-    <Box className='grow flex-row items-center justify-between gap-2'>
+    <Box className='grow flex-row justify-between gap-2'>
       <Box className='flex-col gap-0.5'>
         <UserDisplayName name={name} isVerified={isVerified} href={profilePageHref} />
         <div className='flex min-w-0 items-center gap-1'>

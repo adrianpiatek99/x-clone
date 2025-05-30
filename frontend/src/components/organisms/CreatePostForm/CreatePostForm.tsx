@@ -37,7 +37,7 @@ const CreatePostForm = () => {
       resetStore: state.resetStore,
     }))
   );
-  const { createPostMutate, isPending } = useCreatePostMutation({
+  const { createPost, isPending } = useCreatePostMutation({
     onSuccess: () => {
       resetStore();
     },
@@ -47,7 +47,7 @@ const CreatePostForm = () => {
 
   const handleCreatePost = () =>
     !disabled &&
-    createPostMutate({
+    createPost({
       text,
       media: files.map((file) => file.file),
     });
@@ -62,7 +62,7 @@ const CreatePostForm = () => {
       <Box className='grow'>
         <Textarea
           name='createPostText'
-          label={t('post.textarea.label')}
+          label={t('post.createPostLabel')}
           value={text}
           onValueChange={handleChangeText}
           maxLength={VALIDATION.POST.TEXT.MAX}

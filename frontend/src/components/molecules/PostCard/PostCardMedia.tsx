@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 import ShimmerImage from '@/components/atoms/ShimmerImage';
 import type { Post } from '@/types/post';
@@ -7,7 +7,7 @@ import { twMerge } from 'tailwind-merge';
 
 type Props = Pick<Post, 'media'>;
 
-export const PostCardMedia = ({ media }: Props) => {
+export const PostCardMedia = memo(({ media }: Props) => {
   const mediaCount = media.length;
   const width = media[0]?.width ?? 0;
   const height = media[0]?.height ?? 0;
@@ -46,4 +46,4 @@ export const PostCardMedia = ({ media }: Props) => {
       </div>
     </div>
   );
-};
+});

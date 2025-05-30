@@ -1,6 +1,5 @@
 DROP TABLE IF EXISTS follows;
 DROP TABLE IF EXISTS post_edit_history;
-DROP TABLE IF EXISTS post_reply;
 DROP TABLE IF EXISTS post_likes;
 DROP TABLE IF EXISTS post_media;
 DROP TABLE IF EXISTS posts;
@@ -35,6 +34,7 @@ CREATE TABLE posts (
     id UUID PRIMARY KEY,
     text TEXT NOT NULL,
     author_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    reply_to_post_id UUID REFERENCES posts(id) ON DELETE CASCADE,
     hashtags TEXT[],
     conversation_control "conversationControl" NOT NULL,
     created_at TIMESTAMPTZ NOT NULL,
@@ -58,15 +58,6 @@ CREATE TABLE post_likes (
     user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     created_at TIMESTAMPTZ NOT NULL,
     CONSTRAINT unique_post_like UNIQUE (post_id, user_id)
-);
-
-CREATE TABLE post_reply (
-    id UUID PRIMARY KEY,
-    author_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    post_id UUID NOT NULL REFERENCES posts(id) ON DELETE CASCADE,
-    text TEXT NOT NULL,
-    created_at TIMESTAMPTZ NOT NULL,
-    updated_at TIMESTAMPTZ NOT NULL
 );
 
 CREATE TABLE post_edit_history (

@@ -4,10 +4,15 @@ import type { PostMediaType } from './enums';
 import type { Cursor } from './global';
 import type { BaseUser } from './user';
 
+export type CreatePostReplyRequest = { text: string; postId: string };
+
+export type CreatePostReplyResponse = { postReply: Post };
+
 export type CreatePostRequest = { text: string; media: File[] };
 
 export type CreatePostResponse = {
   author: BaseUser;
+  reply: PostReplyInfo | null;
   media: Array<PostMedia>;
   isAuthor: boolean;
   isLiked: boolean;
@@ -17,6 +22,7 @@ export type CreatePostResponse = {
   id: string;
   text: string;
   authorId: string;
+  replyToPostId: string | null;
   hashtags: Array<string | null> | null;
   conversationControl: ConversationControl;
   createdAt: Date;
@@ -33,26 +39,15 @@ export type GetGlobalTimelineResponse = { posts: Array<Post>; nextCursor: Cursor
 
 export type GetPostDetailsParams = { postId: string };
 
-export type GetPostDetailsResponse = {
-  author: BaseUser;
-  media: Array<PostMedia>;
-  isAuthor: boolean;
-  isLiked: boolean;
-  likesCount: number;
-  repliesCount: number;
-  editedAt: Date | null;
-  id: string;
-  text: string;
-  authorId: string;
-  hashtags: Array<string | null> | null;
-  conversationControl: ConversationControl;
-  createdAt: Date;
-  updatedAt: Date;
-};
+export type GetPostDetailsResponse = { posts: Array<Post> };
 
 export type GetPostLikesParams = { postId: string; cursor: Cursor | null; limit: number | null };
 
 export type GetPostLikesResponse = { postLikes: Array<PostLike>; nextCursor: Cursor | null };
+
+export type GetPostRepliesParams = { postId: string; cursor: Cursor | null; limit: number | null };
+
+export type GetPostRepliesResponse = { postReplies: Array<Post>; nextCursor: Cursor | null };
 
 export type GetTrackTimelineParams = { latestPostId: string };
 
@@ -100,6 +95,7 @@ export type LikePostResponse = { id: string; message: string };
 
 export type Post = {
   author: BaseUser;
+  reply: PostReplyInfo | null;
   media: Array<PostMedia>;
   isAuthor: boolean;
   isLiked: boolean;
@@ -109,6 +105,7 @@ export type Post = {
   id: string;
   text: string;
   authorId: string;
+  replyToPostId: string | null;
   hashtags: Array<string | null> | null;
   conversationControl: ConversationControl;
   createdAt: Date;
@@ -138,6 +135,8 @@ export type PostMedia = {
   createdAt: Date;
 };
 
+export type PostReplyInfo = { id: string; user: BaseUser };
+
 export type UnlikePostParams = { postId: string };
 
 export type UnlikePostResponse = { id: string; message: string };
@@ -148,6 +147,7 @@ export type UpdatePostRequest = { text: string; removedMediaIds: string[] | null
 
 export type UpdatePostResponse = {
   author: BaseUser;
+  reply: PostReplyInfo | null;
   media: Array<PostMedia>;
   isAuthor: boolean;
   isLiked: boolean;
@@ -157,6 +157,7 @@ export type UpdatePostResponse = {
   id: string;
   text: string;
   authorId: string;
+  replyToPostId: string | null;
   hashtags: Array<string | null> | null;
   conversationControl: ConversationControl;
   createdAt: Date;

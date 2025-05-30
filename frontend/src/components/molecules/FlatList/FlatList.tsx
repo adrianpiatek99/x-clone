@@ -12,20 +12,22 @@ import type { InfiniteQueryObserverBaseResult } from '@tanstack/react-query';
 import { FlatListGrid } from './FlatListGrid';
 import { FlatListLoadMore } from './FlatListLoadMore';
 import { FlatListPillNotify } from './FlatListPillNotify';
+import { useScrollToIndex } from './useScrollToIndex';
 
 export type FlatListProps<TData> = {
   data: TData[];
-  renderItem: (item: TData) => ReactElement;
-  empty: {
+  renderItem: (item: TData, index: number) => ReactElement;
+  empty?: {
     title: string;
     description?: string;
   };
   infiniteScroll?: {
     loader: ReactElement;
+    pillNotify?: ReactNode;
   } & Omit<InfiniteQueryObserverBaseResult, 'data'>;
   scrollKey?: VirtualScrollKeys;
-  additionalPillNotify?: ReactNode;
   isGrid?: boolean;
+  scrollToLastIndex?: boolean;
 };
 
 /**
@@ -39,29 +41,32 @@ const FlatList = <TData,>({
   empty,
   infiniteScroll,
   scrollKey,
-  additionalPillNotify,
   isGrid,
+  scrollToLastIndex = false,
 }: FlatListProps<TData>) => {
-  const { items, totalSize, parentRef, measureElement, options } = useWindowVirtualScroll(
-    data.length,
-    scrollKey,
-    isGrid ? 3 : undefined
-  );
+  const count = data.length;
+  const { items, totalSize, parentRef, measureElement, options, scrollToIndex } =
+    useWindowVirtualScroll(count, scrollKey, isGrid ? 3 : undefined);
   const isInfiniteScroll = !!infiniteScroll;
   const isEmpty = isInfiniteScroll ? !infiniteScroll.isLoading && !data.length : !data.length;
+  const isLoading = isInfiniteScroll && infiniteScroll.isLoading;
   const isError = !!infiniteScroll?.isError;
+
+  useScrollToIndex({ enabled: scrollToLastIndex, index: count - 1, scrollToIndex });
 
   if (isError) return <ErrorState onRetry={() => infiniteScroll.refetch()} />;
 
-  if (isEmpty) return <Empty title={empty.title} description={empty?.description} />;
+  if (isEmpty) return empty ? <Empty title={empty.title} description={empty?.description} /> : null;
 
   return (
     <section className='relative flex w-full flex-col' ref={parentRef}>
-      <FlatListPillNotify
-        isRefetching={!!infiniteScroll?.isRefetching}
-        additionalPillNotify={additionalPillNotify}
-      />
-      {isInfiniteScroll && infiniteScroll.isLoading ? (
+      {infiniteScroll?.pillNotify && (
+        <FlatListPillNotify
+          isRefetching={infiniteScroll.isRefetching}
+          pillNotify={infiniteScroll.pillNotify}
+        />
+      )}
+      {isLoading ? (
         cloneElement(infiniteScroll.loader)
       ) : (
         <div style={{ height: `${totalSize}px` }} className='relative w-full'>
@@ -81,10 +86,10 @@ const FlatList = <TData,>({
                 style={{
                   transform: `translateY(${start - options.scrollMargin}px)`,
                 }}
-                className='absolute left-0 top-0 w-full animate-appear'
+                className='absolute left-0 top-0 w-full'
                 data-index={index}
               >
-                {renderItem(data[index])}
+                {renderItem(data[index], index)}
               </div>
             ))
           )}

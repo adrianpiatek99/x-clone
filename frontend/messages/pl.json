@@ -112,6 +112,12 @@
         "description": "Udostępnij wpis innej osoby na swojej osi czasu, podając go dalej. Wpisy podane przez Ciebie dalej będą widoczne w tym miejscu"
       }
     },
+    "replies": {
+      "empty": {
+        "title": "Nie znaleziono odpowiedzi",
+        "description": "Kiedy ktoś odpowie na Twój wpis, pojawi się tutaj."
+      }
+    },
     "subpages": {
       "engagements": {
         "title": "Interakcje z wpisem",
@@ -197,10 +203,8 @@
   },
 
   "post": {
-    "noData": "Brak danych",
-    "textarea": {
-      "label": "Co się dzieje?!"
-    },
+    "createPostLabel": "Co się dzieje?!",
+    "replyPostLabel": "Opublikuj swoją odpowiedź",
     "actions": {
       "send": "Opublikuj wpis",
       "delete": "Usuń",
@@ -244,6 +248,10 @@
       "unlikePost": {
         "success": "Wpis został odpolubiony.",
         "error": "Nie udało się odpolubić wpisu."
+      },
+      "replyPost": {
+        "success": "Odpowiedź została opublikowana.",
+        "error": "Nie udało się opublikować odpowiedzi."
       }
     }
   },

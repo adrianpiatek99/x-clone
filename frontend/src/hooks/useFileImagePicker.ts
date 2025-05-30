@@ -1,4 +1,4 @@
-import type { RefObject } from 'react';
+import type { Ref } from 'react';
 import { type ChangeEvent, useCallback, useRef, useState } from 'react';
 
 import type { FileValidationOptions } from '@/constants/validation';
@@ -16,7 +16,7 @@ type FileImagePickerResult = {
   error: string | undefined;
   handleFileChange: (e: ChangeEvent<HTMLInputElement>) => void;
   openFilePicker: () => void;
-  filePickerRef: RefObject<HTMLInputElement | null>;
+  filePickerRef: Ref<HTMLInputElement | null>;
   reset: () => void;
 };
 

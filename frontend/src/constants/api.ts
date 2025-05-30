@@ -3,6 +3,7 @@ import type {
   GetGlobalTimelineParams,
   GetPostDetailsParams,
   GetPostLikesParams,
+  GetPostRepliesParams,
   GetTrackTimelineParams,
   GetUserLikesParams,
   GetUserMediaParams,
@@ -34,18 +35,21 @@ export const API_ENDPOINTS = {
     DELETE: ({ id }: DeletePostParams) => `/api/posts/delete/${id}` as const,
     GLOBAL_TIMELINE: (params: GetGlobalTimelineParams) =>
       createUrlWithParams('/api/posts/globalTimeline', params),
-    POST_LIKES: ({ postId, ...params }: GetPostLikesParams) =>
-      createUrlWithParams(`/api/posts/postLikes/${postId}`, params),
-    LIKE: ({ postId }: LikePostParams) => `/api/posts/like/${postId}` as const,
-    UNLIKE: ({ postId }: UnlikePostParams) => `/api/posts/unlike/${postId}` as const,
     TRACK_TIMELINE: ({ latestPostId }: GetTrackTimelineParams) =>
       createUrlWithParams('/api/posts/trackTimeline', { latestPostId }),
+    POST_LIKES: ({ postId, ...params }: GetPostLikesParams) =>
+      createUrlWithParams(`/api/posts/postLikes/${postId}`, params),
+    POST_REPLIES: ({ postId, ...params }: GetPostRepliesParams) =>
+      createUrlWithParams(`/api/posts/replies/${postId}`, params),
+    LIKE: ({ postId }: LikePostParams) => `/api/posts/like/${postId}` as const,
+    UNLIKE: ({ postId }: UnlikePostParams) => `/api/posts/unlike/${postId}` as const,
     USER_POSTS: ({ screenName, ...params }: GetUserPostsParams) =>
       createUrlWithParams(`/api/posts/userPosts/${screenName}`, params),
     USER_LIKES: ({ screenName, ...params }: GetUserLikesParams) =>
       createUrlWithParams(`/api/posts/userLikes/${screenName}`, params),
     USER_MEDIA: ({ screenName, ...params }: GetUserMediaParams) =>
       createUrlWithParams(`/api/posts/userMedia/${screenName}`, params),
+    CREATE_POST_REPLY: '/api/posts/create/reply',
   },
   PROFILE: {
     UPDATE: '/api/profile/update',

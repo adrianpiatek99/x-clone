@@ -259,6 +259,12 @@ async fn update_post(
                 .get_result::<i64>(&mut conn)
                 .unwrap_or(0);
 
+            let replies_count = posts::posts
+                .filter(posts::reply_to_post_id.eq(&updated_post_schema.id))
+                .count()
+                .get_result::<i64>(&mut conn)
+                .unwrap_or(0);
+
             let is_liked = post_likes::post_likes
                 .filter(post_likes::post_id.eq(&updated_post_schema.id))
                 .filter(post_likes::user_id.eq(&session_user_id))
@@ -278,11 +284,12 @@ async fn update_post(
                 post: Post {
                     post: updated_post_schema,
                     author: BaseUser { user: author },
+                    reply: None,
                     media,
                     is_author: true,
                     is_liked,
                     likes_count,
-                    replies_count: 0, // TODO: Implement replies count
+                    replies_count,
                     edited_at,
                 },
             };

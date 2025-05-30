@@ -12,10 +12,10 @@ const LazyPillNotifyRefreshing = dynamic(
 
 type Props = {
   isRefetching: boolean;
-  additionalPillNotify?: ReactNode;
+  pillNotify?: ReactNode;
 };
 
-export const FlatListPillNotify = ({ isRefetching, additionalPillNotify }: Props) => {
+export const FlatListPillNotify = ({ isRefetching, pillNotify }: Props) => {
   const [headerBarHeight, setHeaderBarHeight] = useState(0);
 
   useEffect(() => {
@@ -29,7 +29,7 @@ export const FlatListPillNotify = ({ isRefetching, additionalPillNotify }: Props
   return (
     <div style={{ top: headerBarHeight }} className='sticky z-[5]'>
       <LazyPillNotifyRefreshing isRefetching={isRefetching} />
-      {additionalPillNotify}
+      {pillNotify}
     </div>
   );
 };

@@ -6,7 +6,7 @@ use uuid::Uuid;
 
 use crate::enums::user_role::Role;
 
-#[derive(Queryable, Selectable, Identifiable, Serialize, TS, Debug)]
+#[derive(Queryable, Selectable, Identifiable, Serialize, TS, Debug, Clone)]
 #[diesel(table_name = crate::schema::users)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]
@@ -92,7 +92,7 @@ impl Default for NewUser {
     }
 }
 
-#[derive(Queryable, Serialize, TS, Debug)]
+#[derive(Queryable, Serialize, TS, Debug, Clone)]
 #[diesel(table_name = crate::schema::users)]
 #[diesel(check_for_backend(diesel::pg::Pg))]
 #[serde(rename_all = "camelCase")]

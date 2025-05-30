@@ -64,7 +64,11 @@ export const sidebarMenuItems = ({ t, user, pathname }: SidebarMenuItemsProps): 
     {
       text: t('navigation.profile'),
       href: user ? ROUTES.PROFILE.DETAILS(user.screenName) : '',
-      active: user ? pathname.includes(ROUTES.PROFILE.DETAILS(user.screenName)) : false,
+      active: (() => {
+        if (!user) return false;
+
+        return Object.values(ROUTES.PROFILE).some((route) => pathname === route(user.screenName));
+      })(),
       icon: <Icon name='PersonOutlinedIcon' />,
       activeIcon: <Icon name='PersonIcon' />,
       visible: !!user,

@@ -49,16 +49,7 @@ export const useToggleFollowUserMutation = ({
   >({
     mutationFn: ({ userId }) => apiRequest('POST', API_ENDPOINTS.USERS.FOLLOW({ userId })),
     onSuccess: () => {
-      // Update the cache
-      updateItemInCache<GetProfileDetailsResponse>(
-        queryClient,
-        QUERY_KEYS.PROFILE.USER_BY_SCREEN_NAME(screenName),
-        (user) => {
-          user.isFollowing = true;
-          user.followersCount++;
-        }
-      );
-
+      // Update user profile in all relevant infinite query caches
       updateItemInInfiniteQueryCache<GetFollowersResponse | GetFollowingResponse>(
         queryClient,
         (queryKey) =>
@@ -74,6 +65,17 @@ export const useToggleFollowUserMutation = ({
         }
       );
 
+      // Update user profile in cache
+      updateItemInCache<GetProfileDetailsResponse>(
+        queryClient,
+        QUERY_KEYS.PROFILE.USER_BY_SCREEN_NAME(screenName),
+        (user) => {
+          user.isFollowing = true;
+          user.followersCount++;
+        }
+      );
+
+      // Update user session
       if (user) {
         setUser({ ...user, followingCount: user.followingCount + 1 });
       }
@@ -99,16 +101,7 @@ export const useToggleFollowUserMutation = ({
   >({
     mutationFn: ({ userId }) => apiRequest('DELETE', API_ENDPOINTS.USERS.UNFOLLOW({ userId })),
     onSuccess: () => {
-      // Update the cache
-      updateItemInCache<GetProfileDetailsResponse>(
-        queryClient,
-        QUERY_KEYS.PROFILE.USER_BY_SCREEN_NAME(screenName),
-        (user) => {
-          user.isFollowing = false;
-          user.followersCount--;
-        }
-      );
-
+      // Update user profile in all relevant infinite query caches
       updateItemInInfiniteQueryCache<GetFollowersResponse | GetFollowingResponse>(
         queryClient,
         (queryKey) =>
@@ -124,6 +117,17 @@ export const useToggleFollowUserMutation = ({
         }
       );
 
+      // Update user profile in cache
+      updateItemInCache<GetProfileDetailsResponse>(
+        queryClient,
+        QUERY_KEYS.PROFILE.USER_BY_SCREEN_NAME(screenName),
+        (user) => {
+          user.isFollowing = false;
+          user.followersCount--;
+        }
+      );
+
+      // Update user session
       if (user) {
         setUser({ ...user, followingCount: user.followingCount - 1 });
       }

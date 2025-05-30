@@ -20,23 +20,24 @@ export const useWindowVirtualScroll = (
   const offset = scrollKey ? (getState(scrollKey)?.offset ?? 0) : 0;
   const cache = scrollKey ? (getState(scrollKey)?.cache ?? []) : [];
 
-  const { getVirtualItems, getTotalSize, measureElement, options } = useWindowVirtualizer({
-    count,
-    estimateSize: () => 700,
-    overscan: 3,
-    scrollMargin: parentRef.current?.offsetTop ?? 0,
-    initialOffset: offset,
-    initialMeasurementsCache: cache,
-    onChange: (virtualizer) => {
-      if (!virtualizer.isScrolling && scrollKey) {
-        update(scrollKey, {
-          offset: virtualizer.scrollOffset ?? 0,
-          cache: virtualizer.measurementsCache,
-        });
-      }
-    },
-    lanes,
-  });
+  const { getVirtualItems, getTotalSize, measureElement, options, scrollToIndex } =
+    useWindowVirtualizer({
+      count,
+      estimateSize: () => 200,
+      overscan: 5,
+      scrollMargin: parentRef.current?.offsetTop ?? 0,
+      initialOffset: offset,
+      initialMeasurementsCache: cache,
+      onChange: (virtualizer) => {
+        if (!virtualizer.isScrolling && scrollKey) {
+          update(scrollKey, {
+            offset: virtualizer.scrollOffset ?? 0,
+            cache: virtualizer.measurementsCache,
+          });
+        }
+      },
+      lanes,
+    });
   const items = getVirtualItems();
   const totalSize = getTotalSize();
 
@@ -46,5 +47,6 @@ export const useWindowVirtualScroll = (
     measureElement,
     parentRef,
     options,
+    scrollToIndex,
   };
 };

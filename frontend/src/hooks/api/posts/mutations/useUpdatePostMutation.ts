@@ -14,8 +14,8 @@ import { apiRequest } from '@/utils/api';
 import { createFormData } from '@/utils/formData';
 import {
   compareQueryKeys,
-  updateItemInCache,
   updateItemInInfiniteQueryCache,
+  updateItemInSimpleArrayCache,
 } from '@/utils/queryCache';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
@@ -46,9 +46,7 @@ export const useUpdatePostMutation = ({ onSuccess, onError, onSettled }: Props =
       });
     },
     onSuccess: (updatedPost) => {
-      addToast('success', t('post.api.updatePost.success'));
-
-      // Update the cache with the updated post
+      // Update the updated post in all relevant infinite query caches
       updateItemInInfiniteQueryCache<
         GetGlobalTimelineResponse | GetUserPostsResponse | GetUserLikesResponse
       >(
@@ -62,17 +60,22 @@ export const useUpdatePostMutation = ({ onSuccess, onError, onSettled }: Props =
         { itemsKey: 'posts' }
       );
 
-      updateItemInCache<GetPostDetailsResponse>(
+      // Update the post in the post details cache
+      updateItemInSimpleArrayCache<GetPostDetailsResponse>(
         queryClient,
-        QUERY_KEYS.POSTS.DETAILS(updatedPost.id),
-        (post) => Object.assign(post, updatedPost)
+        (queryKey) => compareQueryKeys(queryKey, QUERY_KEYS.POSTS.DETAILS.BASE),
+        updatedPost.id,
+        (post) => Object.assign(post, updatedPost),
+        {
+          itemsKey: 'posts',
+        }
       );
 
+      addToast('success', t('post.api.updatePost.success'));
       onSuccess?.();
     },
     onError: () => {
       addToast('error', t('post.api.updatePost.error'), { duration: 6000 });
-
       onError?.();
     },
     onSettled: () => {

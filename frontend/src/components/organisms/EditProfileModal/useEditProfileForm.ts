@@ -42,7 +42,7 @@ export const useEditProfileForm = ({ user, isOpen, onClose }: Props) => {
     onSubmit: async ({ value }) => {
       if (isPending || !isChanged) return;
 
-      updateProfileMutate({
+      updateProfile({
         ...value,
         url: value.url ?? '',
         avatarFile: avatar.file,
@@ -53,7 +53,7 @@ export const useEditProfileForm = ({ user, isOpen, onClose }: Props) => {
   });
   const formValues = useStore(store, (state) => state.values);
 
-  const { updateProfileMutate, isPending } = useUpdateProfileMutation({
+  const { updateProfile, isPending } = useUpdateProfileMutation({
     onSuccess: () => {
       onClose();
     },
